@@ -32,4 +32,5 @@ app.listen(CONFIG.PORT, (err) => {
   console.log(`Servidor corriendo en el puerto: ${CONFIG.PORT}`);
 });
 
+
 module.exports = app;
