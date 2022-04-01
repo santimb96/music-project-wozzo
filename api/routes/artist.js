@@ -5,8 +5,9 @@ const router = express.Router();
 
 router
   .get("/", artistController.getAll)
-  // .get("/:key/:value", artistController.find, artistController.show)
-  // .put("/:key/:value", artistController.find, artistController.update)
-  // .delete("/:key/:value", artistController.find, artistController.deleted);
+  .post("/create", artistController.create)
+  .get("/:id", artistController.findId)
+  .put("/:id/update", artistController.updateById)
+  .delete("/:id/delete", artistController.deleteById);
 
 module.exports = router;
