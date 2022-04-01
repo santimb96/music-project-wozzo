@@ -1,7 +1,6 @@
 const UserRole = require("../models/userRole");
 const detectedError  = require("./errorController");
 
-
 const getAll = async (req, res) => {
   try {
     const userRoles = await UserRole.find({});

@@ -11,7 +11,6 @@ const getAll = async (req, res) => {
   }
 };
 
-
 const findId = async (req, res) => {
   try {
     const artist = await Artist.findOne({ _id: req.params.id });
