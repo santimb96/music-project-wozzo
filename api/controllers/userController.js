@@ -10,7 +10,7 @@ const detectedError = (err, res) => {
 
 const getAll = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find().populate('userRoleId', 'name -_id').select('name email password userRoleId');
     res.status(200).send({ users });
   } catch (err) {
     console.error(err);
@@ -19,7 +19,7 @@ const getAll = async (req, res) => {
 
 const findId = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await User.findOne({ _id: req.params.id }).populate('userRoleId', 'name -_id').select('name email password userRoleId');;
     return res.status(200).send({ user });
   } catch (err) {
     detectedError(err, res);
