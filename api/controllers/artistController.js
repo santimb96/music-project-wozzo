@@ -1,12 +1,6 @@
 const Artist = require("../models/artist");
 const Song = require("../models/song");
-
-const detectedError = (err, res) => {
-  if (err?.message) {
-    return res.status(404).send({ error: err?.message });
-  }
-  return res.status(404).send({ error: "No encontrado" });
-};
+const detectedError  = require("./errorController");
 
 const getAll = async (req, res) => {
   try {

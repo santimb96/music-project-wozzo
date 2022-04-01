@@ -1,16 +1,10 @@
 const Song = require("../models/song");
-
-const detectedError = (err, res) => {
-  if (err?.message) {
-    return res.status(404).send({ error: err?.message });
-  }
-  return res.status(404).send({ error: "No encontrado" });
-};
+const detectedError  = require("./errorController");
 
 
 const getAll = async (req, res) => {
   try {
-    const songs = await Song.find({}).populate('artistId', 'name -_id').select('name audioUrl artistId');
+    const songs = await Song.find({})//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     res.status(200).send({songs});    
   } catch (err) {
     console.error(err);
@@ -19,7 +13,7 @@ const getAll = async (req, res) => {
 
 const findId = async (req, res) => {
   try {
-    const song = await Song.findOne({ _id: req.params.id }).populate('artistId', 'name -_id').select('name audioUrl artistId');
+    const song = await Song.findOne({ _id: req.params.id })//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     return res.status(200).send({ song });
   } catch (err) {
     detectedError(err, res);

@@ -1,16 +1,10 @@
 const User = require("../models/user");
-//const UserRole = require("../models/userRole");
+const detectedError  = require("./errorController");
 
-const detectedError = (err, res) => {
-  if (err?.message) {
-    return res.status(404).send({ error: err?.message });
-  }
-  return res.status(404).send({ error: "No encontrado" });
-};
 
 const getAll = async (req, res) => {
   try {
-    const users = await User.find().populate('userRoleId', 'name -_id').select('name email password userRoleId');
+    const users = await User.find({})//.populate('userRoleId', 'name -_id').select('name email password userRoleId');
     res.status(200).send({ users });
   } catch (err) {
     console.error(err);
@@ -19,7 +13,7 @@ const getAll = async (req, res) => {
 
 const findId = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id }).populate('userRoleId', 'name -_id').select('name email password userRoleId');;
+    const user = await User.findOne({ _id: req.params.id })//.populate('userRoleId', 'name -_id').select('name email password userRoleId');
     return res.status(200).send({ user });
   } catch (err) {
     detectedError(err, res);

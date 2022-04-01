@@ -1,11 +1,6 @@
 const UserRole = require("../models/userRole");
+const detectedError  = require("./errorController");
 
-const detectedError = (err, res) => {
-  if (err?.message) {
-    return res.status(404).send({ error: err?.message });
-  }
-  return res.status(404).send({ error: "No encontrado" });
-};
 
 const getAll = async (req, res) => {
   try {

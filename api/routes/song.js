@@ -5,7 +5,7 @@ const router = express.Router();
 
 router
   .get("/", songController.getAll)
-  .post("/create", songController.create)
+  .post("/", songController.create)
   .get("/:id", songController.findId)
   .put("/:id/update", songController.updateById)
   .delete("/:id/delete", songController.deleteById);
