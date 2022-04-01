@@ -1,4 +1,5 @@
 const Artist = require("../models/artist");
+const Song = require("../models/song");
 
 const detectedError = (err, res) => {
   if (err?.message) {
@@ -53,6 +54,7 @@ const create = async (req, res) => {
 const deleteById = async (req, res) => {
   try {
     await Artist.deleteOne({ _id: req.params.id });
+    await Song.deleteOne({ artistId: req.params.id }); 
     return res
       .status(200)
       .send({ message: `Artista borrado con id: ${req.params.id}` });

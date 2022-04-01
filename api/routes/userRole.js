@@ -5,8 +5,9 @@ const router = express.Router();
 
 router
   .get("/", userRoleController.getAll)
-  // .get("/:key/:value", userRoleController.find, userRoleController.show)
-  // .put("/:key/:value", userRoleController.find, userRoleController.update)
-  // .delete("/:key/:value", userRoleController.find, userRoleController.deleted);
+  // .post("/create", userRoleController.create)
+  .get("/:name", userRoleController.findId)
+  // .put("/:id/update", userRoleController.updateById)
+  // .delete("/:id/delete", userRoleController.deleteById);
 
 module.exports = router;
