@@ -1,12 +1,12 @@
 import UserRole from '../models/userRole.js';
-import detectedError from './errorController.js';
+import handleError from './errorController.js';
 
 const getAll = async (req, res) => {
   try {
     const userRoles = await UserRole.find({});
     res.status(200).send({userRoles});    
   } catch (err) {
-    console.error(err);
+    handleError(err, 'Roles no encontrados', res);
   }
 };
 
@@ -15,7 +15,7 @@ const findId = async (req, res) => {
     const userRole = await UserRole.findOne({ name: req.params.name });
     return res.status(200).send({ userRole });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, 'Rol no encontrado', res);
   }
 };
 

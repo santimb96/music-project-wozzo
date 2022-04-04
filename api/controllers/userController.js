@@ -1,5 +1,5 @@
 import User from '../models/user.js';
-import detectedError  from './errorController.js';
+import handleError  from './errorController.js';
 import express from 'express';
 import jwt  from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -15,16 +15,16 @@ const getAll = async (req, res) => {
     const users = await User.find({}); //.populate('userRoleId', 'name -_id').select('name email password userRoleId');
     res.status(200).send({ users });
   } catch (err) {
-    console.error(err);
+    handleError(404, 'No se ha podido obtener ningún usuario', res);
   }
 };
 
 const findId = async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.params.id }); //.populate('userRoleId', 'name -_id').select('name email password userRoleId');
-    return res.status(200).send({ user });
+    user? res.status(200).send({ user }):handleError(404, 'Usuario no encontrado', res); 
   } catch (err) {
-    detectedError(err, res);
+    handleError(404, res);
   }
 };
 
@@ -35,7 +35,7 @@ const updateById = async (req, res) => {
       .status(200)
       .send({ message: `Usuario actualizado: ${JSON.stringify(req.body)}` });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, res);
   }
 };
 
@@ -54,7 +54,7 @@ const create = async (req, res) => {
         message: `Usuario creado: ${JSON.stringify(userToCreate.name)}`,
       });
   } catch (err) {
-    res.status(500).send({ error: 'No se ha podido postear usuario' });
+    handleError(err, 'No se ha podido postear usuario', res);
   }
 };
 
@@ -65,22 +65,23 @@ const deleteById = async (req, res) => {
       .status(200)
       .send({ message: `Usuario borrado con id: ${req.params.id}` });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, 'No se ha podido borrar al usuario', res);
   }
 };
 
 const login = async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    detectedError({ message: 'Wrong params sent' }, res);
+    handleError({ message: 'Wrong params sent' }, res);
   } else {
     // buscar el usuario
     // comparar contraseñas con bcrypt
     // si es ok, firmar jwt
     // devolver user, userRole, jwt y expiryDate
-    const user = await User.findOne({ email: req.body.email });
+
+    const user = await User.findOne({ email: req.body.email }).catch(err => console.warn(err));
 
     if (user) {
-      const validPass = await bcrypt.compare(req.body.password, user.password);
+      const validPass = await bcrypt.compare(req.body.password, user.password).catch(err => console.warn(err));
 
       if (validPass) {
         const token = jwt.sign({user}, app.get('masterKey'), { expiresIn: EXPIRE_DATE });
@@ -95,12 +96,13 @@ const login = async (req, res) => {
           });
 
       } else {
-        //handleError(401.1, 'Invalid email or password');
-        res.status(401).json({ error: 'Invalid password' });
+        handleError(401.1, 'Email o contraseña incorrecto', res);
+        //res.status(401).json({ error: 'Invalid password' });
       }
     } else {
+      handleError(404, 'Usuario no encontrado', res);
       //handleError(404, 'No user found');
-      res.status(401).json({ error: 'no user user' });
+      //res.status(401).json({ error: 'no user user' });
     }
   }
 };

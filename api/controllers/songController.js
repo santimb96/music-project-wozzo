@@ -1,12 +1,12 @@
 import Song from '../models/song.js';
-import detectedError from './errorController.js';
+import handleError from './errorController.js';
 
 const getAll = async (req, res) => {
   try {
     const songs = await Song.find({});//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     res.status(200).send({songs});    
   } catch (err) {
-    console.error(err);
+    handleError(err, 'Canciones no encontradas', res);
   }
 };
 
@@ -15,7 +15,7 @@ const findId = async (req, res) => {
     const song = await Song.findOne({ _id: req.params.id });//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     return res.status(200).send({ song });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, 'Canción no encontrada', res);
   }
 };
 
@@ -26,7 +26,7 @@ const updateById = async (req, res) => {
       .status(200)
       .send({ message: `Canción actualizado: ${JSON.stringify(req.body)}` });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, 'No se ha podido actualizar la canción', res);
   }
 };
 
@@ -39,7 +39,7 @@ const create = async (req, res) => {
       .status(200)
       .send({ message: `Canción creado: ${JSON.stringify(insert.name)}` });
   } catch (err) {
-    res.status(500).send({ error: 'No se ha podido postear Canción' });
+    handleError(err, 'No se ha podido postear la canción', res);
   }
 };
 
@@ -50,7 +50,7 @@ const deleteById = async (req, res) => {
       .status(200)
       .send({ message: `Canción borrado con id: ${req.params.id}` });
   } catch (err) {
-    detectedError(err, res);
+    handleError(err, 'No se ha podido borrar la canciñon', res);
   }
 };
 
