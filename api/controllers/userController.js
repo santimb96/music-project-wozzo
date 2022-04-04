@@ -101,7 +101,7 @@ const login = async (req, res) => {
           expiryDate: dayjs().format('DD/MM/YYYY hh:mm A'),
         });
       } else {
-        handleError(401.1, 'Contraseña incorrecto', res);
+        handleError(401.1, 'Contraseña incorrecta', res);
       }
     } else {
       handleError(404, 'Usuario no encontrado', res);
