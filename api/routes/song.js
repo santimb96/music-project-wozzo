@@ -1,13 +1,15 @@
-const express = require("express");
-const songController = require("../controllers/songController");
+import express from 'express';
+import songController from '../controllers/songController.js';
+
 
 const router = express.Router();
 
 router
-  .get("/", songController.getAll)
-  .post("/", songController.create)
-  .get("/:id", songController.findId)
-  .put("/:id/update", songController.updateById)
-  .delete("/:id/delete", songController.deleteById);
+  .get('/', songController.getAll)
+  .post('/', songController.create)
+  .get('/:id', songController.findId)
+  .put('/:id/update', songController.updateById)
+  .delete('/:id/delete', songController.deleteById);
 
-module.exports = router;
+  
+export default router;

@@ -1,13 +1,14 @@
-const express = require("express");
-const artistController = require("../controllers/artistController");
+import express from 'express';
+import artistController from '../controllers/artistController.js';
+
 
 const router = express.Router();
 
 router
-  .get("/", artistController.getAll)
-  .post("/", artistController.create)
-  .get("/:id", artistController.findId)
-  .put("/:id/update", artistController.updateById)
-  .delete("/:id/delete", artistController.deleteById);
+  .get('/', artistController.getAll)
+  .post('/', artistController.create)
+  .get('/:id', artistController.findId)
+  .put('/:id/update', artistController.updateById)
+  .delete('/:id/delete', artistController.deleteById);
 
-module.exports = router;
+export default router;

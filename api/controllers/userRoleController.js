@@ -1,5 +1,5 @@
-const UserRole = require("../models/userRole");
-const detectedError  = require("./errorController");
+import UserRole from '../models/userRole.js';
+import detectedError from './errorController.js';
 
 const getAll = async (req, res) => {
   try {
@@ -54,7 +54,7 @@ const findId = async (req, res) => {
 //   }
 // };
 
-module.exports = {
+export default{
   getAll,
   findId,
   // updateById,

@@ -1,10 +1,9 @@
-const Song = require("../models/song");
-const detectedError  = require("./errorController");
-
+import Song from '../models/song.js';
+import detectedError from './errorController.js';
 
 const getAll = async (req, res) => {
   try {
-    const songs = await Song.find({})//.populate('artistId', 'name -_id').select('name audioUrl artistId');
+    const songs = await Song.find({});//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     res.status(200).send({songs});    
   } catch (err) {
     console.error(err);
@@ -13,7 +12,7 @@ const getAll = async (req, res) => {
 
 const findId = async (req, res) => {
   try {
-    const song = await Song.findOne({ _id: req.params.id })//.populate('artistId', 'name -_id').select('name audioUrl artistId');
+    const song = await Song.findOne({ _id: req.params.id });//.populate('artistId', 'name -_id').select('name audioUrl artistId');
     return res.status(200).send({ song });
   } catch (err) {
     detectedError(err, res);
@@ -40,7 +39,7 @@ const create = async (req, res) => {
       .status(200)
       .send({ message: `Canción creado: ${JSON.stringify(insert.name)}` });
   } catch (err) {
-    res.status(500).send({ error: "No se ha podido postear Canción" });
+    res.status(500).send({ error: 'No se ha podido postear Canción' });
   }
 };
 
@@ -55,7 +54,7 @@ const deleteById = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getAll,
   findId,
   updateById,

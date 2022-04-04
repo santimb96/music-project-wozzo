@@ -1,3 +1,1 @@
-module.exports = {
-    masterKey: "wozzoMaster123"
-}
+export const masterToken = 'wozzoMaster123';

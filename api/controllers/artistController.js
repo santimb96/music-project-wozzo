@@ -1,6 +1,6 @@
-const Artist = require("../models/artist");
-const Song = require("../models/song");
-const detectedError  = require("./errorController");
+import Artist from '../models/artist.js';
+import Song from '../models/song.js';
+import detectedError from './errorController.js';
 
 const getAll = async (req, res) => {
   try {
@@ -40,7 +40,7 @@ const create = async (req, res) => {
       .status(200)
       .send({ message: `Artista creado: ${JSON.stringify(insert.name)}` });
   } catch (err) {
-    res.status(500).send({ error: "No se ha podido postear Artista" });
+    res.status(500).send({ error: 'No se ha podido postear Artista' });
   }
 };
 
@@ -56,7 +56,7 @@ const deleteById = async (req, res) => {
   }
 };
 
-module.exports = {
+export default{
   getAll,
   findId,
   updateById,

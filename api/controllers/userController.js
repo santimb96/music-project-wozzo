@@ -1,12 +1,14 @@
-const User = require("../models/user");
-const detectedError = require("./errorController");
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const masterToken = require("../config/masterToken");
+import User from '../models/user.js';
+import detectedError  from './errorController.js';
+import express from 'express';
+import jwt  from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { masterToken } from '../config/masterToken.js';
+import { EXPIRE_DATE } from '../constants.js';
+import dayjs from 'dayjs';
 
 const app = express();
-app.set("masterKey", masterToken.masterKey);
+app.set('masterKey', masterToken);
 
 const getAll = async (req, res) => {
   try {
@@ -52,7 +54,7 @@ const create = async (req, res) => {
         message: `Usuario creado: ${JSON.stringify(userToCreate.name)}`,
       });
   } catch (err) {
-    res.status(500).send({ error: "No se ha podido postear usuario" });
+    res.status(500).send({ error: 'No se ha podido postear usuario' });
   }
 };
 
@@ -69,7 +71,7 @@ const deleteById = async (req, res) => {
 
 const login = async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    detectedError({ message: "Wrong params sent" }, res);
+    detectedError({ message: 'Wrong params sent' }, res);
   } else {
     // buscar el usuario
     // comparar contraseñas con bcrypt
@@ -81,33 +83,29 @@ const login = async (req, res) => {
       const validPass = await bcrypt.compare(req.body.password, user.password);
 
       if (validPass) {
-        const payload = {
-          check: true,
-        };
-        const expiryDate = {
-          expiresIn: 1440,
-        };
-        const token = jwt.sign(payload, app.get("masterKey"), expiryDate);
-
+        const token = jwt.sign({user}, app.get('masterKey'), { expiresIn: EXPIRE_DATE });
         res
           .status(200)
           .send({
             user: user.name,
             role: user.userRoleId,
             token: token,
-            expiryDate: expiryDate.expiresIn,
+            expiryDate: dayjs().format('DD/MM/YYYY hh:mm')
+            // todo format 
           });
-          
+
       } else {
-        res.status(401).json({ error: "Invalid password" });
+        //handleError(401.1, 'Invalid email or password');
+        res.status(401).json({ error: 'Invalid password' });
       }
     } else {
-      res.status(401).json({ error: "Invalid user" });
+      //handleError(404, 'No user found');
+      res.status(401).json({ error: 'no user user' });
     }
   }
 };
 
-module.exports = {
+export default{
   getAll,
   findId,
   updateById,
