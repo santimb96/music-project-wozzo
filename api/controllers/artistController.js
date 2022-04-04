@@ -7,40 +7,42 @@ const getAll = async (req, res) => {
     const artists = await Artist.find({});
     res.status(200).send({artists});    
   } catch (err) {
-    handleError(err, 'No se ha podido obtener la lista de artistas', res);
+    handleError(404, 'No se ha podido obtener la lista de artistas', res);
   }
 };
 
 const findId = async (req, res) => {
   try {
     const artist = await Artist.findOne({ _id: req.params.id });
-    return res.status(200).send({ artist });
+    if(artist){
+      return res.status(200).send({ artist });
+    }
+    handleError(404, 'No se ha podido obtener al artista', res);
   } catch (err) {
-    handleError(err, 'No se ha podido obtener al artista', res);
+    handleError(404, 'No se ha podido obtener al artista', res);
   }
 };
 
 const updateById = async (req, res) => {
   try {
-    await Artist.findOneAndUpdate({ _id: req.params.id }, req.body);
+    const update = await Artist.findOneAndUpdate({_id: req.params.id}, req.body);
     return res
       .status(200)
-      .send({ message: `Artista actualizado: ${JSON.stringify(req.body)}` });
+      .send({status: 200, message: `${update.name} ha sido actualizad@` });
   } catch (err) {
-    handleError(err, 'No se ha podido actualizar al artista', res);
+    handleError(404, 'Artista no encontrado', res);
   }
 };
 
 const create = async (req, res) => {
   try {
-    let insert = {};
-    insert = req.body;
-    await Artist.create(insert);
+    const artistToCreate = req.body;
+    await Artist.create(artistToCreate);
     return res
       .status(200)
-      .send({ message: `Artista creado: ${JSON.stringify(insert.name)}` });
+      .send({ status: 200, message: `Se ha creado a ${artistToCreate.name}` });
   } catch (err) {
-    handleError(err, 'No se ha podido postear al artista', res);
+    handleError(401, 'No se ha podido postear al artista', res);
   }
 };
 
@@ -50,9 +52,9 @@ const deleteById = async (req, res) => {
     await Song.deleteOne({ artistId: req.params.id }); 
     return res
       .status(200)
-      .send({ message: `Artista borrado con id: ${req.params.id}` });
+      .send({ status: 200, message: 'Registro borrado con éxito!' });
   } catch (err) {
-    handleError(err, 'No se ha podido borrar al artista', res);
+    handleError(404, 'No se ha podido borrar al artista', res);
   }
 };
 

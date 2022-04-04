@@ -12,10 +12,10 @@ const getAll = async (req, res) => {
 
 const findId = async (req, res) => {
   try {
-    const userRole = await UserRole.findOne({ name: req.params.name });
-    return res.status(200).send({ userRole });
+    const userRole = await UserRole.findOne({ _id: req.params.id });
+    userRole ? res.status(200).send({ userRole }):handleError(404, 'Rol no encontrado', res); 
   } catch (err) {
-    handleError(err, 'Rol no encontrado', res);
+    handleError(404, 'Rol no encontrado', res);
   }
 };
 

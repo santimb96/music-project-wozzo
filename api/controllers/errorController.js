@@ -7,7 +7,7 @@
 
 const CODIGOS_ERROR = {
   401.1: 'Contraseña incorrecta',
-  401.2: 'No se ha podido postear el recurso',
+  401.2: 'No estás autorizado',
   404: 'Recurso no encontrado',
 };
 
