@@ -74,7 +74,7 @@ const deleteById = async (req, res) => {
 
 const login = async (req, res) => {
   if (!req.body.email || !req.body.password) {
-    handleError({ message: 'Wrong params sent' }, res);
+    handleError(400.1, 'Parámetros incorrectos', res);
   } else {
     // buscar el usuario
     // comparar contraseñas con bcrypt

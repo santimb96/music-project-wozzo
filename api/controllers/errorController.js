@@ -1,4 +1,5 @@
 const CODIGOS_ERROR = {
+  400.1: 'Campos incorrectos',
   401.1: 'Contraseña incorrecta',
   401.2: 'No estás autorizado',
   403: 'Acceso prohibido',
