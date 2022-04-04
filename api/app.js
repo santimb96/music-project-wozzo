@@ -7,7 +7,6 @@ const User = require("./routes/user");
 const Artist = require("./routes/artist");
 const Song = require("./routes/song");
 const UserRole = require("./routes/userRole");
-const Auth = require("./routes/auth");
 /**
  *
  */
@@ -35,6 +34,5 @@ app
   .use("/artists", Artist)
   .use("/songs", Song)
   .use("/userRoles", UserRole)
-  .use("/auth", Auth)
 
 module.exports = app;
