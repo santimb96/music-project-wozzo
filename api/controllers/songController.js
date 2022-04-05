@@ -15,8 +15,8 @@ const findId = async (req, res) => {
 const updateById = async (req, res) => {
   Song.findOneAndUpdate({ _id: req.params.id }, req.body)
     .then(song => res
-      .status(200)
-      .send({ message: `${song.name} se ha actualizado` }))
+      .status(201)
+      .send({ status: 201, message: `${song.name} se ha actualizado` }))
     .catch(() => handleError(404, 'No se ha podido actualizar la canción', res));
 };
 
@@ -25,8 +25,8 @@ const create = async (req, res) => {
 
   Song.create(songToCreate)
     .then(song => res
-      .status(200)
-      .send({ message: `${song.name} ha sido cread@` }))
+      .status(201)
+      .send({status: 201, message: `${song.name} ha sido cread@` }))
     .catch(() => handleError(401, 'No se ha podido postear la canción', res));
 };
 

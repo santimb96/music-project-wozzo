@@ -27,8 +27,8 @@ const findId = async (req, res) => {
 const updateById = async (req, res) => {
   User.findOneAndUpdate({ _id: req.params.id },req.body)
     .then(user => res
-      .status(200)
-      .send({ status: 200, message: `${user.name} actualizado` }))
+      .status(201)
+      .send({ status: 201, message: `${user.name} actualizado` }))
     .catch(() => handleError(404, 'Usuario no encontrado', res)
     );
 };
@@ -39,9 +39,8 @@ const create = async (req, res) => {
     bcrypt.hash(userToCreate.password, salt).then(hashedPaswd => {
       userToCreate.password = hashedPaswd;
       User.create(userToCreate).then((userCreated) => { 
-        return res.status(200).send({
-          message: `${userCreated.name} ha sido cread@`,
-        });
+        return res.status(201).send({ status: 201, message: `${userCreated.name} ha sido cread@`,}
+        );
       });
     });
   });
