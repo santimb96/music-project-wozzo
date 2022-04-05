@@ -5,14 +5,14 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { masterToken } from '../config/masterToken.js';
 import { EXPIRE_DATE } from '../constants.js';
-import dayjs from 'dayjs';
+import { format } from 'date-fns';
 
 const app = express();
 app.set('masterKey', masterToken);
 
 const getAll = async (req, res) => {
   User.find({})
-    .then(users => res.status(200).send({users}))
+    .then(users => res.status(200).send({ users }))
     .catch(() => handleError(404, 'No se ha podido obtener ningún usuario', res));
 };
 
@@ -50,8 +50,7 @@ const deleteById = async (req, res) => {
   User.findOneAndDelete({ _id: req.params.id })
     .then(() => res
       .status(200)
-      .send({ status: 200, message: 'Registro borrado con éxito!' })
-    )
+      .send({ status: 200, message: 'Registro borrado con éxito!' }))
     .catch(()=>  handleError(404, 'Usuario no encontrado', res));
 };
 
@@ -64,6 +63,7 @@ const login = (req, res) => {
     // si es ok, firmar jwt
     // devolver user, userRole, jwt y expiryDate
     User.findOne({ email: req.body.email })
+      .populate('userRoleId')
       .then((user) => {
         if (user) {
           bcrypt
@@ -77,7 +77,7 @@ const login = (req, res) => {
                   user: user.name,
                   role: user.userRoleId,
                   token: token,
-                  expiryDate: dayjs().format('DD/MM/YYYY hh:mm A'),
+                  expiryDate: format(new Date(), 'dd/MM/yyyy HH:mm'),
                 });
               } else {
                 handleError(401.1, 'Contraseña incorrecta', res);
@@ -87,7 +87,7 @@ const login = (req, res) => {
         }
       })
       .catch(() => {
-        handleError(404, 'Usuario no encontrado', res); // todo fill
+        handleError(404, 'Usuario no encontrado', res);
       });
   }
 };
