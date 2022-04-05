@@ -1,1 +1,18 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
+
+html {
+  height: 100%;
+  body {
+    min-height: 100%;
+
+    .login-form {
+      border: 1px solid white;
+      border-radius: 5px;
+
+      .register-button:hover {
+        color: green;
+      }
+    }
+  }
+
+}

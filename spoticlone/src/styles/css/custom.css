@@ -11118,5 +11118,18 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+html {
+  height: 100%;
+}
+html body {
+  min-height: 100%;
+}
+html body .login-form {
+  border: 1px solid white;
+  border-radius: 5px;
+}
+html body .login-form .register-button:hover {
+  color: green;
+}
 
 /*# sourceMappingURL=custom.css.map */
