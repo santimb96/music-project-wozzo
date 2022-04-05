@@ -8,7 +8,7 @@ router
   .get('/', artistController.getAll)
   .post('/', artistController.create)
   .get('/:id', artistController.findId)
-  .put('/:id/update', artistController.updateById)
-  .delete('/:id/delete', artistController.deleteById);
+  .put('/:id', artistController.updateById)
+  .delete('/:id', artistController.deleteById);
 
 export default router;

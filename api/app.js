@@ -7,49 +7,53 @@ import User from './routes/user.js';
 import Artist from './routes/artist.js';
 import Song from './routes/song.js';
 import UserRole from './routes/userRole.js';
-/**
- *
- */
-import UserRoleModel from './models/userRole.js';
 import { conn } from './config/database.js';
 import { config }  from './config/config.js';
 import { masterToken } from './config/masterToken.js';
 import jwt  from 'jsonwebtoken';
+import routes from './utils/routes.js';
+import handleError from './controllers/errorController.js';
 
 const app = express();
 
 app.set('masterKey', masterToken);
 
 const verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.replace(/^Bearer\s+/, '');
-  //console.warn(token);
-  if(token){
+  // cogemos el token desde los headers
+  //console.warn(req.path.slice(0, req.path.lastIndexOf('/')));
+  const token = typeof req.headers.authorization !== 'undefined' ? req.headers.authorization.replace(/^Bearer\s+/, '') : false;
+  if(req.path.includes('public')) {
+    next();
+  } else if(token){
     jwt.verify(token, app.get('masterKey'), (err, decoded) => {
       if(err) {
         return res.json({
           success: false,
           message: 'Token no válido'
         });
+      } else {
+
+        const availableRoutes = routes[decoded?.user?.userRoleId?.name];
+        const route = req.path;
+        const fixUrl = route.search(/[0-9]/) !== -1 ? route.slice(0, route.lastIndexOf('/')+1) : route; 
+        const headerMethod = req.method;
+        const foundRoute = availableRoutes.find((r) => (fixUrl === (r.route.indexOf(':') ?
+          r.route.split(':')[0] : r.route)) && r.method === headerMethod);
+        if(foundRoute) {
+          console.log('success!');
+          next();
+        } else {
+          handleError(404, 'No autorizado', res);
+        }
       }
-      const user = decoded.user;
-      UserRoleModel.findOne({name: user.userRoleId})
-        .then(userRoleName => userRoleName? console.info('Rol encontrado para' + user.name + ':' + userRoleName.name) : console.error('Rol no encontrado'))
-        .catch((err) => console.error(err));
     });
-  }
-  else {
+  } else {
+  
     return res.json({
       success: false,
       message: 'No se ha obtenido token'
     });
   }
-  // coger el token
-  // descifrar el token
-  // mirar que user es
-  // mirar el userRole
-  // si es correcto dejar pasar
-  // si no es correcto no dejar pasar
-  // todo hacer un archivo de rutas por userRole
 };
 
 
@@ -61,7 +65,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-//app.use(verifyToken);
+app.use(verifyToken);
 
 app.listen(config.PORT, (err) => {
   if (err) return console.log(err);

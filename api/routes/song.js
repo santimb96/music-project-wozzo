@@ -8,8 +8,8 @@ router
   .get('/', songController.getAll)
   .post('/', songController.create)
   .get('/:id', songController.findId)
-  .put('/:id/update', songController.updateById)
-  .delete('/:id/delete', songController.deleteById);
+  .put('/:id', songController.updateById)
+  .delete('/:id', songController.deleteById);
 
   
 export default router;
