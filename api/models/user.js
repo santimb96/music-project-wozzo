@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   userRoleId: {
-    type: mongoose.Schema.ObjectId, 
+    type: mongoose.Types.ObjectId, 
     ref: 'UserRole'
   },
   email: {
