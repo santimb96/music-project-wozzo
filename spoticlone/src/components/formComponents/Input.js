@@ -2,14 +2,21 @@ import React, {useContext, useState} from "react";
 import PropTypes from "prop-types";
 import LoginContext from "../../contexts/LoginContext";
 
-const Input = ({name, onChange}) => {
+const Input = ({name}) => {
 
-  const emailContext = useContext(LoginContext);
-  console.log(emailContext);
+  const loginContext = useContext(LoginContext);
+  //const {email, password} = loginContext.login;
 
-  const onChangeValue = (inputValue) => { 
-    emailContext.setLogin().email((inputValue.target.value).toLowerCase().trim())
+
+  console.log(loginContext);
+
+  const onChangeValue = (inputValue) => {
+    if (name === "Email") {
+    loginContext.setLogin({email: inputValue.target.value, password: loginContext.login.password});
+  } else if (name === "Contraseña") {
+    loginContext.setLogin({email: loginContext.login.email ,password: inputValue.target.value});
   }
+};
 
   return (
     <div className="col-12">
