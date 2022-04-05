@@ -18,8 +18,8 @@ const findId = async (req, res) => {
 const updateById = async (req, res) => {
   Artist.findOneAndUpdate({_id: req.params.id}, req.body)
     .then(artist => res
-      .status(200)
-      .send({status: 200, message: `${artist.name} ha sido actualizad@` }))
+      .status(201)
+      .send({status: 201, message: `${artist.name} ha sido actualizad@` }))
     .catch(()=>  handleError(404, 'Artista no encontrado', res));
 };
 
@@ -27,8 +27,8 @@ const create = async (req, res) => {
   const artistToCreate = req.body;
   Artist.create(artistToCreate)
     .then(artist => res
-      .status(200)
-      .send({ status: 200, message: `Se ha creado a ${artist.name}` }))
+      .status(201)
+      .send({ status: 201, message: `Se ha creado a ${artist.name}` }))
     .catch( () =>  handleError(401, 'No se ha podido postear al artista', res));
 };
 
@@ -37,7 +37,7 @@ const deleteById = async (req, res) => {
     .then(() => Song.findOneAndDelete({ artistId: req.params.id }))
     .then(() => res
       .status(200)
-      .send({ status: 200, message: 'Registro borrado con éxito!' }))
+      .send({ status: 200, message: 'Registros borrados con éxito!' }))
     .catch(() => handleError(404, 'No se ha podido borrar al artista', res));
 };
 
