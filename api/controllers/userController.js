@@ -11,41 +11,29 @@ const app = express();
 app.set('masterKey', masterToken);
 
 const getAll = async (req, res) => {
-  try {
-    const users = await User.find({}); //.populate('userRoleId', 'name -_id').select('name email password userRoleId');
-    res.status(200).send({ users });
-  } catch (err) {
-    handleError(404, 'No se ha podido obtener ningún usuario', res);
-  }
+  User.find({})
+    .then(users => res.status(200).send({users}))
+    .catch(() => handleError(404, 'No se ha podido obtener ningún usuario', res));
 };
 
 const findId = async (req, res) => {
-  try {
-    const user = await User.findOne({ _id: req.params.id });
-    user
+  User.findOne({_id: req.params.id})
+    .then(user => user
       ? res.status(200).send({ user })
-      : handleError(404, 'Usuario no encontrado', res);
-  } catch (err) {
-    handleError(404, 'Usuario no encontrado', res);
-  }
+      : handleError(404, 'Usuario no encontrado', res))
+    .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
 const updateById = async (req, res) => {
-  try {
-    const update = await User.findOneAndUpdate(
-      { _id: req.params.id },
-      req.body
-    );
-    return res
+  User.findOneAndUpdate({ _id: req.params.id },req.body)
+    .then(user => res
       .status(200)
-      .send({ status: 200, message: `${update.name} actualizado` });
-  } catch (err) {
-    handleError(404, 'Usuario no encontrado', res);
-  }
+      .send({ status: 200, message: `${user.name} actualizado` }))
+    .catch(() => handleError(404, 'Usuario no encontrado', res)
+    );
 };
 
-const create = async (req, res) => {
-  
+const create = async (req, res) => { 
   const userToCreate = req.body;
   bcrypt.genSalt(10).then(salt => {
     bcrypt.hash(userToCreate.password, salt).then(hashedPaswd => {
@@ -60,14 +48,12 @@ const create = async (req, res) => {
 };
 
 const deleteById = async (req, res) => {
-  try {
-    await User.deleteOne({ _id: req.params.id });
-    return res
+  User.findOneAndDelete({ _id: req.params.id })
+    .then(() => res
       .status(200)
-      .send({ status: 200, message: 'Registro borrado con éxito!' });
-  } catch (err) {
-    handleError(404, 'Usuario no encontrado', res);
-  }
+      .send({ status: 200, message: 'Registro borrado con éxito!' })
+    )
+    .catch(()=>  handleError(404, 'Usuario no encontrado', res));
 };
 
 const login = (req, res) => {
