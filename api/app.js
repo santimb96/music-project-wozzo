@@ -20,11 +20,12 @@ app.set('masterKey', masterToken);
 
 const verifyToken = (req, res, next) => {
   // cogemos el token desde los headers
-  //console.warn(req.path.slice(0, req.path.lastIndexOf('/')));
   const token = typeof req.headers.authorization !== 'undefined' ? req.headers.authorization.replace(/^Bearer\s+/, '') : false;
+  // valoramossi el path es public para que el user haga login
   if(req.path.includes('public')) {
     next();
   } else if(token){
+    //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto
     jwt.verify(token, app.get('masterKey'), (err, decoded) => {
       if(err) {
         return res.json({
@@ -32,7 +33,7 @@ const verifyToken = (req, res, next) => {
           message: 'Token no válido'
         });
       } else {
-
+        // valoramos ruta que nos llega con las rutas disponibles para X rol
         const availableRoutes = routes[decoded?.user?.userRoleId?.name];
         const route = req.path;
         const fixUrl = route.search(/[0-9]/) !== -1 ? route.slice(0, route.lastIndexOf('/')+1) : route; 
@@ -40,9 +41,11 @@ const verifyToken = (req, res, next) => {
         const foundRoute = availableRoutes.find((r) => (fixUrl === (r.route.indexOf(':') ?
           r.route.split(':')[0] : r.route)) && r.method === headerMethod);
         if(foundRoute) {
+          //operación autorizada para X usuario
           console.log('success!');
           next();
         } else {
+          // operación no autorizada para X usuario
           handleError(404, 'No autorizado', res);
         }
       }
