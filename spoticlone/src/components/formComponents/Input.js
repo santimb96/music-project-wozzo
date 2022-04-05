@@ -1,20 +1,20 @@
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import LoginContext from "../../contexts/LoginContext";
 
 const Input = ({name}) => {
 
   const loginContext = useContext(LoginContext);
-  //const {email, password} = loginContext.login;
+  const {email, password} = loginContext.login;
 
 
   console.log(loginContext);
 
   const onChangeValue = (inputValue) => {
     if (name === "Email") {
-    loginContext.setLogin({email: inputValue.target.value, password: loginContext.login.password});
+    loginContext.setLogin({email: inputValue.target.value, password: password});
   } else if (name === "Contraseña") {
-    loginContext.setLogin({email: loginContext.login.email ,password: inputValue.target.value});
+    loginContext.setLogin({email: email ,password: inputValue.target.value});
   }
 };
 
