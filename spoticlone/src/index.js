@@ -1,5 +1,6 @@
 import React from 'react';
 import App from './App';
+import './styles/css/custom.css';
 import reportWebVitals from './reportWebVitals';
 import { createRoot } from 'react-dom/client';
  
