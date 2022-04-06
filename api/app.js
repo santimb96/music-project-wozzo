@@ -28,7 +28,7 @@ const verifyToken = (req, res, next) => {
       : false;
   // valoramos si el path es public para que el user haga login
   console.log(req.path);
-  if (req.path.includes('artist')) {
+  if (!req.path.includes('users') && req.method === 'GET') {
     next();
   } else if (token) {
     //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto
