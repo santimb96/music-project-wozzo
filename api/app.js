@@ -13,8 +13,10 @@ import { masterToken } from './config/masterToken.js';
 import jwt  from 'jsonwebtoken';
 import routes from './utils/routes.js';
 import handleError from './controllers/errorController.js';
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
 app.set('masterKey', masterToken);
 

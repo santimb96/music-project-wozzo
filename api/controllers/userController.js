@@ -55,6 +55,7 @@ const deleteById = async (req, res) => {
 };
 
 const login = (req, res) => {
+  //console.log(req.body.password);
   if (!req.body.email || !req.body.password) {
     handleError(400.1, 'Parámetros incorrectos', res);
   } else {

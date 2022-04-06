@@ -2,13 +2,15 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import LoginFields from "../components/formComponents/LoginFields";
 import LoginContext from "../contexts/LoginContext";
+import { login } from "../services/user.js";
 
 const Login = () => {
   const loginContext = useContext(LoginContext);
+  const {email, password} = loginContext.login;
 
   const onSubmitted = (e) => {
     e.preventDefault();
-    console.log(loginContext.login);
+    login(email, password)
   };
 
   //min width from: 236px
