@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { masterToken } from '../config/masterToken.js';
 import { EXPIRE_DATE } from '../constants.js';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 
 const app = express();
 app.set('masterKey', masterToken);
