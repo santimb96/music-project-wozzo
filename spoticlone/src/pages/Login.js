@@ -1,38 +1,26 @@
-import React, { useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import LoginFields from "../components/formComponents/LoginFields";
-import LoginContext from "../contexts/LoginContext";
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext";
 import { login } from "../services/user.js";
-import { format } from "date-fns"; 
 
 const Login = () => {
-  const loginContext = useContext(LoginContext);
-  const {email, password} = loginContext.login;
-  const navigate = useNavigate();
+  const authContext = useContext(AuthContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const onSubmitted = (e) => {
-    e.preventDefault();
-    login(email, password);
+  console.warn(email, password);
+  console.log(authContext)
+
+  const onLogin = () => {
+    login(email, password)
+      .then((user) => {
+        authContext.setUser(user);
+        authContext.setUserRole(user.role.name);
+      })
+      .catch(() => {
+        window.alert("error");
+      });
   };
-
-  // useEffect(() => {
-  //   if(format(new Date(), 'dd/MM/yyyy HH:mm') === loginContext.logged.expiryDate){
-  //     localStorage.removeItem('userData');
-  //     loginContext.setLoggged(false);
-  //   }; 
-
-  //   if(loginContext.logged){
-  //     if(loginContext.logged.role.name === 'admin'){
-  //       navigate('/backoffice/admin');
-  //     } else {
-  //       navigate('/backoffice/user');
-  //     }
-  //   }
-  // }, []);
-
-  console.log(loginContext);
-
-  //min width from: 236px
 
   return (
     <div className="container">
@@ -42,15 +30,32 @@ const Login = () => {
       >
         <div className="col-12" style={{ maxWidth: "540px" }}>
           <div className="login-form bg-dark mt-4 p-4 text-light loginForm">
-            <form onSubmit={onSubmitted} method="POST" className="row g-3">
-              <h4>SpotiClone</h4>
-              <LoginFields />
-              <div className="col-12">
-                <button type="submit" className="btn btn-dark float-end">
-                  Login
-                </button>
-              </div>
-            </form>
+            <h4>SpotiClone</h4>
+            <div className="mb-5 mt-5">
+            <div className="mt-3">
+              <input
+                className="form-control"
+                onChange={(e) => setEmail(e.target.value)}
+                type="email" placeholder="email"
+              ></input>
+            </div>
+            <div className="mt-3">
+              <input
+                className="form-control"
+                onChange={(e) => setPassword(e.target.value)}
+                type="password" placeholder="password"
+              ></input>
+            </div>
+            </div>
+            <div className="col-12 d-flex justify-content-center">
+              <button
+                type="submit"
+                className="btn btn-dark float-end"
+                onClick={onLogin}
+              >
+                Login
+              </button>
+            </div>
             <hr className="mt-4" />
             <div className="col-12">
               <h6 className="text-center mb-0">

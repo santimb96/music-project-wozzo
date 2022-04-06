@@ -4,14 +4,14 @@ import "./styles/css/custom.css";
 import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-import { LoginProvider } from "./contexts/LoginContext";
+import { AuthProvider } from "./contexts/AuthContext";
 
 createRoot(document.getElementById("root")).render(
-  <LoginProvider>
+  <AuthProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </LoginProvider>
+  </AuthProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
