@@ -6,10 +6,12 @@ const router = express.Router();
 
 router
   .get('/', artistController.getAll)
-  .get('/public/all', artistController.getAll)
   .post('/', artistController.create)
   .get('/:id', artistController.findId)
   .put('/:id', artistController.updateById)
-  .delete('/:id', artistController.deleteById);
+  .delete('/:id', artistController.deleteById)
+
+//PUBLIC ROUTES
+  .get('/artist/:name', artistController.findByName);
 
 export default router;

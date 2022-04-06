@@ -8,9 +8,9 @@ import Artist from './routes/artist.js';
 import Song from './routes/song.js';
 import UserRole from './routes/userRole.js';
 import { conn } from './config/database.js';
-import { config }  from './config/config.js';
+import { config } from './config/config.js';
 import { masterToken } from './config/masterToken.js';
-import jwt  from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import routes from './utils/routes.js';
 import handleError from './controllers/errorController.js';
 import cors from 'cors';
@@ -22,27 +22,38 @@ app.set('masterKey', masterToken);
 
 const verifyToken = (req, res, next) => {
   // cogemos el token desde los headers
-  const token = typeof req.headers.authorization !== 'undefined' ? req.headers.authorization.replace(/^Bearer\s+/, '') : false;
-  // valoramossi el path es public para que el user haga login
-  if(req.path.includes('public') || req.path.includes('autologin')) {
+  const token =
+    typeof req.headers.authorization !== 'undefined'
+      ? req.headers.authorization.replace(/^Bearer\s+/, '')
+      : false;
+  // valoramos si el path es public para que el user haga login
+  console.log(req.path);
+  if (req.path.includes('artist')) {
     next();
-  } else if(token){
+  } else if (token) {
     //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto
     jwt.verify(token, app.get('masterKey'), (err, decoded) => {
-      if(err) {
+      if (err) {
         return res.json({
           success: false,
-          message: 'Token no válido'
+          message: 'Token no válido',
         });
       } else {
         // valoramos ruta que nos llega con las rutas disponibles para X rol
         const availableRoutes = routes[decoded?.user?.userRoleId?.name];
         const route = req.path;
-        const fixUrl = route.search(/[0-9]/) !== -1 ? route.slice(0, route.lastIndexOf('/')+1) : route; 
+        const fixUrl =
+          route.search(/[0-9]/) !== -1
+            ? route.slice(0, route.lastIndexOf('/') + 1)
+            : route;
         const headerMethod = req.method;
-        const foundRoute = availableRoutes.find((r) => (fixUrl === (r.route.indexOf(':') ?
-          r.route.split(':')[0] : r.route)) && r.method === headerMethod);
-        if(foundRoute) {
+        const foundRoute = availableRoutes.find(
+          (r) =>
+            fixUrl ===
+              (r.route.indexOf(':') ? r.route.split(':')[0] : r.route) &&
+            r.method === headerMethod
+        );
+        if (foundRoute) {
           //operación autorizada para X usuario
           console.log('success!');
           next();
@@ -53,22 +64,21 @@ const verifyToken = (req, res, next) => {
       }
     });
   } else {
-  
     return res.json({
       success: false,
-      message: 'No se ha obtenido token'
+      message: 'No se ha obtenido token',
     });
   }
 };
 
-
-
 //Nos permite manejar peticiones y enviar respuesta en formato json
 app.use(bodyParser.json());
 //De esta manera indicamos que no vamos a recibir peticiones enviadas directamente de un formulario, sino que sera todo enviado en json
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: false,
+  })
+);
 
 app.use(verifyToken);
 
@@ -85,6 +95,4 @@ app
   .use('/songs', Song)
   .use('/userRoles', UserRole);
 
-export {
-  app
-};
+export { app };

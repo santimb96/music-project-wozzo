@@ -38,10 +38,17 @@ const deleteById = async (req, res) => {
     .catch(() => handleError(404, 'No se ha podido borrar la canciñon', res));
 };
 
+const findByName = (req, res) => {
+  Song.findOne({ name: req.params.name })
+    .then(song => song? res.status(200).send({ song }): handleError(404, 'No se ha podido obtener la canción', res))
+    .catch(() => handleError(404, 'No se ha podido obtener la canción', res));
+};
+
 export default {
   getAll,
   findId,
   updateById,
   create,
   deleteById,
+  findByName
 };

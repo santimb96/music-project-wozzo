@@ -5,6 +5,27 @@ html {
   body {
     min-height: 100%;
 
+    .nav-bg-color {
+      background-color: green;
+
+      button{
+        background-color: transparent;
+        border: none;
+        transition: 0.2s;
+      }
+      button:hover{
+        background-color: transparent;
+      }
+      .nav-link-auth{
+        color: black;
+        transition: 0.2s;
+      }
+      .nav-link-auth:hover{
+        color: white;
+      }
+      
+    }
+
     .login-form {
       border: 1px solid white;
       border-radius: 5px;

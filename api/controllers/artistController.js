@@ -39,10 +39,21 @@ const deleteById = async (req, res) => {
       .send({ status: 200, message: 'Registros borrados con éxito!' }))
     .catch(() => handleError(404, 'No se ha podido borrar al artista', res));
 };
+
+const findByName = (req, res) => {
+  Artist.findOne({ name: req.params.name })
+    .then(artist => artist? res.status(200).send({ artist }): handleError(404, 'No se ha podido obtener al artista', res))
+    .catch(() => handleError(404, 'No se ha podido obtener al artista', res));
+};
+
+
+
+
 export default{
   getAll,
   findId,
   updateById,
   create,
   deleteById,
+  findByName
 };

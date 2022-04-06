@@ -11124,6 +11124,24 @@ html {
 html body {
   min-height: 100%;
 }
+html body .nav-bg-color {
+  background-color: green;
+}
+html body .nav-bg-color button {
+  background-color: transparent;
+  border: none;
+  transition: 0.2s;
+}
+html body .nav-bg-color button:hover {
+  background-color: transparent;
+}
+html body .nav-bg-color .nav-link-auth {
+  color: black;
+  transition: 0.2s;
+}
+html body .nav-bg-color .nav-link-auth:hover {
+  color: white;
+}
 html body .login-form {
   border: 1px solid white;
   border-radius: 5px;

@@ -5,12 +5,15 @@ import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { MediaProvider } from "./contexts/MediaContext";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <MediaProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </MediaProvider>
   </AuthProvider>
 );
 

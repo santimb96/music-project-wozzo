@@ -6,6 +6,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
+import Home from "../pages/Home";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
@@ -38,7 +39,6 @@ const AppRoutes = () => {
       }
     } else {
       localStorage.clear();
-      navigate('/login');
     }
   }, []);
 
@@ -56,6 +56,7 @@ const AppRoutes = () => {
     //   <Route element={<Login/>} path="/login"  render={() => checkLogin(Login)}/>
     //   <Route path="/register"render={() => checkLogin(Register)} />
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/backoffice/admin" element={<AdminBackoffice />} />
