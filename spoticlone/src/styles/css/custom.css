@@ -11128,8 +11128,19 @@ html body .login-form {
   border: 1px solid white;
   border-radius: 5px;
 }
-html body .login-form .register-button:hover {
+html body .login-form .change-route-link {
+  color: white;
+  text-decoration: inherit;
+  transition: 0.2s;
+}
+html body .login-form .change-route-link:hover {
   color: green;
+}
+html body .login-form .submit-button {
+  transition: 0.2s;
+}
+html body .login-form .submit-button:hover {
+  background-color: green;
 }
 
 /*# sourceMappingURL=custom.css.map */
