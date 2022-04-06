@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import LoginFields from "../components/formComponents/LoginFields";
 import LoginContext from "../contexts/LoginContext";
 import { login } from "../services/user.js";
+import { format } from "date-fns"; 
 
 const Login = () => {
   const loginContext = useContext(LoginContext);
@@ -15,10 +16,17 @@ const Login = () => {
   };
 
   // useEffect(() => {
-  //   if(loginContext.logged.role.name === 'admin'){
-  //     navigate('/backoffice/admin');
-  //   } else {
-  //     navigate('/backoffice/user');
+  //   if(format(new Date(), 'dd/MM/yyyy HH:mm') === loginContext.logged.expiryDate){
+  //     localStorage.removeItem('userData');
+  //     loginContext.setLoggged(false);
+  //   }; 
+
+  //   if(loginContext.logged){
+  //     if(loginContext.logged.role.name === 'admin'){
+  //       navigate('/backoffice/admin');
+  //     } else {
+  //       navigate('/backoffice/user');
+  //     }
   //   }
   // }, []);
 
