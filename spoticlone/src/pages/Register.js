@@ -1,14 +1,26 @@
 import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { register } from "../services/user";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passRepeat, setPassRepeat] = useState("");
+  const navigate = useNavigate();
 
-  const onRegister = () => {
-
+  const onRegister = (e) => {
+    e.preventDefault();
+    if (password === passRepeat){
+      register(name, email, password)
+      .then(user => {
+        console.log(user);
+        navigate('/login');
+      })
+      .catch(err => window.alert(err))
+    } else {
+      window.alert(password, passRepeat);
+    }
   }
 
 
