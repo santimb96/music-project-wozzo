@@ -13,6 +13,8 @@ const Login = () => {
     login(email, password)
   };
 
+  console.log(loginContext);
+
   //min width from: 236px
 
   return (
