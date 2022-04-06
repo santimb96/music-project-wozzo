@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { masterToken } from '../config/masterToken.js';
 import { EXPIRE_DATE } from '../constants.js';
-import { format } from 'date-fns';
+import { format, parse } from 'date-fns';
 
 const app = express();
 app.set('masterKey', masterToken);
@@ -74,11 +74,12 @@ const login = (req, res) => {
                 const token = jwt.sign({ user }, app.get('masterKey'), {
                   expiresIn: EXPIRE_DATE,
                 });
+                const expDate = new Date(Date.now() + (3600 * 1000 * 24));
                 res.status(200).send({
                   user: user.name,
                   role: user.userRoleId,
                   token: token,
-                  expiryDate: format(new Date(), 'dd/MM/yyyy HH:mm'),
+                  expiryDate: format(expDate, 'dd/MM/yyyy HH:mm'),
                 });
               } else {
                 handleError(401.1, 'Contraseña incorrecta', res);

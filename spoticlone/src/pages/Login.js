@@ -1,5 +1,5 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import LoginFields from "../components/formComponents/LoginFields";
 import LoginContext from "../contexts/LoginContext";
 import { login } from "../services/user.js";
@@ -7,11 +7,20 @@ import { login } from "../services/user.js";
 const Login = () => {
   const loginContext = useContext(LoginContext);
   const {email, password} = loginContext.login;
+  const navigate = useNavigate();
 
   const onSubmitted = (e) => {
     e.preventDefault();
-    login(email, password)
+    login(email, password);
   };
+
+  // useEffect(() => {
+  //   if(loginContext.logged.role.name === 'admin'){
+  //     navigate('/backoffice/admin');
+  //   } else {
+  //     navigate('/backoffice/user');
+  //   }
+  // }, []);
 
   console.log(loginContext);
 
