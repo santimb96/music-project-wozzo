@@ -18,6 +18,7 @@ const LoginFields = () => {
         name="email"
         className="form-control"
         placeholder="Email"
+        required
       />
     </div><div className="col-12">
       <label>Password</label>
