@@ -71,13 +71,15 @@ const login = (req, res) => {
             .compare(req.body.password, user.password)
             .then((pass) => {
               if (pass) {
+                delete user._doc.password;
                 const token = jwt.sign({ user }, app.get('masterKey'), {
                   expiresIn: EXPIRE_DATE,
                 });
                 const expDate = new Date(Date.now() + (3600 * 1000 * 24));
+                
                 res.status(200).send({
-                  user: user.name,
-                  role: user.userRoleId,
+                  user,
+                  role: user.userRoleId.name,
                   token: token,
                   expiryDate: format(expDate, 'dd/MM/yyyy HH:mm'),
                 });
@@ -94,6 +96,20 @@ const login = (req, res) => {
   }
 };
 
+const autoLogin = (req, res) => {
+// {id: id, token: token}
+  User.findOne({_id: req.body.id})
+    .populate('userRoleId')
+    .then(user => {
+      if(user){
+        delete user._doc.password;
+        res.status(200).send({user});
+      } else {
+        handleError(404, 'Usuario no encontrado', res);
+      }
+    });
+}; 
+
 export default {
   getAll,
   findId,
@@ -101,4 +117,5 @@ export default {
   create,
   deleteById,
   login,
+  autoLogin
 };

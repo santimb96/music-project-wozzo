@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
   .get('/', artistController.getAll)
+  .get('/public/all', artistController.getAll)
   .post('/', artistController.create)
   .get('/:id', artistController.findId)
   .put('/:id', artistController.updateById)

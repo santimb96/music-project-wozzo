@@ -1,5 +1,3 @@
-//import React from "react";
-import { reject } from "bcrypt/promises";
 import { BASE_URI_USER } from "../urls/userUrls";
 
 const login = (email, password) =>
@@ -21,6 +19,27 @@ const login = (email, password) =>
         .catch((err) => reject(err));
     }
   });
+
+  const autoLogin = (id, token) =>
+  new Promise((resolve, reject) => {
+    if (!id || !token) {
+      reject("Error de parámetros");
+    } else {
+      fetch(`${BASE_URI_USER}/autologin`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          token,
+        }),
+      })
+        .then((response) => resolve(response.json()))
+        .catch((err) => reject(err));
+    }
+  });
+
 
 const register = (name, email, password) =>
   new Promise((resolve, reject) => {
@@ -44,4 +63,4 @@ const register = (name, email, password) =>
     }
   });
 
-export { login, register };
+export { login, register, autoLogin };

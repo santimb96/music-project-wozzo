@@ -24,7 +24,7 @@ const verifyToken = (req, res, next) => {
   // cogemos el token desde los headers
   const token = typeof req.headers.authorization !== 'undefined' ? req.headers.authorization.replace(/^Bearer\s+/, '') : false;
   // valoramossi el path es public para que el user haga login
-  if(req.path.includes('public')) {
+  if(req.path.includes('public') || req.path.includes('autologin')) {
     next();
   } else if(token){
     //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto

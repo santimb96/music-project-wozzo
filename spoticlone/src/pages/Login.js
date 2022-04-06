@@ -8,14 +8,14 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  console.warn(email, password);
-  console.log(authContext)
-
   const onLogin = () => {
     login(email, password)
       .then((user) => {
-        authContext.setUser(user);
-        authContext.setUserRole(user.role.name);
+        authContext.setUser(user.user);
+        authContext.setUserRole(user.role);
+        localStorage.setItem('userId', user.user._id);
+        localStorage.setItem('token', user.token);
+        localStorage.setItem('expiryDate', user.expiryDate);
       })
       .catch(() => {
         window.alert("error");
