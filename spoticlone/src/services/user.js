@@ -4,10 +4,8 @@ import { BASE_URI_USER } from "../urls/userUrls";
 const login = (email, password) => {
   fetch(`${BASE_URI_USER}/public/login`, {
     method: 'POST',
-    //mode: 'cors',
     headers: {
       'Content-Type': 'application/json',
-      //'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
       email,
