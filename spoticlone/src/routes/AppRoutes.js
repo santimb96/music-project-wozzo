@@ -7,12 +7,19 @@ import Register from "../pages/Register";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home";
+import routes from "../utils/routes.js";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
   const { user, userRole } = useContext(AuthContext);
   
   const navigate = useNavigate();
+
+  const removeUserStorage = () => {
+    localStorage.removeItem('expiryDate');
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+  }
   
   useEffect(() => {
     const expiryDate = localStorage.getItem('expiryDate');
@@ -24,23 +31,33 @@ const AppRoutes = () => {
     if(expiryDate && token && userId){
       if(expiryDate >= dateNow){
         autoLogin(userId, token)
-          .then(user => {
+          .then(userLog => {
             //metemos user y userRole en authContext
-            authSet.setUser(user);
-            authSet.setUserRole(user.user.userRoleId.name);
+            if(user._id === userLog._id &&  userRole === user.user.userRoleId.name){
+              navigate('/backoffice/admin');
+            } else {
+              authSet.setUser(userLog);
+              authSet.setUserRole(userLog.user.userRoleId.name);
+              navigate('/backoffice/admin');
+            }
+            
             //¿? redirigimos a back desde navigate ¿?
-            navigate('/backoffice/admin');
+            
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(err => console.warn(err));
       } else {
-        localStorage.clear();
+        removeUserStorage();
         navigate('/login');
       }
     } else {
-      localStorage.clear();
+      removeUserStorage();
+      const found = routes.find(r => r.route.includes(window.location.pathname));
+      if(found){
+        navigate('/login');
+      }
     }
-  }, []);
+  }, [ user, userRole ]);
 
   // const checkLogin = (element) => {
   //   // si hay user y userRole redirigir a backoffice

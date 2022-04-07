@@ -30,6 +30,8 @@ const verifyToken = (req, res, next) => {
   console.log(req.path);
   if (!req.path.includes('users') && req.method === 'GET') {
     next();
+  } else if (req.path.includes('login') || req.path.includes('autologin')) {
+    next();
   } else if (token) {
     //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto
     jwt.verify(token, app.get('masterKey'), (err, decoded) => {
