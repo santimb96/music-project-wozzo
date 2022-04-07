@@ -91,31 +91,40 @@ const routes = {
     },
     {
       method: 'PUT',
-      route: 'users/:id',
+      route: '/users/:id',
     },
     {
       method: 'PUT',
-      route: 'artists/:id',
+      route: '/artists/:id',
     },
     {
       method: 'PUT',
-      route: 'songs/:id',
+      route: '/songs/:id',
     },
     {
       method: 'DELETE',
-      route: 'users/:id',
+      route: '/users/:id',
     },
     {
       method: 'DELETE',
-      route: 'artists/:id',
+      route: '/artists/:id',
     },
     {
       method: 'DELETE',
-      route: 'songs/:id',
+      route: '/songs/:id',
     },
     {
       method: 'POST',
       route: '/login',
+    },
+    {
+      method: 'GET',
+      route: '/userRoles'
+    },
+    
+    {
+      method: 'GET',
+      route: '/userRoles/:id'
     }
   ]
 };

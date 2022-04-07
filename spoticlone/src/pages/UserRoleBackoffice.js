@@ -1,7 +1,21 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
+import AuthContext from "../contexts/AuthContext";
+import { getRoles } from "../services/roles";
 
 const UserRoleBackoffice = () => {
+
+  const token = localStorage.getItem('token');
+  //const auth = useContext(AuthContext);
+  
+  useEffect(()=> {
+    getRoles(token)
+    .then(rol => {
+      console.log(rol)
+    })
+    .catch((err)=> {console.warn(err);})
+  },[]);
+
   return (
     <div className="row bg-success">
       <SidebarBackoffice />
