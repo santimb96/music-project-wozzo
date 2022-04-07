@@ -11160,5 +11160,11 @@ html body .login-form .submit-button {
 html body .login-form .submit-button:hover {
   background-color: green;
 }
+html body .nav-link:hover {
+  background-color: green !important;
+}
+html body .nav-link .fa {
+  transition: all 1s;
+}
 
 /*# sourceMappingURL=custom.css.map */

@@ -16,12 +16,12 @@ const MediaList = () => {
   const onClicked = (song) => {
     console.log(song);
   }
-  
+
   return (
     <div className="container-fluid bg-dark text-light">
       <div className="row">
         {mediaContext.song?.songs?.map((song, idx) => (
-          <div  onClick={() => onClicked(song)} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center mt-4">
+          <div key={song.name} onClick={() => onClicked(song)} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center mt-4">
             <div
               className="card text-light bg-transparent"
               style={{ width: "18rem" }}

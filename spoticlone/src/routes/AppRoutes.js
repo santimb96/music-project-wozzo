@@ -12,49 +12,48 @@ import { removeUserStorage } from "../utils/localStorage.js";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
-  const { user, userRole } = useContext(AuthContext);
-  
+  const { user } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
-  
   useEffect(() => {
-    const expiryDate = localStorage.getItem('expiryDate');
-    const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
-    const dateNow = format(new Date(), 'dd/MM/yyyy HH:mm' );
+    console.warn(window.location.pathname);
+    const expiryDate = localStorage.getItem("expiryDate");
+    const token = localStorage.getItem("token");
+    const userId = localStorage.getItem("userId");
+    const dateNow = format(new Date(), "dd/MM/yyyy HH:mm");
     // mirar si hay token, userId y expiryDate en localstorage
     //si están los tres, seguimos
-    if(expiryDate && token && userId){
-      if(expiryDate >= dateNow){
+    if (expiryDate && token && userId) {
+      if (expiryDate >= dateNow) {
         autoLogin(userId, token)
-          .then(userLog => {
+          .then((userLog) => {
+            console.log(userLog);
             //metemos user y userRole en authContext
-            if(user._id === userLog._id &&  userRole === user.user.userRoleId.name){
-              navigate('/backoffice/admin');
+            if (user._id === userLog._id && userId !== null) {
+              return;
             } else {
               authSet.setUser(userLog);
               authSet.setUserRole(userLog.user.userRoleId.name);
-              navigate('/backoffice/admin');
             }
-            
-            //¿? redirigimos a back desde navigate ¿?
-            
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
-          .catch(err => console.warn(err));
+          .catch(() => {
+            removeUserStorage();
+            navigate("/login");
+          });
       } else {
         removeUserStorage();
-        navigate('/login');
+        navigate("/login");
       }
     } else {
       removeUserStorage();
-      console.log(window.location.pathname);
-      const found = routes.find(r => r.route === window.location.pathname);
-      if(found){
-        navigate('/login');
+      const found = routes.find((r) => r.route === window.location.pathname);
+      if (found) {
+        navigate("/login");
       }
     }
-  }, [ user, userRole ]);
+  }, [user, window.location.pathname]);
 
   // const checkLogin = (element) => {
   //   // si hay user y userRole redirigir a backoffice
@@ -64,6 +63,8 @@ const AppRoutes = () => {
   //   // si no hay devolver el element
   //   return element;
   // }
+
+  //si es admin, poner sidebar, si no, nada
 
   return (
     //

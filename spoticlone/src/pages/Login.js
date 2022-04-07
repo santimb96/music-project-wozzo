@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import { login } from "../services/user.js";
 
@@ -7,6 +7,7 @@ const Login = () => {
   const authContext = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const onLogin = () => {
     login(email, password)
@@ -16,9 +17,10 @@ const Login = () => {
         localStorage.setItem("userId", user.user._id);
         localStorage.setItem("token", user.token);
         localStorage.setItem("expiryDate", user.expiryDate);
+        navigate('/backoffice/admin');
       })
       .catch(() => {
-        window.alert("error");
+        navigate('/login');
       });
   };
 

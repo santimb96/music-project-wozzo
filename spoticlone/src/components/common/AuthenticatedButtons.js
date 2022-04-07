@@ -7,13 +7,19 @@ const AuthenticatedButtons = () => {
 
   const logOut = () => {
     removeUserStorage();
-    navigate("/login");
+    //navigate("/login");
   };
 
   return (
     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
       <li className="nav-item" onClick={logOut}>
-        <p>Cerrar sesión</p>
+        <Link
+          to="/login"
+          className="nav-link nav-link-auth"
+          aria-current="page"
+        >
+          Cerrar sesión
+        </Link>
       </li>
     </ul>
   );
