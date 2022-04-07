@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home";
 import routes from "../utils/routes.js";
+import { removeUserStorage } from "../utils/localStorage.js";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
@@ -15,11 +16,6 @@ const AppRoutes = () => {
   
   const navigate = useNavigate();
 
-  const removeUserStorage = () => {
-    localStorage.removeItem('expiryDate');
-    localStorage.removeItem('token');
-    localStorage.removeItem('userId');
-  }
   
   useEffect(() => {
     const expiryDate = localStorage.getItem('expiryDate');
@@ -52,7 +48,8 @@ const AppRoutes = () => {
       }
     } else {
       removeUserStorage();
-      const found = routes.find(r => r.route.includes(window.location.pathname));
+      console.log(window.location.pathname);
+      const found = routes.find(r => r.route === window.location.pathname);
       if(found){
         navigate('/login');
       }

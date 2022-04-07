@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+import AuthButtons from "./AuthButtons";
+import AuthenticatedButtons from "./AuthenticatedButtons";
 
 const Header = () => {
+  const auth = useContext(AuthContext);
+
+  const [found, setFound] = useState(false);
+  const localUserId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    localUserId ? setFound(true): setFound(false); 
+  }, [localUserId]);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light nav-bg-color">
       <div className="container-fluid">
@@ -22,7 +34,11 @@ const Header = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link to="/" className="nav-link nav-link-auth" aria-current="page">
+              <Link
+                to="/"
+                className="nav-link nav-link-auth"
+                aria-current="page"
+              >
                 Inicio
               </Link>
             </li>
@@ -35,27 +51,8 @@ const Header = () => {
                 Admin
               </Link>
             </li>
+            {found ? <AuthenticatedButtons /> : <AuthButtons /> }
           </ul>
-          <form className="d-flex">
-            <button className="btn btn-outline-success m-2" type="submit">
-              <Link
-                to="/login"
-                className="nav-link nav-link-auth"
-                aria-current="page"
-              >
-                Iniciar sesión
-              </Link>{" "}
-            </button>
-            <button className="btn btn-outline-success m-2" type="submit">
-              <Link
-                to="/register"
-                className="nav-link nav-link-auth"
-                aria-current="page"
-              >
-                Registrarse
-              </Link>
-            </button>
-          </form>
         </div>
       </div>
     </nav>
