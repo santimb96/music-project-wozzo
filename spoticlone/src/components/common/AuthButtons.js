@@ -3,17 +3,17 @@ import { Link } from "react-router-dom";
 
 const AuthButtons = () => {
   return (
-    <form className="d-flex">
-      <button className="btn btn-outline-success m-2" type="submit">
+    <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+      <li className="nav-item">
         <Link
           to="/login"
           className="nav-link nav-link-auth"
           aria-current="page"
         >
-          Iniciar sesión
-        </Link>{" "}
-      </button>
-      <button className="btn btn-outline-success m-2" type="submit">
+          Iniciar Sesión
+        </Link>
+      </li>
+      <li className="nav-item">
         <Link
           to="/register"
           className="nav-link nav-link-auth"
@@ -21,8 +21,8 @@ const AuthButtons = () => {
         >
           Registrarse
         </Link>
-      </button>
-    </form>
+      </li>
+    </ul>
   );
 };
 
