@@ -9,6 +9,8 @@ import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
+import UserBackoffice from "../pages/UserBackoffice";
+import UserRoleBackoffice from "../pages/UserRoleBackoffice";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
@@ -75,6 +77,10 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       {/* <Route path="/register" element={<Register />} /> */}
       <Route path="/backoffice/admin" element={<AdminBackoffice />} />
+      <Route path="/backoffice/roles" element={<UserRoleBackoffice />} />
+      <Route path="/backoffice/users" element={<UserBackoffice />} />
+      {/* <Route path="/backoffice/artists" element={<AdminBackoffice />} />
+      <Route path="/backoffice/songs" element={<AdminBackoffice />} /> */}
     </Routes>
   );
 };

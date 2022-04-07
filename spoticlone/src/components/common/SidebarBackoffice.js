@@ -7,9 +7,11 @@ const SidebarBackoffice = () => {
   const logOut = () => removeUserStorage();
 
   return (
-        <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
+    // <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
+        <div className="col-4 vh-100 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
           <hr />
           <ul className="nav nav-pills flex-column mb-auto">
+              <li> <Link to="/backoffice/admin" className="nav-link text-white"> <i className="fa fa-user-o"></i><span className="ms-2">Admin</span> </Link> </li>
               <li> <Link to="/backoffice/roles" className="nav-link text-white"> <i className="fa fa-users"></i><span className="ms-2">Roles</span> </Link> </li>
               <li> <Link to="/backoffice/users" className="nav-link text-white"> <i className="fa fa-user"></i><span className="ms-2">Usuarios</span> </Link> </li>
               <li> <Link to="/backoffice/artists" className="nav-link text-white"> <i className="fa fa-university"></i><span className="ms-2">Artistas</span> </Link> </li>
