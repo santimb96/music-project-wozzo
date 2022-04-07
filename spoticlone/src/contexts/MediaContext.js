@@ -3,10 +3,11 @@ import React, { useState } from "react";
 const MediaContext = React.createContext();
 
 export const MediaProvider = ({children}) => {
-  const [song, setSong] = useState([{name: "s1", id: 1}, {name: "s2", id: 2}]);
+  const [song, setSong] = useState([]);
+  const [artist, setArtist] = useState([]);
 
   return (
-    <MediaContext.Provider value={{ song, setSong }}>
+    <MediaContext.Provider value={{ song, setSong, artist, setArtist }}>
       {children}
     </MediaContext.Provider>
   );

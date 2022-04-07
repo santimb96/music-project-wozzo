@@ -8,8 +8,8 @@ router
   .get('/:id', userController.findId)
   .put('/:id', userController.updateById)
   .delete('/:id', userController.deleteById)
-  .post('/public/login', userController.login)
-  .post('/public/register', userController.create)
+  .post('/login', userController.login)
+  .post('/register', userController.create)
   .post('/autologin', userController.autoLogin);
 
 export default router;

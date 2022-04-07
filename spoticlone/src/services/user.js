@@ -1,11 +1,11 @@
-import { BASE_URI_USER } from "../urls/userUrls";
+import { BASE_URI_USER } from "../urls/urls";
 
 const login = (email, password) =>
   new Promise((resolve, reject) => {
     if (!email || !password) {
       reject("Error de parámetros");
     } else {
-      fetch(`${BASE_URI_USER}/public/login`, {
+      fetch(`${BASE_URI_USER}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const register = (name, email, password) =>
     if (!name || !email || !password) {
       reject("Error de parámetros");
     } else {
-      fetch(`${BASE_URI_USER}/public/register`, {
+      fetch(`${BASE_URI_USER}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

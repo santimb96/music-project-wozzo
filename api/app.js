@@ -30,7 +30,7 @@ const verifyToken = (req, res, next) => {
   console.log(req.path);
   if (!req.path.includes('users') && req.method === 'GET') {
     next();
-  } else if (req.path.includes('login') || req.path.includes('autologin')) {
+  } else if (req.path.includes('login') || req.path.includes('autologin') || req.path.includes('register') ) {
     next();
   } else if (token) {
     //verificamos que existe token; si no, sale; si sí, verificamos que sea correcto
