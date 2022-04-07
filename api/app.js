@@ -28,7 +28,7 @@ const verifyToken = (req, res, next) => {
       : false;
   // valoramos si el path es public para que el user haga login
   console.log(req.path);
-  if (!req.path.includes('users') && req.method === 'GET') {
+  if (!req.path.includes('users') && req.method === 'GET' && !req.path.includes('userRoles') && req.method === 'GET') {
     next();
   } else if (req.path.includes('login') || req.path.includes('autologin') || req.path.includes('register') ) {
     next();

@@ -19,7 +19,6 @@ const AppRoutes = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.warn(window.location.pathname);
     const expiryDate = localStorage.getItem("expiryDate");
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
@@ -30,7 +29,6 @@ const AppRoutes = () => {
       if (expiryDate >= dateNow) {
         autoLogin(userId, token)
           .then((userLog) => {
-            console.log(userLog);
             //metemos user y userRole en authContext
             if (user._id === userLog._id && userId !== null) {
               return;
