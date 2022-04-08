@@ -1,4 +1,3 @@
-import { reject } from "bcrypt/promises";
 import { BASE_URI_USER } from "../urls/urls";
 import ROLES from "../utils/roleId";
 
