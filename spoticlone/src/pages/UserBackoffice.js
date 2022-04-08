@@ -1,6 +1,21 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import { createUser, getUsers, removeUser } from "../services/user.js";
+import { styled } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import {
+  Table,
+  TableCell,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableContainer,
+} from "@mui/material";
+import { grey, green } from "@mui/material/colors";
+import { TextField } from "@mui/material";
+import { InputBase } from '@mui/material';
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -21,8 +36,7 @@ const UserBackoffice = () => {
         setUsers(user?.users);
       })
       .catch((err) => console.warn(err));
-
-  }
+  };
 
   useEffect(() => {
     getData();
@@ -51,32 +65,71 @@ const UserBackoffice = () => {
     setName(user.name);
     setEmail(user.email);
     setRole(user.userRoleId);
-  }
+  };
 
   const postUser = () => {
-    if(password === passRepeat){
+    if (password === passRepeat) {
       createUser(name, email, password, role, token)
-      .then(user => {
-        console.log(user)
-      })
-      .catch(err => console.error(err))
+        .then((user) => {
+          console.log(user);
+        })
+        .catch((err) => console.error(err));
     }
   };
 
   const deleteUser = (id) => {
     removeUser(id, token)
-    .then(user => {
-      console.log(user);
-      getData();
-    })
-    .catch(err => console.error(err));
-  }
+      .then((user) => {
+        console.log(user);
+        getData();
+      })
+      .catch((err) => console.error(err));
+  };
 
   console.log(role);
   return (
     <div className="row bg-success">
       <SidebarBackoffice />
-      <div className="col-4 grid-margin stretch-card mt-5">
+      <Grid container xs={8}>
+        <Box
+          component="form"
+          
+          xs={8}
+          noValidate
+          autoComplete="off"
+        >
+          <InputBase className="input" id="outlined-basic" label="Outlined" variant="outlined"/>
+        </Box>{" "}
+        <TableContainer component={Paper} className="table-container">
+          <Table
+            sx={{ minWidth: 650 }}
+            size="small"
+            aria-label="a dense table"
+            className = "table-content"
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">Nombre</TableCell>
+                <TableCell align="left">Email</TableCell>
+                <TableCell align="left">Rol</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {itemsToShow()?.map((user) => (
+                <TableRow
+                  key={user.name}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell align="left">{user.name}</TableCell>
+                  <TableCell align="left">{user.email}</TableCell>
+                  <TableCell align="left">{user.userRoleId}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Grid>
+      {/* <div className="col-4 grid-margin stretch-card mt-5">
         <div className="card bg-dark text-light">
           <div className="card-body mt-4">
             <h4 className="card-title text-center">Usuarios</h4>
@@ -186,6 +239,7 @@ const UserBackoffice = () => {
           </div>
         </div>
       </div>
+    </div> */}
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { reject } from "bcrypt/promises";
 import { BASE_URI_USER } from "../urls/urls";
 import ROLES from "../utils/roleId";
 
@@ -117,5 +118,11 @@ const register = (name, email, password) =>
       .catch(err => reject(err));
     };
   });
+
+  const updateUser = (id, token) => new Promise((resolve, reject) => {
+    if(!id && !token){
+      reject("E")
+    }
+  }); 
 
 export { login, register, autoLogin, getUsers, createUser, removeUser };

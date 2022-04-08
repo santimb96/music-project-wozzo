@@ -1,5 +1,7 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
+$darkColor: #212529;
+
 html {
   height: 100%;
   body {
@@ -8,22 +10,21 @@ html {
     .nav-bg-color {
       background-color: green;
 
-      button{
+      button {
         background-color: transparent;
         border: none;
         transition: 0.2s;
       }
-      button:hover{
+      button:hover {
         background-color: transparent;
       }
-      .nav-link-auth{
+      .nav-link-auth {
         color: black;
         transition: 0.2s;
       }
-      .nav-link-auth:hover{
+      .nav-link-auth:hover {
         color: white;
       }
-      
     }
 
     .login-form {
@@ -32,9 +33,8 @@ html {
 
       .change-route-link {
         color: white;
-        text-decoration: inherit; 
+        text-decoration: inherit;
         transition: 0.2s;
-        
       }
 
       .change-route-link:hover {
@@ -44,21 +44,37 @@ html {
       .submit-button {
         transition: 0.2s;
       }
-      .submit-button:hover{
+      .submit-button:hover {
         background-color: green;
       }
     }
     .nav-link:hover {
-      background-color: green !important
-  }
-  
-  .nav-link .fa {
-      transition: all 1s
-  }
-  
-  // .nav-link:hover .fa {
-  //     transform: rotate(360deg)
-  // }
-  }
+      background-color: green !important;
+    }
 
+    .nav-link .fa {
+      transition: all 1s;
+    }
+
+    // .nav-link:hover .fa {
+    //     transform: rotate(360deg)
+    // }
+
+    .input {
+      display: flex;
+      justify-content: center;
+      min-width: 50vw;
+      background-color: white;
+      border-radius: 5px;
+      margin: 2rem;
+      padding: 10px;
+    }
+    .table-container {
+      background-color: $darkColor;
+      color: white;
+      .table-content {
+        color: white;
+      }
+    }
+  }
 }

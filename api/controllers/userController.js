@@ -12,35 +12,57 @@ app.set('masterKey', masterToken);
 
 const getAll = async (req, res) => {
   User.find({})
-    .then(users => res.status(200).send({ users }))
-    .catch(() => handleError(404, 'No se ha podido obtener ningún usuario', res));
+    .then((users) => res.status(200).send({ users }))
+    .catch(() =>
+      handleError(404, 'No se ha podido obtener ningún usuario', res)
+    );
 };
 
 const findId = async (req, res) => {
-  User.findOne({_id: req.params.id})
-    .then(user => user
-      ? res.status(200).send({ user })
-      : handleError(404, 'Usuario no encontrado', res))
+  User.findOne({ _id: req.params.id })
+    .then((user) =>
+      user
+        ? res.status(200).send({ user })
+        : handleError(404, 'Usuario no encontrado', res)
+    )
     .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
 const updateById = async (req, res) => {
-  User.findOneAndUpdate({ _id: req.params.id },req.body)
-    .then(user => res
-      .status(201)
-      .send({ status: 201, message: `${user.name} actualizado` }))
-    .catch(() => handleError(404, 'Usuario no encontrado', res)
-    );
+  const userToUpdate = req.body;
+  if (req.body.password) {
+    bcrypt.genSalt(10).then((salt) => {
+      bcrypt.hash(userToUpdate.password, salt).then((hashedPaswd) => {
+        userToUpdate.password = hashedPaswd;
+        User.findOneAndUpdate({ _id: req.params.id }, userToUpdate)
+          .then((user) =>
+            res
+              .status(201)
+              .send({ status: 201, message: `${user.name} actualizado` })
+          )
+          .catch(() => handleError(404, 'Usuario no encontrado', res));
+      });
+    });
+  } else {
+    User.findOneAndUpdate({ _id: req.params.id }, userToUpdate)
+      .then((user) =>
+        res
+          .status(201)
+          .send({ status: 201, message: `${user.name} actualizado` })
+      )
+      .catch(() => handleError(404, 'Usuario no encontrado', res));
+  }
 };
 
-const create = async (req, res) => { 
+const create = async (req, res) => {
   const userToCreate = req.body;
-  bcrypt.genSalt(10).then(salt => {
-    bcrypt.hash(userToCreate.password, salt).then(hashedPaswd => {
+  bcrypt.genSalt(10).then((salt) => {
+    bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
       userToCreate.password = hashedPaswd;
-      User.create(userToCreate).then((userCreated) => { 
-        return res.status(201).send({ status: 201, message: `${userCreated.name} ha sido cread@`,}
-        );
+      User.create(userToCreate).then((userCreated) => {
+        return res
+          .status(201)
+          .send({ status: 201, message: `${userCreated.name} ha sido cread@` });
       });
     });
   });
@@ -48,10 +70,12 @@ const create = async (req, res) => {
 
 const deleteById = async (req, res) => {
   User.findOneAndDelete({ _id: req.params.id })
-    .then(() => res
-      .status(200)
-      .send({ status: 200, message: 'Registro borrado con éxito!' }))
-    .catch(()=>  handleError(404, 'Usuario no encontrado', res));
+    .then(() =>
+      res
+        .status(200)
+        .send({ status: 200, message: 'Registro borrado con éxito!' })
+    )
+    .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
 const login = (req, res) => {
@@ -75,8 +99,8 @@ const login = (req, res) => {
                 const token = jwt.sign({ user }, app.get('masterKey'), {
                   expiresIn: EXPIRE_DATE,
                 });
-                const expDate = new Date(Date.now() + (3600 * 1000 * 24));
-                
+                const expDate = new Date(Date.now() + 3600 * 1000 * 24);
+
                 res.status(200).send({
                   user,
                   role: user.userRoleId.name,
@@ -97,18 +121,18 @@ const login = (req, res) => {
 };
 
 const autoLogin = (req, res) => {
-// {id: id, token: token}
-  User.findOne({_id: req.body.id})
+  // {id: id, token: token}
+  User.findOne({ _id: req.body.id })
     .populate('userRoleId')
-    .then(user => {
-      if(user){
+    .then((user) => {
+      if (user) {
         delete user._doc.password;
-        res.status(200).send({user});
+        res.status(200).send({ user });
       } else {
         handleError(404, 'Usuario no encontrado', res);
       }
     });
-}; 
+};
 
 export default {
   getAll,
@@ -117,5 +141,5 @@ export default {
   create,
   deleteById,
   login,
-  autoLogin
+  autoLogin,
 };

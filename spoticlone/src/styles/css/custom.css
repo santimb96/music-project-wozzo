@@ -11166,5 +11166,21 @@ html body .nav-link:hover {
 html body .nav-link .fa {
   transition: all 1s;
 }
+html body .input {
+  display: flex;
+  justify-content: center;
+  min-width: 50vw;
+  background-color: white;
+  border-radius: 5px;
+  margin: 2rem;
+  padding: 10px;
+}
+html body .table-container {
+  background-color: #212529;
+  color: white;
+}
+html body .table-container .table-content {
+  color: white;
+}
 
 /*# sourceMappingURL=custom.css.map */
