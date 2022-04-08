@@ -24,13 +24,12 @@ const UserRoleBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = roles?.userRoles?.filter((role) => {
+    const filtered = roles?.filter((role) => {
       if(role.name.includes(text) || role._id.includes(text)) {
         return true;
       }
       return false;
     });
-    console.warn(filtered);
     setFilteredRoles(filtered)
   }, [ text ])
 
