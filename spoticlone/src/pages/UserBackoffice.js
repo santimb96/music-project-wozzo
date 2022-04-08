@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
-import { getUsers } from "../services/user.js";
+import { createUser, getUsers, removeUser } from "../services/user.js";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -14,13 +14,18 @@ const UserBackoffice = () => {
   const [role, setRole] = useState(null);
   const [id, setId] = useState("");
 
-  useEffect(() => {
+  const getData = () => {
     getUsers(token)
       .then((user) => {
         console.log(user);
         setUsers(user?.users);
       })
       .catch((err) => console.warn(err));
+
+  }
+
+  useEffect(() => {
+    getData();
   }, []);
 
   useEffect(() => {
@@ -46,6 +51,25 @@ const UserBackoffice = () => {
     setName(user.name);
     setEmail(user.email);
     setRole(user.userRoleId);
+  }
+
+  const postUser = () => {
+    if(password === passRepeat){
+      createUser(name, email, password, role, token)
+      .then(user => {
+        console.log(user)
+      })
+      .catch(err => console.error(err))
+    }
+  };
+
+  const deleteUser = (id) => {
+    removeUser(id, token)
+    .then(user => {
+      console.log(user);
+      getData();
+    })
+    .catch(err => console.error(err));
   }
 
   console.log(role);
@@ -81,6 +105,7 @@ const UserBackoffice = () => {
                       <td>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.userRoleId}</td>
+                      <td><button onClick={() => deleteUser(user._id)} className="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></td>
                     </tr>
                   ))}
                 </tbody>
@@ -154,7 +179,7 @@ const UserBackoffice = () => {
                 </label>
               </div>
               <div className="d-flex justify-content-between mt-3">
-                <button className="btn btn-primary" style={{ minWidth: '4rem', width: '7rem'}}>Crear</button>
+                <button className="btn btn-primary" onClick={postUser} style={{ minWidth: '4rem', width: '7rem'}}>Crear</button>
                 <button className="btn btn-success" style={{ minWidth: '4rem', width: '7rem'}}>Actualizar</button>
               </div>
             </div>
