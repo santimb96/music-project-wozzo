@@ -63,4 +63,15 @@ const register = (name, email, password) =>
     }
   });
 
-export { login, register, autoLogin };
+  const getUsers = (token) => new Promise((resolve, reject) => {
+    fetch(BASE_URI_USER, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(res => resolve(res.json()))
+    .catch(err => console.warn(err))
+  })
+
+export { login, register, autoLogin, getUsers };

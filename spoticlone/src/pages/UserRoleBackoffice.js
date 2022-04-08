@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
-import AuthContext from "../contexts/AuthContext";
 import { getRoles } from "../services/roles";
 
 const UserRoleBackoffice = () => {
@@ -15,7 +14,6 @@ const UserRoleBackoffice = () => {
   useEffect(() => {
     getRoles(token)
       .then((rol) => {
-        console.log(rol);
         setRoles(rol?.userRoles);
       })
       .catch((err) => {
@@ -37,7 +35,7 @@ const UserRoleBackoffice = () => {
     if(text?.length) {
       return filteredRoles;
     }
-    return roles;
+      return roles;
   }
   
 
