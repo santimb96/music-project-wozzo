@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext.js";
 import { removeUserStorage } from "../../utils/localStorage.js";
 
 const SidebarBackoffice = () => {
+  const authContext = useContext(AuthContext);
 
-  const logOut = () => removeUserStorage();
+  const logOut = () => {
+    authContext.setUser({});
+    authContext.setUserRole('');
+    removeUserStorage();
+  } 
 
   return (
     // <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
