@@ -14,7 +14,6 @@ import UserRoleBackoffice from "../pages/UserRoleBackoffice";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
-  const { user } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -30,12 +29,8 @@ const AppRoutes = () => {
         autoLogin(userId, token)
           .then((userLog) => {
             //metemos user y userRole en authContext
-            if (user._id === userLog._id && userId !== null) {
-              return;
-            } else {
               authSet.setUser(userLog);
               authSet.setUserRole(userLog.user.userRoleId.name);
-            }
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
@@ -53,7 +48,7 @@ const AppRoutes = () => {
         navigate("/login");
       }
     }
-  }, [user, window.location.pathname]);
+  }, [ window.location.pathname ]);
 
   // const checkLogin = (element) => {
   //   // si hay user y userRole redirigir a backoffice
