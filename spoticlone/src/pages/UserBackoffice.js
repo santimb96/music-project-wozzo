@@ -130,7 +130,9 @@ const UserBackoffice = () => {
                 placeholder="busca..."
                 onChange={(e) => setText(e.target.value)}
               />
+            <Button className="btn-open-form" onClick={handleOpenForm}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Button>
             </div>
+
             <TableContainer component={Paper} className="table-content">
             {!itemsToShow() ? <div className="spinner-table-loading"><SpinnerLoading /></div>
                 : <Table
@@ -139,7 +141,6 @@ const UserBackoffice = () => {
                 className="table-content"
               >
                 <TableHead>
-                  <Button className="btn-open-form" onClick={handleOpenForm}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Button>
                   <Modal
                     open={openDelete}
                     onClose={handleCloseDelete}

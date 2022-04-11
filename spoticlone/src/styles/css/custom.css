@@ -11181,7 +11181,8 @@ html body .nav-link .fa {
 }
 html body .table-head-item {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
+  padding-top: 3rem;
 }
 html body .table-head-item tr {
   color: white;
@@ -11243,8 +11244,7 @@ html body .typo-flex .btn-delete:hover {
 html body .btn-open-form {
   font-size: 1.5rem;
   color: white;
-  padding: 1rem;
-  margin: 1rem;
+  margin: 0.8rem;
   transition: 0.1s;
 }
 html body .btn-open-form:hover {

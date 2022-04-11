@@ -83,7 +83,8 @@ html {
 
     .table-head-item {
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
+      padding-top: 3rem;
 
       tr {
         color: white;
@@ -152,8 +153,7 @@ html {
     .btn-open-form{
       font-size: 1.5rem;
       color: white;
-      padding: 1rem;
-      margin: 1rem;
+      margin: 0.8rem;
       transition: 0.1s;
   }
   .btn-open-form:hover{
