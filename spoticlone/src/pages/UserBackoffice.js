@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import { createUser, getUsers, removeUser } from "../services/user.js";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   Table,
   TableCell,
@@ -13,9 +12,10 @@ import {
   TableHead,
   TableContainer,
 } from "@mui/material";
-import { grey, green } from "@mui/material/colors";
-import { TextField } from "@mui/material";
-import { InputBase } from '@mui/material';
+import { InputBase } from "@mui/material";
+import Container from "@mui/material/Container";
+import theme from "../palette/palette";
+import Paper from '@mui/material/Paper';
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -88,48 +88,135 @@ const UserBackoffice = () => {
 
   console.log(role);
   return (
-    <div className="row bg-success">
+    <Grid container spacing={{ xs: 3 }}>
       <SidebarBackoffice />
-      <Grid container xs={8}>
-        <Box
-          component="form"
-          
-          xs={8}
-          noValidate
-          autoComplete="off"
-        >
-          <InputBase className="input" id="outlined-basic" label="Outlined" variant="outlined"/>
-        </Box>{" "}
-        <TableContainer component={Paper} className="table-container">
-          <Table
-            sx={{ minWidth: 650 }}
-            size="small"
-            aria-label="a dense table"
-            className = "table-content"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell align="left">Nombre</TableCell>
-                <TableCell align="left">Email</TableCell>
-                <TableCell align="left">Rol</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {itemsToShow()?.map((user) => (
-                <TableRow
-                  key={user.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="left">{user.name}</TableCell>
-                  <TableCell align="left">{user.email}</TableCell>
-                  <TableCell align="left">{user.userRoleId}</TableCell>
+      <Grid container xs={10} className="bg-success">
+        <Container maxWidth="sm">
+          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100%" }}>
+            <div className="table-head-item">
+              <InputBase
+                className="input"
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+                placeholder="busca..."
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            <TableContainer component={Paper} className="table-content" >
+            <Table
+              size="medium"
+              aria-label="a dense table"
+              className="table-content"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.light }}
+                    align="left"
+                  >
+                    Nombre
+                  </TableCell>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.light }}
+                    align="left"
+                  >
+                    Email
+                  </TableCell>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.light }}
+                    align="left"
+                  >
+                    Rol
+                  </TableCell>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.light }}
+                    align="left"
+                  >
+                    Borrar
+                  </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {itemsToShow()?.map((user) => (
+                  <TableRow
+                    key={user.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      {user.name}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      {user.email}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      {user.userRoleId}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                      onClick={() => deleteUser(user._id)}
+                    >
+                      <DeleteIcon />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            </TableContainer>
+          </Box>
+        </Container>
       </Grid>
-      {/* <div className="col-4 grid-margin stretch-card mt-5">
+    </Grid>
+    // <Grid container xs={8}>
+    //   <Box
+    //     component="form"
+
+    //     xs={8}
+    //     noValidate
+    //     autoComplete="off"
+    //   >
+    //     <InputBase className="input" id="outlined-basic" label="Outlined" variant="outlined"/>
+    //   </Box>{" "}
+    //   <TableContainer component={Paper} className="table-container">
+    //     <Table
+    //       sx={{ minWidth: 650 }}
+    //       size="small"
+    //       aria-label="a dense table"
+    //       className = "table-content"
+    //     >
+    //       <TableHead>
+    //         <TableRow>
+    //           <TableCell align="left">Nombre</TableCell>
+    //           <TableCell align="left">Email</TableCell>
+    //           <TableCell align="left">Rol</TableCell>
+    //         </TableRow>
+    //       </TableHead>
+    //       <TableBody>
+    //         {itemsToShow()?.map((user) => (
+    //           <TableRow
+    //             key={user.name}
+    //             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+    //           >
+    //             <TableCell align="left">{user.name}</TableCell>
+    //             <TableCell align="left">{user.email}</TableCell>
+    //             <TableCell align="left">{user.userRoleId}</TableCell>
+    //           </TableRow>
+    //         ))}
+    //       </TableBody>
+    //     </Table>
+    //   </TableContainer>
+    // </Grid>
+    /* <div className="col-4 grid-margin stretch-card mt-5">
         <div className="card bg-dark text-light">
           <div className="card-body mt-4">
             <h4 className="card-title text-center">Usuarios</h4>
@@ -239,8 +326,7 @@ const UserBackoffice = () => {
           </div>
         </div>
       </div>
-    </div> */}
-    </div>
+    </div> */
   );
 };
 
