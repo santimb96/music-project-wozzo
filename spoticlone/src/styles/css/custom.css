@@ -11202,10 +11202,14 @@ html body .input {
   padding-left: 1rem;
   display: flex;
   justify-content: center;
-  background-color: white;
-  border-radius: 5px;
-  margin: 2rem;
+  margin: 1rem;
   height: 7%;
+}
+html body .input input {
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  transition: 0.2s;
 }
 html body .table-content {
   color: white;
