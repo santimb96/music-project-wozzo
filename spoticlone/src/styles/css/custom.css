@@ -11118,6 +11118,11 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+html body .spinner-table-loading {
+  display: flex;
+  justify-content: center;
+}
+
 html body .nav-bg-color {
   background-color: green;
 }

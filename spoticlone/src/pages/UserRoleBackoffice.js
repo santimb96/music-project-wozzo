@@ -77,7 +77,7 @@ const UserRoleBackoffice = () => {
               />
             </div>
             {!itemsToShow() ? (
-              <div className="d-flex justify-content-center">
+              <div className="spinner-table-loading">
                 <SpinnerLoading />
               </div>
             ) : (

@@ -3,8 +3,17 @@
 $darkColor: #212529;
 $secondaryColor: #198754;
 
+%itemHorizontal {
+  display: flex;
+  justify-content: center;
+
+}
+
 html {
   body {
+    .spinner-table-loading{
+      @extend %itemHorizontal;
+    }
     .nav-bg-color {
       background-color: green;
 

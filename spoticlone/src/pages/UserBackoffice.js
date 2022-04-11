@@ -133,7 +133,7 @@ const UserBackoffice = () => {
               />
             </div>
             <TableContainer component={Paper} className="table-content">
-            {!itemsToShow() ? <div className="d-flex justify-content-center"><SpinnerLoading /></div>
+            {!itemsToShow() ? <div className="spinner-table-loading"><SpinnerLoading /></div>
                 : <Table
                 size="medium"
                 aria-label="a dense table"
