@@ -19,11 +19,16 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
+import SpinnerLoading from "../components/common/SpinnerLoading";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -37,16 +42,21 @@ const UserBackoffice = () => {
    * DELETE MODAL
    */
   const [openDelete, setOpenDelete] = useState(false);
+
   const handleOpenDelete = (userId) => {
     setOpenDelete(true);
     setId(userId);
   };
-    
+
   const handleCloseDelete = () => setOpenDelete(false);
 
   /**
    * FORM MODAL TODO
    */
+  const [openForm, setOpenForm] = useState(false);
+
+  const handleOpenForm = () => setOpenForm(true);
+  const handleCloseForm = () => setOpenForm(false);
 
   const getData = () => {
     getUsers(token)
@@ -123,36 +133,128 @@ const UserBackoffice = () => {
               />
             </div>
             <TableContainer component={Paper} className="table-content">
-              <Table
+            {!itemsToShow() ? <div className="d-flex justify-content-center"><SpinnerLoading /></div>
+                : <Table
                 size="medium"
                 aria-label="a dense table"
                 className="table-content"
               >
                 <TableHead>
-                  
-                    <Modal
-                      open={openDelete}
-                      onClose={handleCloseDelete}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                      disableEnforceFocus 
-                    >
-                      <Box className="modal-delete">
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
+                  <Button onClick={handleOpenForm}>Form modal</Button>
+                  <Modal
+                    open={openDelete}
+                    onClose={handleCloseDelete}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    disableEnforceFocus
+                  >
+                    <Box className="modal-delete">
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        ¿Estás seguro de que quieres borrarlo?
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="typo-flex">
+                          <Button
+                            onClick={() => deleteUser(id)}
+                            className="btn-modal btn-delete"
+                          >
+                            Sí
+                          </Button>{" "}
+                          <Button
+                            className="btn-modal "
+                            onClick={handleCloseDelete}
+                          >
+                            No
+                          </Button>
+                        </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
+
+                  <Modal
+                    open={openForm}
+                    onClose={handleCloseForm}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    disableEnforceFocus
+                  >
+                    <Box className="modal-delete">
+                      <div>
+                        <InputBase
+                          value={name}
+                          type="text"
+                          className="input"
+                          id="outlined-basic"
+                          label="Outlined"
+                          variant="outlined"
+                          placeholder="nombre"
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <InputBase
+                          className="input"
+                          type="email"
+                          value={email}
+                          id="outlined-basic"
+                          label="Outlined"
+                          variant="outlined"
+                          placeholder="email"
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <InputBase
+                          className="input"
+                          type="password"
+                          value={password}
+                          id="outlined-basic"
+                          label="Outlined"
+                          variant="outlined"
+                          placeholder="contraseña"
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <InputBase
+                          className="input"
+                          type="password"
+                          value={passRepeat}
+                          id="outlined-basic"
+                          label="Outlined"
+                          variant="outlined"
+                          placeholder="repite contraseña"
+                          onChange={(e) => setPassRepeat(e.target.value)}
+                        />
+                        <RadioGroup
+                          aria-labelledby="demo-radio-buttons-group-label"
+                          defaultValue="user"
+                          name="radio-buttons-group"
                         >
-                          ¿Estás seguro de que quieres borrarlo?
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          <div className="typo-flex">
-                          <Button onClick={() => deleteUser(id)} className="btn-modal btn-delete">Sí</Button> <Button className="btn-modal " onClick={handleCloseDelete}>No</Button>
-                          </div>
-                        </Typography>
-                      </Box>
-                    </Modal>
-                  
+                          <FormControlLabel
+                            value="user"
+                            control={<Radio />}
+                            label="Usuario"
+                          />
+                          <FormControlLabel
+                            value="admin"
+                            control={<Radio />}
+                            label="Administrador"
+                          />
+                        </RadioGroup>
+                      </div>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="typo-flex">
+                          <Button
+                            onClick={() => postUser()}
+                            className="btn-modal-form"
+                          >
+                            Crear
+                          </Button>{" "}
+                          <Button className="btn-modal-form">Actualizar</Button>
+                        </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
+
                   <TableRow>
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
@@ -181,40 +283,42 @@ const UserBackoffice = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {itemsToShow()?.map((user) => (
-                    <TableRow
-                      key={user.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                {itemsToShow()?.map((user) => (
+                  <TableRow
+                    key={user.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
                     >
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {user.name}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {user.email}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {user.userRoleId}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                        onClick={() => handleOpenDelete(user._id)}
-                      >
-                        <DeleteIcon />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                      {user.name}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      {user.email}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      {user.userRoleId}
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                      onClick={() => handleOpenDelete(user._id)}
+                    >
+                      <DeleteIcon />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
               </Table>
+                }
+                
             </TableContainer>
           </Box>
         </Container>
