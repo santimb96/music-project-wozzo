@@ -81,7 +81,7 @@ const UserBackoffice = () => {
 
   useEffect(() => {
     const filtered = users?.filter((user) => {
-      if (user.name.includes(text) || user.email.includes(text)) {
+      if (user.name.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim()) || user.email.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())) {
         return true;
       }
       return false;
@@ -152,7 +152,7 @@ const UserBackoffice = () => {
       <Grid container xs={10} className="bg-success">
         <Container maxWidth="sm">
           <Box sx={{ bgcolor: theme.palette.primary.main, height: "100%" }}>
-            <div className="table-head-item outline">
+            <div className="table-head-item">
               <TextField
                 className="input"
                 placeholder="busca..."

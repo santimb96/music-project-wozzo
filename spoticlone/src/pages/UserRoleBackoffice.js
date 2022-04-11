@@ -45,7 +45,7 @@ const UserRoleBackoffice = () => {
 
   useEffect(() => {
     const filtered = roles?.filter((role) => {
-      if (role.name.includes(text) || role._id.includes(text)) {
+      if (role.name.toLowerCase().includes(text.toLowerCase().trim()) || role._id.includes(text.trim())) {
         return true;
       }
       return false;
@@ -67,15 +67,13 @@ const UserRoleBackoffice = () => {
         <Container maxWidth="sm">
           <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-              <InputBase
+              <TextField
                 className="input"
-                id="outlined-basic"
-                label="Outlined"
-                variant="outlined"
                 placeholder="busca..."
                 onChange={(e) => setText(e.target.value)}
               />
             </div>
+
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
