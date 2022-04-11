@@ -11240,6 +11240,16 @@ html body .typo-flex .btn-modal:hover {
 html body .typo-flex .btn-delete:hover {
   background-color: red;
 }
+html body .btn-open-form {
+  font-size: 1.5rem;
+  color: white;
+  padding: 1rem;
+  margin: 1rem;
+  transition: 0.1s;
+}
+html body .btn-open-form:hover {
+  background-color: #198754;
+}
 html body .lds-ring {
   display: inline-block;
   position: relative;

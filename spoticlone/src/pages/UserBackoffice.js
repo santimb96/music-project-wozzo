@@ -22,9 +22,8 @@ import Modal from "@mui/material/Modal";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
+import { pink } from '@mui/material/colors';
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -140,7 +139,7 @@ const UserBackoffice = () => {
                 className="table-content"
               >
                 <TableHead>
-                  <Button onClick={handleOpenForm}>Form modal</Button>
+                  <Button className="btn-open-form" onClick={handleOpenForm}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Button>
                   <Modal
                     open={openDelete}
                     onClose={handleCloseDelete}
@@ -307,7 +306,7 @@ const UserBackoffice = () => {
                       {user.userRoleId}
                     </TableCell>
                     <TableCell
-                      style={{ color: theme.palette.secondary.light }}
+                      sx={{ color: pink[600] }}
                       align="left"
                       onClick={() => handleOpenDelete(user._id)}
                     >

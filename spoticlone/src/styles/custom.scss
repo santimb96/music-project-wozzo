@@ -149,7 +149,16 @@ html {
         background-color: red;
       }
     }
-
+    .btn-open-form{
+      font-size: 1.5rem;
+      color: white;
+      padding: 1rem;
+      margin: 1rem;
+      transition: 0.1s;
+  }
+  .btn-open-form:hover{
+    background-color: $secondaryColor;
+  }
     //SPINNER LOADING
 
     .lds-ring {
