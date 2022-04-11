@@ -11118,12 +11118,6 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-html {
-  height: 100%;
-}
-html body {
-  min-height: 100%;
-}
 html body .nav-bg-color {
   background-color: green;
 }
@@ -11160,8 +11154,22 @@ html body .login-form .submit-button {
 html body .login-form .submit-button:hover {
   background-color: green;
 }
+html body .nav-link {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 4rem;
+  margin-left: 4%;
+  margin-right: 4%;
+  transition: 0.3s;
+  color: white;
+}
+html body .nav-link i {
+  color: white;
+}
 html body .nav-link:hover {
-  background-color: green !important;
+  background-color: #198754;
+  color: white;
 }
 html body .nav-link .fa {
   transition: all 1s;

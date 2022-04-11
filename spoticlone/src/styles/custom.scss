@@ -1,11 +1,10 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 $darkColor: #212529;
+$secondaryColor: #198754;
 
 html {
-  height: 100%;
   body {
-    min-height: 100%;
 
     .nav-bg-color {
       background-color: green;
@@ -48,8 +47,23 @@ html {
         background-color: green;
       }
     }
+    .nav-link{
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      height: 4rem;
+      margin-left: 4%;
+      margin-right: 4%;
+      transition: 0.3s;
+      color: white;
+      i{
+        color: white;
+      }
+      
+    }
     .nav-link:hover {
-      background-color: green !important;
+      background-color: $secondaryColor;
+      color: white;
     }
 
     .nav-link .fa {

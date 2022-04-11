@@ -10,6 +10,7 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../palette/palette.js";
 import { Link } from "react-router-dom";
+import Container from "@mui/material/Container";
 
 const UserRoleBackoffice = () => {
   /* <td><button className="btn btn-danger me-3"><i className="fa fa-trash" aria-hidden="true"></i></button>
@@ -48,90 +49,7 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-    <Grid container spacing={{ xs: 3 }}>
-      <Grid
-        item
-        xs={2}
-        className="vh-100"
-        sx={{ bgcolor: theme.palette.primary.main }}
-      >
-        <Box>
-          <nav aria-label="secondary mailbox folders">
-            <List sx={{ color: theme.palette.secondary.light }}>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-user-o"></i>
-                  <Link to="/backoffice/admin" className="nav-link text-white">
-                    {" "}
-                    <ListItemText primary="Admin" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-users"></i>
-                  <Link to="/backoffice/roles" className="nav-link text-white">
-                    {" "}
-                    <ListItemText primary="Roles" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-user"></i>
-                  <Link to="/backoffice/users" className="nav-link text-white">
-                    {" "}
-                    <ListItemText primary="Usuarios" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-university"></i>
-                  <Link
-                    to="/backoffice/artists"
-                    className="nav-link text-white"
-                  >
-                    {" "}
-                    <ListItemText primary="Artistas" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-music"></i>
-                  <Link
-                    to="/backoffice/songs"
-                    className="nav-link text-white w-100"
-                  >
-                    {" "}
-                    <ListItemText primary="Canciones" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-              <hr />
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <i className="fa fa-user-circle"></i>
-                  <Link to="/login" className="nav-link text-white">
-                    {" "}
-                    <ListItemText primary="Cerrar sesión" />
-                  </Link>
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </nav>
-        </Box>
-      </Grid>
-      <Grid item xs={10} className="bg-success">
-        <div>
-          <h1>ferhfgueh</h1>
-        </div>
-      </Grid>
-    </Grid>
+      <SidebarBackoffice />
 
     // <div className="row bg-success">
     //   <SidebarBackoffice />
