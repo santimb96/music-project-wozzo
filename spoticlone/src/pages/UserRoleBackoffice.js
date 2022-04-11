@@ -22,13 +22,14 @@ import {
 import { grey, green } from "@mui/material/colors";
 import { TextField } from "@mui/material";
 import { InputBase } from "@mui/material";
+import SpinnerLoading from "../components/common/SpinnerLoading";
 
 const UserRoleBackoffice = () => {
   /* <td><button className="btn btn-danger me-3"><i className="fa fa-trash" aria-hidden="true"></i></button>
       <button className="btn btn-warning"><i className="fa fa-pencil-square-o" aria-hidden="true"></i></button></td> */
 
   const token = localStorage.getItem("token");
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
   const [text, setText] = useState("");
 
@@ -60,50 +61,74 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-      <Grid container spacing={{ xs: 3 }}>
-        <SidebarBackoffice />
-        <Grid item xs={10} className="bg-success">
-          <Container maxWidth="sm">
-            <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+    <Grid container spacing={{ xs: 3 }}>
+      <SidebarBackoffice />
+      <Grid item xs={10} className="bg-success">
+        <Container maxWidth="sm">
+          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+          <div className="table-head-item">
+              <InputBase
+                className="input"
+                id="outlined-basic"
+                label="Outlined"
+                variant="outlined"
+                placeholder="busca..."
+                onChange={(e) => setText(e.target.value)}
+              />
+            </div>
+            {!itemsToShow() ? (
+              <div className="d-flex justify-content-center">
+                <SpinnerLoading />
+              </div>
+            ) : (
               <Table
                 size="small"
                 aria-label="a dense table"
                 className="table-content"
-                
               >
-                <TableHead >
-                  <div className="table-head-item">
-                    <InputBase
-                      className="input"
-                      id="outlined-basic"
-                      label="Outlined"
-                      variant="outlined"
-                      placeholder="busca..."
-                     onChange={(e) => setText(e.target.value)}
-                    />
-                  </div>
-                  <TableRow >
-                    <TableCell style={{color: theme.palette.secondary.light}} align="left">Id</TableCell>
-                    <TableCell style={{color: theme.palette.secondary.light}} align="left">Rol</TableCell>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      Id
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.light }}
+                      align="left"
+                    >
+                      Rol
+                    </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody >
+                <TableBody>
                   {itemsToShow()?.map((user) => (
                     <TableRow
                       key={user.name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                      
                     >
-                      <TableCell style={{color: theme.palette.secondary.light}} align="left">{user._id}</TableCell>
-                      <TableCell style={{color: theme.palette.secondary.light}} align="left">{user.name}</TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {user._id}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {user.name}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </Box>
-          </Container>
-        </Grid>
+            )}
+          </Box>
+        </Container>
       </Grid>
+    </Grid>
 
     // <div className="row bg-success">
     //   <SidebarBackoffice />
