@@ -31,7 +31,7 @@ const SidebarBackoffice = () => {
               <List sx={{ color: theme.palette.secondary.light }}>
                 <ListItem disablePadding>
                   <ListItemButton className="nav-link">
-                    <i className="fa fa-user-o"></i>
+                    <i className="fa fa-lock"></i>
                     <Link
                       to="/backoffice/admin"
                       className="nav-link"
