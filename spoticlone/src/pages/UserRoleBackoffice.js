@@ -60,7 +60,6 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-    <div>
       <Grid container spacing={{ xs: 3 }}>
         <SidebarBackoffice />
         <Grid item xs={10} className="bg-success">
@@ -105,7 +104,6 @@ const UserRoleBackoffice = () => {
           </Container>
         </Grid>
       </Grid>
-    </div>
 
     // <div className="row bg-success">
     //   <SidebarBackoffice />

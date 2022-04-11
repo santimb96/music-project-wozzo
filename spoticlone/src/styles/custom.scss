@@ -76,7 +76,7 @@ html {
 
     .table-head-item{
      display: flex;
-     justify-self: center;
+     justify-content: center;
      tr{
        color: white;
      } 
@@ -94,6 +94,7 @@ html {
 
       .table-content {
         color: white;
+        background-color: $darkColor;
       }
   }
 }

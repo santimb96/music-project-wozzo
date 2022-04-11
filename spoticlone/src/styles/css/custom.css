@@ -11176,7 +11176,7 @@ html body .nav-link .fa {
 }
 html body .table-head-item {
   display: flex;
-  justify-self: center;
+  justify-content: center;
 }
 html body .table-head-item tr {
   color: white;
@@ -11193,6 +11193,7 @@ html body .table-head-item .input {
 }
 html body .table-content {
   color: white;
+  background-color: #212529;
 }
 
 /*# sourceMappingURL=custom.css.map */
