@@ -96,7 +96,7 @@ const UserBackoffice = () => {
     setName(user.name);
     setEmail(user.email);
     setRole(roleName.role);
-    setRoleId(user.userRoleId);
+    setRoleId(roleName.id);
     handleOpenForm();
   };
 
@@ -122,9 +122,10 @@ const UserBackoffice = () => {
   };
 
   const editUser = () => {
+    const roleName = ROLES.find(r => r.role === role);
     const newUser = {
       name, 
-      userRoleId: roleId,
+      userRoleId: roleName.id,
       email, 
       password
     }
