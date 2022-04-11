@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
-import { createUser, getUsers, removeUser } from "../services/user.js";
+import { createUser, getUsers, removeUser, updateUser } from "../services/user.js";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -37,6 +37,7 @@ const UserBackoffice = () => {
   const [passRepeat, setPassRepeat] = useState("");
   const [role, setRole] = useState("user");
   const [id, setId] = useState("");
+  const [roleId, setRoleId] = useState(null);
 
   /**
    * DELETE MODAL
@@ -90,10 +91,13 @@ const UserBackoffice = () => {
 
   const setData = (user) => {
     const roleName = ROLES.find(r => r.id === user.userRoleId);
+    console.log(roleName)
     setId(user._id);
     setName(user.name);
     setEmail(user.email);
     setRole(roleName.role);
+    setRoleId(user.userRoleId);
+    handleOpenForm();
   };
 
   const postUser = () => {
@@ -116,6 +120,22 @@ const UserBackoffice = () => {
       })
       .catch((err) => console.error(err));
   };
+
+  const editUser = () => {
+    const newUser = {
+      name, 
+      userRoleId: roleId,
+      email, 
+      password
+    }
+    updateUser(id, newUser, token)
+      .then(user => {
+        console.log(user);
+        setOpenForm(false);
+        getData();
+      })
+      .catch(err => console.warn(err));
+  }
 
   console.log(role);
   return (
@@ -254,7 +274,7 @@ const UserBackoffice = () => {
                           >
                             Crear
                           </Button>{" "}
-                          <Button className="btn-modal-form">Actualizar</Button>
+                          <Button onClick={() => editUser()} className="btn-modal-form">Actualizar</Button>
                         </div>
                       </Typography>
                     </Box>

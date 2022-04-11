@@ -118,10 +118,21 @@ const register = (name, email, password) =>
     };
   });
 
-  const updateUser = (id, token) => new Promise((resolve, reject) => {
+  const updateUser = (id, edited, token) => new Promise((resolve, reject) => {
+    console.log(JSON.stringify(edited));
     if(!id && !token){
-      reject("E")
+      reject("Error en parámetros");
     }
+    fetch(`${BASE_URI_USER}/${id}`,{
+      method: 'PUT',
+      headers:  {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(edited)
+    })
+    .then(res => resolve(res.json()))
+    .catch(err => reject(err));
   }); 
 
-export { login, register, autoLogin, getUsers, createUser, removeUser };
+export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser };
