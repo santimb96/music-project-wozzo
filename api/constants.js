@@ -1,1 +1,1 @@
-export const EXPIRE_DATE = 1440; // 24 hours
+export const EXPIRE_DATE = '24h'; // 24 hours

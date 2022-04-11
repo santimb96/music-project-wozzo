@@ -1,12 +1,19 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 $darkColor: #212529;
+$secondaryColor: #198754;
+
+%itemHorizontal {
+  display: flex;
+  justify-content: center;
+
+}
 
 html {
-  height: 100%;
   body {
-    min-height: 100%;
-
+    .spinner-table-loading{
+      @extend %itemHorizontal;
+    }
     .nav-bg-color {
       background-color: green;
 
@@ -48,8 +55,22 @@ html {
         background-color: green;
       }
     }
+    .nav-link {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      height: 4rem;
+      margin-left: 4%;
+      margin-right: 4%;
+      transition: 0.3s;
+      color: white;
+      i {
+        color: white;
+      }
+    }
     .nav-link:hover {
-      background-color: green !important;
+      background-color: $secondaryColor;
+      color: white;
     }
 
     .nav-link .fa {
@@ -60,20 +81,125 @@ html {
     //     transform: rotate(360deg)
     // }
 
+    .table-head-item {
+      display: flex;
+      justify-content: space-around;
+      padding-top: 3rem;
+
+      tr {
+        color: white;
+      }
+      
+    }
+    .btn-modal-form{
+        color: white;
+        padding: 1rem;
+        width: 50%;
+        margin: 1rem;
+        transition: 0.1s;
+    }
+    .btn-modal-form:hover{
+      background-color: $secondaryColor;
+    }
+    
     .input {
+      font-size: 1rem;
+      padding-left: 1rem;
       display: flex;
       justify-content: center;
-      min-width: 50vw;
-      background-color: white;
-      border-radius: 5px;
-      margin: 2rem;
-      padding: 10px;
+      margin: 1rem;
+      height: 7%;
+      
+      input{
+        height: 10px;
+        border-radius: 5px;
+        background-color: white;
+        transition: 0.2s;
+      }
+      
+      
     }
-    .table-container {
-      background-color: $darkColor;
+    .table-content {
       color: white;
-      .table-content {
+      background-color: $darkColor;
+    }
+
+    .modal-delete {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400;
+      background-color: $darkColor;
+      padding: 5rem;
+      color: white;
+      border: 2px solid $secondaryColor;
+      border-radius: 5px;
+      outline: none;
+    }
+    .typo-flex {
+      display: flex;
+      justify-content: space-around;
+
+      .btn-modal {
         color: white;
+        padding: 1rem;
+        width: 10%;
+        margin: 1rem;
+        transition: 0.1s;
+      }
+
+      .btn-modal:hover {
+        background-color: $secondaryColor;
+      }
+      .btn-delete:hover {
+        background-color: red;
+      }
+    }
+    .btn-open-form{
+      font-size: 1.5rem;
+      color: white;
+      margin: 0.8rem;
+      transition: 0.1s;
+  }
+  .btn-open-form:hover{
+    background-color: $secondaryColor;
+  }
+    //SPINNER LOADING
+
+    .lds-ring {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+    .lds-ring div {
+      box-sizing: border-box;
+      display: block;
+      position: absolute;
+      width: 64px;
+      height: 64px;
+      margin: 8px;
+      border: 8px solid #fff;
+      border-radius: 50%;
+      animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+      border-color: #fff transparent transparent transparent;
+    }
+    .lds-ring div:nth-child(1) {
+      animation-delay: -0.45s;
+    }
+    .lds-ring div:nth-child(2) {
+      animation-delay: -0.3s;
+    }
+    .lds-ring div:nth-child(3) {
+      animation-delay: -0.15s;
+    }
+    @keyframes lds-ring {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
       }
     }
   }
