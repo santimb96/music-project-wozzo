@@ -3,7 +3,7 @@ import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import { createUser, getUsers, removeUser } from "../services/user.js";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
   TableCell,
@@ -15,7 +15,11 @@ import {
 import { InputBase } from "@mui/material";
 import Container from "@mui/material/Container";
 import theme from "../palette/palette";
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -28,6 +32,21 @@ const UserBackoffice = () => {
   const [passRepeat, setPassRepeat] = useState("");
   const [role, setRole] = useState(null);
   const [id, setId] = useState("");
+
+  /**
+   * DELETE MODAL
+   */
+  const [openDelete, setOpenDelete] = useState(false);
+  const handleOpenDelete = (userId) => {
+    setOpenDelete(true);
+    setId(userId);
+  };
+    
+  const handleCloseDelete = () => setOpenDelete(false);
+
+  /**
+   * FORM MODAL TODO
+   */
 
   const getData = () => {
     getUsers(token)
@@ -80,8 +99,8 @@ const UserBackoffice = () => {
   const deleteUser = (id) => {
     removeUser(id, token)
       .then((user) => {
-        console.log(user);
         getData();
+        setOpenDelete(false);
       })
       .catch((err) => console.error(err));
   };
@@ -103,75 +122,99 @@ const UserBackoffice = () => {
                 onChange={(e) => setText(e.target.value)}
               />
             </div>
-            <TableContainer component={Paper} className="table-content" >
-            <Table
-              size="medium"
-              aria-label="a dense table"
-              className="table-content"
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell
-                    style={{ color: theme.palette.secondary.light }}
-                    align="left"
-                  >
-                    Nombre
-                  </TableCell>
-                  <TableCell
-                    style={{ color: theme.palette.secondary.light }}
-                    align="left"
-                  >
-                    Email
-                  </TableCell>
-                  <TableCell
-                    style={{ color: theme.palette.secondary.light }}
-                    align="left"
-                  >
-                    Rol
-                  </TableCell>
-                  <TableCell
-                    style={{ color: theme.palette.secondary.light }}
-                    align="left"
-                  >
-                    Borrar
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {itemsToShow()?.map((user) => (
-                  <TableRow
-                    key={user.name}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
+            <TableContainer component={Paper} className="table-content">
+              <Table
+                size="medium"
+                aria-label="a dense table"
+                className="table-content"
+              >
+                <TableHead>
+                  
+                    <Modal
+                      open={openDelete}
+                      onClose={handleCloseDelete}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                      disableEnforceFocus 
+                    >
+                      <Box className="modal-delete">
+                        <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                        >
+                          ¿Estás seguro de que quieres borrarlo?
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          <div className="typo-flex">
+                          <Button onClick={() => deleteUser(id)} className="btn-modal btn-delete">Sí</Button> <Button className="btn-modal " onClick={handleCloseDelete}>No</Button>
+                          </div>
+                        </Typography>
+                      </Box>
+                    </Modal>
+                  
+                  <TableRow>
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
                       align="left"
                     >
-                      {user.name}
+                      Nombre
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
                       align="left"
                     >
-                      {user.email}
+                      Email
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
                       align="left"
                     >
-                      {user.userRoleId}
+                      Rol
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
                       align="left"
-                      onClick={() => deleteUser(user._id)}
                     >
-                      <DeleteIcon />
+                      Borrar
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {itemsToShow()?.map((user) => (
+                    <TableRow
+                      key={user.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {user.name}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {user.email}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {user.userRoleId}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                        onClick={() => handleOpenDelete(user._id)}
+                      >
+                        <DeleteIcon />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </TableContainer>
           </Box>
         </Container>

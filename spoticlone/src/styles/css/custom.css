@@ -11195,5 +11195,35 @@ html body .table-content {
   color: white;
   background-color: #212529;
 }
+html body .modal-delete {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400;
+  background-color: #212529;
+  padding: 5rem;
+  color: white;
+  border: 2px solid #198754;
+  border-radius: 5px;
+  outline: none;
+}
+html body .typo-flex {
+  display: flex;
+  justify-content: space-around;
+}
+html body .typo-flex .btn-modal {
+  color: white;
+  padding: 1rem;
+  width: 10%;
+  margin: 1rem;
+  transition: 0.1s;
+}
+html body .typo-flex .btn-modal:hover {
+  background-color: #198754;
+}
+html body .typo-flex .btn-delete:hover {
+  background-color: red;
+}
 
 /*# sourceMappingURL=custom.css.map */
