@@ -24,6 +24,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from '@mui/material/colors';
+import ROLES from "../utils/roleId";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -34,7 +35,7 @@ const UserBackoffice = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passRepeat, setPassRepeat] = useState("");
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("user");
   const [id, setId] = useState("");
 
   /**
@@ -88,11 +89,11 @@ const UserBackoffice = () => {
   };
 
   const setData = (user) => {
-    //const {name, email, password, userRoleId } = user;
+    const roleName = ROLES.find(r => r.id === user.userRoleId);
     setId(user._id);
     setName(user.name);
     setEmail(user.email);
-    setRole(user.userRoleId);
+    setRole(roleName.role);
   };
 
   const postUser = () => {
@@ -100,6 +101,8 @@ const UserBackoffice = () => {
       createUser(name, email, password, role, token)
         .then((user) => {
           console.log(user);
+          setOpenForm(false);
+          getData();
         })
         .catch((err) => console.error(err));
     }
@@ -130,7 +133,7 @@ const UserBackoffice = () => {
                 placeholder="busca..."
                 onChange={(e) => setText(e.target.value)}
               />
-            <Button className="btn-open-form" onClick={handleOpenForm}><i class="fa fa-pencil-square-o" aria-hidden="true"></i></Button>
+            <Button className="btn-open-form" onClick={handleOpenForm}><i className="fa fa-pencil-square-o" aria-hidden="true"></i></Button>
             </div>
 
             <TableContainer component={Paper} className="table-content">
@@ -226,18 +229,20 @@ const UserBackoffice = () => {
                         />
                         <RadioGroup
                           aria-labelledby="demo-radio-buttons-group-label"
-                          defaultValue="user"
+                          defaultValue={role}
                           name="radio-buttons-group"
                         >
                           <FormControlLabel
                             value="user"
                             control={<Radio />}
                             label="Usuario"
+                            onChange={(e) => setRole(e.target.value)}
                           />
                           <FormControlLabel
                             value="admin"
                             control={<Radio />}
                             label="Administrador"
+                            onChange={(e) => setRole(e.target.value)}
                           />
                         </RadioGroup>
                       </div>
@@ -287,6 +292,7 @@ const UserBackoffice = () => {
                   <TableRow
                     key={user.name}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    onClick={() => setData(user)}
                   >
                     <TableCell
                       style={{ color: theme.palette.secondary.light }}
