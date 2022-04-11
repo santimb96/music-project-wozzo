@@ -11174,20 +11174,24 @@ html body .nav-link:hover {
 html body .nav-link .fa {
   transition: all 1s;
 }
-html body .input {
+html body .table-head-item {
+  display: flex;
+  justify-self: center;
+}
+html body .table-head-item tr {
+  color: white;
+}
+html body .table-head-item .input {
+  font-size: 1rem;
+  padding-left: 1rem;
   display: flex;
   justify-content: center;
-  min-width: 50vw;
   background-color: white;
   border-radius: 5px;
   margin: 2rem;
-  padding: 10px;
+  height: 7%;
 }
-html body .table-container {
-  background-color: #212529;
-  color: white;
-}
-html body .table-container .table-content {
+html body .table-content {
   color: white;
 }
 

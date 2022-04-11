@@ -5,12 +5,10 @@ import { removeUserStorage } from "../../utils/localStorage.js";
 import Grid from "@mui/material/Grid";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
-import Container from "@mui/material/Container";
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
@@ -21,15 +19,13 @@ const SidebarBackoffice = () => {
     removeUserStorage();
   };
 
-  return (
-    
-      <Grid container spacing={{ xs: 3 }}>
+  return (  
         <Grid
           item
           xs={2}
-          sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
+          sx={{ bgcolor: theme.palette.primary.main }}
         >
-          <Box>
+          <Box sx={{height: "100vh"}}>
             <nav aria-label="secondary mailbox folders">
               <List sx={{ color: theme.palette.secondary.light }}>
                 <ListItem disablePadding>
@@ -39,7 +35,7 @@ const SidebarBackoffice = () => {
                       to="/backoffice/admin"
                       className="nav-link"
                     >
-                    <ListItemText c primary="Admin" />
+                    <ListItemText primary="Admin" />
                     </Link>
                   </ListItemButton>
                 </ListItem>
@@ -50,7 +46,7 @@ const SidebarBackoffice = () => {
                       to="/backoffice/roles"
                       className="nav-link"
                     >
-                    <ListItemText c primary="Roles" />
+                    <ListItemText primary="Roles" />
                     </Link>
                   </ListItemButton>
                 </ListItem>
@@ -74,7 +70,7 @@ const SidebarBackoffice = () => {
                       to="/backoffice/artists"
                       className="nav-link"
                     >
-                    <ListItemText c primary="Artistas" />
+                    <ListItemText primary="Artistas" />
                     </Link>
                   </ListItemButton>
                 </ListItem>
@@ -86,13 +82,13 @@ const SidebarBackoffice = () => {
                       to="/backoffice/songs"
                       className="nav-link"
                     >
-                    <ListItemText c primary="Canciones" />
+                    <ListItemText primary="Canciones" />
                     </Link>
                   </ListItemButton>
                 </ListItem>
                 <hr />
                 <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
+                  <ListItemButton className="nav-link" onClick={logOut}>
                     <i className="fa fa-user-circle"></i>
                     <Link to="/login" className="nav-link">
                       {" "}
@@ -104,12 +100,6 @@ const SidebarBackoffice = () => {
             </nav>
           </Box>
         </Grid>
-        <Grid item xs={10} className="bg-success">
-          <div>
-            <h1>ferhfgueh</h1>
-          </div>
-        </Grid>
-      </Grid>
 
     // <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
     // <div className="col-4 vh-100 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>

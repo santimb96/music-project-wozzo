@@ -74,21 +74,26 @@ html {
     //     transform: rotate(360deg)
     // }
 
+    .table-head-item{
+     display: flex;
+     justify-self: center;
+     tr{
+       color: white;
+     } 
     .input {
+      font-size: 1rem;
+      padding-left: 1rem;
       display: flex;
       justify-content: center;
-      min-width: 50vw;
       background-color: white;
       border-radius: 5px;
       margin: 2rem;
-      padding: 10px;
+      height: 7%;
     }
-    .table-container {
-      background-color: $darkColor;
-      color: white;
+    }
+
       .table-content {
         color: white;
       }
-    }
   }
 }
