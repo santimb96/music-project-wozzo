@@ -11123,6 +11123,15 @@ html body .spinner-table-loading {
   justify-content: center;
 }
 
+html body .display-visible {
+  display: grid;
+}
+html body .sidebar-backoffice {
+  display: grid;
+}
+html body .show-sidebar-button {
+  display: none;
+}
 html body .nav-bg-color {
   background-color: green;
 }
@@ -11212,14 +11221,13 @@ html body .input input {
   transition: 0.2s;
 }
 html body .text-tarea {
-  font-size: 1rem;
-  padding-left: 1rem;
+  padding-left: 0.8rem;
   display: flex;
   justify-content: center;
   margin: 1rem;
 }
 html body .text-tarea textarea {
-  padding: 2rem;
+  height: 10px;
   border-radius: 5px;
   background-color: white;
   transition: 0.2s;
@@ -11237,7 +11245,8 @@ html body .btn-dropdown:hover {
   color: black;
   background-color: white;
 }
-html body .btn-dropdown:focus, html body .btn-dropdown:active {
+html body .btn-dropdown:focus,
+html body .btn-dropdown:active {
   color: black;
   background-color: white;
   outline: none;
@@ -11335,6 +11344,15 @@ html body .lds-ring div:nth-child(3) {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  html body .sidebar-backoffice {
+    display: none;
+  }
+  html body .show-sidebar-button {
+    display: grid;
   }
 }
 

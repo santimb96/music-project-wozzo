@@ -13,7 +13,17 @@ html {
     .spinner-table-loading {
       @extend %itemHorizontal;
     }
-    
+    .display-visible {
+      display: grid;
+    }
+
+    .sidebar-backoffice{
+      display: grid;
+    }
+    .show-sidebar-button {
+      display: none;
+    }
+  
     .nav-bg-color {
       background-color: green;
 
@@ -117,14 +127,13 @@ html {
       }
     }
 
-    .text-tarea{
-      font-size: 1rem;
-      padding-left: 1rem;
+    .text-tarea {
+      padding-left: 0.8rem;
       display: flex;
       justify-content: center;
       margin: 1rem;
       textarea {
-        padding: 2rem;
+        height: 10px;
         border-radius: 5px;
         background-color: white;
         transition: 0.2s;
@@ -141,18 +150,18 @@ html {
       transition: 0.2;
     }
 
-
     .btn-dropdown:hover {
       color: black;
-      background-color:white;
+      background-color: white;
     }
-    .btn-dropdown:focus, .btn-dropdown:active {
+    .btn-dropdown:focus,
+    .btn-dropdown:active {
       color: black;
-      background-color:white;
+      background-color: white;
       outline: none;
       box-shadow: none;
     }
-    .dropdown-menu{
+    .dropdown-menu {
       width: 10%;
       background-color: white;
       color: $secondaryColor;
@@ -168,7 +177,6 @@ html {
       color: white;
       transition: 0.2;
     }
-  
 
     .table-content {
       color: $secondaryColor;
@@ -254,4 +262,18 @@ html {
       }
     }
   }
+}
+
+@media (max-width: 600px){
+  html{
+    body {
+      .sidebar-backoffice {
+        display: none;
+      }
+      .show-sidebar-button {
+        display: grid;
+      }
+    }
+  }
+  
 }

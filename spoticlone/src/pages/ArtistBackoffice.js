@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
-import { getArtists, deleteArtist, getArtistsById, postArtist, updateArtist } from "../services/artists";
+import {
+  getArtists,
+  deleteArtist,
+  getArtistsById,
+  postArtist,
+  updateArtist,
+} from "../services/artists";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,7 +32,7 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
-import TextTareaAutosize  from "@mui/material/TextareaAutosize";
+import TextTareaAutosize from "@mui/material/TextareaAutosize";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -38,7 +44,23 @@ const ArtistBackoffice = () => {
   const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
 
+  /**
+   *
+   * OPEN SIDEBAR
+   */
+
+  const handleOpenSidebar = () => {
+    if (openSidebar) {
+      document.getElementById("sidebar").style.display = "none";
+      setOpenSidebar(false);
+    } else {
+      document.getElementById("sidebar").style.display = "grid";
+      document.getElementById("sidebar").style.width = "100%";
+      setOpenSidebar(true);
+    }
+  };
   /**
    * ERROR MODAL
    */
@@ -107,11 +129,7 @@ const ArtistBackoffice = () => {
   };
 
   const validateData = () => {
-    if (
-      name?.length &&
-      description?.length &&
-      profileImage?.length
-    ) {
+    if (name?.length && description?.length && profileImage?.length) {
       return true;
     }
     return false;
@@ -127,7 +145,6 @@ const ArtistBackoffice = () => {
 
   const createArtist = () => {
     if (validateData()) {
-
       const artist = {
         name,
         description,
@@ -157,20 +174,20 @@ const ArtistBackoffice = () => {
   };
 
   const editArtist = () => {
-    if(validateData()){
-    const artist = {
-      name,
-      description,
-      profileImage
-    };
+    if (validateData()) {
+      const artist = {
+        name,
+        description,
+        profileImage,
+      };
 
-    updateArtist(id, artist, token)
-      .then((artist) => {
-        console.log(artist);
-        setOpenForm(false);
-        getData();
-      })
-      .catch((err) => console.warn(err));
+      updateArtist(id, artist, token)
+        .then((artist) => {
+          console.log(artist);
+          setOpenForm(false);
+          getData();
+        })
+        .catch((err) => console.warn(err));
     } else {
       handleOpenError();
       handleCloseError();
@@ -179,9 +196,18 @@ const ArtistBackoffice = () => {
   return (
     <Grid container spacing={{ xs: 0 }}>
       <SidebarBackoffice />
-      <Grid item xs={10} className="bg-success">
-        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+      <Grid item xs={12} sm={10} className="bg-success">
+        <Box
+          sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
+          className="grid-item"
+        >
           <div className="table-head-item">
+            <button
+              onClick={() => handleOpenSidebar()}
+              className="show-sidebar-button"
+            >
+              SHOW!
+            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -192,7 +218,11 @@ const ArtistBackoffice = () => {
             </Button>
           </div>
 
-          <TableContainer component={Paper} className="table-content" sx={{height: '80%'}}>
+          <TableContainer
+            component={Paper}
+            className="table-content"
+            sx={{ height: "80%" }}
+          >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -275,14 +305,15 @@ const ArtistBackoffice = () => {
                           onChange={(e) => setName(e.target.value)}
                         />
                         <div className="text-tarea">
-                        <TextTareaAutosize
-                          type="text"
-                          value={description}
-                          id="outlined-basic"
-                          variant="outlined"
-                          placeholder="descripcion"
-                          onChange={(e) => setDescription(e.target.value)}
-                        />
+                          <TextTareaAutosize
+                            minRows={2}
+                            type="text"
+                            value={description}
+                            id="outlined-basic"
+                            variant="outlined"
+                            placeholder="descripcion"
+                            onChange={(e) => setDescription(e.target.value)}
+                          />
                         </div>
                         <TextField
                           className="input"
@@ -330,7 +361,7 @@ const ArtistBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                     Descripción 
+                      Descripción
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}

@@ -22,10 +22,11 @@ const SidebarBackoffice = () => {
   return (  
         <Grid
           item
-          xs={2}
+          xs={0} sm={2}
           sx={{ bgcolor: theme.palette.primary.main }}
+          
         >
-          <Box sx={{height: 1}}>
+          <Box sx={{height: 1}} className="sidebar-backoffice" id="sidebar">
             <nav aria-label="secondary mailbox folders">
               <List sx={{ color: theme.palette.secondary.light }}>
                 <ListItem disablePadding>
