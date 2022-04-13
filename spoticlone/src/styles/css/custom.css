@@ -11215,7 +11215,10 @@ html body .btn-dropdown {
   color: white;
   background-color: #198754;
   min-width: 50%;
-  transition: 0.3s;
+  transition: 0.2;
+  margin-top: 5%;
+  margin-bottom: 22%;
+  transition: 0.2;
 }
 html body .btn-dropdown:hover {
   color: black;
@@ -11226,6 +11229,22 @@ html body .btn-dropdown:focus, html body .btn-dropdown:active {
   background-color: white;
   outline: none;
   box-shadow: none;
+}
+html body .dropdown-menu {
+  background-color: white;
+  color: #198754;
+  border-radius: 5px;
+  padding: 0.5rem;
+  transition: 0.2;
+}
+html body .dropdown-item {
+  text-align: center;
+  padding: 0.5rem;
+}
+html body .dropdown-item:hover {
+  background-color: #198754;
+  color: white;
+  transition: 0.2;
 }
 html body .table-content {
   color: #198754;

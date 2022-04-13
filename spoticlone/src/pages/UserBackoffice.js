@@ -31,10 +31,6 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -48,7 +44,13 @@ const UserBackoffice = () => {
   const [role, setRole] = useState("user");
   const [id, setId] = useState("");
   const [roleId, setRoleId] = useState(null);
+  const [openError, setOpenError] = useState(false);
 
+  /**
+   * ERROR MODAL
+   */
+  const handleOpenError = () => setOpenError(true);
+  const handleCloseError = () => setTimeout(() => setOpenError(false), 3000);
   /**
    * DELETE MODAL
    */
@@ -115,6 +117,20 @@ const UserBackoffice = () => {
     return users;
   };
 
+  const validateData = () => {
+    if (
+      name?.length &&
+      email?.length &&
+      password?.length &&
+      passRepeat?.length
+    ) {
+      if (password === passRepeat && email.indexOf("@") !== -1) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const setData = (user) => {
     const roleName = ROLES.find((r) => r.id === user.userRoleId);
     console.log(roleName);
@@ -127,7 +143,7 @@ const UserBackoffice = () => {
   };
 
   const postUser = () => {
-    if (password === passRepeat) {
+    if (validateData()) {
       createUser(name, email, password, role, token)
         .then((user) => {
           console.log(user);
@@ -135,6 +151,9 @@ const UserBackoffice = () => {
           getData();
         })
         .catch((err) => console.error(err));
+    } else {
+      handleOpenError();
+      handleCloseError();
     }
   };
 
@@ -148,6 +167,7 @@ const UserBackoffice = () => {
   };
 
   const editUser = () => {
+    if(validateData()){
     const roleName = ROLES.find((r) => r.role === role);
     const newUser = {
       name,
@@ -162,6 +182,10 @@ const UserBackoffice = () => {
         getData();
       })
       .catch((err) => console.warn(err));
+    } else {
+      handleOpenError();
+      handleCloseError();
+    }
   };
 
   console.log(name);
@@ -193,6 +217,24 @@ const UserBackoffice = () => {
                 className="table-content"
               >
                 <TableHead>
+                  <Modal
+                    open={openError}
+                    onClose={handleCloseError}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    disableEnforceFocus
+                  >
+                    <Box className="modal-delete">
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        ¡Error de validación de los campos!
+                      </Typography>
+                    </Box>
+                  </Modal>
+
                   <Modal
                     open={openDelete}
                     onClose={handleCloseDelete}
@@ -242,8 +284,6 @@ const UserBackoffice = () => {
                           className="input"
                           id="outlined-basic"
                           placeholder="nombre"
-                          error={name === ""}
-                          helperText={name === "" ? "Campo requerido!" : ""}
                           onChange={(e) => setName(e.target.value)}
                         />
                         <TextField
@@ -253,8 +293,6 @@ const UserBackoffice = () => {
                           id="outlined-basic"
                           variant="outlined"
                           placeholder="email"
-                          error={email === ""}
-                          helperText={email === "" ? "Campo requerido!" : ""}
                           onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField
@@ -264,8 +302,6 @@ const UserBackoffice = () => {
                           id="outlined-basic"
                           variant="outlined"
                           placeholder="contraseña"
-                          error={password === ""}
-                          helperText={password === "" ? "Campo requerido!" : ""}
                           onChange={(e) => setPassword(e.target.value)}
                         />
                         <TextField
@@ -275,12 +311,6 @@ const UserBackoffice = () => {
                           id="outlined-basic"
                           variant="outlined"
                           placeholder="repite contraseña"
-                          error={passRepeat === "" || password !== passRepeat}
-                          helperText={
-                            passRepeat === "" || password !== passRepeat
-                              ? "Campo requerido o contraseña no igual!"
-                              : ""
-                          }
                           onChange={(e) => setPassRepeat(e.target.value)}
                         />
                         <div class="dropdown d-flex justify-content-center">
@@ -292,52 +322,30 @@ const UserBackoffice = () => {
                             aria-haspopup="true"
                             aria-expanded="false"
                           >
-                            {role === 'user' ? 'Usuario' : 'Administrador'}
+                            {role === "user" ? "Usuario" : "Administrador"}
                           </button>
                           <div
                             className="dropdown-menu"
                             aria-labelledby="dropdownMenu2"
                           >
-                            <button value={"user"} onClick={(e) => setRole(e.target.value)} className="dropdown-item" type="button">
+                            <button
+                              value={"user"}
+                              onClick={(e) => setRole(e.target.value)}
+                              className="dropdown-item"
+                              type="button"
+                            >
                               Usuario
                             </button>
-                            <button value={"admin"} onClick={(e) => setRole(e.target.value)} className="dropdown-item" type="button">
+                            <button
+                              value={"admin"}
+                              onClick={(e) => setRole(e.target.value)}
+                              className="dropdown-item"
+                              type="button"
+                            >
                               Administrador
                             </button>
                           </div>
                         </div>
-                        {/* <FormControl fullWidth>
-                          <InputLabel id="demo-simple-select-label">
-                            Rol
-                          </InputLabel>
-                          <Select
-                            value={role}
-                            label="Rol"
-                            onChange={(e) => setRole(e.target.value)}
-                          >
-                            <MenuItem className="input-dropdown" value={"user"}>Usuario</MenuItem>
-                            <MenuItem className="input-dropdown" value={"admin"}>Administrador</MenuItem>
-                          </Select>
-                        </FormControl> */}
-
-                        {/* <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            defaultValue={role}
-                            name="radio-buttons-group"
-                          >
-                            <FormControlLabel
-                              value="user"
-                              control={<Radio />}
-                              label="Usuario"
-                              onChange={(e) => setRole(e.target.value)}
-                            />
-                            <FormControlLabel
-                              value="admin"
-                              control={<Radio />}
-                              label="Administrador"
-                              onChange={(e) => setRole(e.target.value)}
-                            />
-                          </RadioGroup> */}
                       </div>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="typo-flex">

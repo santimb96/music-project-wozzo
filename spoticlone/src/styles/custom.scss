@@ -115,13 +115,17 @@ html {
         transition: 0.2s;
       }
     }
-
     .btn-dropdown {
       color: white;
       background-color: $secondaryColor;
       min-width: 50%;
-      transition: 0.3s;
+      transition: 0.2;
+      margin-top: 5%;
+      margin-bottom: 22%;
+      transition: 0.2;
     }
+
+
     .btn-dropdown:hover {
       color: black;
       background-color:white;
@@ -132,6 +136,23 @@ html {
       outline: none;
       box-shadow: none;
     }
+    .dropdown-menu{
+      background-color: white;
+      color: $secondaryColor;
+      border-radius: 5px;
+      padding: 0.5rem;
+      transition: 0.2;
+    }
+    .dropdown-item {
+      text-align: center;
+      padding: 0.5rem;
+    }
+    .dropdown-item:hover {
+      background-color: $secondaryColor;
+      color: white;
+      transition: 0.2;
+    }
+  
 
     .table-content {
       color: $secondaryColor;
