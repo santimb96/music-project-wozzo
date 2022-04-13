@@ -61,11 +61,10 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-    <Grid container spacing={{ xs: 3 }}>
+    <Grid container spacing={{ xs:  0}}>
       <SidebarBackoffice />
       <Grid item xs={10} className="bg-success">
-        <Container maxWidth="sm">
-          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh"}}>
           <div className="table-head-item">
               <TextField
                 className="input"
@@ -124,7 +123,6 @@ const UserRoleBackoffice = () => {
               </Table>
             )}
           </Box>
-        </Container>
       </Grid>
     </Grid>
 

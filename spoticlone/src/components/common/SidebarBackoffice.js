@@ -9,7 +9,6 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
-import Container from "@mui/material/Container"
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
