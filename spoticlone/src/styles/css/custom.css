@@ -11211,6 +11211,19 @@ html body .input input {
   background-color: white;
   transition: 0.2s;
 }
+html body .text-tarea {
+  font-size: 1rem;
+  padding-left: 1rem;
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+html body .text-tarea textarea {
+  padding: 2rem;
+  border-radius: 5px;
+  background-color: white;
+  transition: 0.2s;
+}
 html body .btn-dropdown {
   color: white;
   background-color: #198754;
@@ -11231,10 +11244,10 @@ html body .btn-dropdown:focus, html body .btn-dropdown:active {
   box-shadow: none;
 }
 html body .dropdown-menu {
+  width: 10%;
   background-color: white;
   color: #198754;
   border-radius: 5px;
-  padding: 0.5rem;
   transition: 0.2;
 }
 html body .dropdown-item {
