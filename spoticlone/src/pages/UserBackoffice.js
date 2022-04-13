@@ -205,7 +205,7 @@ const UserBackoffice = () => {
             </Button>
           </div>
 
-          <TableContainer component={Paper} className="table-content">
+          <TableContainer component={Paper} className="table-content" sx={{height: '80%'}}>
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -215,6 +215,7 @@ const UserBackoffice = () => {
                 size="medium"
                 aria-label="a dense table"
                 className="table-content"
+                sx={{ height: "max-content" }}
               >
                 <TableHead>
                   <Modal
