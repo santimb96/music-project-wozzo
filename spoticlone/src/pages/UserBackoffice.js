@@ -45,7 +45,23 @@ const UserBackoffice = () => {
   const [id, setId] = useState("");
   const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
 
+  /**
+   *
+   * OPEN SIDEBAR
+   */
+
+  const handleOpenSidebar = () => {
+    if (openSidebar) {
+      document.getElementById("sidebar").style.display = "none";
+      setOpenSidebar(false);
+    } else {
+      document.getElementById("sidebar").style.display = "grid";
+      document.getElementById("sidebar").style.width = "100%";
+      setOpenSidebar(true);
+    }
+  };
   /**
    * ERROR MODAL
    */
@@ -190,11 +206,21 @@ const UserBackoffice = () => {
 
   console.log(name);
   return (
-    <Grid container spacing={{ xs: 0 }}>
+    <div className="row">
       <SidebarBackoffice />
-      <Grid item xs={10} className="bg-success">
-        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+      <div className="col-12 col-md-10 p-0">
+        <Box
+          sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
+          
+        >
           <div className="table-head-item">
+            <button
+              onClick={() => handleOpenSidebar()}
+              className="btn hamburguer-button"
+             
+            >
+              <i class="fa fa-bars" aria-hidden="true"></i>
+            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -437,8 +463,8 @@ const UserBackoffice = () => {
             )}
           </TableContainer>
         </Box>
-      </Grid>
-    </Grid>
+      </div>
+      </div>
   );
 };
 

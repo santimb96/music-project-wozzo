@@ -194,19 +194,20 @@ const ArtistBackoffice = () => {
     }
   };
   return (
-    <Grid container spacing={{ xs: 0 }}>
+    <div className="row">
       <SidebarBackoffice />
-      <Grid item xs={12} sm={10} className="bg-success">
+      <div className="col-12 col-md-10 p-0">
         <Box
           sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
-          className="grid-item"
+          
         >
           <div className="table-head-item">
             <button
               onClick={() => handleOpenSidebar()}
-              className="show-sidebar-button"
+              className="btn hamburguer-button"
+             
             >
-              SHOW!
+              <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
             <TextField
               className="input"
@@ -414,8 +415,8 @@ const ArtistBackoffice = () => {
             )}
           </TableContainer>
         </Box>
-      </Grid>
-    </Grid>
+        </div>
+      </div>
   );
 };
 

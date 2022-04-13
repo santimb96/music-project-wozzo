@@ -32,6 +32,23 @@ const UserRoleBackoffice = () => {
   const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
   const [text, setText] = useState("");
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  /**
+   *
+   * OPEN SIDEBAR
+   */
+
+  const handleOpenSidebar = () => {
+    if (openSidebar) {
+      document.getElementById("sidebar").style.display = "none";
+      setOpenSidebar(false);
+    } else {
+      document.getElementById("sidebar").style.display = "grid";
+      document.getElementById("sidebar").style.width = "100%";
+      setOpenSidebar(true);
+    }
+  };
 
   useEffect(() => {
     getRoles(token)
@@ -61,11 +78,21 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-    <Grid container spacing={{ xs:  0}}>
-      <SidebarBackoffice />
-      <Grid item xs={10} className="bg-success">
-          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh"}}>
-          <div className="table-head-item">
+    <div className="row">
+    <SidebarBackoffice />
+    <div className="col-12 col-md-10 p-0">
+      <Box
+        sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
+        
+      >
+        <div className="table-head-item">
+          <button
+            onClick={() => handleOpenSidebar()}
+            className="btn hamburguer-button"
+           
+          >
+            <i class="fa fa-bars" aria-hidden="true"></i>
+          </button>
               <TextField
                 className="input"
                 placeholder="busca..."
@@ -123,8 +150,8 @@ const UserRoleBackoffice = () => {
               </Table>
             )}
           </Box>
-      </Grid>
-    </Grid>
+     </div>
+     </div>
 
     // <div className="row bg-success">
     //   <SidebarBackoffice />

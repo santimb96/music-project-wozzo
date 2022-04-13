@@ -20,12 +20,8 @@ const SidebarBackoffice = () => {
   };
 
   return (  
-        <Grid
-          item
-          xs={0} sm={2}
-          sx={{ bgcolor: theme.palette.primary.main }}
-          
-        >
+        
+    <div className="col-12 col-md-2 bg-dark">
           <Box sx={{height: 1}} className="sidebar-backoffice" id="sidebar">
             <nav aria-label="secondary mailbox folders">
               <List sx={{ color: theme.palette.secondary.light }}>
@@ -100,7 +96,7 @@ const SidebarBackoffice = () => {
               </List>
             </nav>
           </Box>
-        </Grid>
+          </div>
 
     // <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
     // <div className="col-4 vh-100 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
