@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import {
-  createUser,
-  getUsers,
-  removeUser,
-  updateUser,
-} from "../services/user.js";
+  getArtists,
+  deleteArtist,
+  getArtistsById,
+  postArtist,
+  updateArtist,
+} from "../services/artists";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -31,21 +32,35 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
+import TextTareaAutosize from "@mui/material/TextareaAutosize";
 
-const UserBackoffice = () => {
+const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [users, setUsers] = useState(null);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [artists, setArtists] = useState(null);
+  const [filteredArtists, setFilteredArtists] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passRepeat, setPassRepeat] = useState("");
-  const [role, setRole] = useState("user");
+  const [description, setDescription] = useState("");
+  const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
-  const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
+  const [openSidebar, setOpenSidebar] = useState(false);
 
+  /**
+   *
+   * OPEN SIDEBAR
+   */
+
+  const handleOpenSidebar = () => {
+    if (openSidebar) {
+      document.getElementById("sidebar").style.display = "none";
+      setOpenSidebar(false);
+    } else {
+      document.getElementById("sidebar").style.display = "grid";
+      document.getElementById("sidebar").style.width = "100%";
+      setOpenSidebar(true);
+    }
+  };
   /**
    * ERROR MODAL
    */
@@ -56,9 +71,9 @@ const UserBackoffice = () => {
    */
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenDelete = (userId) => {
+  const handleOpenDelete = (artistId) => {
     setOpenDelete(true);
-    setId(userId);
+    setId(artistId);
   };
 
   const handleCloseDelete = () => setOpenDelete(false);
@@ -72,21 +87,18 @@ const UserBackoffice = () => {
 
   const handleCloseForm = () => {
     setName("");
-    setEmail("");
-    setPassword("");
-    setPassRepeat("");
-    setRole("user");
+    setDescription("");
+    setProfileImage("");
     setId("");
-    setRoleId(null);
 
     setOpenForm(false);
   };
 
   const getData = () => {
-    getUsers(token)
-      .then((user) => {
-        console.log(user);
-        setUsers(user?.users);
+    getArtists(token)
+      .then((artist) => {
+        console.log(artist);
+        setArtists(artist?.artists);
       })
       .catch((err) => console.warn(err));
   };
@@ -96,57 +108,52 @@ const UserBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = users?.filter((user) => {
+    const filtered = artists?.filter((artist) => {
       if (
-        user.name
+        artist.name
           .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim()) ||
-        user.email.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())
+          .includes(text.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
-    setFilteredUsers(filtered);
+    setFilteredArtists(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredUsers;
+      return filteredArtists;
     }
-    return users;
+    return artists;
   };
 
   const validateData = () => {
-    if (
-      name?.length &&
-      email?.length &&
-      password?.length &&
-      passRepeat?.length
-    ) {
-      if (password === passRepeat && email.indexOf("@") !== -1) {
-        return true;
-      }
+    if (name?.length && description?.length && profileImage?.length) {
+      return true;
     }
     return false;
   };
 
-  const setData = (user) => {
-    const roleName = ROLES.find((r) => r.id === user.userRoleId);
-    console.log(roleName);
-    setId(user._id);
-    setName(user.name);
-    setEmail(user.email);
-    setRole(roleName.role);
-    setRoleId(roleName.id);
+  const setData = (artist) => {
+    setId(artist._id);
+    setName(artist.name);
+    setDescription(artist.description);
+    setProfileImage(artist.profileImage);
     handleOpenForm();
   };
 
-  const postUser = () => {
+  const createArtist = () => {
     if (validateData()) {
-      createUser(name, email, password, role, token)
-        .then((user) => {
-          console.log(user);
+      const artist = {
+        name,
+        description,
+        profileImage,
+      };
+
+      postArtist(artist, token)
+        .then((artist) => {
+          console.log(artist);
           setOpenForm(false);
           getData();
         })
@@ -157,44 +164,50 @@ const UserBackoffice = () => {
     }
   };
 
-  const deleteUser = (id) => {
-    removeUser(id, token)
-      .then((user) => {
+  const removeArtist = (id) => {
+    deleteArtist(id, token)
+      .then((artist) => {
         getData();
         setOpenDelete(false);
       })
       .catch((err) => console.error(err));
   };
 
-  const editUser = () => {
-    if(validateData()){
-    const roleName = ROLES.find((r) => r.role === role);
-    const newUser = {
-      name,
-      userRoleId: roleName.id,
-      email,
-      password,
-    };
-    updateUser(id, newUser, token)
-      .then((user) => {
-        console.log(user);
-        setOpenForm(false);
-        getData();
-      })
-      .catch((err) => console.warn(err));
+  const editArtist = () => {
+    if (validateData()) {
+      const artist = {
+        name,
+        description,
+        profileImage,
+      };
+
+      updateArtist(id, artist, token)
+        .then((artist) => {
+          console.log(artist);
+          setOpenForm(false);
+          getData();
+        })
+        .catch((err) => console.warn(err));
     } else {
       handleOpenError();
       handleCloseError();
     }
   };
-
-  console.log(name);
   return (
     <Grid container spacing={{ xs: 0 }}>
       <SidebarBackoffice />
-      <Grid item xs={10} className="bg-success">
-        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+      <Grid item xs={12} sm={10} className="bg-success">
+        <Box
+          sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
+          className="grid-item"
+        >
           <div className="table-head-item">
+            <button
+              onClick={() => handleOpenSidebar()}
+              className="show-sidebar-button"
+            >
+              SHOW!
+            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -205,7 +218,11 @@ const UserBackoffice = () => {
             </Button>
           </div>
 
-          <TableContainer component={Paper} className="table-content" sx={{height: '80%'}}>
+          <TableContainer
+            component={Paper}
+            className="table-content"
+            sx={{ height: "80%" }}
+          >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -254,7 +271,7 @@ const UserBackoffice = () => {
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="typo-flex">
                           <Button
-                            onClick={() => deleteUser(id)}
+                            onClick={() => removeArtist(id)}
                             className="btn-modal btn-delete"
                           >
                             Sí
@@ -287,77 +304,37 @@ const UserBackoffice = () => {
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
                         />
-                        <TextField
-                          className="input"
-                          type="email"
-                          value={email}
-                          id="outlined-basic"
-                          variant="outlined"
-                          placeholder="email"
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-                        <TextField
-                          className="input"
-                          type="password"
-                          value={password}
-                          id="outlined-basic"
-                          variant="outlined"
-                          placeholder="contraseña"
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
-                        <TextField
-                          className="input"
-                          type="password"
-                          value={passRepeat}
-                          id="outlined-basic"
-                          variant="outlined"
-                          placeholder="repite contraseña"
-                          onChange={(e) => setPassRepeat(e.target.value)}
-                        />
-                        <div class="dropdown d-flex justify-content-center">
-                          <button
-                            className="btn btn-dropdown dropdown-toggle"
-                            type="button"
-                            id="dropdownMenu2"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                          >
-                            {role === "user" ? "Usuario" : "Administrador"}
-                          </button>
-                          <div
-                            className="dropdown-menu dropdown-menu-left"
-                            aria-labelledby="dropdownMenu2"
-                          >
-                            <button
-                              value={"user"}
-                              onClick={(e) => setRole(e.target.value)}
-                              className="dropdown-item"
-                              type="button"
-                            >
-                              Usuario
-                            </button>
-                            <button
-                              value={"admin"}
-                              onClick={(e) => setRole(e.target.value)}
-                              className="dropdown-item"
-                              type="button"
-                            >
-                              Administrador
-                            </button>
-                          </div>
+                        <div className="text-tarea">
+                          <TextTareaAutosize
+                            minRows={2}
+                            type="text"
+                            value={description}
+                            id="outlined-basic"
+                            variant="outlined"
+                            placeholder="descripcion"
+                            onChange={(e) => setDescription(e.target.value)}
+                          />
                         </div>
+                        <TextField
+                          className="input"
+                          type="text"
+                          value={profileImage}
+                          id="outlined-basic"
+                          variant="outlined"
+                          placeholder="imagen"
+                          onChange={(e) => setProfileImage(e.target.value)}
+                        />
                       </div>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <div className="typo-flex">
                           <Button
-                            onClick={() => postUser()}
+                            onClick={() => createArtist()}
                             className="btn-modal-form"
                           >
                             Crear
                           </Button>{" "}
                           <Button
-                            onClick={() => editUser()}
+                            onClick={() => editArtist()}
                             className="btn-modal-form"
                           >
                             Actualizar
@@ -372,19 +349,19 @@ const UserBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
+                      Perfil
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
                       Nombre
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Email
-                    </TableCell>
-                    <TableCell
-                      style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
-                      Rol
+                      Descripción
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
@@ -395,9 +372,9 @@ const UserBackoffice = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {itemsToShow()?.map((user) => (
+                  {itemsToShow()?.map((artist) => (
                     <TableRow
-                      key={user.name}
+                      key={artist.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -405,28 +382,28 @@ const UserBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        onClick={() => setData(artist)}
                       >
-                        {user.name}
+                        {artist.profileImage}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        onClick={() => setData(artist)}
                       >
-                        {user.email}
+                        {artist.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        onClick={() => setData(artist)}
                       >
-                        {user.userRoleId}
+                        {artist.description}
                       </TableCell>
                       <TableCell
                         sx={{ color: pink[600] }}
                         align="left"
-                        onClick={() => handleOpenDelete(user._id)}
+                        onClick={() => handleOpenDelete(artist._id)}
                       >
                         <DeleteIcon />
                       </TableCell>
@@ -442,4 +419,4 @@ const UserBackoffice = () => {
   );
 };
 
-export default UserBackoffice;
+export default ArtistBackoffice;

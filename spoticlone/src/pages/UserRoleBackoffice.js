@@ -61,11 +61,10 @@ const UserRoleBackoffice = () => {
   };
 
   return (
-    <Grid container spacing={{ xs: 3 }}>
+    <Grid container spacing={{ xs:  0}}>
       <SidebarBackoffice />
       <Grid item xs={10} className="bg-success">
-        <Container maxWidth="sm">
-          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh"}}>
           <div className="table-head-item">
               <TextField
                 className="input"
@@ -87,13 +86,13 @@ const UserRoleBackoffice = () => {
                 <TableHead>
                   <TableRow>
                     <TableCell
-                      style={{ color: theme.palette.secondary.light }}
+                      style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
                       Id
                     </TableCell>
                     <TableCell
-                      style={{ color: theme.palette.secondary.light }}
+                      style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
                       Rol
@@ -107,13 +106,13 @@ const UserRoleBackoffice = () => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell
-                        style={{ color: theme.palette.secondary.light }}
+                        style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
                         {user._id}
                       </TableCell>
                       <TableCell
-                        style={{ color: theme.palette.secondary.light }}
+                        style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
                         {user.name}
@@ -124,7 +123,6 @@ const UserRoleBackoffice = () => {
               </Table>
             )}
           </Box>
-        </Container>
       </Grid>
     </Grid>
 
@@ -141,7 +139,7 @@ const UserRoleBackoffice = () => {
     //       />
     //     </div>
     //     <div className="d-flex justify-content-center">
-    //       <table className="table bg-dark text-light text-center container-fluid">
+    //       <table className="table bg-dark text-main text-center container-fluid">
     //         <thead>
     //           <tr>
     //             <th scope="col">Id</th>

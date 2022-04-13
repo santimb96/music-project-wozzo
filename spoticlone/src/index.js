@@ -7,6 +7,13 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { MediaProvider } from "./contexts/MediaContext";
 
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+import $ from 'jquery';
+import Popper from 'popper.js';
+
+
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <MediaProvider>

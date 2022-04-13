@@ -9,7 +9,6 @@ import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
-import Container from "@mui/material/Container"
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
@@ -23,10 +22,11 @@ const SidebarBackoffice = () => {
   return (  
         <Grid
           item
-          xs={2}
+          xs={0} sm={2}
           sx={{ bgcolor: theme.palette.primary.main }}
+          
         >
-          <Box sx={{height: "100vh"}}>
+          <Box sx={{height: 1}} className="sidebar-backoffice" id="sidebar">
             <nav aria-label="secondary mailbox folders">
               <List sx={{ color: theme.palette.secondary.light }}>
                 <ListItem disablePadding>

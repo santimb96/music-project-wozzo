@@ -11123,6 +11123,15 @@ html body .spinner-table-loading {
   justify-content: center;
 }
 
+html body .display-visible {
+  display: grid;
+}
+html body .sidebar-backoffice {
+  display: grid;
+}
+html body .show-sidebar-button {
+  display: none;
+}
 html body .nav-bg-color {
   background-color: green;
 }
@@ -11211,8 +11220,56 @@ html body .input input {
   background-color: white;
   transition: 0.2s;
 }
-html body .table-content {
+html body .text-tarea {
+  padding-left: 0.8rem;
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+html body .text-tarea textarea {
+  height: 10px;
+  border-radius: 5px;
+  background-color: white;
+  transition: 0.2s;
+}
+html body .btn-dropdown {
   color: white;
+  background-color: #198754;
+  min-width: 50%;
+  transition: 0.2;
+  margin-top: 5%;
+  margin-bottom: 22%;
+  transition: 0.2;
+}
+html body .btn-dropdown:hover {
+  color: black;
+  background-color: white;
+}
+html body .btn-dropdown:focus,
+html body .btn-dropdown:active {
+  color: black;
+  background-color: white;
+  outline: none;
+  box-shadow: none;
+}
+html body .dropdown-menu {
+  width: 10%;
+  background-color: white;
+  color: #198754;
+  border-radius: 5px;
+  transition: 0.2;
+}
+html body .dropdown-item {
+  text-align: center;
+  padding: 0.5rem;
+}
+html body .dropdown-item:hover {
+  background-color: #198754;
+  color: white;
+  transition: 0.2;
+}
+html body .table-content {
+  color: #198754;
   background-color: #212529;
 }
 html body .modal-delete {
@@ -11287,6 +11344,15 @@ html body .lds-ring div:nth-child(3) {
   }
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 600px) {
+  html body .sidebar-backoffice {
+    display: none;
+  }
+  html body .show-sidebar-button {
+    display: grid;
   }
 }
 
