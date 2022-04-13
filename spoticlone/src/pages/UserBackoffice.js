@@ -31,7 +31,10 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
-
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -64,7 +67,18 @@ const UserBackoffice = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleOpenForm = () => setOpenForm(true);
-  const handleCloseForm = () => setOpenForm(false);
+
+  const handleCloseForm = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassRepeat("");
+    setRole("user");
+    setId("");
+    setRoleId(null);
+
+    setOpenForm(false);
+  };
 
   const getData = () => {
     getUsers(token)
@@ -81,7 +95,12 @@ const UserBackoffice = () => {
 
   useEffect(() => {
     const filtered = users?.filter((user) => {
-      if (user.name.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim()) || user.email.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())) {
+      if (
+        user.name
+          .toLocaleLowerCase()
+          .includes(text.toLocaleLowerCase().trim()) ||
+        user.email.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())
+      ) {
         return true;
       }
       return false;
@@ -147,127 +166,161 @@ const UserBackoffice = () => {
 
   console.log(name);
   return (
-    <Grid container spacing={{ xs: 3 }}>
+    <Grid container spacing={{ xs: 0 }}>
       <SidebarBackoffice />
-      <Grid container xs={10} className="bg-success">
-        <Container maxWidth="sm">
-          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100%" }}>
-            <div className="table-head-item">
-              <TextField
-                className="input"
-                placeholder="busca..."
-                onChange={(e) => setText(e.target.value)}
-              />
-              <Button className="btn-open-form" onClick={handleOpenForm}>
-                <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-              </Button>
-            </div>
+      <Grid item xs={10} className="bg-success">
+        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+          <div className="table-head-item">
+            <TextField
+              className="input"
+              placeholder="busca..."
+              onChange={(e) => setText(e.target.value)}
+            />
+            <Button className="btn-open-form" onClick={handleOpenForm}>
+              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+            </Button>
+          </div>
 
-            <TableContainer component={Paper} className="table-content">
-              {!itemsToShow() ? (
-                <div className="spinner-table-loading">
-                  <SpinnerLoading />
-                </div>
-              ) : (
-                <Table
-                  size="medium"
-                  aria-label="a dense table"
-                  className="table-content"
-                >
-                  <TableHead>
-                    <Modal
-                      open={openDelete}
-                      onClose={handleCloseDelete}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                      disableEnforceFocus
-                    >
-                      <Box className="modal-delete">
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          ¿Estás seguro de que quieres borrarlo?
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          <div className="typo-flex">
-                            <Button
-                              onClick={() => deleteUser(id)}
-                              className="btn-modal btn-delete"
-                            >
-                              Sí
-                            </Button>{" "}
-                            <Button
-                              className="btn-modal "
-                              onClick={handleCloseDelete}
-                            >
-                              No
-                            </Button>
+          <TableContainer component={Paper} className="table-content">
+            {!itemsToShow() ? (
+              <div className="spinner-table-loading">
+                <SpinnerLoading />
+              </div>
+            ) : (
+              <Table
+                size="medium"
+                aria-label="a dense table"
+                className="table-content"
+              >
+                <TableHead>
+                  <Modal
+                    open={openDelete}
+                    onClose={handleCloseDelete}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    disableEnforceFocus
+                  >
+                    <Box className="modal-delete">
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        ¿Estás seguro de que quieres borrarlo?
+                      </Typography>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="typo-flex">
+                          <Button
+                            onClick={() => deleteUser(id)}
+                            className="btn-modal btn-delete"
+                          >
+                            Sí
+                          </Button>{" "}
+                          <Button
+                            className="btn-modal "
+                            onClick={handleCloseDelete}
+                          >
+                            No
+                          </Button>
+                        </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
+
+                  <Modal
+                    open={openForm}
+                    onClose={handleCloseForm}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    disableEnforceFocus
+                  >
+                    <Box className="modal-delete">
+                      <div>
+                        <TextField
+                          value={name}
+                          type="text"
+                          className="input"
+                          id="outlined-basic"
+                          placeholder="nombre"
+                          error={name === ""}
+                          helperText={name === "" ? "Campo requerido!" : ""}
+                          onChange={(e) => setName(e.target.value)}
+                        />
+                        <TextField
+                          className="input"
+                          type="email"
+                          value={email}
+                          id="outlined-basic"
+                          variant="outlined"
+                          placeholder="email"
+                          error={email === ""}
+                          helperText={email === "" ? "Campo requerido!" : ""}
+                          onChange={(e) => setEmail(e.target.value)}
+                        />
+                        <TextField
+                          className="input"
+                          type="password"
+                          value={password}
+                          id="outlined-basic"
+                          variant="outlined"
+                          placeholder="contraseña"
+                          error={password === ""}
+                          helperText={password === "" ? "Campo requerido!" : ""}
+                          onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <TextField
+                          className="input"
+                          type="password"
+                          value={passRepeat}
+                          id="outlined-basic"
+                          variant="outlined"
+                          placeholder="repite contraseña"
+                          error={passRepeat === "" || password !== passRepeat}
+                          helperText={
+                            passRepeat === "" || password !== passRepeat
+                              ? "Campo requerido o contraseña no igual!"
+                              : ""
+                          }
+                          onChange={(e) => setPassRepeat(e.target.value)}
+                        />
+                        <div class="dropdown d-flex justify-content-center">
+                          <button
+                            className="btn btn-dropdown dropdown-toggle"
+                            type="button"
+                            id="dropdownMenu2"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            {role === 'user' ? 'Usuario' : 'Administrador'}
+                          </button>
+                          <div
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenu2"
+                          >
+                            <button value={"user"} onClick={(e) => setRole(e.target.value)} className="dropdown-item" type="button">
+                              Usuario
+                            </button>
+                            <button value={"admin"} onClick={(e) => setRole(e.target.value)} className="dropdown-item" type="button">
+                              Administrador
+                            </button>
                           </div>
-                        </Typography>
-                      </Box>
-                    </Modal>
+                        </div>
+                        {/* <FormControl fullWidth>
+                          <InputLabel id="demo-simple-select-label">
+                            Rol
+                          </InputLabel>
+                          <Select
+                            value={role}
+                            label="Rol"
+                            onChange={(e) => setRole(e.target.value)}
+                          >
+                            <MenuItem className="input-dropdown" value={"user"}>Usuario</MenuItem>
+                            <MenuItem className="input-dropdown" value={"admin"}>Administrador</MenuItem>
+                          </Select>
+                        </FormControl> */}
 
-                    <Modal
-                      open={openForm}
-                      onClose={handleCloseForm}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                      disableEnforceFocus
-                    >
-                      <Box className="modal-delete">
-                        <div>
-                          <TextField
-                            value={name}
-                            type="text"
-                            className="input"
-                            id="outlined-basic"
-                            placeholder="nombre"
-                            error={name === ""}
-                            helperText={name === "" ? "Campo requerido!" : ""}
-                            onChange={(e) => setName(e.target.value)}
-                          />
-                          <TextField
-                            className="input"
-                            type="email"
-                            value={email}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder="email"
-                            error={email === ""}
-                            helperText={email === "" ? "Campo requerido!" : ""}
-                            onChange={(e) => setEmail(e.target.value)}
-                          />
-                          <TextField
-                            className="input"
-                            type="password"
-                            value={password}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder="contraseña"
-                            error={password === ""}
-                            helperText={
-                              password === "" ? "Campo requerido!" : ""
-                            }
-                            onChange={(e) => setPassword(e.target.value)}
-                          />
-                          <TextField
-                            className="input"
-                            type="password"
-                            value={passRepeat}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder="repite contraseña"
-                            error={passRepeat === "" || password !== passRepeat}
-                            helperText={
-                              passRepeat === "" || password !== passRepeat
-                                ? "Campo requerido o contraseña no igual!"
-                                : ""
-                            }
-                            onChange={(e) => setPassRepeat(e.target.value)}
-                          />
-                          <RadioGroup
+                        {/* <RadioGroup
                             aria-labelledby="demo-radio-buttons-group-label"
                             defaultValue={role}
                             name="radio-buttons-group"
@@ -284,96 +337,97 @@ const UserBackoffice = () => {
                               label="Administrador"
                               onChange={(e) => setRole(e.target.value)}
                             />
-                          </RadioGroup>
+                          </RadioGroup> */}
+                      </div>
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div className="typo-flex">
+                          <Button
+                            onClick={() => postUser()}
+                            className="btn-modal-form"
+                          >
+                            Crear
+                          </Button>{" "}
+                          <Button
+                            onClick={() => editUser()}
+                            className="btn-modal-form"
+                          >
+                            Actualizar
+                          </Button>
                         </div>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          <div className="typo-flex">
-                            <Button
-                              onClick={() => postUser()}
-                              className="btn-modal-form"
-                            >
-                              Crear
-                            </Button>{" "}
-                            <Button
-                              onClick={() => editUser()}
-                              className="btn-modal-form"
-                            >
-                              Actualizar
-                            </Button>
-                          </div>
-                        </Typography>
-                      </Box>
-                    </Modal>
+                      </Typography>
+                    </Box>
+                  </Modal>
 
-                    <TableRow>
+                  <TableRow>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Nombre
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Email
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Rol
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Borrar
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {itemsToShow()?.map((user) => (
+                    <TableRow
+                      key={user.name}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
+                    >
                       <TableCell
-                        style={{ color: theme.palette.secondary.light }}
+                        style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                      >
-                        Nombre
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        Email
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        Rol
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        Borrar
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {itemsToShow()?.map((user) => (
-                      <TableRow
-                        key={user.name}
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
                         onClick={() => setData(user)}
                       >
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {user.name}
-                        </TableCell>
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {user.email}
-                        </TableCell>
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {user.userRoleId}
-                        </TableCell>
-                        <TableCell
-                          sx={{ color: pink[600] }}
-                          align="left"
-                          onClick={() => handleOpenDelete(user._id)}
-                        >
-                          <DeleteIcon />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </TableContainer>
-          </Box>
-        </Container>
+                        {user.name}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.mainLight }}
+                        align="left"
+                        onClick={() => setData(user)}
+                      >
+                        {user.email}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.mainLight }}
+                        align="left"
+                        onClick={() => setData(user)}
+                      >
+                        {user.userRoleId}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: pink[600] }}
+                        align="left"
+                        onClick={() => handleOpenDelete(user._id)}
+                      >
+                        <DeleteIcon />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </TableContainer>
+        </Box>
       </Grid>
     </Grid>
   );

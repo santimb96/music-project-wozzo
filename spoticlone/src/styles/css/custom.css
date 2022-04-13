@@ -11211,9 +11211,25 @@ html body .input input {
   background-color: white;
   transition: 0.2s;
 }
-html body .table-content {
+html body .btn-dropdown {
   color: white;
   background-color: #198754;
+  min-width: 50%;
+  transition: 0.3s;
+}
+html body .btn-dropdown:hover {
+  color: black;
+  background-color: white;
+}
+html body .btn-dropdown:focus, html body .btn-dropdown:active {
+  color: black;
+  background-color: white;
+  outline: none;
+  box-shadow: none;
+}
+html body .table-content {
+  color: #198754;
+  background-color: #212529;
 }
 html body .modal-delete {
   position: absolute;

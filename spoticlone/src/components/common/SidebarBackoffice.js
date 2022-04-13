@@ -25,7 +25,7 @@ const SidebarBackoffice = () => {
           xs={2}
           sx={{ bgcolor: theme.palette.primary.main }}
         >
-          <Box sx={{height: "100vh"}}>
+          <Box sx={{height: 1}}>
             <nav aria-label="secondary mailbox folders">
               <List sx={{ color: theme.palette.secondary.light }}>
                 <ListItem disablePadding>
