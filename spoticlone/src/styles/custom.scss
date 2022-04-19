@@ -111,6 +111,7 @@ html {
       background-color: $secondaryColor;
     }
     .hamburguer-button {
+      display: none;
       color: white;
       padding: 1rem;
       width: 15%;
@@ -289,6 +290,9 @@ html {
         display: none;
       }
       .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button{
         display: grid;
       }
     }

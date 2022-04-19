@@ -11207,6 +11207,7 @@ html body .btn-modal-form:hover {
   background-color: #198754;
 }
 html body .hamburguer-button {
+  display: none;
   color: white;
   padding: 1rem;
   width: 15%;
@@ -11370,6 +11371,9 @@ html body .lds-ring div:nth-child(3) {
     display: none;
   }
   html body .show-sidebar-button {
+    display: grid;
+  }
+  html body .hamburguer-button {
     display: grid;
   }
 }
