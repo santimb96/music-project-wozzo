@@ -79,6 +79,21 @@ html {
         color: white;
       }
     }
+
+    .sidebar-link{
+      text-decoration: none;
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      height: 4rem;
+      margin-left: 4%;
+      margin-right: 4%;
+      transition: 0.3s;
+      color: white;
+      i {
+        color: white;
+      }
+    }
     .nav-link:hover {
       background-color: $secondaryColor;
       color: white;

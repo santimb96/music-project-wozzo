@@ -30,7 +30,7 @@ const SidebarBackoffice = () => {
                     <i className="fa fa-lock"></i>
                     <Link
                       to="/backoffice/admin"
-                      className="nav-link"
+                      className="sidebar-link"
                     >
                     <ListItemText primary="Admin" />
                     </Link>
@@ -41,7 +41,7 @@ const SidebarBackoffice = () => {
                     <i className="fa fa-users"></i>
                     <Link
                       to="/backoffice/roles"
-                      className="nav-link"
+                      className="sidebar-link"
                     >
                     <ListItemText primary="Roles" />
                     </Link>
@@ -53,7 +53,7 @@ const SidebarBackoffice = () => {
                     <i className="fa fa-user"></i>
                     <Link
                       to="/backoffice/users"
-                      className="nav-link"
+                      className="sidebar-link"
                     >
                     <ListItemText className=" " primary="Usuarios" />
                     </Link>
@@ -65,7 +65,7 @@ const SidebarBackoffice = () => {
                     <i className="fa fa-university"></i>
                     <Link
                       to="/backoffice/artists"
-                      className="nav-link"
+                      className="sidebar-link"
                     >
                     <ListItemText primary="Artistas" />
                     </Link>
@@ -77,7 +77,7 @@ const SidebarBackoffice = () => {
                     <i className="fa fa-music"></i>
                     <Link
                       to="/backoffice/songs"
-                      className="nav-link"
+                      className="sidebar-link"
                     >
                     <ListItemText primary="Canciones" />
                     </Link>
@@ -87,7 +87,7 @@ const SidebarBackoffice = () => {
                 <ListItem disablePadding>
                   <ListItemButton className="nav-link" onClick={logOut}>
                     <i className="fa fa-user-circle"></i>
-                    <Link to="/login" className="nav-link">
+                    <Link to="/login" className="sidebar-link">
                       {" "}
                       <ListItemText   primary="Cerrar sesión" />
                     </Link>
