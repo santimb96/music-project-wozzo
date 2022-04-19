@@ -110,6 +110,24 @@ html {
     .btn-modal-form:hover {
       background-color: $secondaryColor;
     }
+    .hamburguer-button {
+      display: none;
+      color: white;
+      padding: 1rem;
+      width: 15%;
+      margin: 1rem;
+      transition: 0.1s;
+    }
+    .hamburguer-button:hover {
+      background-color: $secondaryColor;
+      color: white;
+      outline: none;
+      box-shadow: none;
+    }
+    .hamburguer-button:focus, .hamburguer-button:active {
+      outline: none;
+      box-shadow: none;
+    }
 
     .input {
       font-size: 1rem;
@@ -216,7 +234,8 @@ html {
       }
     }
     .btn-open-form {
-      font-size: 1.5rem;
+      font-size: 1.2rem;
+      width: 15%;
       color: white;
       margin: 0.8rem;
       transition: 0.1s;
@@ -264,13 +283,16 @@ html {
   }
 }
 
-@media (max-width: 600px){
+@media (max-width: 767px){
   html{
     body {
       .sidebar-backoffice {
         display: none;
       }
       .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button{
         display: grid;
       }
     }

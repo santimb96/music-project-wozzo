@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import { getRoles } from "../services/roles";
 import Grid from "@mui/material/Grid";
@@ -32,6 +32,23 @@ const UserRoleBackoffice = () => {
   const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
   const [text, setText] = useState("");
+  const [openSidebar, setOpenSidebar] = useState(false);
+
+  /**
+   *
+   * OPEN SIDEBAR
+   */
+
+  const handleOpenSidebar = () => {
+    if (openSidebar) {
+      document.getElementById("sidebar").style.display = "none";
+      setOpenSidebar(false);
+    } else {
+      document.getElementById("sidebar").style.display = "grid";
+      document.getElementById("sidebar").style.width = "100%";
+      setOpenSidebar(true);
+    }
+  };
 
   useEffect(() => {
     getRoles(token)
@@ -45,7 +62,10 @@ const UserRoleBackoffice = () => {
 
   useEffect(() => {
     const filtered = roles?.filter((role) => {
-      if (role.name.toLowerCase().includes(text.toLowerCase().trim()) || role._id.includes(text.trim())) {
+      if (
+        role.name.toLowerCase().includes(text.toLowerCase().trim()) ||
+        role._id.includes(text.trim())
+      ) {
         return true;
       }
       return false;
@@ -60,71 +80,79 @@ const UserRoleBackoffice = () => {
     return roles;
   };
 
-  return (
-    <Grid container spacing={{ xs:  0}}>
-      <SidebarBackoffice />
-      <Grid item xs={10} className="bg-success">
-          <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh"}}>
-          <div className="table-head-item">
-              <TextField
-                className="input"
-                placeholder="busca..."
-                onChange={(e) => setText(e.target.value)}
-              />
-            </div>
 
-            {!itemsToShow() ? (
-              <div className="spinner-table-loading">
-                <SpinnerLoading />
-              </div>
-            ) : (
-              <Table
-                size="small"
-                aria-label="a dense table"
-                className="table-content"
+  return (
+    <div className="row">
+      <SidebarBackoffice />
+      <div className="col-12 col-md-10 p-0">
+        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
+          <div className="table-head-item">
+              <button
+                onClick={() => handleOpenSidebar()}
+                className="btn hamburguer-button"
+                id="hamburguer"
               >
-                <TableHead>
-                  <TableRow>
+                <i class="fa fa-bars" aria-hidden="true"></i>
+              </button>
+            <TextField
+              className="input"
+              placeholder="busca..."
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
+
+          {!itemsToShow() ? (
+            <div className="spinner-table-loading">
+              <SpinnerLoading />
+            </div>
+          ) : (
+            <Table
+              size="small"
+              aria-label="a dense table"
+              className="table-content"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.mainLight }}
+                    align="left"
+                  >
+                    Id
+                  </TableCell>
+                  <TableCell
+                    style={{ color: theme.palette.secondary.mainLight }}
+                    align="left"
+                  >
+                    Rol
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {itemsToShow()?.map((user) => (
+                  <TableRow
+                    key={user.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Id
+                      {user._id}
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Rol
+                      {user.name}
                     </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {itemsToShow()?.map((user) => (
-                    <TableRow
-                      key={user.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell
-                        style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
-                        {user._id}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
-                        {user.name}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </Box>
-      </Grid>
-    </Grid>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </Box>
+      </div>
+    </div>
 
     // <div className="row bg-success">
     //   <SidebarBackoffice />

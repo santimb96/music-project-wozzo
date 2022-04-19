@@ -3,16 +3,16 @@ const routes = [
       route: '/backoffice/admin'
     },
     {
-      route: '/backoffice/user'
+      route: '/backoffice/users'
     },
     {
-      route: '/backoffice/artist'
+      route: '/backoffice/artists'
     },
     {
-      route: '/backoffice/song'
+      route: '/backoffice/songs'
     },
     {
-      route: '/backoffice/userRole'
+      route: '/backoffice/userRoles'
     }
   ];
 
