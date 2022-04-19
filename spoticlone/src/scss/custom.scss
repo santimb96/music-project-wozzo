@@ -19,6 +19,7 @@ html {
 
     .sidebar-backoffice{
       display: grid;
+      padding-top: 3rem;
     }
     .show-sidebar-button {
       display: none;
@@ -66,6 +67,21 @@ html {
       }
     }
     .nav-link {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      height: 4rem;
+      margin-left: 4%;
+      margin-right: 4%;
+      transition: 0.3s;
+      color: white;
+      i {
+        color: white;
+      }
+    }
+
+    .sidebar-link{
+      text-decoration: none;
       display: flex;
       justify-content: start;
       align-items: center;
@@ -288,6 +304,7 @@ html {
     body {
       .sidebar-backoffice {
         display: none;
+        padding-top: 0;
       }
       .show-sidebar-button {
         display: grid;
