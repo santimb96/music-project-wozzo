@@ -10,6 +10,8 @@ $secondaryColor: #198754;
 
 html {
   body {
+    overflow-x: hidden;
+    
     .spinner-table-loading {
       @extend %itemHorizontal;
     }
