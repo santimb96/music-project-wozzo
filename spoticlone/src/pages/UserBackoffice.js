@@ -47,6 +47,7 @@ const UserBackoffice = () => {
   const [openError, setOpenError] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
+  const [create, setCreate] = useState(false);
 
   /**
    *
@@ -85,17 +86,18 @@ const UserBackoffice = () => {
    */
   const [openForm, setOpenForm] = useState(false);
 
-  const handleOpenForm = () => setOpenForm(true);
+  const handleOpenForm = (post = false) => {
+    if (post) {
+      setCreate(true);
+      setOpenForm(true);
+    } else {
+      setOpenForm(true);
+    }
+  };
 
   const handleCloseForm = () => {
-    setName("");
-    setEmail("");
-    setPassword("");
-    setPassRepeat("");
-    setRole("user");
-    setId("");
-    setRoleId(null);
-
+    clearData();
+    setCreate(false);
     setOpenForm(false);
   };
 
@@ -135,13 +137,14 @@ const UserBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    const checkPassword = () => password === passRepeat && email.indexOf("@") !== -1;
-    if(method){
+    const checkPassword = () =>
+      password === passRepeat && email.indexOf("@") !== -1;
+    if (method) {
       if (name?.length && email?.length && role) {
-        if(checkPassword()){
+        if (checkPassword()) {
           return true;
-        } 
-          return false;
+        }
+        return false;
       }
     } else {
       if (
@@ -150,14 +153,13 @@ const UserBackoffice = () => {
         password?.length &&
         passRepeat?.length
       ) {
-        if(checkPassword()){
+        if (checkPassword()) {
           return true;
-        } 
-          return false;
+        }
+        return false;
       }
-      }
-    };
-
+    }
+  };
 
   const setData = (user) => {
     const roleName = ROLES.find((r) => r.id === user.userRoleId);
@@ -214,7 +216,7 @@ const UserBackoffice = () => {
           console.log(user);
           setOpenForm(false);
           setResponseStatus(true);
-          clearData();  
+          clearData();
           getData();
         })
         .catch((err) => console.warn(err));
@@ -232,7 +234,7 @@ const UserBackoffice = () => {
     setRole("user");
     setId("");
     setRoleId(null);
-  }
+  };
 
   console.log(name);
   return (
@@ -252,7 +254,10 @@ const UserBackoffice = () => {
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button className="btn-open-form" onClick={handleOpenForm}>
+            <Button
+              className="btn-open-form"
+              onClick={() => handleOpenForm(true)}
+            >
               <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
             </Button>
           </div>
@@ -413,18 +418,21 @@ const UserBackoffice = () => {
                       {responseStatus ? (
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
-                            <Button
-                              onClick={() => postUser()}
-                              className="btn-modal-form"
-                            >
-                              Crear
-                            </Button>{" "}
-                            <Button
-                              onClick={() => editUser(true)}
-                              className="btn-modal-form"
-                            >
-                              Actualizar
-                            </Button>
+                            {create ? (
+                              <Button
+                                onClick={() => postUser()}
+                                className="btn-modal-form"
+                              >
+                                Crear
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={() => editUser(true)}
+                                className="btn-modal-form"
+                              >
+                                Actualizar
+                              </Button>
+                            )}
                           </div>
                         </Typography>
                       ) : (
