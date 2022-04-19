@@ -134,19 +134,30 @@ const UserBackoffice = () => {
     return users;
   };
 
-  const validateData = () => {
-    if (
-      name?.length &&
-      email?.length &&
-      password?.length &&
-      passRepeat?.length
-    ) {
-      if (password === passRepeat && email.indexOf("@") !== -1) {
-        return true;
+  const validateData = (method = false) => {
+    const checkPassword = () => password === passRepeat && email.indexOf("@") !== -1;
+    if(method){
+      if (name?.length && email?.length && role) {
+        if(checkPassword()){
+          return true;
+        } 
+          return false;
       }
-    }
-    return false;
-  };
+    } else {
+      if (
+        name?.length &&
+        email?.length &&
+        password?.length &&
+        passRepeat?.length
+      ) {
+        if(checkPassword()){
+          return true;
+        } 
+          return false;
+      }
+      }
+    };
+
 
   const setData = (user) => {
     const roleName = ROLES.find((r) => r.id === user.userRoleId);
@@ -188,8 +199,8 @@ const UserBackoffice = () => {
       .catch((err) => console.error(err));
   };
 
-  const editUser = () => {
-    if (validateData()) {
+  const editUser = (method) => {
+    if (validateData(method)) {
       setResponseStatus(false);
       const roleName = ROLES.find((r) => r.role === role);
       const newUser = {
@@ -409,7 +420,7 @@ const UserBackoffice = () => {
                               Crear
                             </Button>{" "}
                             <Button
-                              onClick={() => editUser()}
+                              onClick={() => editUser(true)}
                               className="btn-modal-form"
                             >
                               Actualizar
