@@ -19,7 +19,7 @@ html {
 
     .sidebar-backoffice{
       display: grid;
-      margin-top: 5rem;
+      padding-top: 3rem;
     }
     .show-sidebar-button {
       display: none;
@@ -304,7 +304,7 @@ html {
     body {
       .sidebar-backoffice {
         display: none;
-        margin-top: 0;
+        padding-top: 0;
       }
       .show-sidebar-button {
         display: grid;
