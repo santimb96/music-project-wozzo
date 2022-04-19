@@ -19,6 +19,7 @@ html {
 
     .sidebar-backoffice{
       display: grid;
+      margin-top: 5rem;
     }
     .show-sidebar-button {
       display: none;
@@ -288,6 +289,7 @@ html {
     body {
       .sidebar-backoffice {
         display: none;
+        margin-top: 0;
       }
       .show-sidebar-button {
         display: grid;
