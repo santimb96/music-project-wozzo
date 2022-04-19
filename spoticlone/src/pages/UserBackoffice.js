@@ -46,6 +46,7 @@ const UserBackoffice = () => {
   const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [responseStatus, setResponseStatus] = useState(true);
 
   /**
    *
@@ -160,10 +161,13 @@ const UserBackoffice = () => {
 
   const postUser = () => {
     if (validateData()) {
+      setResponseStatus(false);
       createUser(name, email, password, role, token)
         .then((user) => {
           console.log(user);
           setOpenForm(false);
+          setResponseStatus(true);
+          clearData();
           getData();
         })
         .catch((err) => console.error(err));
@@ -174,50 +178,61 @@ const UserBackoffice = () => {
   };
 
   const deleteUser = (id) => {
+    setResponseStatus(false);
     removeUser(id, token)
       .then((user) => {
         getData();
         setOpenDelete(false);
+        setResponseStatus(true);
       })
       .catch((err) => console.error(err));
   };
 
   const editUser = () => {
-    if(validateData()){
-    const roleName = ROLES.find((r) => r.role === role);
-    const newUser = {
-      name,
-      userRoleId: roleName.id,
-      email,
-      password,
-    };
-    updateUser(id, newUser, token)
-      .then((user) => {
-        console.log(user);
-        setOpenForm(false);
-        getData();
-      })
-      .catch((err) => console.warn(err));
+    if (validateData()) {
+      setResponseStatus(false);
+      const roleName = ROLES.find((r) => r.role === role);
+      const newUser = {
+        name,
+        userRoleId: roleName.id,
+        email,
+        password,
+      };
+      updateUser(id, newUser, token)
+        .then((user) => {
+          console.log(user);
+          setOpenForm(false);
+          setResponseStatus(true);
+          clearData();  
+          getData();
+        })
+        .catch((err) => console.warn(err));
     } else {
       handleOpenError();
       handleCloseError();
     }
   };
 
+  const clearData = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassRepeat("");
+    setRole("user");
+    setId("");
+    setRoleId(null);
+  }
+
   console.log(name);
   return (
     <div className="row">
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
-        <Box
-          sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
-          
-        >
+        <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
             <button
               onClick={() => handleOpenSidebar()}
               className="btn hamburguer-button"
-             
             >
               <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
@@ -231,7 +246,11 @@ const UserBackoffice = () => {
             </Button>
           </div>
 
-          <TableContainer component={Paper} className="table-content" sx={{height: '80%'}}>
+          <TableContainer
+            component={Paper}
+            className="table-content"
+            sx={{ height: "80%" }}
+          >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -269,31 +288,37 @@ const UserBackoffice = () => {
                     aria-describedby="modal-modal-description"
                     disableEnforceFocus
                   >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¿Estás seguro de que quieres borrarlo?
-                      </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="typo-flex">
-                          <Button
-                            onClick={() => deleteUser(id)}
-                            className="btn-modal btn-delete"
-                          >
-                            Sí
-                          </Button>{" "}
-                          <Button
-                            className="btn-modal "
-                            onClick={handleCloseDelete}
-                          >
-                            No
-                          </Button>
-                        </div>
-                      </Typography>
-                    </Box>
+                    {responseStatus ? (
+                      <Box className="modal-delete">
+                        <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                        >
+                          ¿Estás seguro de que quieres borrarlo?
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          <div className="typo-flex">
+                            <Button
+                              onClick={() => deleteUser(id)}
+                              className="btn-modal btn-delete"
+                            >
+                              Sí
+                            </Button>{" "}
+                            <Button
+                              className="btn-modal "
+                              onClick={handleCloseDelete}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </Typography>
+                      </Box>
+                    ) : (
+                      <Box className="modal-delete">
+                        <SpinnerLoading />
+                      </Box>
+                    )}
                   </Modal>
 
                   <Modal
@@ -374,22 +399,28 @@ const UserBackoffice = () => {
                           </div>
                         </div>
                       </div>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="typo-flex">
-                          <Button
-                            onClick={() => postUser()}
-                            className="btn-modal-form"
-                          >
-                            Crear
-                          </Button>{" "}
-                          <Button
-                            onClick={() => editUser()}
-                            className="btn-modal-form"
-                          >
-                            Actualizar
-                          </Button>
-                        </div>
-                      </Typography>
+                      {responseStatus ? (
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          <div className="typo-flex">
+                            <Button
+                              onClick={() => postUser()}
+                              className="btn-modal-form"
+                            >
+                              Crear
+                            </Button>{" "}
+                            <Button
+                              onClick={() => editUser()}
+                              className="btn-modal-form"
+                            >
+                              Actualizar
+                            </Button>
+                          </div>
+                        </Typography>
+                      ) : (
+                        <Typography className="d-flex justify-content-center ">
+                          <SpinnerLoading />
+                        </Typography>
+                      )}
                     </Box>
                   </Modal>
 
@@ -464,7 +495,7 @@ const UserBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
-      </div>
+    </div>
   );
 };
 
