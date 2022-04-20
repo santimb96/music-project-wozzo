@@ -19,84 +19,67 @@ const SidebarBackoffice = () => {
     removeUserStorage();
   };
 
-  return (  
-        
+  return (
     <div className="col-12 col-md-2 bg-dark">
-          <Box sx={{height: 1}} className="sidebar-backoffice" id="sidebar">
-            <nav aria-label="secondary mailbox folders">
-              <List sx={{ color: theme.palette.secondary.light }}>
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
-                    <i className="fa fa-lock"></i>
-                    <Link
-                      to="/backoffice/admin"
-                      className="sidebar-link"
-                    >
-                    <ListItemText primary="Admin" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
-                    <i className="fa fa-users"></i>
-                    <Link
-                      to="/backoffice/roles"
-                      className="sidebar-link"
-                    >
-                    <ListItemText primary="Roles" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
+      <Box sx={{ height: 1 }} className="sidebar-backoffice" id="sidebar">
+        <nav aria-label="secondary mailbox folders">
+          <List sx={{ color: theme.palette.secondary.light }}>
+            <Link to="/backoffice/admin" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa fa-lock"></i>
+                  <ListItemText className="ps-2" primary="Admin" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <Link to="/backoffice/roles" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa fa-users"></i>
+                  <ListItemText className="ps-2" primary="Roles" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
 
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
-                    <i className="fa fa-user"></i>
-                    <Link
-                      to="/backoffice/users"
-                      className="sidebar-link"
-                    >
-                    <ListItemText className=" " primary="Usuarios" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
+            <Link to="/backoffice/users" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa fa-user"></i>
+                  <ListItemText className="ps-2" primary="Usuarios" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
 
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
-                    <i className="fa fa-university"></i>
-                    <Link
-                      to="/backoffice/artists"
-                      className="sidebar-link"
-                    >
-                    <ListItemText primary="Artistas" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
+            <Link to="/backoffice/artists" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa fa-university"></i>
+                  <ListItemText className="ps-2" primary="Artistas" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
 
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link">
-                    <i className="fa fa-music"></i>
-                    <Link
-                      to="/backoffice/songs"
-                      className="sidebar-link"
-                    >
-                    <ListItemText primary="Canciones" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
-                <hr />
-                <ListItem disablePadding>
-                  <ListItemButton className="nav-link" onClick={logOut}>
-                    <i className="fa fa-user-circle"></i>
-                    <Link to="/login" className="sidebar-link">
-                      {" "}
-                      <ListItemText   primary="Cerrar sesión" />
-                    </Link>
-                  </ListItemButton>
-                </ListItem>
-              </List>
-            </nav>
-          </Box>
-          </div>
+            <Link to="/backoffice/songs" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa fa-music"></i>
+                  <ListItemText className="ps-2" primary="Canciones" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+            <hr />
+            <Link to="/login" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link" onClick={logOut}>
+                  <i className="fa fa-user-circle"></i>
+                  <ListItemText className="ps-2" primary="Cerrar sesión" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          </List>
+        </nav>
+      </Box>
+    </div>
 
     // <div className="d-flex flex-column vh-100 flex-shrink-0 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>
     // <div className="col-4 vh-100 p-3 text-white bg-dark" style={{width: '250px'}}> <Link to="/" className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"> <svg className="bi me-2" width="40" height="32"> </svg> <span className="fs-4">SpotiClone</span> </Link>

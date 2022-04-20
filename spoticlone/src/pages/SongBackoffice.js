@@ -144,10 +144,10 @@ const SongBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    if (method) {
+    if (method && artistName !== "Selecciona") {
       return true;
     } else {
-      if (name?.length && artistId?.length && audioUrl?.length) {
+      if (name?.length && artistId?.length && audioUrl?.length && artistName !== "Selecciona") {
         return true;
       }
       return false;
@@ -216,7 +216,7 @@ const SongBackoffice = () => {
 
   const clearData = () => {
     setName("");
-    setArtistName("");
+    setArtistName("Selecciona");
     setAudioUrl("");
     setId("");
   };
@@ -229,7 +229,7 @@ const SongBackoffice = () => {
       return !duplicate;
     });
 
-    return filtered;
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
   }
 
   return (
