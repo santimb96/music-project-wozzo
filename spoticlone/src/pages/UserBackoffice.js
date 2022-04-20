@@ -46,26 +46,10 @@ const UserBackoffice = () => {
   const [id, setId] = useState("");
   const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
 
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -109,7 +93,6 @@ const UserBackoffice = () => {
   const getData = () => {
     getUsers(token)
       .then((user) => {
-        console.log(user);
         setUsers(user?.users);
       })
       .catch((err) => console.warn(err));
@@ -168,7 +151,6 @@ const UserBackoffice = () => {
 
   const setData = (user) => {
     const roleName = ROLES.find((r) => r.id === user.userRoleId);
-    console.log(roleName);
     setId(user._id);
     setName(user.name);
     setEmail(user.email);
@@ -182,7 +164,6 @@ const UserBackoffice = () => {
       setResponseStatus(false);
       createUser(name, email, password, role, token)
         .then((user) => {
-          console.log(user);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -219,7 +200,6 @@ const UserBackoffice = () => {
       };
       updateUser(id, newUser, token)
         .then((user) => {
-          console.log(user);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -243,19 +223,12 @@ const UserBackoffice = () => {
     setRoleId(null);
   };
 
-  console.log(name);
   return (
     <div className="row">
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-            >
-              <i class="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."

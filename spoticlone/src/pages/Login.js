@@ -17,7 +17,7 @@ const Login = () => {
         localStorage.setItem("userId", user.user._id);
         localStorage.setItem("token", user.token);
         localStorage.setItem("expiryDate", user.expiryDate);
-        navigate('/backoffice/admin');
+        navigate('/backoffice/roles');
       })
       .catch(() => {
         navigate('/login');

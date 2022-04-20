@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import {
   getArtists,
@@ -45,26 +45,10 @@ const ArtistBackoffice = () => {
   const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
 
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -167,7 +151,6 @@ const ArtistBackoffice = () => {
 
       postArtist(artist, token)
         .then((artist) => {
-          console.log(artist);
           setOpenForm(false);
           getData();
         })
@@ -217,13 +200,6 @@ const ArtistBackoffice = () => {
           
         >
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-             
-            >
-              <i class="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."

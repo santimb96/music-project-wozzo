@@ -46,7 +46,6 @@ const SongBackoffice = () => {
   const [audioUrl, setAudioUrl] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
@@ -54,22 +53,6 @@ const SongBackoffice = () => {
   const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
 
-
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -122,7 +105,6 @@ const SongBackoffice = () => {
         };
       })
       setSongs(data);
-      console.log(data);
     }).catch(err => console.warn(err));
   };
 
@@ -176,7 +158,6 @@ const SongBackoffice = () => {
       setResponseStatus(false);
       createSong(name, artistId, audioUrl, token)
         .then((song) => {
-          console.log(song);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -210,8 +191,7 @@ const SongBackoffice = () => {
         audioUrl,
       };
       updateSong(id, newSong, token)
-        .then((song) => {
-          console.log(song);
+        .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -252,7 +232,6 @@ const SongBackoffice = () => {
       }
       return false;
     });
-    console.log(filtered);
     setFilteredArtists(filtered);
   }, [filterDropdown])
 
@@ -263,19 +242,12 @@ const SongBackoffice = () => {
     return duplicateArtists();
   };
 
-  console.log(filterDropdown);
   return (
     <div className="row">
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-            >
-              <i className="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."
