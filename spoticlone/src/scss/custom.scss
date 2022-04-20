@@ -11,6 +11,12 @@ $secondaryColor: #198754;
 html {
   body {
     overflow-x: hidden;
+
+    .scrollable-menu{
+      height: auto;
+      max-height: 140px;
+      overflow-x: hidden;
+    }
     
     .spinner-table-loading {
       @extend %itemHorizontal;

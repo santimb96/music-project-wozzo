@@ -104,9 +104,10 @@ const SongBackoffice = () => {
 
   const getData = () => {
     Promise.all([getSongs(token), getArtists(token)]).then(([songsResponse, artistsResponse]) => {
+      setArtists(artistsResponse.artists);
       const data = songsResponse.songs.map(song => {
         const artist = artistsResponse.artists.find(artist => artist._id === song.artistId);
-        setArtists((prevState) => [...prevState, artist]);
+        //setArtists((prevState) => [...prevState, artist]);
         return {
           ...song,
           artistName: artist.name,
@@ -369,7 +370,7 @@ const SongBackoffice = () => {
                             {artistName}
                           </button>
                           <div
-                            className="dropdown-menu dropdown-menu-left"
+                            className="dropdown-menu dropdown-menu-left  scrollable-menu"
                             aria-labelledby="dropdownMenu2"
                           >
                             {filteredArtists()?.map((artist) => (
