@@ -49,6 +49,8 @@ const SongBackoffice = () => {
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
+  const [filterDropdown, setFilterDropdown] = useState("");
+  const [filteredArtists, setFilteredArtists] = useState([]);
 
   /**
    *
@@ -221,7 +223,7 @@ const SongBackoffice = () => {
     setId("");
   };
 
-  const filteredArtists = () => {
+  const duplicateArtists = () => {
     const seen = new Set();
     const filtered = artists.filter(artist => {
       const duplicate = seen.has(artist._id);
@@ -232,6 +234,27 @@ const SongBackoffice = () => {
     return filtered.sort((a, b) => a.name.localeCompare(b.name));
   }
 
+  useEffect(() => {
+    const filtered = duplicateArtists()?.filter((artist) => {
+      if (
+        artist.name.toLocaleLowerCase().includes(filterDropdown.toLocaleLowerCase().trim())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    console.log(filtered);
+    setFilteredArtists(filtered);
+  }, [filterDropdown])
+
+  const artistsToShow = () => {
+    if (filterDropdown?.length) {
+      return filteredArtists;
+    }
+    return duplicateArtists();
+  };
+
+  console.log(filterDropdown);
   return (
     <div className="row">
       <SidebarBackoffice />
@@ -373,7 +396,9 @@ const SongBackoffice = () => {
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
                             aria-labelledby="dropdownMenu2"
                           >
-                            {filteredArtists()?.map((artist) => (
+                            <input type="text" placeholder="Filtrar..." className="search-filter-dropdown" onChange={(e) => setFilterDropdown(e.target.value)}/>
+
+                            {artistsToShow()?.map((artist) => (
                               <button
                               value={artist._id}
                               onClick={(e) => {
