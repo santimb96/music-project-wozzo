@@ -45,6 +45,9 @@ const ArtistBackoffice = () => {
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
   const [openSidebar, setOpenSidebar] = useState(false);
+  const [responseStatus, setResponseStatus] = useState(true);
+  const [create, setCreate] = useState(false);
+
 
   /**
    *
@@ -83,21 +86,29 @@ const ArtistBackoffice = () => {
    */
   const [openForm, setOpenForm] = useState(false);
 
-  const handleOpenForm = () => setOpenForm(true);
+  const handleOpenForm = (post = false) => {
+    setCreate(post);
+    setOpenForm(true);
+  }
 
   const handleCloseForm = () => {
+    clearData();
+    setCreate(false);
+    setOpenForm(false);
+  };
+
+  
+  const clearData = () => {
     setName("");
     setDescription("");
     setProfileImage("");
     setId("");
-
-    setOpenForm(false);
   };
+
 
   const getData = () => {
     getArtists(token)
       .then((artist) => {
-        console.log(artist);
         setArtists(artist?.artists);
       })
       .catch((err) => console.warn(err));
@@ -166,7 +177,7 @@ const ArtistBackoffice = () => {
 
   const removeArtist = (id) => {
     deleteArtist(id, token)
-      .then((artist) => {
+      .then(() => {
         getData();
         setOpenDelete(false);
       })
@@ -183,7 +194,6 @@ const ArtistBackoffice = () => {
 
       updateArtist(id, artist, token)
         .then((artist) => {
-          console.log(artist);
           setOpenForm(false);
           getData();
         })
@@ -214,7 +224,7 @@ const ArtistBackoffice = () => {
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button className="btn-open-form" onClick={handleOpenForm}>
+            <Button className="btn-open-form" onClick={() => handleOpenForm(true)}>
               <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
             </Button>
           </div>
@@ -326,22 +336,32 @@ const ArtistBackoffice = () => {
                           onChange={(e) => setProfileImage(e.target.value)}
                         />
                       </div>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="typo-flex">
-                          <Button
-                            onClick={() => createArtist()}
-                            className="btn-modal-form"
-                          >
-                            Crear
-                          </Button>{" "}
-                          <Button
-                            onClick={() => editArtist()}
-                            className="btn-modal-form"
-                          >
-                            Actualizar
-                          </Button>
-                        </div>
-                      </Typography>
+                      {responseStatus ? (
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                          <div className="typo-flex">
+                            {create ? (
+                              <Button
+                                onClick={() => createArtist()}
+                                className="btn-modal-form"
+                              >
+                                Crear
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={() => editArtist(true)}
+                                className="btn-modal-form"
+                              >
+                                Actualizar
+                              </Button>
+                            )}
+                          </div>
+                        </Typography>
+                      ) : (
+                        <Typography className="d-flex justify-content-center ">
+                          <SpinnerLoading />
+                        </Typography>
+                      )}
+
                     </Box>
                   </Modal>
 
