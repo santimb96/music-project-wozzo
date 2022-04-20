@@ -12,6 +12,7 @@ import { removeUserStorage } from "../utils/localStorage.js";
 import UserBackoffice from "../pages/UserBackoffice";
 import UserRoleBackoffice from "../pages/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice";
+import SongBackoffice from "../pages/SongBackoffice";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
@@ -74,6 +75,7 @@ const AppRoutes = () => {
       <Route path="/backoffice/roles" element={<UserRoleBackoffice />} />
       <Route path="/backoffice/users" element={<UserBackoffice />} />
       <Route path="/backoffice/artists" element={<ArtistBackoffice />} />
+      <Route path="/backoffice/songs" element={<SongBackoffice />} />
       {/* <Route path="/backoffice/artists" element={<AdminBackoffice />} />
       <Route path="/backoffice/songs" element={<AdminBackoffice />} /> */}
     </Routes>

@@ -10,6 +10,27 @@ $secondaryColor: #198754;
 
 html {
   body {
+    overflow-x: hidden;
+
+    .search-filter-dropdown {
+      box-sizing: border-box;
+      //background-image: url('searchicon.png');
+      max-width: 100%;
+      font-size: 16px;
+      padding: 14px 20px 12px 45px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      transition: 0.1s;
+    }
+
+    .search-filter-dropdown:focus, .search-filter-dropdown:hover {outline: 3px solid $secondaryColor;}
+    
+    .scrollable-menu{
+      height: auto;
+      max-height: 140px;
+      overflow-x: hidden;
+    }
+    
     .spinner-table-loading {
       @extend %itemHorizontal;
     }
@@ -311,6 +332,10 @@ html {
       }
       .hamburguer-button{
         display: grid;
+      }
+
+      .input {
+        min-width: 172px;
       }
     }
   }
