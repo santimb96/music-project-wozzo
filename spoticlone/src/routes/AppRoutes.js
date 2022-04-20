@@ -71,7 +71,6 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       {/* <Route path="/register" element={<Register />} /> */}
-      <Route path="/backoffice/admin" element={<AdminBackoffice />} />
       <Route path="/backoffice/roles" element={<UserRoleBackoffice />} />
       <Route path="/backoffice/users" element={<UserBackoffice />} />
       <Route path="/backoffice/artists" element={<ArtistBackoffice />} />
