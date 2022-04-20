@@ -127,7 +127,7 @@ const UserRoleBackoffice = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody className="pointer-table">
                 {itemsToShow()?.map((user) => (
                   <TableRow
                     key={user.name}

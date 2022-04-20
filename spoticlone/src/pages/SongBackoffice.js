@@ -33,6 +33,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -51,6 +52,8 @@ const SongBackoffice = () => {
   const [artists, setArtists] = useState([]);
   const [filterDropdown, setFilterDropdown] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
+  const [errors, setErrors] = useState(false);
+
 
   /**
    *
@@ -92,14 +95,17 @@ const SongBackoffice = () => {
   const handleOpenForm = (post = false) => {
     if (post) {
       setCreate(true);
+      setErrors(false);
       setOpenForm(true);
     } else {
+      setErrors(false);
       setOpenForm(true);
     }
   };
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -166,6 +172,7 @@ const SongBackoffice = () => {
 
   const postSong = () => {
     if (validateData()) {
+      setErrors(false);
       setResponseStatus(false);
       createSong(name, artistId, audioUrl, token)
         .then((song) => {
@@ -177,6 +184,7 @@ const SongBackoffice = () => {
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -211,6 +219,7 @@ const SongBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(false);
       handleOpenError();
       handleCloseError();
     }
@@ -371,6 +380,8 @@ const SongBackoffice = () => {
                           id="outlined-basic"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <TextField
                           className="input"
@@ -380,6 +391,9 @@ const SongBackoffice = () => {
                           variant="outlined"
                           placeholder="audio path"
                           onChange={(e) => setAudioUrl(e.target.value)}
+                          
+                          error={errors && audioUrl?.length === 0}
+                          helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <div class="dropdown d-flex justify-content-center">
                           <button
@@ -471,7 +485,7 @@ const SongBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((song) => (
                     <TableRow
                       key={song.name}

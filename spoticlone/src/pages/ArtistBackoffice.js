@@ -33,6 +33,7 @@ import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import TextTareaAutosize from "@mui/material/TextareaAutosize";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -47,7 +48,7 @@ const ArtistBackoffice = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
-
+  const [errors, setErrors] = useState(false);
 
   /**
    *
@@ -88,11 +89,13 @@ const ArtistBackoffice = () => {
 
   const handleOpenForm = (post = false) => {
     setCreate(post);
+    setErrors(false);
     setOpenForm(true);
   }
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -170,6 +173,7 @@ const ArtistBackoffice = () => {
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -199,6 +203,7 @@ const ArtistBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -314,18 +319,21 @@ const ArtistBackoffice = () => {
                           id="outlined-basic"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <div className="text-tarea">
-                          <TextTareaAutosize
+                          <TextField
+                            className="input"
                             minRows={2}
+                            multiline
                             type="text"
                             value={description}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder="descripcion"
+                            placeholder="descripción"
                             onChange={(e) => setDescription(e.target.value)}
+                            error={errors && description?.length === 0}
+                            helperText={errors && description?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                           />
-                        </div>
+                        
                         <TextField
                           className="input"
                           type="text"
@@ -334,6 +342,8 @@ const ArtistBackoffice = () => {
                           variant="outlined"
                           placeholder="imagen"
                           onChange={(e) => setProfileImage(e.target.value)}
+                          error={errors && profileImage?.length === 0}
+                          helperText={errors && profileImage?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                       </div>
                       {responseStatus ? (
@@ -392,7 +402,7 @@ const ArtistBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((artist) => (
                     <TableRow
                       key={artist.name}

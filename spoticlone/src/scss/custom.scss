@@ -12,6 +12,10 @@ html {
   body {
     overflow-x: hidden;
 
+    .pointer-table:hover{
+      cursor: pointer;
+    }
+
     .search-filter-dropdown {
       box-sizing: border-box;
       //background-image: url('searchicon.png');
@@ -178,20 +182,20 @@ html {
         height: 10px;
         border-radius: 5px;
         background-color: white;
-        transition: 0.2s;
+        
       }
-    }
 
-    .text-tarea {
-      padding-left: 0.8rem;
-      display: flex;
-      justify-content: center;
-      margin: 1rem;
-      textarea {
-        height: 10px;
-        border-radius: 5px;
-        background-color: white;
-        transition: 0.2s;
+      input:focus-visible {
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-root{
+        background-color: #fff;
+      }
+      .MuiOutlinedInput-root:hover{
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-notchedOutline {
+        display: none;
       }
     }
 

@@ -31,6 +31,7 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -48,6 +49,7 @@ const UserBackoffice = () => {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
+  const [errors, setErrors] = useState(false);
 
   /**
    *
@@ -89,14 +91,17 @@ const UserBackoffice = () => {
   const handleOpenForm = (post = false) => {
     if (post) {
       setCreate(true);
+      setErrors(false);
       setOpenForm(true);
     } else {
+      setErrors(false);
       setOpenForm(true);
     }
   };
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -185,6 +190,7 @@ const UserBackoffice = () => {
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -193,7 +199,7 @@ const UserBackoffice = () => {
   const deleteUser = (id) => {
     setResponseStatus(false);
     removeUser(id, token)
-      .then((user) => {
+      .then(() => {
         getData();
         setOpenDelete(false);
         setResponseStatus(true);
@@ -221,6 +227,7 @@ const UserBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -353,6 +360,8 @@ const UserBackoffice = () => {
                           id="outlined-basic"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <TextField
                           className="input"
@@ -362,8 +371,13 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
+                          error={errors && email?.length === 0}
+                          helperText={errors && email?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <TextField
+                        {
+                          create ? (
+                            <>
+                          <TextField
                           className="input"
                           type="password"
                           value={password}
@@ -371,6 +385,8 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="contraseña"
                           onChange={(e) => setPassword(e.target.value)}
+                          error={errors && password?.length === 0}
+                          helperText={errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <TextField
                           className="input"
@@ -380,7 +396,13 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="repite contraseña"
                           onChange={(e) => setPassRepeat(e.target.value)}
+                          error={errors && passRepeat?.length === 0}
+                          helperText={errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        </>
+                          ) : ''
+                        }
+                        
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
@@ -470,7 +492,7 @@ const UserBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((user) => (
                     <TableRow
                       key={user.name}
