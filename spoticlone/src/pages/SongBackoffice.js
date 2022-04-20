@@ -345,33 +345,39 @@ const SongBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
+                        <div>
+                          <h2 className="d-flex justify-content-center">{create ? 'Crear canción': 'Actualizar canción'}</h2>
+                        </div>
+                        <label htmlFor="titulo"/><h5 className="d-flex justify-content-center">Título de la canción</h5>
                         <TextField
                           value={name}
                           type="text"
                           className="input"
-                          id="outlined-basic"
-                          placeholder="nombre"
+                          id="titulo"
+                          placeholder="Título"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
                           helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="audioUrl"/><h5 className="d-flex justify-content-center">URL de la canción</h5>
                         <TextField
                           className="input"
                           type="text"
                           value={audioUrl}
-                          id="outlined-basic"
+                          id="audioUrl"
                           variant="outlined"
-                          placeholder="audio path"
+                          placeholder="URL del audio"
                           onChange={(e) => setAudioUrl(e.target.value)}
                           
                           error={errors && audioUrl?.length === 0}
                           helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="drop"/><h5 className="d-flex justify-content-center">Compositor</h5>
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
-                            id="dropdownMenu2"
+                            id="drop"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
@@ -380,7 +386,7 @@ const SongBackoffice = () => {
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
-                            aria-labelledby="dropdownMenu2"
+                            aria-labelledby="drop"
                           >
                             <input type="text" placeholder="Filtrar..." className="search-filter-dropdown" onChange={(e) => setFilterDropdown(e.target.value)}/>
 

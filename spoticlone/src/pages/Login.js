@@ -2,14 +2,17 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import { login } from "../services/user.js";
+import SpinnerLoading from "../components/common/SpinnerLoading";
 
 const Login = () => {
   const authContext = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const onLogin = () => {
+    setLoading(true);
     login(email, password)
       .then((user) => {
         authContext.setUser(user.user);
@@ -17,6 +20,7 @@ const Login = () => {
         localStorage.setItem("userId", user.user._id);
         localStorage.setItem("token", user.token);
         localStorage.setItem("expiryDate", user.expiryDate);
+        setLoading(false);
         navigate('/backoffice/roles');
       })
       .catch(() => {
@@ -32,7 +36,8 @@ const Login = () => {
           style={{ minHeight: "100vh" }}
         >
           <div className="col-12" style={{ maxWidth: "540px" }}>
-            <div className="login-form bg-dark mt-4 p-4 text-light">
+            {!loading ? (
+              <div className="login-form bg-dark mt-4 p-4 text-light">
               <h4>SpotiClone</h4>
               <div className="mb-5 mt-5">
                 <div className="mt-3">
@@ -73,6 +78,11 @@ const Login = () => {
                 </h6>
               </div>
             </div>
+            ): (
+              <div className="spinner-table-loading">
+                <SpinnerLoading />
+              </div>
+            )}
           </div>
         </div>
       </div>
