@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SidebarBackoffice from "../components/common/SidebarBackoffice";
 import {
   getArtists,
@@ -33,6 +33,7 @@ import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import TextTareaAutosize from "@mui/material/TextareaAutosize";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -44,26 +45,10 @@ const ArtistBackoffice = () => {
   const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
+  const [errors, setErrors] = useState(false);
 
-
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -88,11 +73,13 @@ const ArtistBackoffice = () => {
 
   const handleOpenForm = (post = false) => {
     setCreate(post);
+    setErrors(false);
     setOpenForm(true);
   }
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -164,12 +151,12 @@ const ArtistBackoffice = () => {
 
       postArtist(artist, token)
         .then((artist) => {
-          console.log(artist);
           setOpenForm(false);
           getData();
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -199,6 +186,7 @@ const ArtistBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -212,13 +200,6 @@ const ArtistBackoffice = () => {
           
         >
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-             
-            >
-              <i class="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -314,18 +295,21 @@ const ArtistBackoffice = () => {
                           id="outlined-basic"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <div className="text-tarea">
-                          <TextTareaAutosize
+                          <TextField
+                            className="input"
                             minRows={2}
+                            multiline
                             type="text"
                             value={description}
-                            id="outlined-basic"
-                            variant="outlined"
-                            placeholder="descripcion"
+                            placeholder="descripción"
                             onChange={(e) => setDescription(e.target.value)}
+                            error={errors && description?.length === 0}
+                            helperText={errors && description?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                           />
-                        </div>
+                        
                         <TextField
                           className="input"
                           type="text"
@@ -334,6 +318,8 @@ const ArtistBackoffice = () => {
                           variant="outlined"
                           placeholder="imagen"
                           onChange={(e) => setProfileImage(e.target.value)}
+                          error={errors && profileImage?.length === 0}
+                          helperText={errors && profileImage?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                       </div>
                       {responseStatus ? (
@@ -392,7 +378,7 @@ const ArtistBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((artist) => (
                     <TableRow
                       key={artist.name}

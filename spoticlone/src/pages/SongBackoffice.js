@@ -33,6 +33,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -45,28 +46,13 @@ const SongBackoffice = () => {
   const [audioUrl, setAudioUrl] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
   const [filterDropdown, setFilterDropdown] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
+  const [errors, setErrors] = useState(false);
 
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -92,14 +78,17 @@ const SongBackoffice = () => {
   const handleOpenForm = (post = false) => {
     if (post) {
       setCreate(true);
+      setErrors(false);
       setOpenForm(true);
     } else {
+      setErrors(false);
       setOpenForm(true);
     }
   };
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -116,7 +105,6 @@ const SongBackoffice = () => {
         };
       })
       setSongs(data);
-      console.log(data);
     }).catch(err => console.warn(err));
   };
 
@@ -166,10 +154,10 @@ const SongBackoffice = () => {
 
   const postSong = () => {
     if (validateData()) {
+      setErrors(false);
       setResponseStatus(false);
       createSong(name, artistId, audioUrl, token)
         .then((song) => {
-          console.log(song);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -177,6 +165,7 @@ const SongBackoffice = () => {
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -202,8 +191,7 @@ const SongBackoffice = () => {
         audioUrl,
       };
       updateSong(id, newSong, token)
-        .then((song) => {
-          console.log(song);
+        .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -211,6 +199,7 @@ const SongBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(false);
       handleOpenError();
       handleCloseError();
     }
@@ -243,7 +232,6 @@ const SongBackoffice = () => {
       }
       return false;
     });
-    console.log(filtered);
     setFilteredArtists(filtered);
   }, [filterDropdown])
 
@@ -254,19 +242,12 @@ const SongBackoffice = () => {
     return duplicateArtists();
   };
 
-  console.log(filterDropdown);
   return (
     <div className="row">
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-            >
-              <i className="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -364,28 +345,39 @@ const SongBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
+                        <div>
+                          <h2 className="d-flex justify-content-center">{create ? 'Crear canción': 'Actualizar canción'}</h2>
+                        </div>
+                        <label htmlFor="titulo"/><h5 className="d-flex justify-content-center">Título de la canción</h5>
                         <TextField
                           value={name}
                           type="text"
                           className="input"
-                          id="outlined-basic"
-                          placeholder="nombre"
+                          id="titulo"
+                          placeholder="Título"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="audioUrl"/><h5 className="d-flex justify-content-center">URL de la canción</h5>
                         <TextField
                           className="input"
                           type="text"
                           value={audioUrl}
-                          id="outlined-basic"
+                          id="audioUrl"
                           variant="outlined"
-                          placeholder="audio path"
+                          placeholder="URL del audio"
                           onChange={(e) => setAudioUrl(e.target.value)}
+                          
+                          error={errors && audioUrl?.length === 0}
+                          helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="drop"/><h5 className="d-flex justify-content-center">Compositor</h5>
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
-                            id="dropdownMenu2"
+                            id="drop"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
@@ -394,7 +386,7 @@ const SongBackoffice = () => {
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
-                            aria-labelledby="dropdownMenu2"
+                            aria-labelledby="drop"
                           >
                             <input type="text" placeholder="Filtrar..." className="search-filter-dropdown" onChange={(e) => setFilterDropdown(e.target.value)}/>
 
@@ -471,7 +463,7 @@ const SongBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((song) => (
                     <TableRow
                       key={song.name}

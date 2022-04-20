@@ -31,6 +31,7 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
+import { EMPTY_FIELD_MESSAGE } from "../constants";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -45,25 +46,10 @@ const UserBackoffice = () => {
   const [id, setId] = useState("");
   const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
-  const [openSidebar, setOpenSidebar] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
+  const [errors, setErrors] = useState(false);
 
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
   /**
    * ERROR MODAL
    */
@@ -89,14 +75,17 @@ const UserBackoffice = () => {
   const handleOpenForm = (post = false) => {
     if (post) {
       setCreate(true);
+      setErrors(false);
       setOpenForm(true);
     } else {
+      setErrors(false);
       setOpenForm(true);
     }
   };
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -104,7 +93,6 @@ const UserBackoffice = () => {
   const getData = () => {
     getUsers(token)
       .then((user) => {
-        console.log(user);
         setUsers(user?.users);
       })
       .catch((err) => console.warn(err));
@@ -163,7 +151,6 @@ const UserBackoffice = () => {
 
   const setData = (user) => {
     const roleName = ROLES.find((r) => r.id === user.userRoleId);
-    console.log(roleName);
     setId(user._id);
     setName(user.name);
     setEmail(user.email);
@@ -177,7 +164,6 @@ const UserBackoffice = () => {
       setResponseStatus(false);
       createUser(name, email, password, role, token)
         .then((user) => {
-          console.log(user);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -185,6 +171,7 @@ const UserBackoffice = () => {
         })
         .catch((err) => console.error(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -193,7 +180,7 @@ const UserBackoffice = () => {
   const deleteUser = (id) => {
     setResponseStatus(false);
     removeUser(id, token)
-      .then((user) => {
+      .then(() => {
         getData();
         setOpenDelete(false);
         setResponseStatus(true);
@@ -213,7 +200,6 @@ const UserBackoffice = () => {
       };
       updateUser(id, newUser, token)
         .then((user) => {
-          console.log(user);
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -221,6 +207,7 @@ const UserBackoffice = () => {
         })
         .catch((err) => console.warn(err));
     } else {
+      setErrors(true);
       handleOpenError();
       handleCloseError();
     }
@@ -236,19 +223,12 @@ const UserBackoffice = () => {
     setRoleId(null);
   };
 
-  console.log(name);
   return (
     <div className="row">
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-            <button
-              onClick={() => handleOpenSidebar()}
-              className="btn hamburguer-button"
-            >
-              <i class="fa fa-bars" aria-hidden="true"></i>
-            </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -353,6 +333,8 @@ const UserBackoffice = () => {
                           id="outlined-basic"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <TextField
                           className="input"
@@ -362,8 +344,13 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
+                          error={errors && email?.length === 0}
+                          helperText={errors && email?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <TextField
+                        {
+                          create ? (
+                            <>
+                          <TextField
                           className="input"
                           type="password"
                           value={password}
@@ -371,6 +358,8 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="contraseña"
                           onChange={(e) => setPassword(e.target.value)}
+                          error={errors && password?.length === 0}
+                          helperText={errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <TextField
                           className="input"
@@ -380,7 +369,13 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="repite contraseña"
                           onChange={(e) => setPassRepeat(e.target.value)}
+                          error={errors && passRepeat?.length === 0}
+                          helperText={errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        </>
+                          ) : ''
+                        }
+                        
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
@@ -470,7 +465,7 @@ const UserBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody className="pointer-table">
                   {itemsToShow()?.map((user) => (
                     <TableRow
                       key={user.name}

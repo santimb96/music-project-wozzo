@@ -32,23 +32,6 @@ const UserRoleBackoffice = () => {
   const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
   const [text, setText] = useState("");
-  const [openSidebar, setOpenSidebar] = useState(false);
-
-  /**
-   *
-   * OPEN SIDEBAR
-   */
-
-  const handleOpenSidebar = () => {
-    if (openSidebar) {
-      document.getElementById("sidebar").style.display = "none";
-      setOpenSidebar(false);
-    } else {
-      document.getElementById("sidebar").style.display = "grid";
-      document.getElementById("sidebar").style.width = "100%";
-      setOpenSidebar(true);
-    }
-  };
 
   useEffect(() => {
     getRoles(token)
@@ -87,13 +70,6 @@ const UserRoleBackoffice = () => {
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-              <button
-                onClick={() => handleOpenSidebar()}
-                className="btn hamburguer-button"
-                id="hamburguer"
-              >
-                <i class="fa fa-bars" aria-hidden="true"></i>
-              </button>
             <TextField
               className="input"
               placeholder="busca..."
@@ -127,7 +103,7 @@ const UserRoleBackoffice = () => {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody className="pointer-table">
                 {itemsToShow()?.map((user) => (
                   <TableRow
                     key={user.name}
