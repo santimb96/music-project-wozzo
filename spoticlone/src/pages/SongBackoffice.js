@@ -248,7 +248,7 @@ const SongBackoffice = () => {
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
-          <div className="table-head-item">
+          <div className="table-head-item d-felx justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
