@@ -149,6 +149,7 @@ const SongBackoffice = () => {
     setId(song._id);
     setName(song.name);
     setArtistName(song.artistName);
+    setArtistId(song.artistId);
     setAudioUrl(song.audioUrl);
     handleOpenForm();
   };
@@ -507,14 +508,18 @@ const SongBackoffice = () => {
                         align="left"
                         onClick={() => setData(song)}
                       >
-                        <EditIcon />
+                        <div className="edit-button-table" >
+                        <EditIcon/>
+                        </div>
                       </TableCell>
                       <TableCell
                         sx={{ color: pink[600] }}
                         align="left"
                         onClick={() => handleOpenDelete(song._id)}
                       >
-                        <DeleteIcon />
+                        <div className="delete-button-table" >
+                        <DeleteIcon/>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}

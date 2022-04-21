@@ -13,8 +13,17 @@ html {
   body {
     overflow-x: hidden;
 
-    .pointer-table:hover{
-      cursor: pointer;
+    .edit-button-table, .delete-button-table {
+      display: flex;
+      justify-content: center;
+      transition: 0.1s;
+      padding: 1rem;
+      width: 25%;
+      border-radius: 5px;
+    }
+
+    .edit-button-table:hover, .delete-button-table:hover {
+      background-color: $secondaryColor;
     }
 
     .search-filter-dropdown {
