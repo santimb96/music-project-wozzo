@@ -31,9 +31,10 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
-import { pink } from "@mui/material/colors";
+import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
+import EditIcon from '@mui/icons-material/Edit';
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -257,7 +258,8 @@ const SongBackoffice = () => {
               className="btn-open-form"
               onClick={() => handleOpenForm(true)}
             >
-              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+              
+              <i class="fa fa-plus"> Crear</i>
             </Button>
           </div>
 
@@ -346,9 +348,9 @@ const SongBackoffice = () => {
                     <Box className="modal-delete">
                       <div>
                         <div>
-                          <h2 className="d-flex justify-content-center">{create ? 'Crear canción': 'Actualizar canción'}</h2>
+                          <h2 className="d-flex justify-content-center pb-4">{create ? 'Crear canción': 'Actualizar canción'}</h2>
                         </div>
-                        <label htmlFor="titulo"/><h5 className="d-flex justify-content-center">Título de la canción</h5>
+                        <label className="label-form-modal" htmlFor="titulo">Título de la canción*</label>
                         <TextField
                           value={name}
                           type="text"
@@ -359,7 +361,7 @@ const SongBackoffice = () => {
                           error={errors && name?.length === 0}
                           helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <label htmlFor="audioUrl"/><h5 className="d-flex justify-content-center">URL de la canción</h5>
+                        <label htmlFor="audioUrl">URL de la canción*</label>
                         <TextField
                           className="input"
                           type="text"
@@ -372,7 +374,7 @@ const SongBackoffice = () => {
                           error={errors && audioUrl?.length === 0}
                           helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
-                        <label htmlFor="drop"/><h5 className="d-flex justify-content-center">Compositor</h5>
+                        <label htmlFor="drop">Compositor*</label>
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
@@ -433,6 +435,7 @@ const SongBackoffice = () => {
                           <SpinnerLoading />
                         </Typography>
                       )}
+                      <small>*Campos requeridos</small>
                     </Box>
                   </Modal>
 
@@ -455,6 +458,13 @@ const SongBackoffice = () => {
                     >
                       Path
                     </TableCell>
+                    
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Editar
+                    </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -474,23 +484,30 @@ const SongBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(song)}
+                        
                       >
                         {song.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(song)}
+                        
                       >
                         {song.artistName}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(song)}
+                        
                       >
                         {song.audioUrl}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: yellow[600] }}
+                        align="left"
+                        onClick={() => setData(song)}
+                      >
+                        <EditIcon />
                       </TableCell>
                       <TableCell
                         sx={{ color: pink[600] }}
