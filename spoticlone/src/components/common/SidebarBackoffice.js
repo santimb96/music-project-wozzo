@@ -35,12 +35,15 @@ const SidebarBackoffice = () => {
 
   return (
     <div className="col-12 col-md-2 bg-dark">
-      <button
+      <div className="d-flex justify-content-center pt-5">
+        <button
         onClick={() => handleOpenSidebar()}
         className="btn hamburguer-button"
-      >
-        <i class="fa fa-bars" aria-hidden="true"></i>
-      </button>
+        >
+        <i className="fa fa-bars" aria-hidden="true"></i>
+       </button>
+      </div>
+      
       <Box
         sx={{ height: 1 }}
         ref={sidebarRef}

@@ -159,7 +159,7 @@ const SongBackoffice = () => {
       setErrors(false);
       setResponseStatus(false);
       createSong(name, artistId, audioUrl, token)
-        .then((song) => {
+        .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
           clearData();
@@ -260,7 +260,7 @@ const SongBackoffice = () => {
               onClick={() => handleOpenForm(true)}
             >
               
-              <i class="fa fa-plus"> Crear</i>
+              <i className="fa fa-plus"> Crear</i>
             </Button>
           </div>
 
@@ -376,7 +376,7 @@ const SongBackoffice = () => {
                           helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                         <label htmlFor="drop">Compositor*</label>
-                        <div class="dropdown d-flex justify-content-center">
+                        <div className="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
@@ -395,6 +395,7 @@ const SongBackoffice = () => {
 
                             {artistsToShow()?.map((artist) => (
                               <button
+                              key={artist.name}
                               value={artist._id}
                               onClick={(e) => {
                                 setArtistId(e.target.value);
