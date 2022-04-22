@@ -9,6 +9,7 @@ import {
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Table,
   TableCell,
@@ -28,10 +29,11 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
-import { pink } from "@mui/material/colors";
+import { pink, yellow } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
+import ButtonCreate from "../components/common/ButtonCreate";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -228,18 +230,13 @@ const UserBackoffice = () => {
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
-          <div className="table-head-item">
+          <div className="table-head-item d-flex justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button
-              className="btn-open-form"
-              onClick={() => handleOpenForm(true)}
-            >
-              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </Button>
+            <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
@@ -326,21 +323,26 @@ const UserBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
+                      <div>
+                          <h2 className="d-flex justify-content-center pb-4">{create ? 'Crear usuario': 'Actualizar usuario'}</h2>
+                        </div>
+                      <label htmlFor="nombre">Nombre*</label>
                         <TextField
                           value={name}
                           type="text"
                           className="input"
-                          id="outlined-basic"
+                          id="name"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
                           helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="email">Email*</label>
                         <TextField
                           className="input"
                           type="email"
                           value={email}
-                          id="outlined-basic"
+                          id="email"
                           variant="outlined"
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
@@ -350,22 +352,24 @@ const UserBackoffice = () => {
                         {
                           create ? (
                             <>
+                            <label htmlFor="password">Contraseña*</label>
                           <TextField
                           className="input"
                           type="password"
                           value={password}
-                          id="outlined-basic"
+                          id="password"
                           variant="outlined"
                           placeholder="contraseña"
                           onChange={(e) => setPassword(e.target.value)}
                           error={errors && password?.length === 0}
                           helperText={errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="passRepeat">Repite contraseña*</label>
                         <TextField
                           className="input"
                           type="password"
                           value={passRepeat}
-                          id="outlined-basic"
+                          id="passRepeat"
                           variant="outlined"
                           placeholder="repite contraseña"
                           onChange={(e) => setPassRepeat(e.target.value)}
@@ -375,12 +379,12 @@ const UserBackoffice = () => {
                         </>
                           ) : ''
                         }
-                        
+                        <label htmlFor="role">Rol*</label>
                         <div class="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
-                            id="dropdownMenu2"
+                            id="role"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
@@ -389,7 +393,7 @@ const UserBackoffice = () => {
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left"
-                            aria-labelledby="dropdownMenu2"
+                            aria-labelledby="role"
                           >
                             <button
                               value={"user"}
@@ -435,6 +439,7 @@ const UserBackoffice = () => {
                           <SpinnerLoading />
                         </Typography>
                       )}
+                      <small>*Campos requeridos</small>
                     </Box>
                   </Modal>
 
@@ -457,6 +462,13 @@ const UserBackoffice = () => {
                     >
                       Rol
                     </TableCell>
+                    
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Borrar
+                    </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -476,23 +488,32 @@ const UserBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        
                       >
                         {user.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        
                       >
                         {user.email}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(user)}
+                        
                       >
                         {user.userRoleId}
+                      </TableCell>
+                      <TableCell
+                        sx={{ color: yellow[600] }}
+                        align="left"
+                        onClick={() => setData(user)}
+                      >
+                        <div className="edit-button-table" >
+                        <EditIcon/>
+                        </div>
                       </TableCell>
                       <TableCell
                         sx={{ color: pink[600] }}

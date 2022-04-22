@@ -35,6 +35,7 @@ import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
 import EditIcon from '@mui/icons-material/Edit';
+import ButtonCreate from "../components/common/ButtonCreate";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -249,19 +250,13 @@ const SongBackoffice = () => {
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
-          <div className="table-head-item d-felx justify-content-around align-items-center">
+          <div className="table-head-item d-flex justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button
-              className="btn-open-form"
-              onClick={() => handleOpenForm(true)}
-            >
-              
-              <i className="fa fa-plus"> Crear</i>
-            </Button>
+            <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer

@@ -18,7 +18,7 @@ html {
       justify-content: center;
       transition: 0.1s;
       padding: 1rem;
-      width: 25%;
+      width: 50%;
       border-radius: 5px;
     }
 
@@ -189,7 +189,7 @@ html {
       color: $labelGrey;
       display: flex;
       justify-content: start;
-      padding-top: 30%;
+      padding-top: 10%;
     }
 
     .input {
@@ -227,7 +227,7 @@ html {
       min-width: 50%;
       transition: 0.2;
       margin-top: 5%;
-      margin-bottom: 22%;
+      margin-bottom: 5%;
       transition: 0.2;
     }
 
@@ -263,15 +263,14 @@ html {
       color: $secondaryColor;
       background-color: $darkColor;
     }
-
     .modal-delete {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 400;
+      width: 400px;
       background-color: $darkColor;
-      padding: 5rem;
+      padding: 2rem;
       color: white;
       border: 2px solid $secondaryColor;
       border-radius: 5px;
