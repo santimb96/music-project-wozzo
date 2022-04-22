@@ -33,11 +33,13 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink, yellow } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
-import { EMPTY_FIELD_MESSAGE } from "../constants";
+import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../constants";
 import ButtonCreate from "../components/common/ButtonCreate";
 import ModalDelete from "../components/common/ModalDelete";
 import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
+import { checkEmail, checkPassword } from "../utils/validators.js";
+
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -109,11 +111,6 @@ const UserBackoffice = () => {
         })
         setUsers(data);
       }).catch(err => console.warn(err));
-    // getUsers(token)
-    //   .then((user) => {
-    //     setUsers(user?.users);
-    //   })
-    //   .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
@@ -142,12 +139,11 @@ const UserBackoffice = () => {
     return users;
   };
 
-  const validateData = (method = false) => {
-    const checkPassword = () =>
-      password === passRepeat && email.indexOf("@") !== -1;
+
+  const validateData = (method = false) => {  
     if (method) {
       if (name?.length && email?.length && role) {
-        if (checkPassword()) {
+        if (checkEmail(email)) {
           return true;
         }
         return false;
@@ -159,7 +155,7 @@ const UserBackoffice = () => {
         password?.length &&
         passRepeat?.length
       ) {
-        if (checkPassword()) {
+        if (checkPassword(password, passRepeat) && checkEmail(email)) {
           return true;
         }
         return false;
@@ -295,7 +291,7 @@ const UserBackoffice = () => {
                             {create ? "Crear usuario" : "Actualizar usuario"}
                           </h2>
                         </div>
-                        <label htmlFor="nombre">Nombre*</label>
+                        <label htmlFor="name">Nombre*</label>
                         <TextField
                           value={name}
                           type="text"
@@ -319,11 +315,11 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
-                          error={errors && email?.length === 0}
+                          error={(errors && email?.length === 0) || (errors && !checkEmail(email))}
                           helperText={
                             errors && email?.length === 0
                               ? EMPTY_FIELD_MESSAGE
-                              : " "
+                              : errors && !checkEmail(email) ? EMAIL_NOT_VALID_MESSAGE : ""
                           }
                         />
                         {create ? (
@@ -355,11 +351,11 @@ const UserBackoffice = () => {
                               variant="outlined"
                               placeholder="repite contraseña"
                               onChange={(e) => setPassRepeat(e.target.value)}
-                              error={errors && passRepeat?.length === 0}
+                              error={errors && passRepeat?.length === 0 }
                               helperText={
                                 errors && passRepeat?.length === 0
                                   ? EMPTY_FIELD_MESSAGE
-                                  : " "
+                                  : ""
                               }
                             />
                           </>

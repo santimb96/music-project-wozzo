@@ -203,7 +203,7 @@ const ArtistBackoffice = () => {
           sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
           
         >
-          <div className="table-head-item">
+          <div className="table-head-item d-flex justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
@@ -229,23 +229,6 @@ const ArtistBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                  <Modal
-                    open={openError}
-                    onClose={handleCloseError}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¡Error de validación de los campos!
-                      </Typography>
-                    </Box>
-                  </Modal>
 
                   <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
                   <Modal
@@ -257,16 +240,24 @@ const ArtistBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
+                        
+                      <div>
+                          <h2 className="d-flex justify-content-center pb-4">
+                            {create ? "Crear artista" : "Actualizar artista"}
+                          </h2>
+                        </div>
+                        <label htmlFor="name">Nombre*</label>
                         <TextField
                           value={name}
                           type="text"
                           className="input"
-                          id="outlined-basic"
+                          id="name"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
                           helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="description">Descripción*</label>
                           <TextField
                             className="input"
                             minRows={2}
@@ -274,16 +265,17 @@ const ArtistBackoffice = () => {
                             type="text"
                             value={description}
                             placeholder="descripción"
+                            id="description"
                             onChange={(e) => setDescription(e.target.value)}
                             error={errors && description?.length === 0}
                             helperText={errors && description?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                           />
-                        
+                        <label htmlFor="image">Imagen del cantante*</label>
                         <TextField
                           className="input"
                           type="text"
                           value={profileImage}
-                          id="outlined-basic"
+                          id="image"
                           variant="outlined"
                           placeholder="imagen"
                           onChange={(e) => setProfileImage(e.target.value)}
@@ -316,7 +308,7 @@ const ArtistBackoffice = () => {
                           <SpinnerLoading />
                         </Typography>
                       )}
-
+                      <small>*Campos requeridos</small>
                     </Box>
                   </Modal>
 

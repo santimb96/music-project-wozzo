@@ -39,6 +39,7 @@ import ButtonCreate from "../components/common/ButtonCreate";
 import ModalDelete from "../components/common/ModalDelete";
 import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
+import { checkUrl } from "../utils/validators";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -138,10 +139,11 @@ const SongBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    if (method && artistName !== "Selecciona") {
+
+    if (method && artistName !== "Selecciona" && checkUrl(audioUrl)) {
       return true;
     } else {
-      if (name?.length && artistId?.length && audioUrl?.length && artistName !== "Selecciona") {
+      if (name?.length && artistId?.length && checkUrl(audioUrl) && artistName !== "Selecciona") {
         return true;
       }
       return false;
