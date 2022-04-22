@@ -37,6 +37,8 @@ import { EMPTY_FIELD_MESSAGE } from "../constants";
 import EditIcon from '@mui/icons-material/Edit';
 import ButtonCreate from "../components/common/ButtonCreate";
 import ModalDelete from "../components/common/ModalDelete";
+import EditButton from "../components/common/EditButton";
+import DeleteButton from "../components/common/DeleteButton";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -101,7 +103,6 @@ const SongBackoffice = () => {
       setArtists(artistsResponse.artists);
       const data = songsResponse.songs.map(song => {
         const artist = artistsResponse.artists.find(artist => artist._id === song.artistId);
-        //setArtists((prevState) => [...prevState, artist]);
         return {
           ...song,
           artistName: artist.name,
@@ -178,7 +179,7 @@ const SongBackoffice = () => {
   const deleteItem = (id) => {
     setResponseStatus(false);
     removeSong(id, token)
-      .then((song) => {
+      .then(() => {
         getData();
         setOpenDelete(false);
         setResponseStatus(true);
@@ -444,24 +445,8 @@ const SongBackoffice = () => {
                       >
                         {song.audioUrl}
                       </TableCell>
-                      <TableCell
-                        sx={{ color: yellow[600] }}
-                        align="left"
-                        onClick={() => setData(song)}
-                      >
-                        <div className="edit-button-table" >
-                        <EditIcon/>
-                        </div>
-                      </TableCell>
-                      <TableCell
-                        sx={{ color: pink[600] }}
-                        align="left"
-                        onClick={() => handleOpenDelete(song._id)}
-                      >
-                        <div className="delete-button-table" >
-                        <DeleteIcon/>
-                        </div>
-                      </TableCell>
+                      <EditButton setData={setData} item={song} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={song._id}/>
                     </TableRow>
                   ))}
                 </TableBody>

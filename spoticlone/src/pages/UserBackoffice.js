@@ -6,6 +6,7 @@ import {
   removeUser,
   updateUser,
 } from "../services/user.js";
+import { getRoles } from "../services/roles.js";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -35,10 +36,13 @@ import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
 import ButtonCreate from "../components/common/ButtonCreate";
 import ModalDelete from "../components/common/ModalDelete";
+import EditButton from "../components/common/EditButton";
+import DeleteButton from "../components/common/DeleteButton";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
   const [users, setUsers] = useState(null);
+  const [roles, setRoles] = useState(null);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -94,11 +98,22 @@ const UserBackoffice = () => {
   };
 
   const getData = () => {
-    getUsers(token)
-      .then((user) => {
-        setUsers(user?.users);
-      })
-      .catch((err) => console.warn(err));
+      Promise.all([getUsers(token), getRoles(token)]).then(([usersResponse, rolesResponse]) => {
+        setRoles(rolesResponse.userRoles);
+        const data = usersResponse.users.map(user => {
+          const role = rolesResponse.userRoles.find(role => role._id === user.userRoleId);
+          return {
+            ...user,
+            roleName: role.name,
+          };
+        })
+        setUsers(data);
+      }).catch(err => console.warn(err));
+    // getUsers(token)
+    //   .then((user) => {
+    //     setUsers(user?.users);
+    //   })
+    //   .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
@@ -185,6 +200,7 @@ const UserBackoffice = () => {
     removeUser(id, token)
       .then(() => {
         getData();
+        setText("");
         setOpenDelete(false);
         setResponseStatus(true);
       })
@@ -257,7 +273,13 @@ const UserBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
+                  <ModalDelete
+                    openDelete={openDelete}
+                    handleCloseDelete={handleCloseDelete}
+                    responseStatus={responseStatus}
+                    deleteItem={deleteItem}
+                    id={id}
+                  />
 
                   <Modal
                     open={openForm}
@@ -268,10 +290,12 @@ const UserBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
-                      <div>
-                          <h2 className="d-flex justify-content-center pb-4">{create ? 'Crear usuario': 'Actualizar usuario'}</h2>
+                        <div>
+                          <h2 className="d-flex justify-content-center pb-4">
+                            {create ? "Crear usuario" : "Actualizar usuario"}
+                          </h2>
                         </div>
-                      <label htmlFor="nombre">Nombre*</label>
+                        <label htmlFor="nombre">Nombre*</label>
                         <TextField
                           value={name}
                           type="text"
@@ -280,7 +304,11 @@ const UserBackoffice = () => {
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
-                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
+                          helperText={
+                            errors && name?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
                         />
                         <label htmlFor="email">Email*</label>
                         <TextField
@@ -292,38 +320,52 @@ const UserBackoffice = () => {
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
                           error={errors && email?.length === 0}
-                          helperText={errors && email?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
+                          helperText={
+                            errors && email?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
                         />
-                        {
-                          create ? (
-                            <>
+                        {create ? (
+                          <>
                             <label htmlFor="password">Contraseña*</label>
-                          <TextField
-                          className="input"
-                          type="password"
-                          value={password}
-                          id="password"
-                          variant="outlined"
-                          placeholder="contraseña"
-                          onChange={(e) => setPassword(e.target.value)}
-                          error={errors && password?.length === 0}
-                          helperText={errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
-                        />
-                        <label htmlFor="passRepeat">Repite contraseña*</label>
-                        <TextField
-                          className="input"
-                          type="password"
-                          value={passRepeat}
-                          id="passRepeat"
-                          variant="outlined"
-                          placeholder="repite contraseña"
-                          onChange={(e) => setPassRepeat(e.target.value)}
-                          error={errors && passRepeat?.length === 0}
-                          helperText={errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
-                        />
-                        </>
-                          ) : ''
-                        }
+                            <TextField
+                              className="input"
+                              type="password"
+                              value={password}
+                              id="password"
+                              variant="outlined"
+                              placeholder="contraseña"
+                              onChange={(e) => setPassword(e.target.value)}
+                              error={errors && password?.length === 0}
+                              helperText={
+                                errors && password?.length === 0
+                                  ? EMPTY_FIELD_MESSAGE
+                                  : " "
+                              }
+                            />
+                            <label htmlFor="passRepeat">
+                              Repite contraseña*
+                            </label>
+                            <TextField
+                              className="input"
+                              type="password"
+                              value={passRepeat}
+                              id="passRepeat"
+                              variant="outlined"
+                              placeholder="repite contraseña"
+                              onChange={(e) => setPassRepeat(e.target.value)}
+                              error={errors && passRepeat?.length === 0}
+                              helperText={
+                                errors && passRepeat?.length === 0
+                                  ? EMPTY_FIELD_MESSAGE
+                                  : " "
+                              }
+                            />
+                          </>
+                        ) : (
+                          ""
+                        )}
                         <label htmlFor="role">Rol*</label>
                         <div class="dropdown d-flex justify-content-center">
                           <button
@@ -340,22 +382,17 @@ const UserBackoffice = () => {
                             className="dropdown-menu dropdown-menu-left"
                             aria-labelledby="role"
                           >
-                            <button
-                              value={"user"}
-                              onClick={(e) => setRole(e.target.value)}
+                            {roles?.map((role) => (
+                              <button
+                              key={role.name}
+                              value={role.name}
+                              onClick={(e) =>  setRole(role.name)}
                               className="dropdown-item"
                               type="button"
                             >
-                              Usuario
+                              {role.name === "user" ? "Usuario" : "Administrador"}
                             </button>
-                            <button
-                              value={"admin"}
-                              onClick={(e) => setRole(e.target.value)}
-                              className="dropdown-item"
-                              type="button"
-                            >
-                              Administrador
-                            </button>
+                            ))}
                           </div>
                         </div>
                       </div>
@@ -407,12 +444,12 @@ const UserBackoffice = () => {
                     >
                       Rol
                     </TableCell>
-                    
+
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Borrar
+                      Editar
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
@@ -433,43 +470,23 @@ const UserBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
                         {user.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
                         {user.email}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
-                        {user.userRoleId}
+                        {user.roleName}
                       </TableCell>
-                      <TableCell
-                        sx={{ color: yellow[600] }}
-                        align="left"
-                        onClick={() => setData(user)}
-                      >
-                        <div className="edit-button-table" >
-                        <EditIcon/>
-                        </div>
-                      </TableCell>
-                      <TableCell
-                        sx={{ color: pink[600] }}
-                        align="left"
-                        onClick={() => handleOpenDelete(user._id)}
-                      >
-                        <div className="delete-button-table">
-
-                        <DeleteIcon />
-                        </div>
-                      </TableCell>
+                      <EditButton setData={setData} item={user} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={user._id}/>
                     </TableRow>
                   ))}
                 </TableBody>

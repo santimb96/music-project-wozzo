@@ -34,6 +34,10 @@ import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import TextTareaAutosize from "@mui/material/TextareaAutosize";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
+import ModalDelete from "../components/common/ModalDelete";
+import ButtonCreate from "../components/common/ButtonCreate";
+import EditButton from "../components/common/EditButton";
+import DeleteButton from "../components/common/DeleteButton";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -162,7 +166,7 @@ const ArtistBackoffice = () => {
     }
   };
 
-  const removeArtist = (id) => {
+  const deleteItem = (id) => {
     deleteArtist(id, token)
       .then(() => {
         getData();
@@ -205,9 +209,7 @@ const ArtistBackoffice = () => {
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button className="btn-open-form" onClick={() => handleOpenForm(true)}>
-              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </Button>
+            <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
@@ -245,40 +247,7 @@ const ArtistBackoffice = () => {
                     </Box>
                   </Modal>
 
-                  <Modal
-                    open={openDelete}
-                    onClose={handleCloseDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¿Estás seguro de que quieres borrarlo?
-                      </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="typo-flex">
-                          <Button
-                            onClick={() => removeArtist(id)}
-                            className="btn-modal btn-delete"
-                          >
-                            Sí
-                          </Button>{" "}
-                          <Button
-                            className="btn-modal "
-                            onClick={handleCloseDelete}
-                          >
-                            No
-                          </Button>
-                        </div>
-                      </Typography>
-                    </Box>
-                  </Modal>
-
+                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -370,6 +339,13 @@ const ArtistBackoffice = () => {
                     >
                       Descripción
                     </TableCell>
+                    
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Editar
+                    </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -389,31 +365,28 @@ const ArtistBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.profileImage}
                       </TableCell>
+                      
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.name}
                       </TableCell>
+                      
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.description}
                       </TableCell>
-                      <TableCell
-                        sx={{ color: pink[600] }}
-                        align="left"
-                        onClick={() => handleOpenDelete(artist._id)}
-                      >
-                        <DeleteIcon />
-                      </TableCell>
+                      <EditButton setData={setData} item={artist} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={artist._id}/>
                     </TableRow>
                   ))}
                 </TableBody>
