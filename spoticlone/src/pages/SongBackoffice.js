@@ -40,6 +40,8 @@ import ModalDelete from "../components/common/ModalDelete";
 import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
 import { checkUrl } from "../utils/validators";
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
+import SnackBarError from "../components/common/SnackBarError";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -58,6 +60,19 @@ const SongBackoffice = () => {
   const [filterDropdown, setFilterDropdown] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+  /**
+   *
+   * SNACK SUCCESS
+   */
+   const handleSuccessClose = () => setSuccessOpen(false);
+   /**
+    *
+    * SNACK ERROR
+    */
+   const handleErrorClose = () => setErrorOpen(false);
 
   /**
    * ERROR MODAL
@@ -110,7 +125,7 @@ const SongBackoffice = () => {
         };
       })
       setSongs(data);
-    }).catch(err => console.warn(err));
+    }).catch(err => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -167,10 +182,11 @@ const SongBackoffice = () => {
         .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.error(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -184,9 +200,10 @@ const SongBackoffice = () => {
       .then(() => {
         getData();
         setOpenDelete(false);
+        setSuccessOpen(true);
         setResponseStatus(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   const editSong = (method) => {
@@ -201,10 +218,11 @@ const SongBackoffice = () => {
         .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(false);
       handleOpenError();
@@ -457,6 +475,12 @@ const SongBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
+      
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
     </div>
   );
 };

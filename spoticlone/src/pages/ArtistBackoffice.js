@@ -38,6 +38,8 @@ import ModalDelete from "../components/common/ModalDelete";
 import ButtonCreate from "../components/common/ButtonCreate";
 import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
+import SnackBarError from "../components/common/SnackBarError";
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -52,6 +54,19 @@ const ArtistBackoffice = () => {
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+   /**
+   *
+   * SNACK SUCCESS
+   */
+    const handleSuccessClose = () => setSuccessOpen(false);
+    /**
+     *
+     * SNACK ERROR
+     */
+    const handleErrorClose = () => setErrorOpen(false);
 
   /**
    * ERROR MODAL
@@ -102,7 +117,7 @@ const ArtistBackoffice = () => {
       .then((artist) => {
         setArtists(artist?.artists);
       })
-      .catch((err) => console.warn(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -154,11 +169,12 @@ const ArtistBackoffice = () => {
       };
 
       postArtist(artist, token)
-        .then((artist) => {
+        .then(() => {
           setOpenForm(false);
+          setSuccessOpen(true);
           getData();
         })
-        .catch((err) => console.error(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -171,8 +187,9 @@ const ArtistBackoffice = () => {
       .then(() => {
         getData();
         setOpenDelete(false);
+        setSuccessOpen(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   const editArtist = () => {
@@ -184,11 +201,12 @@ const ArtistBackoffice = () => {
       };
 
       updateArtist(id, artist, token)
-        .then((artist) => {
+        .then(() => {
           setOpenForm(false);
+          setSuccessOpen(true);
           getData();
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -387,6 +405,12 @@ const ArtistBackoffice = () => {
           </TableContainer>
         </Box>
         </div>
+        
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
       </div>
   );
 };

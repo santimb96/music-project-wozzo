@@ -128,7 +128,7 @@ const UserBackoffice = () => {
         });
         setUsers(data);
       })
-      .catch((err) => console.warn(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
