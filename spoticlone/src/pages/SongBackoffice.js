@@ -35,6 +35,13 @@ import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
 import EditIcon from '@mui/icons-material/Edit';
+import ButtonCreate from "../components/common/ButtonCreate";
+import ModalDelete from "../components/common/ModalDelete";
+import EditButton from "../components/common/EditButton";
+import DeleteButton from "../components/common/DeleteButton";
+import { checkUrl } from "../utils/validators";
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
+import SnackBarError from "../components/common/SnackBarError";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -53,6 +60,19 @@ const SongBackoffice = () => {
   const [filterDropdown, setFilterDropdown] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+  /**
+   *
+   * SNACK SUCCESS
+   */
+   const handleSuccessClose = () => setSuccessOpen(false);
+   /**
+    *
+    * SNACK ERROR
+    */
+   const handleErrorClose = () => setErrorOpen(false);
 
   /**
    * ERROR MODAL
@@ -99,14 +119,13 @@ const SongBackoffice = () => {
       setArtists(artistsResponse.artists);
       const data = songsResponse.songs.map(song => {
         const artist = artistsResponse.artists.find(artist => artist._id === song.artistId);
-        //setArtists((prevState) => [...prevState, artist]);
         return {
           ...song,
           artistName: artist.name,
         };
       })
       setSongs(data);
-    }).catch(err => console.warn(err));
+    }).catch(err => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -135,10 +154,11 @@ const SongBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    if (method && artistName !== "Selecciona") {
+
+    if (method && artistName !== "Selecciona" && checkUrl(audioUrl)) {
       return true;
     } else {
-      if (name?.length && artistId?.length && audioUrl?.length && artistName !== "Selecciona") {
+      if (name?.length && artistId?.length && checkUrl(audioUrl) && artistName !== "Selecciona") {
         return true;
       }
       return false;
@@ -162,10 +182,11 @@ const SongBackoffice = () => {
         .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.error(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -173,15 +194,16 @@ const SongBackoffice = () => {
     }
   };
 
-  const deleteSong = (id) => {
+  const deleteItem = (id) => {
     setResponseStatus(false);
     removeSong(id, token)
-      .then((song) => {
+      .then(() => {
         getData();
         setOpenDelete(false);
+        setSuccessOpen(true);
         setResponseStatus(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   const editSong = (method) => {
@@ -196,10 +218,11 @@ const SongBackoffice = () => {
         .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(false);
       handleOpenError();
@@ -249,19 +272,13 @@ const SongBackoffice = () => {
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
-          <div className="table-head-item d-felx justify-content-around align-items-center">
+          <div className="table-head-item d-flex justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button
-              className="btn-open-form"
-              onClick={() => handleOpenForm(true)}
-            >
-              
-              <i className="fa fa-plus"> Crear</i>
-            </Button>
+            <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
@@ -281,64 +298,8 @@ const SongBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                  <Modal
-                    open={openError}
-                    onClose={handleCloseError}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¡Error de validación de los campos!
-                      </Typography>
-                    </Box>
-                  </Modal>
-
-                  <Modal
-                    open={openDelete}
-                    onClose={handleCloseDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    {responseStatus ? (
-                      <Box className="modal-delete">
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          ¿Estás seguro de que quieres borrarlo?
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          <div className="typo-flex">
-                            <Button
-                              onClick={() => deleteSong(id)}
-                              className="btn-modal btn-delete"
-                            >
-                              Sí
-                            </Button>{" "}
-                            <Button
-                              className="btn-modal "
-                              onClick={handleCloseDelete}
-                            >
-                              No
-                            </Button>
-                          </div>
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Box className="modal-delete">
-                        <SpinnerLoading />
-                      </Box>
-                    )}
-                  </Modal>
-
+                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
+                 
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -504,24 +465,8 @@ const SongBackoffice = () => {
                       >
                         {song.audioUrl}
                       </TableCell>
-                      <TableCell
-                        sx={{ color: yellow[600] }}
-                        align="left"
-                        onClick={() => setData(song)}
-                      >
-                        <div className="edit-button-table" >
-                        <EditIcon/>
-                        </div>
-                      </TableCell>
-                      <TableCell
-                        sx={{ color: pink[600] }}
-                        align="left"
-                        onClick={() => handleOpenDelete(song._id)}
-                      >
-                        <div className="delete-button-table" >
-                        <DeleteIcon/>
-                        </div>
-                      </TableCell>
+                      <EditButton setData={setData} item={song} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={song._id}/>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -530,6 +475,12 @@ const SongBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
+      
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
     </div>
   );
 };

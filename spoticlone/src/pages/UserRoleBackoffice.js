@@ -23,6 +23,9 @@ import { grey, green } from "@mui/material/colors";
 import { TextField } from "@mui/material";
 import { InputBase } from "@mui/material";
 import SpinnerLoading from "../components/common/SpinnerLoading";
+import SnackBarError from "../components/common/SnackBarError";
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
+
 
 const UserRoleBackoffice = () => {
   /* <td><button className="btn btn-danger me-3"><i className="fa fa-trash" aria-hidden="true"></i></button>
@@ -32,14 +35,28 @@ const UserRoleBackoffice = () => {
   const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
   const [text, setText] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
 
+  
+  /**
+   *
+   * SNACK SUCCESS
+   */
+   const handleSuccessClose = () => setSuccessOpen(false);
+   /**
+    *
+    * SNACK ERROR
+    */
+   const handleErrorClose = () => setErrorOpen(false);
+   
   useEffect(() => {
     getRoles(token)
       .then((rol) => {
         setRoles(rol?.userRoles);
       })
       .catch((err) => {
-        console.warn(err);
+        setErrorOpen(true);
       });
   }, []);
 
@@ -128,42 +145,12 @@ const UserRoleBackoffice = () => {
           )}
         </Box>
       </div>
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
     </div>
-
-    // <div className="row bg-success">
-    //   <SidebarBackoffice />
-    //   <div className="col-8 mt-5">
-    //     <div>
-    //       <input
-    //         type="email"
-    //         className="form-control mb-4"
-    //         id="exampleFormControlInput1"
-    //         placeholder="busca..."
-    //         onChange={(e) => setText(e.target.value)}
-    //       />
-    //     </div>
-    //     <div className="d-flex justify-content-center">
-    //       <table className="table bg-dark text-main text-center container-fluid">
-    //         <thead>
-    //           <tr>
-    //             <th scope="col">Id</th>
-    //             <th scope="col">Nombre</th>
-    //             {/* <th scope="col">Opciones</th> */}
-    //           </tr>
-    //         </thead>
-    //         <tbody>
-    //           {/* todo roles or filtered roles */}
-    //           {itemsToShow()?.map((rol) => (
-    //             <tr key={rol._id}>
-    //               <th scope="row">{rol._id}</th>
-    //               <td>{rol.name}</td>
-    //             </tr>
-    //           ))}
-    //         </tbody>
-    //       </table>
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 

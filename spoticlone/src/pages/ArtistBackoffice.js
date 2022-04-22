@@ -34,6 +34,12 @@ import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import TextTareaAutosize from "@mui/material/TextareaAutosize";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
+import ModalDelete from "../components/common/ModalDelete";
+import ButtonCreate from "../components/common/ButtonCreate";
+import EditButton from "../components/common/EditButton";
+import DeleteButton from "../components/common/DeleteButton";
+import SnackBarError from "../components/common/SnackBarError";
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -48,6 +54,19 @@ const ArtistBackoffice = () => {
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
+
+   /**
+   *
+   * SNACK SUCCESS
+   */
+    const handleSuccessClose = () => setSuccessOpen(false);
+    /**
+     *
+     * SNACK ERROR
+     */
+    const handleErrorClose = () => setErrorOpen(false);
 
   /**
    * ERROR MODAL
@@ -98,7 +117,7 @@ const ArtistBackoffice = () => {
       .then((artist) => {
         setArtists(artist?.artists);
       })
-      .catch((err) => console.warn(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -150,11 +169,12 @@ const ArtistBackoffice = () => {
       };
 
       postArtist(artist, token)
-        .then((artist) => {
+        .then(() => {
           setOpenForm(false);
+          setSuccessOpen(true);
           getData();
         })
-        .catch((err) => console.error(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -162,13 +182,14 @@ const ArtistBackoffice = () => {
     }
   };
 
-  const removeArtist = (id) => {
+  const deleteItem = (id) => {
     deleteArtist(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
+        setSuccessOpen(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   const editArtist = () => {
@@ -180,11 +201,12 @@ const ArtistBackoffice = () => {
       };
 
       updateArtist(id, artist, token)
-        .then((artist) => {
+        .then(() => {
           setOpenForm(false);
+          setSuccessOpen(true);
           getData();
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -199,15 +221,13 @@ const ArtistBackoffice = () => {
           sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
           
         >
-          <div className="table-head-item">
+          <div className="table-head-item d-flex justify-content-around align-items-center">
             <TextField
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
             />
-            <Button className="btn-open-form" onClick={() => handleOpenForm(true)}>
-              <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
-            </Button>
+            <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
@@ -227,58 +247,8 @@ const ArtistBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                  <Modal
-                    open={openError}
-                    onClose={handleCloseError}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¡Error de validación de los campos!
-                      </Typography>
-                    </Box>
-                  </Modal>
 
-                  <Modal
-                    open={openDelete}
-                    onClose={handleCloseDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¿Estás seguro de que quieres borrarlo?
-                      </Typography>
-                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        <div className="typo-flex">
-                          <Button
-                            onClick={() => removeArtist(id)}
-                            className="btn-modal btn-delete"
-                          >
-                            Sí
-                          </Button>{" "}
-                          <Button
-                            className="btn-modal "
-                            onClick={handleCloseDelete}
-                          >
-                            No
-                          </Button>
-                        </div>
-                      </Typography>
-                    </Box>
-                  </Modal>
-
+                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -288,16 +258,24 @@ const ArtistBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
+                        
+                      <div>
+                          <h2 className="d-flex justify-content-center pb-4">
+                            {create ? "Crear artista" : "Actualizar artista"}
+                          </h2>
+                        </div>
+                        <label htmlFor="name">Nombre*</label>
                         <TextField
                           value={name}
                           type="text"
                           className="input"
-                          id="outlined-basic"
+                          id="name"
                           placeholder="nombre"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
                           helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
+                        <label htmlFor="description">Descripción*</label>
                           <TextField
                             className="input"
                             minRows={2}
@@ -305,16 +283,17 @@ const ArtistBackoffice = () => {
                             type="text"
                             value={description}
                             placeholder="descripción"
+                            id="description"
                             onChange={(e) => setDescription(e.target.value)}
                             error={errors && description?.length === 0}
                             helperText={errors && description?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                           />
-                        
+                        <label htmlFor="image">Imagen del cantante*</label>
                         <TextField
                           className="input"
                           type="text"
                           value={profileImage}
-                          id="outlined-basic"
+                          id="image"
                           variant="outlined"
                           placeholder="imagen"
                           onChange={(e) => setProfileImage(e.target.value)}
@@ -347,7 +326,7 @@ const ArtistBackoffice = () => {
                           <SpinnerLoading />
                         </Typography>
                       )}
-
+                      <small>*Campos requeridos</small>
                     </Box>
                   </Modal>
 
@@ -370,6 +349,13 @@ const ArtistBackoffice = () => {
                     >
                       Descripción
                     </TableCell>
+                    
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Editar
+                    </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -389,31 +375,28 @@ const ArtistBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.profileImage}
                       </TableCell>
+                      
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.name}
                       </TableCell>
+                      
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        onClick={() => setData(artist)}
+                        
                       >
                         {artist.description}
                       </TableCell>
-                      <TableCell
-                        sx={{ color: pink[600] }}
-                        align="left"
-                        onClick={() => handleOpenDelete(artist._id)}
-                      >
-                        <DeleteIcon />
-                      </TableCell>
+                      <EditButton setData={setData} item={artist} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={artist._id}/>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -422,6 +405,12 @@ const ArtistBackoffice = () => {
           </TableContainer>
         </Box>
         </div>
+        
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
       </div>
   );
 };
