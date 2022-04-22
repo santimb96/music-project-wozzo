@@ -1,5 +1,6 @@
 import { BASE_URI_USER } from "../urls/urls";
 import ROLES from "../utils/roleId";
+import { checkEmailOnDB } from "../utils/validators";
 
 const login = (email, password) =>
   new Promise((resolve, reject) => {
@@ -74,8 +75,6 @@ const register = (name, email, password) =>
     .then(res => resolve(res.json()))
     .catch(err => console.warn(err))
   });
-
-
 
   const createUser = (name, email, password, role, token) => new Promise((resolve, reject) => {
     

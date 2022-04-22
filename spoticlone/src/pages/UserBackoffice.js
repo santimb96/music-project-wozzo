@@ -39,7 +39,9 @@ import ModalDelete from "../components/common/ModalDelete";
 import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
 import { checkEmail, checkPassword } from "../utils/validators.js";
-
+import SnackBarSuccess from "../components/common/SnackBarSuccess";
+import { checkEmailOnDB } from "../utils/validators.js";
+import SnackBarError from "../components/common/SnackBarError";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -55,10 +57,22 @@ const UserBackoffice = () => {
   const [id, setId] = useState("");
   const [roleId, setRoleId] = useState(null);
   const [openError, setOpenError] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
   const [responseStatus, setResponseStatus] = useState(true);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
 
+  /**
+   *
+   * SNACK SUCCESS
+   */
+  const handleSuccessClose = () => setSuccessOpen(false);
+  /**
+   *
+   * SNACK ERROR
+   */
+  const handleErrorClose = () => setErrorOpen(false);
   /**
    * ERROR MODAL
    */
@@ -100,17 +114,21 @@ const UserBackoffice = () => {
   };
 
   const getData = () => {
-      Promise.all([getUsers(token), getRoles(token)]).then(([usersResponse, rolesResponse]) => {
+    Promise.all([getUsers(token), getRoles(token)])
+      .then(([usersResponse, rolesResponse]) => {
         setRoles(rolesResponse.userRoles);
-        const data = usersResponse.users.map(user => {
-          const role = rolesResponse.userRoles.find(role => role._id === user.userRoleId);
+        const data = usersResponse.users.map((user) => {
+          const role = rolesResponse.userRoles.find(
+            (role) => role._id === user.userRoleId
+          );
           return {
             ...user,
             roleName: role.name,
           };
-        })
+        });
         setUsers(data);
-      }).catch(err => console.warn(err));
+      })
+      .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
@@ -139,8 +157,7 @@ const UserBackoffice = () => {
     return users;
   };
 
-
-  const validateData = (method = false) => {  
+  const validateData = (method = false) => {
     if (method) {
       if (name?.length && email?.length && role) {
         if (checkEmail(email)) {
@@ -155,7 +172,7 @@ const UserBackoffice = () => {
         password?.length &&
         passRepeat?.length
       ) {
-        if (checkPassword(password, passRepeat) && checkEmail(email)) {
+        if (checkPassword(password, passRepeat) && checkEmail(email, users)) {
           return true;
         }
         return false;
@@ -177,14 +194,16 @@ const UserBackoffice = () => {
     if (validateData()) {
       setResponseStatus(false);
       createUser(name, email, password, role, token)
-        .then((user) => {
+        .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.error(err));
+        .catch((err) => setErrorOpen(true));
     } else {
+      setErrorOpen(true);
       setErrors(true);
       handleOpenError();
       handleCloseError();
@@ -198,9 +217,10 @@ const UserBackoffice = () => {
         getData();
         setText("");
         setOpenDelete(false);
+        setSuccessOpen(true);
         setResponseStatus(true);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setErrorOpen(true));
   };
 
   const editUser = (method) => {
@@ -217,10 +237,11 @@ const UserBackoffice = () => {
         .then(() => {
           setOpenForm(false);
           setResponseStatus(true);
+          setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => console.warn(err));
+        .catch((err) => setErrorOpen(true));
     } else {
       setErrors(true);
       handleOpenError();
@@ -315,11 +336,16 @@ const UserBackoffice = () => {
                           variant="outlined"
                           placeholder="email"
                           onChange={(e) => setEmail(e.target.value)}
-                          error={(errors && email?.length === 0) || (errors && !checkEmail(email))}
+                          error={
+                            (errors && email?.length === 0) ||
+                            (errors && !checkEmail(email))
+                          }
                           helperText={
                             errors && email?.length === 0
                               ? EMPTY_FIELD_MESSAGE
-                              : errors && !checkEmail(email) ? EMAIL_NOT_VALID_MESSAGE : ""
+                              : errors && !checkEmail(email)
+                              ? EMAIL_NOT_VALID_MESSAGE
+                              : ""
                           }
                         />
                         {create ? (
@@ -351,7 +377,7 @@ const UserBackoffice = () => {
                               variant="outlined"
                               placeholder="repite contraseña"
                               onChange={(e) => setPassRepeat(e.target.value)}
-                              error={errors && passRepeat?.length === 0 }
+                              error={errors && passRepeat?.length === 0}
                               helperText={
                                 errors && passRepeat?.length === 0
                                   ? EMPTY_FIELD_MESSAGE
@@ -380,14 +406,16 @@ const UserBackoffice = () => {
                           >
                             {roles?.map((role) => (
                               <button
-                              key={role.name}
-                              value={role.name}
-                              onClick={(e) =>  setRole(role.name)}
-                              className="dropdown-item"
-                              type="button"
-                            >
-                              {role.name === "user" ? "Usuario" : "Administrador"}
-                            </button>
+                                key={role.name}
+                                value={role.name}
+                                onClick={(e) => setRole(role.name)}
+                                className="dropdown-item"
+                                type="button"
+                              >
+                                {role.name === "user"
+                                  ? "Usuario"
+                                  : "Administrador"}
+                              </button>
                             ))}
                           </div>
                         </div>
@@ -482,7 +510,10 @@ const UserBackoffice = () => {
                         {user.roleName}
                       </TableCell>
                       <EditButton setData={setData} item={user} />
-                      <DeleteButton handleOpenDelete={handleOpenDelete} id={user._id}/>
+                      <DeleteButton
+                        handleOpenDelete={handleOpenDelete}
+                        id={user._id}
+                      />
                     </TableRow>
                   ))}
                 </TableBody>
@@ -491,6 +522,11 @@ const UserBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
+      <SnackBarSuccess
+        open={successOpen}
+        handleSuccessClose={handleSuccessClose}
+      />
+      <SnackBarError open={errorOpen} handleErrorClose={handleErrorClose} />
     </div>
   );
 };
