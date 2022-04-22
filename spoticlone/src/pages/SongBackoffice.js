@@ -36,6 +36,7 @@ import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
 import EditIcon from '@mui/icons-material/Edit';
 import ButtonCreate from "../components/common/ButtonCreate";
+import ModalDelete from "../components/common/ModalDelete";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -174,7 +175,7 @@ const SongBackoffice = () => {
     }
   };
 
-  const deleteSong = (id) => {
+  const deleteItem = (id) => {
     setResponseStatus(false);
     removeSong(id, token)
       .then((song) => {
@@ -276,64 +277,8 @@ const SongBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                  <Modal
-                    open={openError}
-                    onClose={handleCloseError}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    <Box className="modal-delete">
-                      <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
-                      >
-                        ¡Error de validación de los campos!
-                      </Typography>
-                    </Box>
-                  </Modal>
-
-                  <Modal
-                    open={openDelete}
-                    onClose={handleCloseDelete}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
-                    {responseStatus ? (
-                      <Box className="modal-delete">
-                        <Typography
-                          id="modal-modal-title"
-                          variant="h6"
-                          component="h2"
-                        >
-                          ¿Estás seguro de que quieres borrarlo?
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          <div className="typo-flex">
-                            <Button
-                              onClick={() => deleteSong(id)}
-                              className="btn-modal btn-delete"
-                            >
-                              Sí
-                            </Button>{" "}
-                            <Button
-                              className="btn-modal "
-                              onClick={handleCloseDelete}
-                            >
-                              No
-                            </Button>
-                          </div>
-                        </Typography>
-                      </Box>
-                    ) : (
-                      <Box className="modal-delete">
-                        <SpinnerLoading />
-                      </Box>
-                    )}
-                  </Modal>
-
+                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
+                 
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}

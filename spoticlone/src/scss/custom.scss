@@ -13,6 +13,10 @@ html {
   body {
     overflow-x: hidden;
 
+    .row {
+      overflow-y: hidden;
+    }
+
     .edit-button-table, .delete-button-table {
       display: flex;
       justify-content: center;
