@@ -9,7 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 const ModalDelete = ({
   openDelete,
   handleCloseDelete,
-  responseStatus,
+  loading,
   deleteItem,
   id,
 }) => {
@@ -23,10 +23,10 @@ const ModalDelete = ({
       aria-describedby="modal-modal-description"
       disableEnforceFocus
     >
-      {responseStatus ? (
+      {!loading ? (
         <Box className="modal-delete">
           <div onClick={handleCloseDelete} className="d-flex justify-content-end">
-            <button className="close-modal-button">
+            <button {...(loading ? { disabled: true } : {})}  className="close-modal-button">
             <CloseIcon />
             </button>
           </div>
@@ -38,10 +38,11 @@ const ModalDelete = ({
               <Button
                 onClick={() => deleteItem(id)}
                 className="btn-modal btn-delete"
+                disabled={loading}
               >
                 Sí
               </Button>{" "}
-              <Button className="btn-modal " onClick={handleCloseDelete}>
+              <Button disabled={loading} className="btn-modal " onClick={handleCloseDelete}>
                 No
               </Button>
             </div>

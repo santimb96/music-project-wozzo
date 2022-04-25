@@ -1,46 +1,42 @@
-import React, { useContext, useEffect } from "react";
+import { getAccordionDetailsUtilityClass, getCardActionAreaUtilityClass } from "@mui/material";
+import React, { useContext, useEffect, useState } from "react";
 import MediaContext from "../contexts/MediaContext";
 import { getSongs } from "../services/songs";
+import { getArtists } from "../services/artists";
 
 const MediaList = () => {
-  const mediaContext = useContext(MediaContext);
+  
+  const [songs, setSongs] = useState(null);
+  const [artists, setArtists] = useState(null);
+  const [filteredSongs, setFilteredSongs] = useState([]);
+  const [filteredArtists, setFilteredArtists] = useState([]);
 
-  useEffect(() => {
-    getSongs()
-      .then((song) => {
-        mediaContext.setSong(song);
+  const getData = () => {
+    Promise.all([getSongs(), getArtists()])
+      .then(([songsResponse, artistsResponse]) => {
+        setArtists(artistsResponse.artists);
+        const data = songsResponse.songs.map((song) => {
+          const artist = artistsResponse.artists.find(
+            (artist) => artist._id === song.artistId
+          );
+          return {
+            ...song,
+            artistName: artist.name,
+          };
+        });
+        setSongs(data);
       })
       .catch((err) => console.warn(err));
-  }, []);
-
-  const onClicked = (song) => {
-    console.log(song);
   }
 
+  useEffect(() => {
+    getData();
+  },[]);
+  
+  
+  
   return (
-    <div className="col-12 col-md-10 p-0 bg-dark">
-      <div className="row">
-        {mediaContext.song?.songs?.map((song, idx) => (
-          <div key={song.name} onClick={() => onClicked(song)} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center mt-4">
-            <div
-              className="card text-light bg-transparent"
-              style={{ width: "18rem" }}
-            >
-              <img
-                src="https://i.pinimg.com/736x/00/a1/3c/00a13cf897548091f4042cba761ef00d--cd-cover-dance-music.jpg"
-                className="card-img-top"
-                alt={song.name}
-                style={{ maxWidth: "18rem" }}
-              />
-              <div className="card-body">
-                <h5 className="card-title text-center">{song.name}</h5>
-                {/* <p class="card-text">{song.description}</p> */}
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-      </div>
+    <div></div>
   );
 };
 

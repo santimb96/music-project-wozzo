@@ -8,7 +8,7 @@ const SnackBarSuccess = ({ open, handleSuccessClose }) => {
   });
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleSuccessClose}>
+    <Snackbar open={open} autoHideDuration={2000} onClose={handleSuccessClose}>
       <Alert onClose={handleSuccessClose} severity="success" sx={{ width: "20%" }}>
       ¡Operación con éxito!
       </Alert>

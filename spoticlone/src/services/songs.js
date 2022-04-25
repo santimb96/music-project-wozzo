@@ -2,14 +2,9 @@ import { BASE_URI_SONG } from "../urls/urls";
 import { BASE_URI_ARTIST } from "../urls/urls";
 
   const getSongs = (token) => new Promise((resolve, reject) => {
-    fetch(BASE_URI_SONG, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
+    fetch(BASE_URI_SONG)
     .then(res => resolve(res.json()))
-    .catch(err => console.warn(err))
+    .catch(err => reject(err));
   });
 
 

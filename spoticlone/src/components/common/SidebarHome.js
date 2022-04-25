@@ -80,7 +80,7 @@ const SidebarHome = () => {
                 </ListItemButton>
               </ListItem>
             </Link> */}
-            {found ? (
+            {/* {found ? (
               <>
                 <hr />
                 <Link to="/login" className="sidebar-link">
@@ -94,7 +94,7 @@ const SidebarHome = () => {
               </>
             ) : (
               ""
-            )}
+            )} */}
           </List>
         </nav>
       </Box>
