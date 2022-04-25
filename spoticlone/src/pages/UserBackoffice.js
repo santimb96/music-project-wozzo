@@ -42,8 +42,7 @@ import { checkEmail, checkPassword } from "../utils/validators.js";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
 import { checkEmailOnDB } from "../utils/validators.js";
 import SnackBarError from "../components/common/SnackBarError";
-import CloseIcon from '@mui/icons-material/Close';
-
+import CloseIcon from "@mui/icons-material/Close";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -61,7 +60,7 @@ const UserBackoffice = () => {
   const [openError, setOpenError] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-  const [responseStatus, setResponseStatus] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
 
@@ -194,17 +193,21 @@ const UserBackoffice = () => {
 
   const postUser = () => {
     if (validateData()) {
-      setResponseStatus(false);
+      setLoading(true);
       createUser(name, email, password, role, token)
         .then(() => {
           setOpenForm(false);
-          setResponseStatus(true);
+          setLoading(false);
           setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch((err) => {
+          setLoading(false);
+          setErrorOpen(true);
+        });
     } else {
+      setLoading(false);
       setErrorOpen(true);
       setErrors(true);
       handleOpenError();
@@ -213,21 +216,24 @@ const UserBackoffice = () => {
   };
 
   const deleteItem = (id) => {
-    setResponseStatus(false);
+    setLoading(true);
     removeUser(id, token)
       .then(() => {
         getData();
         setText("");
         setOpenDelete(false);
         setSuccessOpen(true);
-        setResponseStatus(true);
+        setLoading(false);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch((err) => {
+        setLoading(false);
+        setErrorOpen(true);
+      });
   };
 
   const editUser = (method) => {
     if (validateData(method)) {
-      setResponseStatus(false);
+      setLoading(true);
       const roleName = ROLES.find((r) => r.role === role);
       const newUser = {
         name,
@@ -238,13 +244,17 @@ const UserBackoffice = () => {
       updateUser(id, newUser, token)
         .then(() => {
           setOpenForm(false);
-          setResponseStatus(true);
+          setLoading(false);
           setSuccessOpen(true);
           clearData();
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch((err) => {
+          setLoading(false);
+          setErrorOpen(true);
+        });
     } else {
+      setLoading(false);
       setErrors(true);
       handleOpenError();
       handleCloseError();
@@ -262,8 +272,12 @@ const UserBackoffice = () => {
   };
 
   return (
-    <div className={responseStatus ? "row" : "row is-disabled"}>
-      <SidebarBackoffice />
+    <div className="row">
+      {!loading ? (
+        <SidebarBackoffice />
+      ) : (
+        <div className="col-12 col-md-2 bg-dark"></div>
+      )}
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
@@ -271,6 +285,7 @@ const UserBackoffice = () => {
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
+              disabled={loading}
             />
             <ButtonCreate handleOpenForm={handleOpenForm} />
           </div>
@@ -295,7 +310,7 @@ const UserBackoffice = () => {
                   <ModalDelete
                     openDelete={openDelete}
                     handleCloseDelete={handleCloseDelete}
-                    responseStatus={responseStatus}
+                    responseStatus={loading}
                     deleteItem={deleteItem}
                     id={id}
                   />
@@ -308,11 +323,14 @@ const UserBackoffice = () => {
                     disableEnforceFocus
                   >
                     <Box className="modal-delete">
-                    <div
+                      <div
                         onClick={handleCloseForm}
                         className="d-flex justify-content-end"
                       >
-                        <button className="close-modal-button">
+                        <button
+                          {...(loading ? { disabled: true } : {})}
+                          className="close-modal-button"
+                        >
                           <CloseIcon />
                         </button>
                       </div>
@@ -324,6 +342,7 @@ const UserBackoffice = () => {
                         </div>
                         <label htmlFor="name">Nombre*</label>
                         <TextField
+                          disabled={loading}
                           value={name}
                           type="text"
                           className="input"
@@ -339,7 +358,8 @@ const UserBackoffice = () => {
                         />
                         <label htmlFor="email">Email*</label>
                         <TextField
-                          autoComplete={false}
+                          disabled={loading}
+                          autoComplete="off"
                           className="input"
                           type="email"
                           value={email}
@@ -363,6 +383,8 @@ const UserBackoffice = () => {
                           <>
                             <label htmlFor="password">Contraseña*</label>
                             <TextField
+                              disabled={loading}
+                              autoComplete="off"
                               className="input"
                               type="password"
                               value={password}
@@ -381,6 +403,7 @@ const UserBackoffice = () => {
                               Repite contraseña*
                             </label>
                             <TextField
+                              disabled={loading}
                               className="input"
                               type="password"
                               value={passRepeat}
@@ -402,6 +425,7 @@ const UserBackoffice = () => {
                         <label htmlFor="role">Rol*</label>
                         <div className="dropdown d-flex justify-content-center">
                           <button
+                            {...(loading ? { disabled: true } : {})}
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
                             id="role"
@@ -417,6 +441,7 @@ const UserBackoffice = () => {
                           >
                             {roles?.map((role) => (
                               <button
+                                {...(loading ? { disabled: true } : {})}
                                 key={role.name}
                                 value={role.name}
                                 onClick={(e) => setRole(role.name)}
@@ -431,13 +456,14 @@ const UserBackoffice = () => {
                           </div>
                         </div>
                       </div>
-                      {responseStatus ? (
+                      {!loading ? (
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
                             {create ? (
                               <Button
                                 onClick={() => postUser()}
                                 className="btn-modal-form"
+                                disabled={loading}
                               >
                                 Crear
                               </Button>
@@ -445,6 +471,7 @@ const UserBackoffice = () => {
                               <Button
                                 onClick={() => editUser(true)}
                                 className="btn-modal-form"
+                                disabled={loading}
                               >
                                 Actualizar
                               </Button>
@@ -520,10 +547,15 @@ const UserBackoffice = () => {
                       >
                         {user.roleName}
                       </TableCell>
-                      <EditButton setData={setData} item={user} />
+                      <EditButton
+                        setData={setData}
+                        item={user}
+                        loading={loading}
+                      />
                       <DeleteButton
                         handleOpenDelete={handleOpenDelete}
                         id={user._id}
+                        loading={loading}
                       />
                     </TableRow>
                   ))}
