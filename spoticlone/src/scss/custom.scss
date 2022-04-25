@@ -10,12 +10,12 @@ $labelGrey: #d2d7da;
 }
 
 html {
-  span{
-    color: white;
-  }
   body {
     overflow-x: hidden;
-
+    overflow-y: hidden;
+    span{
+      color: white;
+    }
     .row {
       overflow-y: hidden;
     }

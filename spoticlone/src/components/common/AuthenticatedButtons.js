@@ -7,7 +7,6 @@ const AuthenticatedButtons = () => {
 
   const logOut = () => {
     removeUserStorage();
-    //navigate("/login");
   };
 
   return (

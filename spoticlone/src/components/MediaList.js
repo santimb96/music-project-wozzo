@@ -18,7 +18,7 @@ const MediaList = () => {
   }
 
   return (
-    <div className="container-fluid bg-dark text-light">
+    <div className="col-12 col-md-10 p-0 bg-dark">
       <div className="row">
         {mediaContext.song?.songs?.map((song, idx) => (
           <div key={song.name} onClick={() => onClicked(song)} className="col-12 col-md-6 col-lg-4 d-flex justify-content-center mt-4">
@@ -40,7 +40,7 @@ const MediaList = () => {
           </div>
         ))}
       </div>
-    </div>
+      </div>
   );
 };
 
