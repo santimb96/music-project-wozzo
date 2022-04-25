@@ -44,7 +44,18 @@ const SidebarHome = () => {
 
   return (
     <div className="col-12 col-md-2 bg-dark">
-      <div className="d-flex justify-content-center pt-5">
+      <div className="d-flex justify-content-center">
+      <header className="pt-2">
+          <Link to="/">
+            <div className="d-flex justify-content-center">
+              <img
+                src={spotiLogo}
+                alt="spoticloneLogo"
+                style={{ width: "40%" }}
+              ></img>
+            </div>
+          </Link>
+        </header>
         <button
           onClick={() => handleOpenSidebar()}
           className="btn hamburguer-button"
@@ -59,17 +70,6 @@ const SidebarHome = () => {
         className="sidebar-backoffice"
         id="sidebar"
       >
-        <header>
-          <Link to="/">
-            <div className="d-flex justify-content-center">
-              <img
-                src={spotiLogo}
-                alt="spoticloneLogo"
-                style={{ width: "40%" }}
-              ></img>
-            </div>
-          </Link>
-        </header>
 
         <nav aria-label="secondary mailbox folders">
           <List sx={{ color: theme.palette.secondary.light }}>
