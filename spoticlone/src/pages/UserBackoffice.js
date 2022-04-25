@@ -399,7 +399,7 @@ const UserBackoffice = () => {
                           ""
                         )}
                         <label htmlFor="role">Rol*</label>
-                        <div class="dropdown d-flex justify-content-center">
+                        <div className="dropdown d-flex justify-content-center">
                           <button
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
