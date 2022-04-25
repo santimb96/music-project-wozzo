@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SpinnerLoading from "./SpinnerLoading";
+import CloseIcon from '@mui/icons-material/Close';
 
 const ModalDelete = ({
   openDelete,
@@ -24,6 +25,11 @@ const ModalDelete = ({
     >
       {responseStatus ? (
         <Box className="modal-delete">
+          <div onClick={handleCloseDelete} className="d-flex justify-content-end">
+            <button className="close-modal-button">
+            <CloseIcon />
+            </button>
+          </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             ¿Estás seguro de que quieres borrarlo?
           </Typography>

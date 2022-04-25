@@ -42,6 +42,8 @@ import { checkEmail, checkPassword } from "../utils/validators.js";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
 import { checkEmailOnDB } from "../utils/validators.js";
 import SnackBarError from "../components/common/SnackBarError";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -260,7 +262,7 @@ const UserBackoffice = () => {
   };
 
   return (
-    <div className="row">
+    <div className={responseStatus ? "row" : "row is-disabled"}>
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
@@ -306,6 +308,14 @@ const UserBackoffice = () => {
                     disableEnforceFocus
                   >
                     <Box className="modal-delete">
+                    <div
+                        onClick={handleCloseForm}
+                        className="d-flex justify-content-end"
+                      >
+                        <button className="close-modal-button">
+                          <CloseIcon />
+                        </button>
+                      </div>
                       <div>
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">

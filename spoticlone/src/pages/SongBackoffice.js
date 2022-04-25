@@ -34,7 +34,7 @@ import SpinnerLoading from "../components/common/SpinnerLoading";
 import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 import ButtonCreate from "../components/common/ButtonCreate";
 import ModalDelete from "../components/common/ModalDelete";
 import EditButton from "../components/common/EditButton";
@@ -42,6 +42,7 @@ import DeleteButton from "../components/common/DeleteButton";
 import { checkUrl } from "../utils/validators";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
 import SnackBarError from "../components/common/SnackBarError";
+import CloseIcon from "@mui/icons-material/Close";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -67,12 +68,12 @@ const SongBackoffice = () => {
    *
    * SNACK SUCCESS
    */
-   const handleSuccessClose = () => setSuccessOpen(false);
-   /**
-    *
-    * SNACK ERROR
-    */
-   const handleErrorClose = () => setErrorOpen(false);
+  const handleSuccessClose = () => setSuccessOpen(false);
+  /**
+   *
+   * SNACK ERROR
+   */
+  const handleErrorClose = () => setErrorOpen(false);
 
   /**
    * ERROR MODAL
@@ -115,17 +116,21 @@ const SongBackoffice = () => {
   };
 
   const getData = () => {
-    Promise.all([getSongs(token), getArtists(token)]).then(([songsResponse, artistsResponse]) => {
-      setArtists(artistsResponse.artists);
-      const data = songsResponse.songs.map(song => {
-        const artist = artistsResponse.artists.find(artist => artist._id === song.artistId);
-        return {
-          ...song,
-          artistName: artist.name,
-        };
+    Promise.all([getSongs(token), getArtists(token)])
+      .then(([songsResponse, artistsResponse]) => {
+        setArtists(artistsResponse.artists);
+        const data = songsResponse.songs.map((song) => {
+          const artist = artistsResponse.artists.find(
+            (artist) => artist._id === song.artistId
+          );
+          return {
+            ...song,
+            artistName: artist.name,
+          };
+        });
+        setSongs(data);
       })
-      setSongs(data);
-    }).catch(err => setErrorOpen(true));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -135,13 +140,17 @@ const SongBackoffice = () => {
   useEffect(() => {
     const filtered = songs?.filter((song) => {
       if (
-        song.name.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim()) || song.artistName.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())
+        song.name
+          .toLocaleLowerCase()
+          .includes(text.toLocaleLowerCase().trim()) ||
+        song.artistName
+          .toLocaleLowerCase()
+          .includes(text.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
-
 
     setFilteredSongs(filtered);
   }, [text]);
@@ -154,11 +163,15 @@ const SongBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-
     if (method && artistName !== "Selecciona" && checkUrl(audioUrl)) {
       return true;
     } else {
-      if (name?.length && artistId?.length && checkUrl(audioUrl) && artistName !== "Selecciona") {
+      if (
+        name?.length &&
+        artistId?.length &&
+        checkUrl(audioUrl) &&
+        artistName !== "Selecciona"
+      ) {
         return true;
       }
       return false;
@@ -239,26 +252,28 @@ const SongBackoffice = () => {
 
   const duplicateArtists = () => {
     const seen = new Set();
-    const filtered = artists.filter(artist => {
+    const filtered = artists.filter((artist) => {
       const duplicate = seen.has(artist._id);
       seen.add(artist._id);
       return !duplicate;
     });
 
     return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  }
+  };
 
   useEffect(() => {
     const filtered = duplicateArtists()?.filter((artist) => {
       if (
-        artist.name.toLocaleLowerCase().includes(filterDropdown.toLocaleLowerCase().trim())
+        artist.name
+          .toLocaleLowerCase()
+          .includes(filterDropdown.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
     setFilteredArtists(filtered);
-  }, [filterDropdown])
+  }, [filterDropdown]);
 
   const artistsToShow = () => {
     if (filterDropdown?.length) {
@@ -268,7 +283,7 @@ const SongBackoffice = () => {
   };
 
   return (
-    <div className="row">
+    <div className={responseStatus ? "row" : "row is-disabled"}>
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
@@ -298,8 +313,14 @@ const SongBackoffice = () => {
                 sx={{ height: "max-content" }}
               >
                 <TableHead>
-                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
-                 
+                  <ModalDelete
+                    openDelete={openDelete}
+                    handleCloseDelete={handleCloseDelete}
+                    responseStatus={responseStatus}
+                    deleteItem={deleteItem}
+                    id={id}
+                  />
+
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -308,11 +329,23 @@ const SongBackoffice = () => {
                     disableEnforceFocus
                   >
                     <Box className="modal-delete">
+                      <div
+                        onClick={handleCloseForm}
+                        className="d-flex justify-content-end"
+                      >
+                        <button className="close-modal-button">
+                          <CloseIcon />
+                        </button>
+                      </div>
                       <div>
                         <div>
-                          <h2 className="d-flex justify-content-center pb-4">{create ? 'Crear canción': 'Actualizar canción'}</h2>
+                          <h2 className="d-flex justify-content-center pb-4">
+                            {create ? "Crear canción" : "Actualizar canción"}
+                          </h2>
                         </div>
-                        <label className="label-form-modal" htmlFor="titulo">Título de la canción*</label>
+                        <label className="label-form-modal" htmlFor="titulo">
+                          Título de la canción*
+                        </label>
                         <TextField
                           value={name}
                           type="text"
@@ -321,7 +354,11 @@ const SongBackoffice = () => {
                           placeholder="Título"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
-                          helperText={errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
+                          helperText={
+                            errors && name?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
                         />
                         <label htmlFor="audioUrl">URL de la canción*</label>
                         <TextField
@@ -332,9 +369,12 @@ const SongBackoffice = () => {
                           variant="outlined"
                           placeholder="URL del audio"
                           onChange={(e) => setAudioUrl(e.target.value)}
-                          
                           error={errors && audioUrl?.length === 0}
-                          helperText={errors && audioUrl?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
+                          helperText={
+                            errors && audioUrl?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
                         />
                         <label htmlFor="drop">Compositor*</label>
                         <div className="dropdown d-flex justify-content-center">
@@ -352,24 +392,29 @@ const SongBackoffice = () => {
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
                             aria-labelledby="drop"
                           >
-                            <input type="text" placeholder="Filtrar..." className="search-filter-dropdown" onChange={(e) => setFilterDropdown(e.target.value)}/>
+                            <input
+                              type="text"
+                              placeholder="Filtrar..."
+                              className="search-filter-dropdown"
+                              onChange={(e) =>
+                                setFilterDropdown(e.target.value)
+                              }
+                            />
 
                             {artistsToShow()?.map((artist) => (
                               <button
-                              key={artist.name}
-                              value={artist._id}
-                              onClick={(e) => {
-                                setArtistId(e.target.value);
-                                setArtistName(artist.name);
-                              }}
-                              className="dropdown-item"
-                              type="button"
-                            >
-                              {artist.name}
-                            </button>
+                                key={artist.name}
+                                value={artist._id}
+                                onClick={(e) => {
+                                  setArtistId(e.target.value);
+                                  setArtistName(artist.name);
+                                }}
+                                className="dropdown-item"
+                                type="button"
+                              >
+                                {artist.name}
+                              </button>
                             ))}
-                              
-              
                           </div>
                         </div>
                       </div>
@@ -421,7 +466,7 @@ const SongBackoffice = () => {
                     >
                       Path
                     </TableCell>
-                    
+
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -447,26 +492,26 @@ const SongBackoffice = () => {
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
                         {song.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
                         {song.artistName}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
-                        
                       >
                         {song.audioUrl}
                       </TableCell>
                       <EditButton setData={setData} item={song} />
-                      <DeleteButton handleOpenDelete={handleOpenDelete} id={song._id}/>
+                      <DeleteButton
+                        handleOpenDelete={handleOpenDelete}
+                        id={song._id}
+                      />
                     </TableRow>
                   ))}
                 </TableBody>
@@ -475,7 +520,7 @@ const SongBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
-      
+
       <SnackBarSuccess
         open={successOpen}
         handleSuccessClose={handleSuccessClose}

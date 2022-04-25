@@ -40,6 +40,8 @@ import EditButton from "../components/common/EditButton";
 import DeleteButton from "../components/common/DeleteButton";
 import SnackBarError from "../components/common/SnackBarError";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -214,7 +216,7 @@ const ArtistBackoffice = () => {
     }
   };
   return (
-    <div className="row">
+    <div className={responseStatus ? "row" : "row is-disabled"}>
       <SidebarBackoffice />
       <div className="col-12 col-md-10 p-0">
         <Box
@@ -258,7 +260,14 @@ const ArtistBackoffice = () => {
                   >
                     <Box className="modal-delete">
                       <div>
-                        
+                      <div
+                        onClick={handleCloseForm}
+                        className="d-flex justify-content-end"
+                      >
+                        <button className="close-modal-button">
+                          <CloseIcon />
+                        </button>
+                      </div>
                       <div>
                           <h2 className="d-flex justify-content-center pb-4">
                             {create ? "Crear artista" : "Actualizar artista"}
