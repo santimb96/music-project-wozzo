@@ -53,7 +53,7 @@ const ArtistBackoffice = () => {
   const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
-  const [responseStatus, setResponseStatus] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
@@ -170,15 +170,17 @@ const ArtistBackoffice = () => {
         profileImage,
       };
       setErrors(false);
-      setResponseStatus(false);
+      setLoading(true);
       postArtist(artist, token)
         .then(() => {
           setOpenForm(false);
+          setLoading(false);
           setSuccessOpen(true);
           getData();
         })
         .catch((err) => setErrorOpen(true));
     } else {
+      setLoading(false);
       setErrors(true);
       handleOpenError();
       handleCloseError();
@@ -186,15 +188,18 @@ const ArtistBackoffice = () => {
   };
 
   const deleteItem = (id) => {
-    setResponseStatus(false);
+    setLoading(true);
     deleteArtist(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
-        setResponseStatus(true);
+        setLoading(false);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch((err) => {
+        setLoading(false);
+        setErrorOpen(true);  
+      });
   };
 
   const editArtist = () => {
@@ -205,24 +210,28 @@ const ArtistBackoffice = () => {
         profileImage,
       };
       setErrors(false);
-      setResponseStatus(false);
+      setLoading(true);
       updateArtist(id, artist, token)
         .then(() => {
           setOpenForm(false);
           setSuccessOpen(true);
-          setResponseStatus(true);
+          setLoading(false);
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch((err) => {
+          setLoading(false);
+          setErrorOpen(true);
+        });
     } else {
+      setLoading(false);
       setErrors(true);
       handleOpenError();
       handleCloseError();
     }
   };
   return (
-    <div className={responseStatus ? "row" : "row is-disabled"}>
-      <SidebarBackoffice />
+    <div className="row">
+      { !loading ? <SidebarBackoffice /> : <div className="col-12 col-md-2 bg-dark"></div>}
       <div className="col-12 col-md-10 p-0">
         <Box
           sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}
@@ -233,8 +242,9 @@ const ArtistBackoffice = () => {
               className="input"
               placeholder="busca..."
               onChange={(e) => setText(e.target.value)}
+              disabled={loading}
             />
-            <ButtonCreate handleOpenForm={handleOpenForm} />
+            <ButtonCreate handleOpenForm={handleOpenForm} loading={loading} />
           </div>
 
           <TableContainer
@@ -255,7 +265,7 @@ const ArtistBackoffice = () => {
               >
                 <TableHead>
 
-                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={responseStatus} deleteItem={deleteItem} id={id} />
+                  <ModalDelete openDelete={openDelete} handleCloseDelete={handleCloseDelete} responseStatus={loading} deleteItem={deleteItem} id={id} />
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -269,7 +279,7 @@ const ArtistBackoffice = () => {
                         onClick={handleCloseForm}
                         className="d-flex justify-content-end"
                       >
-                        <button className="close-modal-button">
+                        <button {...(loading ? {disabled: true}: {})} className="close-modal-button">
                           <CloseIcon />
                         </button>
                       </div>
@@ -280,6 +290,7 @@ const ArtistBackoffice = () => {
                         </div>
                         <label htmlFor="name">Nombre*</label>
                         <TextField
+                        disabled={loading}
                           value={name}
                           type="text"
                           className="input"
@@ -291,6 +302,7 @@ const ArtistBackoffice = () => {
                         />
                         <label htmlFor="description">Descripción*</label>
                           <TextField
+                          disabled={loading}
                             className="input"
                             minRows={2}
                             multiline
@@ -304,6 +316,7 @@ const ArtistBackoffice = () => {
                           />
                         <label htmlFor="image">Imagen del cantante*</label>
                         <TextField
+                          disabled={loading}
                           className="input"
                           type="text"
                           value={profileImage}
@@ -315,13 +328,14 @@ const ArtistBackoffice = () => {
                           helperText={errors && profileImage?.length === 0 ? EMPTY_FIELD_MESSAGE : ' '}
                         />
                       </div>
-                      {responseStatus ? (
+                      {!loading ? (
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
                             {create ? (
                               <Button
                                 onClick={() => createArtist()}
                                 className="btn-modal-form"
+                                disabled={loading}
                               >
                                 Crear
                               </Button>
@@ -329,6 +343,7 @@ const ArtistBackoffice = () => {
                               <Button
                                 onClick={() => editArtist(true)}
                                 className="btn-modal-form"
+                                disabled={loading}
                               >
                                 Actualizar
                               </Button>
@@ -409,8 +424,8 @@ const ArtistBackoffice = () => {
                       >
                         {artist.description}
                       </TableCell>
-                      <EditButton setData={setData} item={artist} />
-                      <DeleteButton handleOpenDelete={handleOpenDelete} id={artist._id}/>
+                      <EditButton setData={setData} item={artist} loading={loading} />
+                      <DeleteButton handleOpenDelete={handleOpenDelete} id={artist._id} loading={loading}/>
                     </TableRow>
                   ))}
                 </TableBody>
