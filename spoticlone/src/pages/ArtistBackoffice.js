@@ -169,7 +169,8 @@ const ArtistBackoffice = () => {
         description,
         profileImage,
       };
-
+      setErrors(false);
+      setResponseStatus(false);
       postArtist(artist, token)
         .then(() => {
           setOpenForm(false);
@@ -185,11 +186,13 @@ const ArtistBackoffice = () => {
   };
 
   const deleteItem = (id) => {
+    setResponseStatus(false);
     deleteArtist(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
+        setResponseStatus(true);
       })
       .catch((err) => setErrorOpen(true));
   };
@@ -201,11 +204,13 @@ const ArtistBackoffice = () => {
         description,
         profileImage,
       };
-
+      setErrors(false);
+      setResponseStatus(false);
       updateArtist(id, artist, token)
         .then(() => {
           setOpenForm(false);
           setSuccessOpen(true);
+          setResponseStatus(true);
           getData();
         })
         .catch((err) => setErrorOpen(true));
