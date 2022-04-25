@@ -45,13 +45,13 @@ const SidebarHome = () => {
   return (
     <div className="col-12 col-md-2 bg-dark">
       <div className="d-flex justify-content-center">
-      <header className="pt-2">
+      <header className="pt-3">
           <Link to="/">
             <div className="d-flex justify-content-center">
               <img
                 src={spotiLogo}
                 alt="spoticloneLogo"
-                style={{ width: "40%" }}
+                style={{ width: "30%" }}
               ></img>
             </div>
           </Link>

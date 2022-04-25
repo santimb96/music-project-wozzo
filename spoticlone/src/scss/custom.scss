@@ -3,6 +3,7 @@
 $darkColor: #212529;
 $secondaryColor: #198754;
 $labelGrey: #d2d7da;
+$spotiLogoColor: #17a84a;
 
 %itemHorizontal {
   display: flex;
@@ -29,6 +30,32 @@ html {
       border: none;
       color: white;
     }
+    .song-row-home{
+      transition: 0.5ms;
+      .play-row-button{
+        font-size: 1.1rem;
+        transition: 0.1s;
+        padding: 13px;
+        border-radius: 50%;
+        background-color: $spotiLogoColor;
+      }
+      .play-row-button:hover{
+        color: $darkColor;
+        background-color: white;
+      }
+    }
+
+    .song-row-home:hover{
+      background: rgba(96, 245, 101, 0.3);
+    }
+
+  
+
+    // .song-onclick-number {
+    //   background: transparent;
+    //   border: none;
+    //   color: white;
+    // }
 
     .home-page {
       min-height: 100vh;
@@ -53,8 +80,7 @@ html {
           }
   
           .input-search-home:focus-visible {
-            border: 1px solid $secondaryColor;
-            outline: $secondaryColor solid 2px;
+            outline: none;
           }
         }
         

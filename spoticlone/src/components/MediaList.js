@@ -43,16 +43,23 @@ const MediaList = ({ songs, artists, filter }) => {
             >
               ARTISTA
             </TableCell>
+            <TableCell
+              style={{ color: theme.palette.secondary.grey }}
+              align="left"
+            >
+              REPRODUCIR
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {
             songs?.map((song, index) => {
               return (
-                <TableRow key={song._id}>
+                <TableRow key={song._id} className="song-row-home">
                   <TableCell style={{ color: theme.palette.secondary.light }} align="left">{index + 1}</TableCell>
                   <TableCell style={{ color: theme.palette.secondary.light }} align="left">{song.name}</TableCell>
                   <TableCell style={{ color: theme.palette.secondary.light }} align="left">{song.artistName}</TableCell>
+                  <TableCell style={{ color: theme.palette.secondary.light }} align="left"><i className="fa-solid fa-play play-row-button"></i></TableCell>
                 </TableRow>
               );
             })
