@@ -10,6 +10,7 @@ import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
 import { useState, useRef } from "react";
+import PropTypes from "prop-types";
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
@@ -51,8 +52,8 @@ const SidebarBackoffice = () => {
         id="sidebar"
       >
         <nav aria-label="secondary mailbox folders">
-          <List sx={{ color: theme.palette.secondary.light }}>
-            <Link to="/" className="sidebar-link">
+          <List sx={{ color: theme.palette.secondary.light }} >
+            <Link to="/"className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link">
                   <i className="fa fa-home"></i>
@@ -111,5 +112,9 @@ const SidebarBackoffice = () => {
     </div>
   );
 };
+
+SidebarBackoffice.propTypes = {
+  loading: PropTypes.bool
+}
 
 export default SidebarBackoffice;

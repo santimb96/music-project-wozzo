@@ -8,7 +8,7 @@ const SnackBarError= ({ open, handleErrorClose }) => {
   });
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleErrorClose}>
+    <Snackbar open={open} autoHideDuration={2000} onClose={handleErrorClose}>
       <Alert onClose={handleErrorClose} severity="error" sx={{ width: "20%" }}>
       ¡Ha ocurrido un error!
       </Alert>

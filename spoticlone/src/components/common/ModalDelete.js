@@ -4,11 +4,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import SpinnerLoading from "./SpinnerLoading";
+import CloseIcon from '@mui/icons-material/Close';
 
 const ModalDelete = ({
   openDelete,
   handleCloseDelete,
-  responseStatus,
+  loading,
   deleteItem,
   id,
 }) => {
@@ -22,8 +23,13 @@ const ModalDelete = ({
       aria-describedby="modal-modal-description"
       disableEnforceFocus
     >
-      {responseStatus ? (
+      {!loading ? (
         <Box className="modal-delete">
+          <div onClick={handleCloseDelete} className="d-flex justify-content-end">
+            <button {...(loading ? { disabled: true } : {})}  className="close-modal-button">
+            <CloseIcon />
+            </button>
+          </div>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             ¿Estás seguro de que quieres borrarlo?
           </Typography>
@@ -32,10 +38,11 @@ const ModalDelete = ({
               <Button
                 onClick={() => deleteItem(id)}
                 className="btn-modal btn-delete"
+                disabled={loading}
               >
                 Sí
               </Button>{" "}
-              <Button className="btn-modal " onClick={handleCloseDelete}>
+              <Button disabled={loading} className="btn-modal " onClick={handleCloseDelete}>
                 No
               </Button>
             </div>
