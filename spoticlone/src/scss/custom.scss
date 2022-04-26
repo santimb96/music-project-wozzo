@@ -5,6 +5,10 @@ $secondaryColor: #198754;
 $labelGrey: #d2d7da;
 $spotiLogoColor: #17a84a;
 $tablePresentationColor: #aaaaaa;
+$mediaBack: #353434;
+$mediaBar: #535353;
+$mediaSlider: #b3b3b3;
+$rowBackground: rgba(96, 245, 101, 0.3);
 
 %itemHorizontal {
   display: flex;
@@ -22,34 +26,32 @@ html {
       top: 0;
     }
 
-    .link-disabled{
+    .link-disabled {
       pointer-events: none;
     }
 
-    .button-icons{
+    .button-icons {
       background: transparent;
       border: none;
       color: white;
     }
-    .song-row-home{
+    .song-row-home {
       transition: 0.5ms;
-      .play-row-button{
+      .play-row-button {
+        color: $tablePresentationColor;
         font-size: 1.1rem;
         transition: 0.1s;
         padding: 13px;
-        border-radius: 50%;
-        background-color: $spotiLogoColor;
+        background-color: transparent;
       }
-      .play-row-button:hover{
-        color: $darkColor;
-        background-color: white;
+      .play-row-button:hover {
+        color: white;
       }
     }
 
-    .song-row-home:hover{
-      background: rgba(96, 245, 101, 0.3);
+    .song-row-home:hover {
+      background: $rowBackground;
     }
-
 
     .home-page {
       min-height: 100vh;
@@ -57,10 +59,10 @@ html {
       overflow-x: hidden;
 
       .header-home {
-        min-height: 15vh;
+        min-height: 10vh;
 
         .input-search-home-container {
-          margin-top: 4vh;
+          margin-top: 3.5vh;
           margin-left: 30vh;
           .input-search-home {
             border-radius: 20px;
@@ -72,16 +74,16 @@ html {
               url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' class='bi bi-search' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'%3E%3C/path%3E%3C/svg%3E")
               no-repeat 13px center;
           }
-  
+
           .input-search-home:focus-visible {
             outline: none;
           }
         }
-        
       }
     }
 
     .songs-found {
+      font-size: 0.8rem;
       display: flex;
       justify-content: end;
       color: $tablePresentationColor;
@@ -89,27 +91,56 @@ html {
     }
 
     .progress-bar {
-      position: relative;
-      width: 100%;
-      height: 3vh;
-      border-radius: 20px;
-      background-color: $darkColor;
+      width: 80%;
+      background: transparent;
+      .slider {
+        background-color: transparent;
+      }
+      .slider::-moz-range-progress {
+        background-color: $spotiLogoColor;
+      }
+      .slider::-moz-range-track {
+        background-color: $mediaBar;
+      }
+      .slider::-moz-range-thumb {
+        width: 15px;
+        height: 15px;
+        border: none;
+        border-radius: 50%;
+        background: white;
+        cursor: pointer;
+      }
+    }
+    .media-container {
+      margin-top: 5vh;
     }
 
-    // .progress-buffered, .progress-played {
-    //   position: absolute;
-    //   top: 0;
-    //   left: 0;
-    //   width: 100%;
-    //   height: 100%;
-    //   -webkit-transform: translateX(-100%);
-    //   transform: translateX(-100%);
-    //   -webkit-transition: -webkit-transform .1s;
-    //   transition: -webkit-transform .1s;
-    //   transition: transform .1s;
-    //   transition: transform .1s,-webkit-transform .1s;
-    // }
+    .current-time-player {
+      font-size: 0.7rem;
+      color: $tablePresentationColor;
+      padding: 1rem;
+    }
+    .player {
+      margin-top: -10px;
+    }
+    .player-container {
+      position: sticky;
+      background-color: $mediaBack;
+      border-radius: 15px;
+    }
 
+    .player-buttons {
+      padding-top: 0.5rem;
+      color: $white;
+      font-size: 2rem;
+    }
+
+    /* Mouse-over effects */
+    .slider:hover {
+      opacity: 1; /* Fully shown on mouse-over */
+    }
+
+    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
     .msg-songs-not-found {
       @extend %itemHorizontal;
     }
