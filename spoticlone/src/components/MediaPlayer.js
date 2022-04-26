@@ -23,7 +23,6 @@ const MediaPlayer = ({ song }) => {
         clearInterval(intervalRef.current);
       } else {
         setTrackProgress(audioRef.current.currentTime);
-        
       }
     }, [1000]);
   };
@@ -40,7 +39,7 @@ const MediaPlayer = ({ song }) => {
 
   useEffect(() => {
     audioRef.current.volume = volControll;
-  }, [volControll])
+  }, [volControll]);
 
   const onChangeTrack = (value) => {
     clearInterval(intervalRef.current);
@@ -52,18 +51,18 @@ const MediaPlayer = ({ song }) => {
   console.log(audioRef.current);
 
   const onChangeVol = (value) => {
-    setVolControll(value/100);
-  }
+    setVolControll(value / 100);
+  };
 
   const volIconRender = () => {
-    if(volControll === 0){
-      return <i className="fa-solid fa-volume-xmark pe-2 text-light"></i>
-    } else if (volControll <= 0.5){
-      return <i class="fa-solid fa-volume-down pe-2 text-light"></i>
+    if (volControll === 0) {
+      return <i className="fa-solid fa-volume-xmark pe-2 text-light"></i>;
+    } else if (volControll <= 0.5) {
+      return <i class="fa-solid fa-volume-down pe-2 text-light"></i>;
     } else {
-      return <i class="fa-solid fa-volume-high pe-2 text-light"></i>
+      return <i class="fa-solid fa-volume-high pe-2 text-light"></i>;
     }
-  }
+  };
 
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
@@ -71,27 +70,25 @@ const MediaPlayer = ({ song }) => {
         <div className="player-container">
           <div className="row">
             <div className="col-4 d-flex jutify-content-center flex-column pt-3">
-                <h5 className=" song-title-player">{song.name}</h5>
-                <h6 className=" song-artist-name-player">{song.artistName}</h6>
+              <h5 className=" song-title-player">{song.name}</h5>
+              <h6 className=" song-artist-name-player">{song.artistName}</h6>
             </div>
-          <div className="col-2 d-flex justify-content-end p-2">
-            {playing ? (
-              <i
-                onClick={() => setPlaying(false)}
-                class="fa-solid fa-circle-pause player-buttons"
-              ></i>
-            ) : (
-              <i
-                onClick={() => setPlaying(true)}
-                className="fa-solid fa-circle-play player-buttons"
-              ></i>
-            )}
-            
-            
-          </div>
-          <div className="col-6 d-flex justify-content-center align-items-center pt-3">
-            {volIconRender()}
-            <input
+            <div className="col-2 d-flex justify-content-end p-2">
+              {playing ? (
+                <i
+                  onClick={() => setPlaying(false)}
+                  class="fa-solid fa-circle-pause player-buttons"
+                ></i>
+              ) : (
+                <i
+                  onClick={() => setPlaying(true)}
+                  className="fa-solid fa-circle-play player-buttons"
+                ></i>
+              )}
+            </div>
+            <div className="col-6 d-flex justify-content-center align-items-center pt-3">
+              {volIconRender()}
+              <input
                 ref={volBarRef}
                 type="range"
                 value={volControll * 100}
