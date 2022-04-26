@@ -89,9 +89,26 @@ html {
       color: $tablePresentationColor;
       margin: 1vh;
     }
+    .slider-vol{
+      background-color: transparent;
+    }
+    .slider-vol::-moz-range-progress {
+      background-color: $spotiLogoColor;
+    }
+    .slider-vol::-moz-range-track {
+      background-color: $mediaBar;
+    }
+    .slider-vol::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+    }
 
     .progress-bar {
-      width: 80%;
+      width: 72%;
       background: transparent;
       .slider {
         background-color: transparent;

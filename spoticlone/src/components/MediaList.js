@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "./common/SpinnerLoading";
 import theme from "../palette/palette";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 const MediaList = ({ songs, filter, itemSelected }) => {
@@ -47,15 +47,15 @@ const MediaList = ({ songs, filter, itemSelected }) => {
 
   const songSelected = (song) => {
     itemSelected(song);
-  }
+  };
 
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center">
         <TableContainer className="table-content" sx={{ maxHeight: 440 }}>
           {!itemsToShow().length || itemsToShow() === null ? (
-            <div className="msg-songs-not-found">
-              <h2>No se han encontrado resultados</h2>
+            <div className="spinner-table-loading">
+              <SpinnerLoading />
             </div>
           ) : (
             <Table
@@ -117,7 +117,10 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        <i onClick={() => songSelected(song)} className="fa-solid fa-play play-row-button"></i>
+                        <i
+                          onClick={() => songSelected(song)}
+                          className="fa-solid fa-play play-row-button"
+                        ></i>
                       </TableCell>
                     </TableRow>
                   );
