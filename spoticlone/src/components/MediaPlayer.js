@@ -30,11 +30,11 @@ const MediaPlayer = ({ song }) => {
 
   useEffect(() => {
     if (playing) {
-      clearInterval(intervalRef.current);
-      audioRef.current.pause();
-    } else {
       audioRef.current.play();
       startTimer();
+    } else {
+      clearInterval(intervalRef.current);
+      audioRef.current.pause();
     }
   }, [playing]);
 
@@ -48,6 +48,8 @@ const MediaPlayer = ({ song }) => {
     setTrackProgress(audioRef.current.currentTime);
     startTimer();
   };
+
+  console.log(audioRef.current);
 
   const onChangeVol = (value) => {
     setVolControll(value/100);
