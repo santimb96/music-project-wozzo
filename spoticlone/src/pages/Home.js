@@ -5,13 +5,15 @@ import SidebarHome from "../components/common/SidebarHome";
 import HomeHeader from "../components/HomeHeader";
 import { getSongs } from "../services/songs";
 import { getArtists } from "../services/artists";
+import MediaPlayer from "../components/MediaPlayer";
 
 const Home = () => {
 
   const [filterText, setFilterText] = useState("");
 
-  const [songs, setSongs] = useState(null);
-  const [artists, setArtists] = useState(null);
+  const [songs, setSongs] = useState([]);
+  const [artists, setArtists] = useState([]);
+  const [songSelected, setSongSelected] = useState({});
 
   const setText = (value) => {
     setFilterText(value); 
@@ -39,7 +41,10 @@ const Home = () => {
     getData();
   }, [])
 
-  console.log(songs, artists);
+  const itemSelected = (item) => {
+    setSongSelected(item);
+  }
+
 
 
   return (
@@ -48,7 +53,8 @@ const Home = () => {
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
           <HomeHeader setText={setText} />      
-          <MediaList songs={songs} artists={artists} filter={filterText} />    
+          <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} />
+          <MediaPlayer song={songSelected} />    
         </div>
       </div>
     </div>

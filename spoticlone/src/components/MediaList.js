@@ -12,9 +12,9 @@ import theme from "../palette/palette";
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-const MediaList = ({ songs, artists, filter }) => {
+const MediaList = ({ songs, filter, itemSelected }) => {
   const [text, setText] = useState("");
-  const [filteredSongs, setFilteredSongs] = useState(null);
+  const [filteredSongs, setFilteredSongs] = useState([]);
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
@@ -45,11 +45,15 @@ const MediaList = ({ songs, artists, filter }) => {
     return songs;
   };
 
+  const songSelected = (song) => {
+    itemSelected(song);
+  }
+
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center">
         <TableContainer className="table-content" sx={{ maxHeight: 440 }}>
-          {!itemsToShow().length ? (
+          {!itemsToShow().length || itemsToShow() === null ? (
             <div className="msg-songs-not-found">
               <h2>No se han encontrado resultados</h2>
             </div>
@@ -113,7 +117,7 @@ const MediaList = ({ songs, artists, filter }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        <i className="fa-solid fa-play play-row-button"></i>
+                        <i onClick={() => songSelected(song)} className="fa-solid fa-play play-row-button"></i>
                       </TableCell>
                     </TableRow>
                   );
@@ -125,7 +129,7 @@ const MediaList = ({ songs, artists, filter }) => {
       </div>
       <div className="col 12 songs-found">
         <p>
-          {itemsToShow()?.length
+          {itemsToShow()?.length || itemsToShow()
             ? `${itemsToShow()?.length} canciones encontradas`
             : ""}
         </p>
