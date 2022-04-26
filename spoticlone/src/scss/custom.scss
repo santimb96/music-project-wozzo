@@ -106,6 +106,15 @@ html {
       background: white;
       cursor: pointer;
     }
+    .song-title-player{
+      font-size: 0.8rem;
+      color: white;
+      margin-left: 1vh;
+    }
+    .song-artist-name-player{
+      font-size: 0.7rem;
+      color: $tablePresentationColor;
+    }
 
     .progress-bar {
       width: 72%;
