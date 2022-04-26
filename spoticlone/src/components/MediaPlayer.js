@@ -5,7 +5,7 @@ import format from "format-duration";
 const MediaPlayer = ({ song }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const [volControll, setVolControll] = useState(0.5);
+  const [volControll, setVolControll] = useState(0.3);
 
   const audioRef = useRef(new Audio(inTheArmyNow));
   const intervalRef = useRef();
@@ -23,8 +23,7 @@ const MediaPlayer = ({ song }) => {
         clearInterval(intervalRef.current);
       } else {
         setTrackProgress(audioRef.current.currentTime);
-        progressBarRef.current.style.transform =
-          "translateX(" + audioRef.current.currentTime / duration + ")";
+        
       }
     }, [1000]);
   };
@@ -40,10 +39,6 @@ const MediaPlayer = ({ song }) => {
   }, [playing]);
 
   useEffect(() => {
-    console.log(format(audioRef.current.duration - trackProgress * 1000));
-  }, [trackProgress]);
-
-  useEffect(() => {
     audioRef.current.volume = volControll;
   }, [volControll])
 
@@ -51,6 +46,7 @@ const MediaPlayer = ({ song }) => {
     clearInterval(intervalRef.current);
     audioRef.current.currentTime = value;
     setTrackProgress(audioRef.current.currentTime);
+    startTimer();
   };
 
   const onChangeVol = (value) => {
