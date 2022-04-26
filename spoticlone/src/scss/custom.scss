@@ -4,6 +4,7 @@ $darkColor: #212529;
 $secondaryColor: #198754;
 $labelGrey: #d2d7da;
 $spotiLogoColor: #17a84a;
+$tablePresentationColor: #aaaaaa;
 
 %itemHorizontal {
   display: flex;
@@ -49,13 +50,6 @@ html {
       background: rgba(96, 245, 101, 0.3);
     }
 
-  
-
-    // .song-onclick-number {
-    //   background: transparent;
-    //   border: none;
-    //   color: white;
-    // }
 
     .home-page {
       min-height: 100vh;
@@ -87,6 +81,16 @@ html {
       }
     }
 
+    .songs-found {
+      display: flex;
+      justify-content: end;
+      color: $tablePresentationColor;
+      margin: 1vh;
+    }
+
+    .msg-songs-not-found {
+      @extend %itemHorizontal;
+    }
     span {
       color: white;
     }
