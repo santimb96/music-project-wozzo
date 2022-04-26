@@ -116,7 +116,7 @@ const SongBackoffice = () => {
   };
 
   const getData = () => {
-    Promise.all([getSongs(token), getArtists(token)])
+    Promise.all([getSongs(), getArtists()])
       .then(([songsResponse, artistsResponse]) => {
         setArtists(artistsResponse.artists);
         const data = songsResponse.songs.map((song) => {
