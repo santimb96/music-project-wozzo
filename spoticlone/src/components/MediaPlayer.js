@@ -55,6 +55,16 @@ const MediaPlayer = ({ song }) => {
     setVolControll(value/100);
   }
 
+  const volIconRender = () => {
+    if(volControll === 0){
+      return <i className="fa-solid fa-volume-xmark pe-2 text-light"></i>
+    } else if (volControll <= 0.5){
+      return <i class="fa-solid fa-volume-down pe-2 text-light"></i>
+    } else {
+      return <i class="fa-solid fa-volume-high pe-2 text-light"></i>
+    }
+  }
+
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
@@ -76,7 +86,7 @@ const MediaPlayer = ({ song }) => {
             
           </div>
           <div className="col-6 d-flex justify-content-center align-items-center pt-3">
-            <i class="fa-solid fa-volume-high pe-2 text-light"></i>
+            {volIconRender()}
             <input
                 ref={volBarRef}
                 type="range"
