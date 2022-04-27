@@ -1,7 +1,7 @@
 import { BASE_URI_SONG } from "../urls/urls";
 import { BASE_URI_ARTIST } from "../urls/urls";
 
-  const getSongs = (token) => new Promise((resolve, reject) => {
+  const getSongs = () => new Promise((resolve, reject) => {
     fetch(BASE_URI_SONG)
     .then(res => resolve(res.json()))
     .catch(err => reject(err));
@@ -9,20 +9,20 @@ import { BASE_URI_ARTIST } from "../urls/urls";
 
 
   const createSong = (name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('artistId', artistId);
+    formData.append('audioUrl', audioUrl);
+
     if (!name || !artistId || !audioUrl || !token) {
       reject("Error de parámetros")
     } else {
       fetch(`${BASE_URI_SONG}`, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          name,
-          artistId,
-          audioUrl,
-        }),
+        body: formData,
       })
         .then((response) => resolve(response.json()))
         .catch((err) => reject(err));
@@ -60,18 +60,27 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     }
   });
 
-  const updateSong = (id, edited, token) => new Promise((resolve, reject) => {
-    console.log(JSON.stringify(edited));
+  const updateSong = (id, name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+    const formData = new FormData();
+    if(name){
+      formData.append('name', name);
+    }
+    formData.append('artistId', artistId);
+
+    if(audioUrl){
+
+      formData.append('audioUrl', audioUrl);
+    }
+    
     if(!id && !token){
       reject("Error en parámetros");
     }
     fetch(`${BASE_URI_SONG}/${id}`,{
       method: 'PUT',
       headers:  {
-        'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(edited)
+      body: formData,
     })
     .then(res => resolve(res.json()))
     .catch(err => reject(err));

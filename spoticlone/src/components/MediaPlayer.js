@@ -7,14 +7,22 @@ const MediaPlayer = ({ song }) => {
   const [trackProgress, setTrackProgress] = useState(0);
   const [volControll, setVolControll] = useState(0.3);
 
-  const audioRef = useRef(new Audio(inTheArmyNow));
+  const audioRef = useRef(new Audio(''));
   const intervalRef = useRef();
-  const isReady = useRef(false);
+
 
   const progressBarRef = useRef();
   const volBarRef = useRef();
 
   const { duration } = audioRef.current;
+
+  useEffect(() => {
+    audioRef.current.src = song.audioUrl;
+    setTrackProgress(0);
+    audioRef.current.play();
+  }, [song])
+
+  console.log(audioRef);
 
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -70,8 +78,8 @@ const MediaPlayer = ({ song }) => {
         <div className="player-container">
           <div className="row">
             <div className="col-4 d-flex jutify-content-center flex-column pt-3">
-              <h5 className=" song-title-player">{song.name}</h5>
-              <h6 className=" song-artist-name-player">{song.artistName}</h6>
+              <h5 className="text-center song-title-player">{song.name}</h5>
+              <h6 className="text-center song-artist-name-player">{song.artistName}</h6>
             </div>
             <div className="col-2 d-flex justify-content-end p-2">
               {playing ? (
@@ -127,4 +135,8 @@ const MediaPlayer = ({ song }) => {
   );
 };
 
+
+MediaPlayer.defaultProps = {
+  song: { audioUrl: inTheArmyNow, name: "In The Army Now", artistName: "StatusQuo" },
+}
 export default MediaPlayer;
