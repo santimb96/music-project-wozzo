@@ -52,7 +52,7 @@ const SongBackoffice = () => {
   const [name, setName] = useState("");
   const [artistName, setArtistName] = useState("Selecciona");
   const [artistId, setArtistId] = useState("");
-  const [audioUrl, setAudioUrl] = useState("");
+  const [audioUrl, setAudioUrl] = useState([]);
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -163,13 +163,13 @@ const SongBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    if (method && artistName !== "Selecciona" && checkUrl(audioUrl)) {
+    if (method && artistName !== "Selecciona") {
       return true;
     } else {
       if (
         name?.length &&
         artistId?.length &&
-        checkUrl(audioUrl) &&
+        //checkUrl(audioUrl) &&
         artistName !== "Selecciona"
       ) {
         return true;
@@ -222,12 +222,8 @@ const SongBackoffice = () => {
   const editSong = (method) => {
     if (validateData(method)) {
       setLoading(true);
-      const newSong = {
-        name,
-        artistId,
-        audioUrl,
-      };
-      updateSong(id, newSong, token)
+      
+      updateSong(id, name, artistId, audioUrl, token)
         .then(() => {
           setOpenForm(false);
           setLoading(false);
@@ -366,12 +362,11 @@ const SongBackoffice = () => {
                         <TextField
                         disabled={loading}
                           className="input"
-                          type="text"
-                          value={audioUrl}
+                          type="file"
                           id="audioUrl"
                           variant="outlined"
                           placeholder="URL del audio"
-                          onChange={(e) => setAudioUrl(e.target.value)}
+                          onChange={(e) => setAudioUrl(e.target.files[0])}
                           error={errors && audioUrl?.length === 0}
                           helperText={
                             errors && audioUrl?.length === 0
@@ -425,7 +420,7 @@ const SongBackoffice = () => {
                         </div>
                       </div>
                       {!loading ? (
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
                             {create ? (
                               <Button
@@ -445,7 +440,7 @@ const SongBackoffice = () => {
                               </Button>
                             )}
                           </div>
-                        </Typography>
+                        </div>
                       ) : (
                         <Typography className="d-flex justify-content-center ">
                           <SpinnerLoading />
@@ -460,7 +455,7 @@ const SongBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Nombre
+                      Título
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
@@ -472,7 +467,7 @@ const SongBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Path
+                      URL de la canción
                     </TableCell>
 
                     <TableCell

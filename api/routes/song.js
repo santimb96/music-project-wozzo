@@ -9,7 +9,7 @@ router
   .get('/', songController.getAll)
   //.post('/', songController.create)
   .get('/:id', songController.findId)
-  .put('/:id', songController.updateById)
+  .put('/:id', multer({ dest: '../uploads/' }).single('audioUrl'), songController.updateById)
   .delete('/:id', songController.deleteById)
 
 //PUBLIC
