@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/common/Header";
 import MediaList from "../components/MediaList";
 import SidebarHome from "../components/common/SidebarHome";
-import HomeHeader from "../components/HomeHeader";
+import HomeHeader from "../components/HomeHeader/HomeHeader";
 import { getSongs } from "../services/songs";
 import { getArtists } from "../services/artists";
 import MediaPlayer from "../components/MediaPlayer";

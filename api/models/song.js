@@ -11,7 +11,6 @@ const SongSchema = new mongoose.Schema({
   audioUrl: {
     type: String,
     required: true,
-    unique: true
   }
 });
 
