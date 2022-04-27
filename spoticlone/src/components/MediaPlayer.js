@@ -7,14 +7,22 @@ const MediaPlayer = ({ song }) => {
   const [trackProgress, setTrackProgress] = useState(0);
   const [volControll, setVolControll] = useState(0.3);
 
-  const audioRef = useRef(new Audio(inTheArmyNow));
+  const audioRef = useRef(new Audio(''));
   const intervalRef = useRef();
-  const isReady = useRef(false);
+
 
   const progressBarRef = useRef();
   const volBarRef = useRef();
 
   const { duration } = audioRef.current;
+
+  useEffect(() => {
+    audioRef.current.src = song.audioUrl;
+    setTrackProgress(0);
+    audioRef.current.play();
+  }, [song])
+
+  console.log(audioRef);
 
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -127,4 +135,8 @@ const MediaPlayer = ({ song }) => {
   );
 };
 
+
+MediaPlayer.defaultProps = {
+  song: { audioUrl: inTheArmyNow, name: "In The Army Now", artistName: "StatusQuo" },
+}
 export default MediaPlayer;
