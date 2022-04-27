@@ -5,27 +5,22 @@ import format from "format-duration";
 const MediaPlayer = ({ song }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const [volControll, setVolControll] = useState(0.3);
+  const [volControl, setVolControl] = useState(0.3);
   const [mute, setMute] = useState(false);
 
-  const audioRef = useRef(new Audio(''));
+  const audioRef = useRef(new Audio(""));
   const intervalRef = useRef();
 
   const progressBarRef = useRef();
   const volBarRef = useRef();
-  const [ready, setReady] = useState(false);
-
   const { duration } = audioRef.current;
 
   useEffect(() => {
-    setReady(false);
-    if(Object.keys(song).length > 0) setReady(true);
-
     audioRef.current.src = song.audioUrl;
     setTrackProgress(0);
     audioRef.current.play();
     setPlaying(true);
-  }, [song])
+  }, [song]);
 
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -49,20 +44,22 @@ const MediaPlayer = ({ song }) => {
   }, [playing]);
 
   useEffect(() => {
-    //if(volControll === 0) setMute(true);
     if (mute) {
       audioRef.current.volume = 0;
-      setVolControll(0);
+      setVolControl(0);
+    } else if (!mute && volControl > 0) {
+      audioRef.current.volume = volControl;
+      setVolControl(audioRef.current.volume);
     } else {
       audioRef.current.volume = 0.3;
-      setVolControll(0.3);
+      setVolControl(0.3);
     }
-    //audioRef.current.volume = volControll;
   }, [mute]);
 
-   useEffect(() => {
-    audioRef.current.volume = volControll;
-  }, [volControll]);
+  useEffect(() => {
+    if(volControl === 0) setMute(true);
+    audioRef.current.volume = volControl;
+  }, [volControl]);
 
   const onChangeTrack = (value) => {
     clearInterval(intervalRef.current);
@@ -72,20 +69,35 @@ const MediaPlayer = ({ song }) => {
   };
 
   const onChangeVol = (value) => {
-    setVolControll(value / 100);
+    setVolControl(value / 100);
   };
 
   const volIconRender = () => {
-    if (mute) {
-      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-xmark pe-3 text-light vol-icon"></i>;
-    } else if (volControll <= 0.5 && volControll !== 0) {
-      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-down pe-3 text-light vol-icon"></i>;
+    if (mute && volControl === 0) {
+      return (
+        <i
+          onClick={() => setMute((prev) => (prev ? false : true))}
+          className="fa-solid fa-volume-xmark pe-3 text-light vol-icon"
+        ></i>
+      );
+    } else if (volControl <= 0.5 && volControl !== 0) {
+      return (
+        <i
+          onClick={() => setMute((prev) => (prev ? false : true))}
+          className="fa-solid fa-volume-down pe-3 text-light vol-icon"
+        ></i>
+      );
     } else {
-      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-high pe-3 text-light vol-icon"></i>;
+      return (
+        <i
+          onClick={() => setMute((prev) => (prev ? false : true))}
+          className="fa-solid fa-volume-high pe-3 text-light vol-icon"
+        ></i>
+      );
     }
   };
 
-  console.log(volControll, audioRef.current.volume, mute);
+  console.log(volControl, audioRef.current.volume, mute);
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
@@ -93,7 +105,9 @@ const MediaPlayer = ({ song }) => {
           <div className="row">
             <div className="col-4 d-flex jutify-content-center flex-column pt-3">
               <h5 className="text-center song-title-player">{song.name}</h5>
-              <h6 className="text-center song-artist-name-player">{song.artistName}</h6>
+              <h6 className="text-center song-artist-name-player">
+                {song.artistName}
+              </h6>
             </div>
             <div className="col-2 d-flex justify-content-end p-2">
               {playing ? (
@@ -113,7 +127,7 @@ const MediaPlayer = ({ song }) => {
               <input
                 ref={volBarRef}
                 type="range"
-                value={volControll * 100}
+                value={volControl * 100}
                 step="1"
                 min="0"
                 max="100"
@@ -127,7 +141,6 @@ const MediaPlayer = ({ song }) => {
               {format(trackProgress * 1000)}
             </p>
             <div className="progress-bar">
-              {/* <div className="progress-buffered">hi</div> */}
               <input
                 ref={progressBarRef}
                 type="range"
@@ -140,7 +153,9 @@ const MediaPlayer = ({ song }) => {
               />
             </div>
             <p className="current-time-player">
-              { audioRef && audioRef.current.currentTime > 0 ? format(audioRef.current.duration * 1000) : '00:00'}
+              {audioRef && audioRef.current.currentTime > 0
+                ? format(audioRef.current.duration * 1000)
+                : "00:00"}
             </p>
           </div>
         </div>
@@ -149,8 +164,11 @@ const MediaPlayer = ({ song }) => {
   );
 };
 
-
 MediaPlayer.defaultProps = {
-  song: { audioUrl: inTheArmyNow, name: "In The Army Now", artistName: "StatusQuo" },
-}
+  song: {
+    audioUrl: inTheArmyNow,
+    name: "In The Army Now",
+    artistName: "StatusQuo",
+  },
+};
 export default MediaPlayer;
