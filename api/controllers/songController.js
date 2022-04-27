@@ -52,7 +52,7 @@ const create = async (req, res) => {
     if (err) {
       console.log('Error occured while trying to upload to S3 bucket', err);
     }
-    fs.unlinkSync(req.file.path); // Empty temp folder
+    fs.unlinkSync(req.file.path);
     
 
     
