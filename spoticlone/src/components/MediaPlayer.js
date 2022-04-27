@@ -6,23 +6,26 @@ const MediaPlayer = ({ song }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [volControll, setVolControll] = useState(0.3);
+  const [mute, setMute] = useState(false);
 
   const audioRef = useRef(new Audio(''));
   const intervalRef = useRef();
 
-
   const progressBarRef = useRef();
   const volBarRef = useRef();
+  const [ready, setReady] = useState(false);
 
   const { duration } = audioRef.current;
 
   useEffect(() => {
+    setReady(false);
+    if(Object.keys(song).length > 0) setReady(true);
+
     audioRef.current.src = song.audioUrl;
     setTrackProgress(0);
     audioRef.current.play();
+    setPlaying(true);
   }, [song])
-
-  console.log(audioRef);
 
   const startTimer = () => {
     intervalRef.current = setInterval(() => {
@@ -46,6 +49,18 @@ const MediaPlayer = ({ song }) => {
   }, [playing]);
 
   useEffect(() => {
+    //if(volControll === 0) setMute(true);
+    if (mute) {
+      audioRef.current.volume = 0;
+      setVolControll(0);
+    } else {
+      audioRef.current.volume = 0.3;
+      setVolControll(0.3);
+    }
+    //audioRef.current.volume = volControll;
+  }, [mute]);
+
+   useEffect(() => {
     audioRef.current.volume = volControll;
   }, [volControll]);
 
@@ -56,22 +71,21 @@ const MediaPlayer = ({ song }) => {
     startTimer();
   };
 
-  console.log(audioRef.current);
-
   const onChangeVol = (value) => {
     setVolControll(value / 100);
   };
 
   const volIconRender = () => {
-    if (volControll === 0) {
-      return <i className="fa-solid fa-volume-xmark pe-2 text-light"></i>;
-    } else if (volControll <= 0.5) {
-      return <i class="fa-solid fa-volume-down pe-2 text-light"></i>;
+    if (mute) {
+      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-xmark pe-3 text-light vol-icon"></i>;
+    } else if (volControll <= 0.5 && volControll !== 0) {
+      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-down pe-3 text-light vol-icon"></i>;
     } else {
-      return <i class="fa-solid fa-volume-high pe-2 text-light"></i>;
+      return <i onClick={() => setMute((prev) => prev ? false : true)} className="fa-solid fa-volume-high pe-3 text-light vol-icon"></i>;
     }
   };
 
+  console.log(volControll, audioRef.current.volume, mute);
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
@@ -126,7 +140,7 @@ const MediaPlayer = ({ song }) => {
               />
             </div>
             <p className="current-time-player">
-              {format(audioRef.current.duration * 1000)}
+              { audioRef && audioRef.current.currentTime > 0 ? format(audioRef.current.duration * 1000) : '00:00'}
             </p>
           </div>
         </div>

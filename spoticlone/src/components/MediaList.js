@@ -9,12 +9,15 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "./common/SpinnerLoading";
 import theme from "../palette/palette";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import format from "format-duration";
 
 const MediaList = ({ songs, filter, itemSelected }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
+
+  const playRef = useRef();
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
@@ -45,9 +48,19 @@ const MediaList = ({ songs, filter, itemSelected }) => {
     return songs;
   };
 
-  const songSelected = (song) => {
+  const songSelected = (song, element) => {
+    if (typeof playRef.current === "undefined"){
+      playRef.current = element;
+    }
+    playRef.current.style.color = '#aaaaaa';
+    playRef.current.className = 'fa-solid fa-play play-row-button'
+
+    element.className = 'fa-solid fa-pause play-row-button';
+    element.style.color = 'white';
+    playRef.current = element;
     itemSelected(song);
   };
+
 
   return (
     <div className="row">
@@ -83,6 +96,7 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                   >
                     ARTISTA
                   </TableCell>
+                  
                   <TableCell
                     style={{ color: theme.palette.secondary.grey }}
                     align="left"
@@ -113,12 +127,14 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                       >
                         {song.artistName}
                       </TableCell>
+                      
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
                         <i
-                          onClick={() => songSelected(song)}
+                          
+                          onClick={(e) => songSelected(song, e.target)}
                           className="fa-solid fa-play play-row-button"
                         ></i>
                       </TableCell>

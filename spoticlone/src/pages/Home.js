@@ -6,6 +6,8 @@ import HomeHeader from "../components/HomeHeader";
 import { getSongs } from "../services/songs";
 import { getArtists } from "../services/artists";
 import MediaPlayer from "../components/MediaPlayer";
+import format from "format-duration";
+import { useRef } from "react";
 
 const Home = () => {
 
@@ -29,14 +31,14 @@ const Home = () => {
           );
           return {
             ...song,
-            artistName: artist.name,
+            artistName: artist.name
           };
         });
         setSongs(data);
       })
       .catch((err) => console.error(err));
   };
-
+  
   useEffect(() => {
     getData();
   }, [])
@@ -44,8 +46,6 @@ const Home = () => {
   const itemSelected = (item) => {
     setSongSelected(item);
   }
-
-
 
   return (
     <div className="row home-page">

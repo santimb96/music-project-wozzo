@@ -81,6 +81,9 @@ html {
         }
       }
     }
+    .vol-icon {
+      width: 2rem;
+    }
 
     .songs-found {
       font-size: 0.8rem;
@@ -90,7 +93,7 @@ html {
       margin: 1vh;
     }
     .slider-vol{
-      background-color: transparent;
+      background: transparent;
     }
     .slider-vol::-moz-range-progress {
       background-color: $spotiLogoColor;
@@ -98,7 +101,7 @@ html {
     .slider-vol::-moz-range-track {
       background-color: $mediaBar;
     }
-    .slider-vol::-moz-range-thumb {
+    .slider-vol::-moz-range-thumb, .slider::-webkit-slider-thumb {
       width: 15px;
       height: 15px;
       border: none;
@@ -121,20 +124,23 @@ html {
       background: transparent;
       .slider {
         background-color: transparent;
+        //-webkit-appearance: none;
       }
       .slider::-moz-range-progress {
         background-color: $spotiLogoColor;
       }
-      .slider::-moz-range-track {
+      .slider::-moz-range-track, .slider::-webkit-slider-runnable-track {
+        -webkit-appearance: none;
         background-color: $mediaBar;
       }
-      .slider::-moz-range-thumb {
+      .slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
         width: 15px;
         height: 15px;
         border: none;
         border-radius: 50%;
         background: white;
         cursor: pointer;
+        -webkit-appearance: none;
       }
     }
     .media-container {
