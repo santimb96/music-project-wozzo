@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { login } from "../../services/user.js";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
+import spotiLogo from "../../images/spoticlone-logo.png";
 import './index.scss';
 
 const Login = () => {
@@ -39,7 +40,13 @@ const Login = () => {
           <div className="col-12" style={{ maxWidth: "540px" }}>
             {!loading ? (
               <div className="login-form bg-dark mt-4 p-4 text-light">
-              <h4>SpotiClone</h4>
+              <div className="d-flex justify-content-center">
+              <img
+                src={spotiLogo}
+                alt="spoticloneLogo"
+                style={{ width: "30%" }}
+              ></img>
+            </div>
               <div className="mb-5 mt-5">
                 <div className="mt-3">
                   <input

@@ -10,12 +10,12 @@ import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import './index.scss';
-
+import "./index.scss";
 
 const MediaList = ({ songs, filter, itemSelected }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
+  const [playing, setPlaying] = useState(false);
 
   const playRef = useRef();
 
@@ -49,18 +49,16 @@ const MediaList = ({ songs, filter, itemSelected }) => {
   };
 
   const songSelected = (song, element) => {
-    if (typeof playRef.current === "undefined"){
+    if (typeof playRef.current === "undefined") {
       playRef.current = element;
     }
-    playRef.current.style.color = '#aaaaaa';
-    playRef.current.className = 'fa-solid fa-play play-row-button'
+    playRef.current.classList.remove("song-row-playing");
+    console.log(element);
 
-    element.className = 'fa-solid fa-pause play-row-button';
-    element.style.color = 'white';
+    element.classList.add('song-row-playing');
     playRef.current = element;
     itemSelected(song);
   };
-
 
   return (
     <div className="row">
@@ -96,19 +94,21 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                   >
                     ARTISTA
                   </TableCell>
-                  
+
                   <TableCell
                     style={{ color: theme.palette.secondary.grey }}
                     align="left"
-                  >
-                    REPRODUCIR
-                  </TableCell>
+                  ></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {itemsToShow()?.map((song, index) => {
                   return (
-                    <TableRow key={song._id} className="song-row-home">
+                    <TableRow
+                      onDoubleClick={(e) => songSelected(song, e.currentTarget)}
+                      key={song._id}
+                      className="song-row-home"
+                    >
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
@@ -127,16 +127,16 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                       >
                         {song.artistName}
                       </TableCell>
-                      
+
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        <i
-                          
-                          onClick={(e) => songSelected(song, e.target)}
-                          className="fa-solid fa-play play-row-button"
-                        ></i>
+                        {playing ? (
+                          <i className="fa-solid fa-play play-row-button"></i>
+                        ) : (
+                          ""
+                        )}
                       </TableCell>
                     </TableRow>
                   );

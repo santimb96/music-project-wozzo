@@ -30,6 +30,9 @@
 .song-row-home:hover {
   background: $rowBackground;
 }
+.song-row-playing {
+  background: $rowBackground;
+}
 .songs-found {
   font-size: 0.8rem;
   display: flex;
