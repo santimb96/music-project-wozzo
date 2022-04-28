@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
-import './index.scss';
+import "./index.scss";
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
@@ -38,11 +38,11 @@ const SidebarBackoffice = () => {
     <div className="col-12 col-md-2 bg-dark">
       <div className="d-flex justify-content-center pt-5">
         <button
-        onClick={() => handleOpenSidebar()}
-        className="btn hamburguer-button"
+          onClick={() => handleOpenSidebar()}
+          className="btn hamburguer-button"
         >
-        <i className="fa fa-bars" aria-hidden="true"></i>
-       </button>
+          <i className="fa fa-bars" aria-hidden="true"></i>
+        </button>
       </div>
       <Box
         sx={{ height: 1 }}
@@ -51,8 +51,8 @@ const SidebarBackoffice = () => {
         id="sidebar"
       >
         <nav aria-label="secondary mailbox folders">
-          <List sx={{ color: theme.palette.secondary.light }} >
-            <Link to="/"className="sidebar-link">
+          <List sx={{ color: theme.palette.secondary.light }}>
+            <Link to="/" className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link">
                   <i className="fa fa-home"></i>
@@ -100,7 +100,7 @@ const SidebarBackoffice = () => {
             <Link to="/login" className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link" onClick={logOut}>
-                  <i className="fa fa-user-circle"></i>
+                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
                   <ListItemText className="ps-2" primary="Cerrar sesión" />
                 </ListItemButton>
               </ListItem>
@@ -113,7 +113,7 @@ const SidebarBackoffice = () => {
 };
 
 SidebarBackoffice.propTypes = {
-  loading: PropTypes.bool
-}
+  loading: PropTypes.bool,
+};
 
 export default SidebarBackoffice;
