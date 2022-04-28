@@ -2,6 +2,7 @@ import React from "react";
 import TableCell from "@mui/material/TableCell";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { pink } from "@mui/material/colors";
+import './index.scss';
 
 const DeleteButton = ({ handleOpenDelete, id, loading }) => {
   const open = (id) => {

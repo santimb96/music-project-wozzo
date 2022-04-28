@@ -35,10 +35,10 @@ import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
 import EditIcon from "@mui/icons-material/Edit";
-import ButtonCreate from "../components/common/ButtonCreate";
-import ModalDelete from "../components/common/ModalDelete";
-import EditButton from "../components/common/EditButton";
-import DeleteButton from "../components/common/DeleteButton";
+import CreateButton from "../components/CreateButton/CreateButton";
+import ModalDelete from "../components/ModalDelete/ModalDelete";
+import EditButton from "../components/EditButton/EditButton";
+import DeleteButton from "../components/DeleteButton/DeleteButton";
 import { checkUrl } from "../utils/validators";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
 import SnackBarError from "../components/common/SnackBarError";
@@ -290,7 +290,7 @@ const SongBackoffice = () => {
               onChange={(e) => setText(e.target.value)}
               disabled={loading}
             />
-            <ButtonCreate handleOpenForm={handleOpenForm} loading={loading} />
+            <CreateButton handleOpenForm={handleOpenForm} loading={loading} />
           </div>
 
           <TableContainer

@@ -2,6 +2,9 @@ import React from "react";
 import TableCell from "@mui/material/TableCell";
 import EditIcon from "@mui/icons-material/Edit";
 import { yellow } from "@mui/material/colors";
+
+import './index.scss';
+
 const EditButton = ({ setData, item, loading }) => {
   const send = (item) => {
     setData(item);

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import AuthContext from "../../contexts/AuthContext";
+import React from "react";
 import './index.scss';
 
 const HomeHeader = ({setText}) => {

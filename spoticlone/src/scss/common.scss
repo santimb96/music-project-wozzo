@@ -1,14 +1,6 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-$darkColor: #212529;
-$secondaryColor: #198754;
-$labelGrey: #d2d7da;
-$spotiLogoColor: #17a84a;
-$tablePresentationColor: #aaaaaa;
-$mediaBack: #353434;
-$mediaBar: #535353;
-$mediaSlider: #b3b3b3;
-$rowBackground: rgba(96, 245, 101, 0.3);
+@import "colors";
 
 %itemHorizontal {
   display: flex;
@@ -30,11 +22,11 @@ html {
       pointer-events: none;
     }
 
-    .button-icons {
-      background: transparent;
-      border: none;
-      color: white;
-    }
+    // .button-icons {
+    //   background: transparent;
+    //   border: none;
+    //   color: white;
+    // }
     .song-row-home {
       transition: 0.5ms;
       .play-row-button {
@@ -165,28 +157,28 @@ html {
       opacity: 0.7;
     }
 
-    .close-modal-button {
-      background: transparent;
-      border: none;
-      color: white;
-      padding: 2%;
-      transition: 0.1s;
-    }
+    // .close-modal-button {
+    //   background: transparent;
+    //   border: none;
+    //   color: white;
+    //   padding: 2%;
+    //   transition: 0.1s;
+    // }
 
-    .close-modal-button:hover {
-      border-radius: 5px;
-      background-color: red;
-    }
+    // .close-modal-button:hover {
+    //   border-radius: 5px;
+    //   background-color: red;
+    // }
 
-    .edit-button-table,
-    .delete-button-table {
-      display: flex;
-      justify-content: center;
-      transition: 0.1s;
-      padding: 1rem;
-      width: 50%;
-      border-radius: 5px;
-    }
+    // .edit-button-table,
+    // .delete-button-table {
+    //   display: flex;
+    //   justify-content: center;
+    //   transition: 0.1s;
+    //   padding: 1rem;
+    //   width: 50%;
+    //   border-radius: 5px;
+    // }
 
     .edit-button-table:hover,
     .delete-button-table:hover {
@@ -432,49 +424,39 @@ html {
       color: $secondaryColor;
       background-color: $darkColor;
     }
-    .modal-delete {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 400px;
-      background-color: $darkColor;
-      padding: 2rem;
-      color: white;
-      border: 2px solid $secondaryColor;
-      border-radius: 5px;
-      outline: none;
-    }
-    .typo-flex {
-      display: flex;
-      justify-content: space-around;
+    // .modal-delete {
+    //   position: absolute;
+    //   top: 50%;
+    //   left: 50%;
+    //   transform: translate(-50%, -50%);
+    //   width: 400px;
+    //   background-color: $darkColor;
+    //   padding: 2rem;
+    //   color: white;
+    //   border: 2px solid $secondaryColor;
+    //   border-radius: 5px;
+    //   outline: none;
+    // }
+    // .typo-flex {
+    //   display: flex;
+    //   justify-content: space-around;
 
-      .btn-modal {
-        color: white;
-        padding: 1rem;
-        width: 10%;
-        margin: 1rem;
-        transition: 0.1s;
-      }
+    //   .btn-modal {
+    //     color: white;
+    //     padding: 1rem;
+    //     width: 10%;
+    //     margin: 1rem;
+    //     transition: 0.1s;
+    //   }
 
-      .btn-modal:hover {
-        background-color: $secondaryColor;
-      }
-      .btn-delete:hover {
-        background-color: red;
-      }
-    }
-    .btn-open-form {
-      font-size: 1rem;
-      width: 10%;
-      color: white;
-      margin: 0.8rem;
-      padding: 1rem;
-      transition: 0.1s;
-    }
-    .btn-open-form:hover {
-      background-color: $secondaryColor;
-    }
+    //   .btn-modal:hover {
+    //     background-color: $secondaryColor;
+    //   }
+    //   .btn-delete:hover {
+    //     background-color: red;
+    //   }
+    // }
+
     //SPINNER LOADING
 
     .lds-ring {

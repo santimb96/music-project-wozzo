@@ -1,0 +1,21 @@
+@import "../../scss/colors";
+
+.edit-button-table,
+.delete-button-table {
+  display: flex;
+  justify-content: center;
+  transition: 0.1s;
+  padding: 1rem;
+  width: 50%;
+  border-radius: 5px;
+}
+
+.edit-button-table:hover,
+.delete-button-table:hover {
+  background-color: $secondaryColor;
+}
+.button-icons {
+  background: transparent;
+  border: none;
+  color: white;
+}

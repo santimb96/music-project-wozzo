@@ -34,10 +34,10 @@ import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import TextTareaAutosize from "@mui/material/TextareaAutosize";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
-import ModalDelete from "../components/common/ModalDelete";
-import ButtonCreate from "../components/common/ButtonCreate";
-import EditButton from "../components/common/EditButton";
-import DeleteButton from "../components/common/DeleteButton";
+import ModalDelete from "../components/ModalDelete/ModalDelete";
+import CreateButton from "../components/CreateButton/CreateButton";
+import EditButton from "../components/EditButton/EditButton";
+import DeleteButton from "../components/DeleteButton/DeleteButton";
 import SnackBarError from "../components/common/SnackBarError";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
 import CloseIcon from "@mui/icons-material/Close";
@@ -242,7 +242,7 @@ const ArtistBackoffice = () => {
               onChange={(e) => setText(e.target.value)}
               disabled={loading}
             />
-            <ButtonCreate handleOpenForm={handleOpenForm} loading={loading} />
+            <CreateButton handleOpenForm={handleOpenForm} loading={loading} />
           </div>
 
           <TableContainer

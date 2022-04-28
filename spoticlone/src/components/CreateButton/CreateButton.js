@@ -1,7 +1,8 @@
 import React from "react";
 import Button from "@mui/material/Button";
+import './index.scss';
 
-const ButtonCreate = ({handleOpenForm, loading}) => {
+const CreateButton = ({handleOpenForm, loading}) => {
 
   const open = (boolean) => {
     handleOpenForm(boolean);
@@ -14,4 +15,4 @@ const ButtonCreate = ({handleOpenForm, loading}) => {
   );
 };
 
-export default ButtonCreate;
+export default CreateButton;

@@ -8,9 +8,6 @@ import {
 } from "../services/user.js";
 import { getRoles } from "../services/roles.js";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import {
   Table,
   TableCell,
@@ -19,28 +16,21 @@ import {
   TableHead,
   TableContainer,
 } from "@mui/material";
-import { InputBase } from "@mui/material";
-import Container from "@mui/material/Container";
 import theme from "../palette/palette";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import SpinnerLoading from "../components/common/SpinnerLoading";
-import { pink, yellow } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../constants";
-import ButtonCreate from "../components/common/ButtonCreate";
-import ModalDelete from "../components/common/ModalDelete";
-import EditButton from "../components/common/EditButton";
-import DeleteButton from "../components/common/DeleteButton";
+import CreateButton from "../components/CreateButton/CreateButton";
+import ModalDelete from "../components/ModalDelete/ModalDelete";
+import EditButton from "../components/EditButton/EditButton";
+import DeleteButton from "../components/DeleteButton/DeleteButton";
 import { checkEmail, checkPassword } from "../utils/validators.js";
 import SnackBarSuccess from "../components/common/SnackBarSuccess";
-import { checkEmailOnDB } from "../utils/validators.js";
 import SnackBarError from "../components/common/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -287,7 +277,7 @@ const UserBackoffice = () => {
               onChange={(e) => setText(e.target.value)}
               disabled={loading}
             />
-            <ButtonCreate handleOpenForm={handleOpenForm} />
+            <CreateButton handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
