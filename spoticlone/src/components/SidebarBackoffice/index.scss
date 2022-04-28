@@ -1,0 +1,85 @@
+@import '../../scss/colors';
+
+
+.hamburguer-button {
+  display: none;
+  color: white;
+  padding: 1rem;
+  width: 15%;
+  margin: 1rem;
+  transition: 0.1s;
+}
+.hamburguer-button:hover {
+  background-color: $secondaryColor;
+  color: white;
+  outline: none;
+  box-shadow: none;
+}
+.hamburguer-button:focus,
+.hamburguer-button:active {
+  outline: none;
+  box-shadow: none;
+}
+.sidebar-backoffice {
+  display: grid;
+  padding-top: 3rem;
+}
+
+.sidebar-link {
+  text-decoration: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  height: 4rem;
+  margin-left: 4%;
+  margin-right: 4%;
+  transition: 0.3s;
+  color: white;
+  i {
+    color: white;
+  }
+  .nav-link {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 4rem;
+    margin-left: 4%;
+    margin-right: 4%;
+    transition: 0.1s;
+    border-radius: 2px;
+    color: white;
+    i {
+      color: white;
+    }
+  }
+  .nav-link:hover {
+    background-color: $secondaryColor;
+    color: white;
+  }
+  
+  .nav-link .fa {
+    transition: all 1s;
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  html {
+    body {
+      .sidebar-backoffice {
+        display: none;
+        padding-top: 0;
+      }
+      .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button {
+        display: grid;
+      }
+      .input {
+        min-width: 172px;
+      }
+    }
+  }
+}

@@ -2,15 +2,12 @@ import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext.js";
 import { removeUserStorage } from "../../utils/localStorage.js";
-import Grid from "@mui/material/Grid";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import List from "@mui/material/List";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
 import { useState, useRef } from "react";
 import spotiLogo from "../../images/spoticlone-logo.png";
+import './index.scss';
 
 const SidebarHome = () => {
   const authContext = useContext(AuthContext);

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SidebarBackoffice from "../components/common/SidebarBackoffice";
+import SidebarBackoffice from "../components/SidebarBackoffice/SidebarBackoffice";
 
 const AdminBackoffice = () => {
   return (

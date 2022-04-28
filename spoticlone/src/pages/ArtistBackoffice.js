@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import SidebarBackoffice from "../components/common/SidebarBackoffice";
+import SidebarBackoffice from "../components/SidebarBackoffice/SidebarBackoffice";
 import {
   getArtists,
   deleteArtist,

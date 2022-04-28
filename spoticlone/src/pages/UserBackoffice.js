@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidebarBackoffice from "../components/common/SidebarBackoffice";
+import SidebarBackoffice from "../components/SidebarBackoffice/SidebarBackoffice";
 import {
   createUser,
   getUsers,

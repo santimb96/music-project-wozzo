@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext.js";
 import { removeUserStorage } from "../../utils/localStorage.js";
-import Grid from "@mui/material/Grid";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
@@ -11,6 +10,7 @@ import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
 import { useState, useRef } from "react";
 import PropTypes from "prop-types";
+import './index.scss';
 
 const SidebarBackoffice = () => {
   const authContext = useContext(AuthContext);
@@ -44,7 +44,6 @@ const SidebarBackoffice = () => {
         <i className="fa fa-bars" aria-hidden="true"></i>
        </button>
       </div>
-      
       <Box
         sx={{ height: 1 }}
         ref={sidebarRef}
