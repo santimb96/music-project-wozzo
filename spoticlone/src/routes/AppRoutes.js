@@ -4,7 +4,7 @@ import AuthContext from "../contexts/AuthContext";
 import Login from "../pages/Login/Login";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
