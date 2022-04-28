@@ -14,7 +14,7 @@ const Home = () => {
 
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
-  const [songSelected, setSongSelected] = useState({});
+  const [songSelected, setSongSelected] = useState([]);
 
   const setText = (value) => {
     setFilterText(value); 
@@ -53,7 +53,7 @@ const Home = () => {
         <div className="row">
           <HomeHeader setText={setText} />      
           <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} />
-          <MediaPlayer song={songSelected} />    
+          {songSelected.length === 0 ? '' : <MediaPlayer song={songSelected} />}    
         </div>
       </div>
     </div>
