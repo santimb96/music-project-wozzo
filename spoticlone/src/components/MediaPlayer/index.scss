@@ -1,0 +1,83 @@
+@import '../../scss/colors';;
+
+.vol-icon {
+  width: 2rem;
+}
+.media-container {
+  margin-top: 5vh;
+}
+.player-container {
+  position: sticky;
+  background-color: $mediaBack;
+  border-radius: 15px;
+}
+.song-title-player{
+  font-size: 0.8rem;
+  color: white;
+  margin-left: 1vh;
+}
+.song-artist-name-player{
+  font-size: 0.7rem;
+  color: $tablePresentationColor;
+}
+.player-buttons {
+  padding-top: 0.5rem;
+  color: white;
+  font-size: 2rem;
+}
+
+.slider-vol{
+  background: transparent;
+}
+.slider-vol::-moz-range-progress {
+  background-color: $spotiLogoColor;
+}
+.slider-vol::-moz-range-track {
+  background-color: $mediaBar;
+}
+.slider-vol::-moz-range-thumb, .slider::-webkit-slider-thumb {
+  width: 15px;
+  height: 15px;
+  border: none;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+}
+.player {
+  margin-top: -10px;
+}
+
+.current-time-player {
+  font-size: 0.7rem;
+  color: $tablePresentationColor;
+  padding: 1rem;
+}
+div.progress-bar {
+  width: 72%;
+  background: transparent;
+  background-color: transparent;
+  .slider {
+    background-color: transparent;
+    //-webkit-appearance: none;
+  }
+  .slider::-moz-range-progress {
+    background-color: $spotiLogoColor;
+  }
+  .slider::-moz-range-track, .slider::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    background-color: $mediaBar;
+  }
+  .slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
+    width: 15px;
+    height: 15px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    -webkit-appearance: none;
+  }
+}
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+

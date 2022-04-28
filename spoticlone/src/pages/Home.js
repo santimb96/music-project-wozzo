@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import MediaList from "../components/MediaList";
+import MediaList from "../components/MediaList/MediaList";
 import SidebarHome from "../components/SidebarHome/SidebarHome";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
 import { getSongs } from "../services/songs";
 import { getArtists } from "../services/artists";
-import MediaPlayer from "../components/MediaPlayer";
+import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
 
 const Home = () => {
 

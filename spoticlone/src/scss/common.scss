@@ -12,11 +12,11 @@ html {
     overflow-x: hidden;
     overflow-y: hidden;
 
-    .sticky-header {
-      position: sticky;
-      background-color: $darkColor;
-      top: 0;
-    }
+    // .sticky-header {
+    //   position: sticky;
+    //   background-color: $darkColor;
+    //   top: 0;
+    // }
 
     .link-disabled {
       pointer-events: none;
@@ -27,119 +27,119 @@ html {
     //   border: none;
     //   color: white;
     // }
-    .song-row-home {
-      transition: 0.5ms;
-      .play-row-button {
-        color: $tablePresentationColor;
-        font-size: 1.1rem;
-        transition: 0.1s;
-        padding: 13px;
-        background-color: transparent;
-      }
-      .play-row-button:hover {
-        color: white;
-      }
-    }
+    // .song-row-home {
+    //   transition: 0.5ms;
+    //   // .play-row-button {
+    //   //   color: $tablePresentationColor;
+    //   //   font-size: 1.1rem;
+    //   //   transition: 0.1s;
+    //   //   padding: 13px;
+    //   //   background-color: transparent;
+    //   // }
+    //   // .play-row-button:hover {
+    //   //   color: white;
+    //   // }
+    // }
 
-    .song-row-home:hover {
-      background: $rowBackground;
-    }
+    // .song-row-home:hover {
+    //   background: $rowBackground;
+    // }
 
     .home-page {
       min-height: 100vh;
       min-width: 100vh;
       overflow-x: hidden;
     }
-    .vol-icon {
-      width: 2rem;
-    }
+    // .vol-icon {
+    //   width: 2rem;
+    // }
 
-    .songs-found {
-      font-size: 0.8rem;
-      display: flex;
-      justify-content: end;
-      color: $tablePresentationColor;
-      margin: 1vh;
-    }
-    .slider-vol{
-      background: transparent;
-    }
-    .slider-vol::-moz-range-progress {
-      background-color: $spotiLogoColor;
-    }
-    .slider-vol::-moz-range-track {
-      background-color: $mediaBar;
-    }
-    .slider-vol::-moz-range-thumb, .slider::-webkit-slider-thumb {
-      width: 15px;
-      height: 15px;
-      border: none;
-      border-radius: 50%;
-      background: white;
-      cursor: pointer;
-    }
-    .song-title-player{
-      font-size: 0.8rem;
-      color: white;
-      margin-left: 1vh;
-    }
-    .song-artist-name-player{
-      font-size: 0.7rem;
-      color: $tablePresentationColor;
-    }
+    // .songs-found {
+    //   font-size: 0.8rem;
+    //   display: flex;
+    //   justify-content: end;
+    //   color: $tablePresentationColor;
+    //   margin: 1vh;
+    // }
+    // .slider-vol{
+    //   background: transparent;
+    // }
+    // .slider-vol::-moz-range-progress {
+    //   background-color: $spotiLogoColor;
+    // }
+    // .slider-vol::-moz-range-track {
+    //   background-color: $mediaBar;
+    // }
+    // .slider-vol::-moz-range-thumb, .slider::-webkit-slider-thumb {
+    //   width: 15px;
+    //   height: 15px;
+    //   border: none;
+    //   border-radius: 50%;
+    //   background: white;
+    //   cursor: pointer;
+    // }
+    // .song-title-player{
+    //   font-size: 0.8rem;
+    //   color: white;
+    //   margin-left: 1vh;
+    // }
+    // .song-artist-name-player{
+    //   font-size: 0.7rem;
+    //   color: $tablePresentationColor;
+    // }
 
-    .progress-bar {
-      width: 72%;
-      background: transparent;
-      .slider {
-        background-color: transparent;
-        //-webkit-appearance: none;
-      }
-      .slider::-moz-range-progress {
-        background-color: $spotiLogoColor;
-      }
-      .slider::-moz-range-track, .slider::-webkit-slider-runnable-track {
-        -webkit-appearance: none;
-        background-color: $mediaBar;
-      }
-      .slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
-        width: 15px;
-        height: 15px;
-        border: none;
-        border-radius: 50%;
-        background: white;
-        cursor: pointer;
-        -webkit-appearance: none;
-      }
-    }
-    .media-container {
-      margin-top: 5vh;
-    }
+    // .progress-bar {
+    //   width: 72%;
+    //   background: transparent;
+    //   .slider {
+    //     background-color: transparent;
+    //     //-webkit-appearance: none;
+    //   }
+    //   .slider::-moz-range-progress {
+    //     background-color: $spotiLogoColor;
+    //   }
+    //   .slider::-moz-range-track, .slider::-webkit-slider-runnable-track {
+    //     -webkit-appearance: none;
+    //     background-color: $mediaBar;
+    //   }
+    //   .slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
+    //     width: 15px;
+    //     height: 15px;
+    //     border: none;
+    //     border-radius: 50%;
+    //     background: white;
+    //     cursor: pointer;
+    //     -webkit-appearance: none;
+    //   }
+    // }
+    // .media-container {
+    //   margin-top: 5vh;
+    // }
 
-    .current-time-player {
-      font-size: 0.7rem;
-      color: $tablePresentationColor;
-      padding: 1rem;
-    }
-    .player {
-      margin-top: -10px;
-    }
-    .player-container {
-      position: sticky;
-      background-color: $mediaBack;
-      border-radius: 15px;
-    }
+    // .current-time-player {
+    //   font-size: 0.7rem;
+    //   color: $tablePresentationColor;
+    //   padding: 1rem;
+    // }
+    // .player {
+    //   margin-top: -10px;
+    // }
+    // .player-container {
+    //   position: sticky;
+    //   background-color: $mediaBack;
+    //   border-radius: 15px;
+    // }
 
-    .player-buttons {
-      padding-top: 0.5rem;
-      color: $white;
-      font-size: 2rem;
-    }
+    // .player-buttons {
+    //   padding-top: 0.5rem;
+    //   color: $white;
+    //   font-size: 2rem;
+    // }
 
     /* Mouse-over effects */
-    .slider:hover {
-      opacity: 1; /* Fully shown on mouse-over */
-    }
+    // .slider:hover {
+    //   opacity: 1; /* Fully shown on mouse-over */
+    // }
 
     /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
     .msg-songs-not-found {
@@ -207,9 +207,9 @@ html {
       overflow-x: hidden;
     }
 
-    .spinner-table-loading {
-      @extend %itemHorizontal;
-    }
+    // .spinner-table-loading {
+    //   @extend %itemHorizontal;
+    // }
     .display-visible {
       display: grid;
     }
@@ -420,10 +420,10 @@ html {
       transition: 0.2;
     }
 
-    .table-content {
-      color: $secondaryColor;
-      background-color: $darkColor;
-    }
+    // .table-content {
+    //   color: $secondaryColor;
+    //   background-color: $darkColor;
+    // }
     // .modal-delete {
     //   position: absolute;
     //   top: 50%;

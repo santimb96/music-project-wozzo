@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
-import inTheArmyNow from "../audio/inTheArmyNow.mp3";
+import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
+import './index.scss';
 
 const MediaPlayer = ({ song }) => {
   const [playing, setPlaying] = useState(false);

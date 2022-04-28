@@ -5,13 +5,13 @@ import {
   TableBody,
   TableHead,
   TableContainer,
-  Paper,
 } from "@mui/material";
-import SpinnerLoading from "./SpinnerLoading/SpinnerLoading";
-import theme from "../palette/palette";
+import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
+import theme from "../../palette/palette";
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import format from "format-duration";
+import './index.scss';
+
 
 const MediaList = ({ songs, filter, itemSelected }) => {
   const [text, setText] = useState("");

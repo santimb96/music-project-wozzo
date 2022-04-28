@@ -1,0 +1,39 @@
+@import "../../scss/colors";
+
+.spinner-table-loading {
+  display: flex;
+  justify-content: center;
+}
+.table-content {
+  color: $secondaryColor;
+  background-color: $darkColor;
+}
+.sticky-header {
+  position: sticky;
+  background-color: $darkColor;
+  top: 0;
+}
+.song-row-home {
+  transition: 0.5ms;
+  .play-row-button {
+    color: $tablePresentationColor;
+    font-size: 1.1rem;
+    transition: 0.1s;
+    padding: 13px;
+    background-color: transparent;
+  }
+  .play-row-button:hover {
+    color: white;
+  }
+}
+
+.song-row-home:hover {
+  background: $rowBackground;
+}
+.songs-found {
+  font-size: 0.8rem;
+  display: flex;
+  justify-content: end;
+  color: $tablePresentationColor;
+  margin: 1vh;
+}
