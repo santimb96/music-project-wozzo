@@ -15,9 +15,9 @@ import "./index.scss";
 const MediaList = ({ songs, filter, itemSelected }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
-  const [playing, setPlaying] = useState(false);
 
   const playRef = useRef();
+  const playingRefIndex = useRef();
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
@@ -48,7 +48,7 @@ const MediaList = ({ songs, filter, itemSelected }) => {
     return songs;
   };
 
-  const songSelected = (song, element) => {
+  const songSelected = (song, element, index) => {
     if (typeof playRef.current === "undefined") {
       playRef.current = element;
     }
@@ -57,6 +57,8 @@ const MediaList = ({ songs, filter, itemSelected }) => {
 
     element.classList.add('song-row-playing');
     playRef.current = element;
+    playingRefIndex.current = index;
+
     itemSelected(song);
   };
 
@@ -105,7 +107,7 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                 {itemsToShow()?.map((song, index) => {
                   return (
                     <TableRow
-                      onDoubleClick={(e) => songSelected(song, e.currentTarget)}
+                      onDoubleClick={(e) => songSelected(song, e.currentTarget, index)}
                       key={song._id}
                       className="song-row-home"
                     >
@@ -132,7 +134,7 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {playing ? (
+                        {playingRefIndex.current === index ? (
                           <i className="fa-solid fa-play play-row-button"></i>
                         ) : (
                           ""
