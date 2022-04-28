@@ -190,6 +190,7 @@ const UserBackoffice = () => {
           setOpenForm(false);
           setLoading(false);
           setSuccessOpen(true);
+          setCreate(false);
           clearData();
           getData();
         })
@@ -207,6 +208,7 @@ const UserBackoffice = () => {
   };
 
   const deleteItem = async (id) => {
+    setLoading(true);
     removeUser(id, token)
       .then(() => {
         getData();
@@ -301,7 +303,7 @@ const UserBackoffice = () => {
                   <ModalDelete
                     openDelete={openDelete}
                     handleCloseDelete={handleCloseDelete}
-                    responseStatus={loading}
+                    loading={loading}
                     deleteItem={deleteItem}
                     id={id}
                   />
@@ -417,9 +419,10 @@ const UserBackoffice = () => {
                         <div className="dropdown d-flex justify-content-center">
                           <button
                             {...(loading ? { disabled: true } : {})}
+                            id="drop"
                             className="btn btn-dropdown dropdown-toggle"
                             type="button"
-                            id="role"
+                            //id="role"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"

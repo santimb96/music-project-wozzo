@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -15,6 +15,7 @@ const ModalDelete = ({
   id,
 }) => {
 
+  console.log(loading);
   return (
     <Modal
       open={openDelete}

@@ -255,7 +255,7 @@ const ArtistBackoffice = () => {
                   <ModalDelete
                     openDelete={openDelete}
                     handleCloseDelete={handleCloseDelete}
-                    responseStatus={loading}
+                    loading={loading}
                     deleteItem={deleteItem}
                     id={id}
                   />
