@@ -30,7 +30,7 @@ import Modal from "@mui/material/Modal";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import SpinnerLoading from "../components/common/SpinnerLoading";
+import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
 import { pink, yellow } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../constants";
@@ -40,8 +40,8 @@ import ModalDelete from "../components/ModalDelete/ModalDelete";
 import EditButton from "../components/EditButton/EditButton";
 import DeleteButton from "../components/DeleteButton/DeleteButton";
 import { checkUrl } from "../utils/validators";
-import SnackBarSuccess from "../components/common/SnackBarSuccess";
-import SnackBarError from "../components/common/SnackBarError";
+import SnackBarSuccess from "../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 
 const SongBackoffice = () => {

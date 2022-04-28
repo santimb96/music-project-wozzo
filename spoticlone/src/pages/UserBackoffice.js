@@ -21,7 +21,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import SpinnerLoading from "../components/common/SpinnerLoading";
+import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../constants";
@@ -30,8 +30,8 @@ import ModalDelete from "../components/ModalDelete/ModalDelete";
 import EditButton from "../components/EditButton/EditButton";
 import DeleteButton from "../components/DeleteButton/DeleteButton";
 import { checkEmail, checkPassword } from "../utils/validators.js";
-import SnackBarSuccess from "../components/common/SnackBarSuccess";
-import SnackBarError from "../components/common/SnackBarError";
+import SnackBarSuccess from "../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 
 const UserBackoffice = () => {

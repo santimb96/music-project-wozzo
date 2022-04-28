@@ -28,7 +28,7 @@ import Modal from "@mui/material/Modal";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import SpinnerLoading from "../components/common/SpinnerLoading";
+import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
 import { pink } from "@mui/material/colors";
 import ROLES from "../utils/roleId";
 import TextField from "@mui/material/TextField";
@@ -38,8 +38,8 @@ import ModalDelete from "../components/ModalDelete/ModalDelete";
 import CreateButton from "../components/CreateButton/CreateButton";
 import EditButton from "../components/EditButton/EditButton";
 import DeleteButton from "../components/DeleteButton/DeleteButton";
-import SnackBarError from "../components/common/SnackBarError";
-import SnackBarSuccess from "../components/common/SnackBarSuccess";
+import SnackBarError from "../components/SnackBarError/SnackBarError";
+import SnackBarSuccess from "../components/SnackBarSuccess/SnackBarSuccess";
 import CloseIcon from "@mui/icons-material/Close";
 
 const ArtistBackoffice = () => {

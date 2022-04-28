@@ -7,7 +7,7 @@ import {
   TableContainer,
   Paper,
 } from "@mui/material";
-import SpinnerLoading from "./common/SpinnerLoading";
+import SpinnerLoading from "./SpinnerLoading/SpinnerLoading";
 import theme from "../palette/palette";
 import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
