@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
-import './index.scss';
+import "./index.scss";
 
 const MediaPlayer = ({ song }) => {
   const [playing, setPlaying] = useState(false);
@@ -58,7 +58,7 @@ const MediaPlayer = ({ song }) => {
   }, [mute]);
 
   useEffect(() => {
-    if(volControl === 0) setMute(true);
+    if (volControl === 0) setMute(true);
     audioRef.current.volume = volControl;
   }, [volControl]);
 
@@ -114,7 +114,7 @@ const MediaPlayer = ({ song }) => {
               {playing ? (
                 <i
                   onClick={() => setPlaying(false)}
-                  class="fa-solid fa-circle-pause player-buttons"
+                  className="fa-solid fa-circle-pause player-buttons"
                 ></i>
               ) : (
                 <i
