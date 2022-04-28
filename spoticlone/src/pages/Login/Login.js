@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../contexts/AuthContext";
-import { login } from "../services/user.js";
-import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
+import AuthContext from "../../contexts/AuthContext";
+import { login } from "../../services/user.js";
+import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
+import './index.scss';
 
 const Login = () => {
   const authContext = useContext(AuthContext);

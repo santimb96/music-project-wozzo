@@ -15,7 +15,6 @@ const ModalDelete = ({
   id,
 }) => {
 
-
   return (
     <Modal
       open={openDelete}

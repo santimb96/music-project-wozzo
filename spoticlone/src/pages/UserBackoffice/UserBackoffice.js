@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import SidebarBackoffice from "../components/SidebarBackoffice/SidebarBackoffice";
+import SidebarBackoffice from "../../components/SidebarBackoffice/SidebarBackoffice";
 import {
   createUser,
   getUsers,
   removeUser,
   updateUser,
-} from "../services/user.js";
-import { getRoles } from "../services/roles.js";
+} from "../../services/user.js";
+import { getRoles } from "../../services/roles.js";
 import Box from "@mui/material/Box";
 import {
   Table,
@@ -16,23 +16,24 @@ import {
   TableHead,
   TableContainer,
 } from "@mui/material";
-import theme from "../palette/palette";
+import theme from "../../palette/palette.js";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
-import ROLES from "../utils/roleId";
+import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
+import ROLES from "../../utils/roleId";
 import TextField from "@mui/material/TextField";
-import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../constants";
-import CreateButton from "../components/CreateButton/CreateButton";
-import ModalDelete from "../components/ModalDelete/ModalDelete";
-import EditButton from "../components/EditButton/EditButton";
-import DeleteButton from "../components/DeleteButton/DeleteButton";
-import { checkEmail, checkPassword } from "../utils/validators.js";
-import SnackBarSuccess from "../components/SnackBarSuccess/SnackBarSuccess";
-import SnackBarError from "../components/SnackBarError/SnackBarError";
+import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../../constants";
+import CreateButton from "../../components/CreateButton/CreateButton";
+import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import EditButton from "../../components/EditButton/EditButton";
+import DeleteButton from "../../components/DeleteButton/DeleteButton";
+import { checkEmail, checkPassword } from "../../utils/validators.js";
+import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
+import './index.scss';
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -205,8 +206,7 @@ const UserBackoffice = () => {
     }
   };
 
-  const deleteItem = (id) => {
-    setLoading(true);
+  const deleteItem = async (id) => {
     removeUser(id, token)
       .then(() => {
         getData();
@@ -294,6 +294,7 @@ const UserBackoffice = () => {
                 size="medium"
                 aria-label="a dense table"
                 className="table-content"
+                id="table"
                 sx={{ height: "max-content" }}
               >
                 <TableHead>

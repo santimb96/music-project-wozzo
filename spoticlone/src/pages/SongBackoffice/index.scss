@@ -1,5 +1,6 @@
 @import '../../scss/colors';
 
+
 .table-head-item {
   display: flex;
   justify-content: space-around;
@@ -74,14 +75,9 @@
 
     .table-content {
       color: $secondaryColor;
-      background-color: $darkColor;
+      background: $darkColor;
     }
-    
-    .spinner-table-loading {
-      display: flex;
-      justify-content: center;
-    }
-    
+  
     .modal-delete {
       position: absolute;
       top: 50%;
