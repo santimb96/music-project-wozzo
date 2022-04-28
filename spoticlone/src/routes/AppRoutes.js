@@ -1,18 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
-import AdminBackoffice from "../pages/AdminBackoffice";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import Login from "../pages/Login/Login";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
-import Home from "../pages/Home";
+import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
-import UserBackoffice from "../pages/UserBackoffice";
-import UserRoleBackoffice from "../pages/UserRoleBackoffice";
-import ArtistBackoffice from "../pages/ArtistBackoffice";
-import SongBackoffice from "../pages/SongBackoffice";
+import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
+import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
+import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
+import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
 
 const AppRoutes = () => {
   const authSet = useContext(AuthContext);
