@@ -9,7 +9,7 @@ const CreateButton = ({handleOpenForm, loading}) => {
   }
 
   return (
-    <Button disabled={loading}  className="btn-open-form" onClick={() => open(true)}>
+    <Button disabled={loading} id="create-button" className="btn-open-form" onClick={() => open(true)}>
       <i className="fa fa-plus me-1"></i> CREAR
     </Button>
   );

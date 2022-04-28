@@ -1,15 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
-import SidebarBackoffice from "../components/SidebarBackoffice/SidebarBackoffice";
+import React, { useEffect, useState } from "react";
+import SidebarBackoffice from "../../components/SidebarBackoffice/SidebarBackoffice";
 import {
-  getArtists,
-  deleteArtist,
-  getArtistsById,
-  postArtist,
-  updateArtist,
-} from "../services/artists";
+  createSong,
+  getSongs,
+  removeSong,
+  updateSong,
+} from "../../services/songs.js";
+
+import { getArtists } from "../../services/artists.js";
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
   TableCell,
@@ -18,42 +17,39 @@ import {
   TableHead,
   TableContainer,
 } from "@mui/material";
-import { InputBase } from "@mui/material";
-import Container from "@mui/material/Container";
-import theme from "../palette/palette";
+import theme from "../../palette/palette";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import SpinnerLoading from "../components/SpinnerLoading/SpinnerLoading";
-import { pink } from "@mui/material/colors";
-import ROLES from "../utils/roleId";
+import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import TextField from "@mui/material/TextField";
-import TextTareaAutosize from "@mui/material/TextareaAutosize";
-import { EMPTY_FIELD_MESSAGE } from "../constants";
-import ModalDelete from "../components/ModalDelete/ModalDelete";
-import CreateButton from "../components/CreateButton/CreateButton";
-import EditButton from "../components/EditButton/EditButton";
-import DeleteButton from "../components/DeleteButton/DeleteButton";
-import SnackBarError from "../components/SnackBarError/SnackBarError";
-import SnackBarSuccess from "../components/SnackBarSuccess/SnackBarSuccess";
+import { EMPTY_FIELD_MESSAGE } from "../../constants";
+import CreateButton from "../../components/CreateButton/CreateButton";
+import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import EditButton from "../../components/EditButton/EditButton";
+import DeleteButton from "../../components/DeleteButton/DeleteButton";
+import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
+import './index.scss';
 
-const ArtistBackoffice = () => {
+const SongBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [artists, setArtists] = useState(null);
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [songs, setSongs] = useState(null);
+  const [filteredSongs, setFilteredSongs] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  const [artistName, setArtistName] = useState("Selecciona");
+  const [artistId, setArtistId] = useState("");
+  const [audioUrl, setAudioUrl] = useState([]);
   const [id, setId] = useState("");
   const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
+  const [artists, setArtists] = useState([]);
+  const [filterDropdown, setFilterDropdown] = useState("");
+  const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -79,9 +75,9 @@ const ArtistBackoffice = () => {
    */
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenDelete = (artistId) => {
+  const handleOpenDelete = (userId) => {
     setOpenDelete(true);
-    setId(artistId);
+    setId(userId);
   };
 
   const handleCloseDelete = () => setOpenDelete(false);
@@ -92,9 +88,14 @@ const ArtistBackoffice = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleOpenForm = (post = false) => {
-    setCreate(post);
-    setErrors(false);
-    setOpenForm(true);
+    if (post) {
+      setCreate(true);
+      setErrors(false);
+      setOpenForm(true);
+    } else {
+      setErrors(false);
+      setOpenForm(true);
+    }
   };
 
   const handleCloseForm = () => {
@@ -104,17 +105,20 @@ const ArtistBackoffice = () => {
     setOpenForm(false);
   };
 
-  const clearData = () => {
-    setName("");
-    setDescription("");
-    setProfileImage("");
-    setId("");
-  };
-
   const getData = () => {
-    getArtists(token)
-      .then((artist) => {
-        setArtists(artist?.artists);
+    Promise.all([getSongs(), getArtists()])
+      .then(([songsResponse, artistsResponse]) => {
+        setArtists(artistsResponse.artists);
+        const data = songsResponse.songs.map((song) => {
+          const artist = artistsResponse.artists.find(
+            (artist) => artist._id === song.artistId
+          );
+          return {
+            ...song,
+            artistName: artist.name,
+          };
+        });
+        setSongs(data);
       })
       .catch((err) => setErrorOpen(true));
   };
@@ -124,9 +128,12 @@ const ArtistBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = artists?.filter((artist) => {
+    const filtered = songs?.filter((song) => {
       if (
-        artist.name
+        song.name
+          .toLocaleLowerCase()
+          .includes(text.toLocaleLowerCase().trim()) ||
+        song.artistName
           .toLocaleLowerCase()
           .includes(text.toLocaleLowerCase().trim())
       ) {
@@ -134,50 +141,56 @@ const ArtistBackoffice = () => {
       }
       return false;
     });
-    setFilteredArtists(filtered);
+
+    setFilteredSongs(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredArtists;
+      return filteredSongs;
     }
-    return artists;
+    return songs;
   };
 
-  const validateData = () => {
-    if (name?.length && description?.length && profileImage?.length) {
+  const validateData = (method = false) => {
+    if (method && artistName !== "Selecciona") {
       return true;
+    } else {
+      if (
+        name?.length &&
+        artistId?.length &&
+        //checkUrl(audioUrl) &&
+        artistName !== "Selecciona"
+      ) {
+        return true;
+      }
+      return false;
     }
-    return false;
   };
 
-  const setData = (artist) => {
-    setId(artist._id);
-    setName(artist.name);
-    setDescription(artist.description);
-    setProfileImage(artist.profileImage);
+  const setData = (song) => {
+    setId(song._id);
+    setName(song.name);
+    setArtistName(song.artistName);
+    setArtistId(song.artistId);
+    setAudioUrl(song.audioUrl);
     handleOpenForm();
   };
 
-  const createArtist = () => {
+  const postSong = () => {
     if (validateData()) {
-      const artist = {
-        name,
-        description,
-        profileImage,
-      };
       setErrors(false);
       setLoading(true);
-      postArtist(artist, token)
+      createSong(name, artistId, audioUrl, token)
         .then(() => {
-          setOpenForm(false);
-          setLoading(false);
           setSuccessOpen(true);
+          setLoading(false);
+          setOpenForm(false);
+          clearData();
           getData();
         })
         .catch((err) => setErrorOpen(true));
     } else {
-      setLoading(false);
       setErrors(true);
       handleOpenError();
       handleCloseError();
@@ -186,53 +199,78 @@ const ArtistBackoffice = () => {
 
   const deleteItem = (id) => {
     setLoading(true);
-    deleteArtist(id, token)
+    removeSong(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch((err) => {
-        setLoading(false);
-        setErrorOpen(true);
-      });
+      .catch((err) => setErrorOpen(true));
   };
 
-  const editArtist = () => {
-    if (validateData()) {
-      const artist = {
-        name,
-        description,
-        profileImage,
-      };
-      setErrors(false);
+  const editSong = (method) => {
+    if (validateData(method)) {
       setLoading(true);
-      updateArtist(id, artist, token)
+      
+      updateSong(id, name, artistId, audioUrl, token)
         .then(() => {
           setOpenForm(false);
-          setSuccessOpen(true);
           setLoading(false);
+          setSuccessOpen(true);
+          clearData();
           getData();
         })
-        .catch((err) => {
-          setLoading(false);
-          setErrorOpen(true);
-        });
+        .catch((err) => setErrorOpen(true));
     } else {
-      setLoading(false);
-      setErrors(true);
+      setErrors(false);
       handleOpenError();
       handleCloseError();
     }
   };
+
+  const clearData = () => {
+    setName("");
+    setArtistName("Selecciona");
+    setAudioUrl("");
+    setId("");
+  };
+
+  const duplicateArtists = () => {
+    const seen = new Set();
+    const filtered = artists.filter((artist) => {
+      const duplicate = seen.has(artist._id);
+      seen.add(artist._id);
+      return !duplicate;
+    });
+
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+  };
+
+  useEffect(() => {
+    const filtered = duplicateArtists()?.filter((artist) => {
+      if (
+        artist.name
+          .toLocaleLowerCase()
+          .includes(filterDropdown.toLocaleLowerCase().trim())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredArtists(filtered);
+  }, [filterDropdown]);
+
+  const artistsToShow = () => {
+    if (filterDropdown?.length) {
+      return filteredArtists;
+    }
+    return duplicateArtists();
+  };
+
   return (
     <div className="row">
-      {!loading ? (
-        <SidebarBackoffice />
-      ) : (
-        <div className="col-12 col-md-2 bg-dark"></div>
-      )}
+      {!loading? <SidebarBackoffice/> : <div className="col-12 col-md-2 bg-dark"></div> }
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
@@ -269,6 +307,7 @@ const ArtistBackoffice = () => {
                     deleteItem={deleteItem}
                     id={id}
                   />
+
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -277,31 +316,30 @@ const ArtistBackoffice = () => {
                     disableEnforceFocus
                   >
                     <Box className="modal-delete">
-                      <div>
-                        <div
-                          onClick={handleCloseForm}
-                          className="d-flex justify-content-end"
-                        >
-                          <button
-                            {...(loading ? { disabled: true } : {})}
-                            className="close-modal-button"
-                          >
-                            <CloseIcon />
-                          </button>
-                        </div>
+                      <div
+                        onClick={handleCloseForm}
+                        className="d-flex justify-content-end"
+                      >
+                        <button {...(loading ? { disabled: true } : {})} className="close-modal-button">
+                          <CloseIcon />
+                        </button>
+                      </div>
+                      <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
-                            {create ? "Crear artista" : "Actualizar artista"}
+                            {create ? "Crear canción" : "Actualizar canción"}
                           </h2>
                         </div>
-                        <label htmlFor="name">Nombre*</label>
+                        <label className="label-form-modal" htmlFor="titulo">
+                          Título de la canción*
+                        </label>
                         <TextField
                           disabled={loading}
                           value={name}
                           type="text"
                           className="input"
-                          id="name"
-                          placeholder="nombre"
+                          id="titulo"
+                          placeholder="Título"
                           onChange={(e) => setName(e.target.value)}
                           error={errors && name?.length === 0}
                           helperText={
@@ -310,64 +348,89 @@ const ArtistBackoffice = () => {
                               : " "
                           }
                         />
-                        <label htmlFor="description">Descripción*</label>
+                        <label htmlFor="audioUrl">URL de la canción*</label>
                         <TextField
-                          disabled={loading}
+                        disabled={loading}
                           className="input"
-                          minRows={2}
-                          multiline
-                          type="text"
-                          value={description}
-                          placeholder="descripción"
-                          id="description"
-                          onChange={(e) => setDescription(e.target.value)}
-                          error={errors && description?.length === 0}
-                          helperText={
-                            errors && description?.length === 0
-                              ? EMPTY_FIELD_MESSAGE
-                              : " "
-                          }
-                        />
-                        <label htmlFor="image">Imagen del cantante*</label>
-                        <TextField
-                          disabled={loading}
-                          className="input"
-                          type="text"
-                          value={profileImage}
-                          id="image"
+                          type="file"
+                          id="audioUrl"
                           variant="outlined"
-                          placeholder="imagen"
-                          onChange={(e) => setProfileImage(e.target.value)}
-                          error={errors && profileImage?.length === 0}
+                          placeholder="URL del audio"
+                          onChange={(e) => setAudioUrl(e.target.files[0])}
+                          error={errors && audioUrl?.length === 0}
                           helperText={
-                            errors && profileImage?.length === 0
+                            errors && audioUrl?.length === 0
                               ? EMPTY_FIELD_MESSAGE
                               : " "
                           }
                         />
+                        <label htmlFor="drop">Compositor*</label>
+                        <div className="dropdown d-flex justify-content-center">
+                          <button
+                            {...(loading ? { disabled: true } : {})}
+                            className="btn btn-dropdown dropdown-toggle"
+                            type="button"
+                            id="drop"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            {artistName}
+                          </button>
+                          <div
+                            className="dropdown-menu dropdown-menu-left  scrollable-menu"
+                            aria-labelledby="drop"
+                          >
+                            <input
+                              {...(loading ? { disabled: true } : {})}
+                              type="text"
+                              placeholder="Filtrar..."
+                              className="search-filter-dropdown"
+                              onChange={(e) =>
+                                setFilterDropdown(e.target.value)
+                              }
+                            />
+
+                            {artistsToShow()?.map((artist) => (
+                              <button
+                                {...(loading ? { disabled: true } : {})}
+                                key={artist.name}
+                                value={artist._id}
+                                onClick={(e) => {
+                                  setArtistId(e.target.value);
+                                  setArtistName(artist.name);
+                                }}
+                                className="dropdown-item"
+                                type="button"
+                              >
+                                {artist.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                       {!loading ? (
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                        <div id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
                             {create ? (
                               <Button
-                                onClick={() => createArtist()}
+                               disabled={loading}
+                                onClick={() => postSong()}
                                 className="btn-modal-form"
-                                disabled={loading}
                               >
                                 Crear
                               </Button>
                             ) : (
                               <Button
-                                onClick={() => editArtist(true)}
+                              disabled={loading}
+                                onClick={() => editSong(true)}
                                 className="btn-modal-form"
-                                disabled={loading}
                               >
                                 Actualizar
                               </Button>
                             )}
                           </div>
-                        </Typography>
+                        </div>
                       ) : (
                         <Typography className="d-flex justify-content-center ">
                           <SpinnerLoading />
@@ -382,19 +445,19 @@ const ArtistBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Perfil
+                      Título
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Nombre
+                      Artista
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Descripción
+                      URL de la canción
                     </TableCell>
 
                     <TableCell
@@ -412,9 +475,9 @@ const ArtistBackoffice = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="pointer-table">
-                  {itemsToShow()?.map((artist) => (
+                  {itemsToShow()?.map((song) => (
                     <TableRow
-                      key={artist.name}
+                      key={song.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -423,30 +486,24 @@ const ArtistBackoffice = () => {
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.profileImage}
+                        {song.name}
                       </TableCell>
-
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.name}
+                        {song.artistName}
                       </TableCell>
-
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.description}
+                        {song.audioUrl}
                       </TableCell>
-                      <EditButton
-                        setData={setData}
-                        item={artist}
-                        loading={loading}
-                      />
+                      <EditButton setData={setData} item={song} loading={loading} />
                       <DeleteButton
                         handleOpenDelete={handleOpenDelete}
-                        id={artist._id}
+                        id={song._id}
                         loading={loading}
                       />
                     </TableRow>
@@ -467,4 +524,4 @@ const ArtistBackoffice = () => {
   );
 };
 
-export default ArtistBackoffice;
+export default SongBackoffice;

@@ -324,7 +324,7 @@ const UserBackoffice = () => {
                           <CloseIcon />
                         </button>
                       </div>
-                      <div>
+                      <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
                             {create ? "Crear usuario" : "Actualizar usuario"}
