@@ -18,6 +18,7 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
 
   const playRef = useRef();
   const playingRefIndex = useRef();
+  const tableRef = useRef();
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
@@ -53,7 +54,6 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
       playRef.current = element;
     }
     playRef.current.classList.remove("song-row-playing");
-    console.log(element);
 
     element.classList.add('song-row-playing');
     playRef.current = element;
@@ -66,7 +66,7 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
     if(next !== false){
       const nextIndex = songs.findIndex(song => song._id === selectedSong._id) + 1 === songs.length ? 0 : songs.findIndex(song => song._id === selectedSong._id) + 1;
       const nextSong = songs[nextIndex];
-      itemSelected(nextSong, nextIndex);
+      songSelected(nextSong, tableRef.current.childNodes[nextIndex], nextIndex);
     }
   }, [next])
 
@@ -111,12 +111,13 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
                   ></TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody ref={tableRef}>
                 {itemsToShow()?.map((song, index) => {
                   return (
                     <TableRow
                       onDoubleClick={(e) => songSelected(song, e.currentTarget, index)}
                       key={song._id}
+                      value={index}
                       className="song-row-home"
                     >
                       <TableCell
