@@ -3,7 +3,6 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-
 const MediaPlayer = ({ song, nextSong }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
@@ -27,18 +26,7 @@ const MediaPlayer = ({ song, nextSong }) => {
     setPlaying(true);
   }, [song]);
 
-  // useEffect(() => {
-  //   if(loop){
-  //     console.log(ended);
-  //     setEnded(false);
-  //     audioRef.current.ended = false;
-  //     audioRef.current.currentTime = 0;
-  //     clearInterval(intervalRef.current);
-  //     setPlaying(true);
-  //   }
-  // }, [ended])
-
-  const startTimer = () => {  
+  const startTimer = () => {
     clearInterval(intervalRef.current);
 
     intervalRef.current = setInterval(() => {
@@ -47,10 +35,11 @@ const MediaPlayer = ({ song, nextSong }) => {
   };
 
   useEffect(() => {
-    loop ? loopRef.current.classList.add("loop-button-active") : loopRef.current.classList.remove("loop-button-active");
+    loop
+      ? loopRef.current.classList.add("loop-button-active")
+      : loopRef.current.classList.remove("loop-button-active");
     audioRef.current.onended = () => {
-      console.log('ended!');
-      if(loop){
+      if (loop) {
         setPlaying(true);
         onPlay();
       } else {
@@ -64,13 +53,11 @@ const MediaPlayer = ({ song, nextSong }) => {
 
   const nextSongToPlay = () => {
     nextSong();
-  }
-
-
+  };
 
   const onLoop = () => {
-    setLoop(prev => prev ? false: true);
-  }
+    setLoop((prev) => (prev ? false : true));
+  };
 
   const onPlay = () => {
     if (playing) {
@@ -140,20 +127,25 @@ const MediaPlayer = ({ song, nextSong }) => {
     }
   };
 
-  // console.log(volControl, audioRef.current.volume, mute);
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="player-container">
           <div className="row">
-            <div className="col-3 d-flex  flex-column pt-3">
-              <h5 className="text-end song-title-player">{song.name}</h5>
-              <h6 className="text-end song-artist-name-player">
-                {song.artistName}
-              </h6>
+            <div className="col-3 d-flex d-flex justify-content-end pt-3">
+              <div className="d-flex flex-column">
+                <h5 className="text-center song-title-player">{song.name}</h5>
+                <h6 className="text-center song-artist-name-player">
+                  {song.artistName}
+                </h6>
+              </div>
             </div>
             <div className="col-1 d-flex justify-content-center pt-4">
-              <i ref={loopRef} onClick={() => onLoop()} class="fa-solid fa-repeat loop-button"></i>
+              <i
+                ref={loopRef}
+                onClick={() => onLoop()}
+                class="fa-solid fa-repeat loop-button"
+              ></i>
             </div>
             <div className="col-2 d-flex justify-content-end p-2">
               {playing ? (
@@ -204,7 +196,6 @@ const MediaPlayer = ({ song, nextSong }) => {
                 : "00:00"}
             </p>
           </div>
-          
         </div>
       </div>
     </div>
