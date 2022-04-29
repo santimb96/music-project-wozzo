@@ -12,12 +12,13 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
-const MediaList = ({ songs, filter, itemSelected }) => {
+const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
-  const [playing, setPlaying] = useState(false);
 
   const playRef = useRef();
+  const playingRefIndex = useRef();
+  const tableRef = useRef();
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
@@ -48,17 +49,26 @@ const MediaList = ({ songs, filter, itemSelected }) => {
     return songs;
   };
 
-  const songSelected = (song, element) => {
+  const songSelected = (song, element, index) => {
     if (typeof playRef.current === "undefined") {
       playRef.current = element;
     }
     playRef.current.classList.remove("song-row-playing");
-    console.log(element);
 
     element.classList.add('song-row-playing');
     playRef.current = element;
-    itemSelected(song);
+    playingRefIndex.current = index;
+
+    itemSelected(song, index);
   };
+
+  useEffect(() => {
+    if(next !== false){
+      const nextIndex = songs.findIndex(song => song._id === selectedSong._id) + 1 === songs.length ? 0 : songs.findIndex(song => song._id === selectedSong._id) + 1;
+      const nextSong = songs[nextIndex];
+      songSelected(nextSong, tableRef.current.childNodes[nextIndex], nextIndex);
+    }
+  }, [next])
 
   return (
     <div className="row">
@@ -101,12 +111,13 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                   ></TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody>
+              <TableBody ref={tableRef}>
                 {itemsToShow()?.map((song, index) => {
                   return (
                     <TableRow
-                      onDoubleClick={(e) => songSelected(song, e.currentTarget)}
+                      onDoubleClick={(e) => songSelected(song, e.currentTarget, index)}
                       key={song._id}
+                      value={index}
                       className="song-row-home"
                     >
                       <TableCell
@@ -132,7 +143,7 @@ const MediaList = ({ songs, filter, itemSelected }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {playing ? (
+                        {playingRefIndex.current === index ? (
                           <i className="fa-solid fa-play play-row-button"></i>
                         ) : (
                           ""

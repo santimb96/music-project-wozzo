@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import SidebarHome from "../../components/SidebarHome/SidebarHome";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
@@ -14,7 +14,9 @@ const Home = () => {
 
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
-  const [songSelected, setSongSelected] = useState([]);
+  const [selectedSong, setSelectedSong] = useState([]);
+  const [songIndex, setSongIndex] = useState(null);
+  const [next, setNext] = useState(false);
 
   const setText = (value) => {
     setFilterText(value); 
@@ -42,8 +44,15 @@ const Home = () => {
     getData();
   }, [])
 
-  const itemSelected = (item) => {
-    setSongSelected(item);
+  const itemSelected = (item, index) => {
+    setSongIndex(index);
+    setSelectedSong(!item ? [] : item);
+    setNext(false);
+  }
+
+  const nextSong = () => {
+    //const val = songIndex + 1;
+    setNext(true);
   }
 
   return (
@@ -52,8 +61,8 @@ const Home = () => {
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
           <HomeHeader setText={setText} />      
-          <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} />
-          {songSelected.length === 0 ? '' : <MediaPlayer song={songSelected} />}    
+          <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} next={next} selectedSong={selectedSong} />
+          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} nextSong={nextSong} />}    
         </div>
       </div>
     </div>
