@@ -3,17 +3,21 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song }) => {
+
+const MediaPlayer = ({ song, nextSong }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [volControl, setVolControl] = useState(0.3);
   const [mute, setMute] = useState(false);
+  const [loop, setLoop] = useState(false);
+  const [ended, setEnded] = useState(false);
 
   const audioRef = useRef(new Audio(""));
   const intervalRef = useRef();
 
   const progressBarRef = useRef();
   const volBarRef = useRef();
+  const loopRef = useRef();
   const { duration } = audioRef.current;
 
   useEffect(() => {
@@ -23,18 +27,52 @@ const MediaPlayer = ({ song }) => {
     setPlaying(true);
   }, [song]);
 
-  const startTimer = () => {
+  // useEffect(() => {
+  //   if(loop){
+  //     console.log(ended);
+  //     setEnded(false);
+  //     audioRef.current.ended = false;
+  //     audioRef.current.currentTime = 0;
+  //     clearInterval(intervalRef.current);
+  //     setPlaying(true);
+  //   }
+  // }, [ended])
+
+  const startTimer = () => {  
+    clearInterval(intervalRef.current);
+
     intervalRef.current = setInterval(() => {
-      if (audioRef.current.ended) {
-        setPlaying(false);
-        clearInterval(intervalRef.current);
-      } else {
-        setTrackProgress(audioRef.current.currentTime);
-      }
+      setTrackProgress(audioRef.current.currentTime);
     }, [1000]);
   };
 
   useEffect(() => {
+    loop ? loopRef.current.classList.add("loop-button-active") : loopRef.current.classList.remove("loop-button-active");
+    audioRef.current.onended = () => {
+      console.log('ended!');
+      if(loop){
+        setPlaying(true);
+        onPlay();
+      } else {
+        setPlaying(false);
+        setEnded(true);
+        clearInterval(intervalRef.current);
+        nextSongToPlay();
+      }
+    };
+  }, [loop]);
+
+  const nextSongToPlay = () => {
+    nextSong();
+  }
+
+
+
+  const onLoop = () => {
+    setLoop(prev => prev ? false: true);
+  }
+
+  const onPlay = () => {
     if (playing) {
       audioRef.current.play();
       startTimer();
@@ -42,6 +80,10 @@ const MediaPlayer = ({ song }) => {
       clearInterval(intervalRef.current);
       audioRef.current.pause();
     }
+  };
+
+  useEffect(() => {
+    onPlay();
   }, [playing]);
 
   useEffect(() => {
@@ -98,17 +140,20 @@ const MediaPlayer = ({ song }) => {
     }
   };
 
-  console.log(volControl, audioRef.current.volume, mute);
+  // console.log(volControl, audioRef.current.volume, mute);
   return (
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="player-container">
           <div className="row">
-            <div className="col-4 d-flex jutify-content-center flex-column pt-3">
-              <h5 className="text-center song-title-player">{song.name}</h5>
-              <h6 className="text-center song-artist-name-player">
+            <div className="col-3 d-flex  flex-column pt-3">
+              <h5 className="text-end song-title-player">{song.name}</h5>
+              <h6 className="text-end song-artist-name-player">
                 {song.artistName}
               </h6>
+            </div>
+            <div className="col-1 d-flex justify-content-center pt-4">
+              <i ref={loopRef} onClick={() => onLoop()} class="fa-solid fa-repeat loop-button"></i>
             </div>
             <div className="col-2 d-flex justify-content-end p-2">
               {playing ? (
@@ -159,6 +204,7 @@ const MediaPlayer = ({ song }) => {
                 : "00:00"}
             </p>
           </div>
+          
         </div>
       </div>
     </div>

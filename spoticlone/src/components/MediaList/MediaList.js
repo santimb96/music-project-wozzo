@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
-const MediaList = ({ songs, filter, itemSelected }) => {
+const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
 
@@ -59,8 +59,16 @@ const MediaList = ({ songs, filter, itemSelected }) => {
     playRef.current = element;
     playingRefIndex.current = index;
 
-    itemSelected(song);
+    itemSelected(song, index);
   };
+
+  useEffect(() => {
+    if(next !== false){
+      const nextIndex = songs.findIndex(song => song._id === selectedSong._id) + 1 === songs.length ? 0 : songs.findIndex(song => song._id === selectedSong._id) + 1;
+      const nextSong = songs[nextIndex];
+      itemSelected(nextSong, nextIndex);
+    }
+  }, [next])
 
   return (
     <div className="row">
