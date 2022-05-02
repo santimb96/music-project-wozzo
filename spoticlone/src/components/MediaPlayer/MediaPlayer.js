@@ -3,7 +3,7 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song, onChangeSong, focus }) => {
+const MediaPlayer = ({ song, goToNext, focus }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [loop, setLoop] = useState(false);
@@ -111,7 +111,7 @@ const MediaPlayer = ({ song, onChangeSong, focus }) => {
                   play(0);
                 } else {
                   pause();
-                  onChangeSong(loop);
+                  goToNext(loop);
                 }
               }}
             />

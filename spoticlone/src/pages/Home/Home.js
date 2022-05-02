@@ -63,7 +63,7 @@ const Home = () => {
     setFocus(value);
   }
 
-  const onChangeSong = (loop) => {
+  const goToNext = (loop) => {
     if (loop === false) {
       const indexOfSong = filteredSongs.findIndex((s) => s._id === selectedSong?._id);
       const nextSong = indexOfSong === filteredSongs.length - 1 ? filteredSongs[0] : filteredSongs[indexOfSong + 1];
@@ -78,7 +78,7 @@ const Home = () => {
         <div className="row">
           <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />      
           <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
-          {selectedSong?._id && <MediaPlayer song={selectedSong} onChangeSong={onChangeSong} focus={focus} />}  
+          {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} focus={focus} />}  
         </div>
       </div>
     </div>
