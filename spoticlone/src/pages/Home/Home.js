@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import SidebarHome from "../../components/SidebarHome/SidebarHome";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
@@ -13,19 +13,13 @@ const Home = () => {
   const [filterText, setFilterText] = useState("");
 
   const [songs, setSongs] = useState([]);
-  const [artists, setArtists] = useState([]);
-  const [selectedSong, setSelectedSong] = useState([]);
-  const [songIndex, setSongIndex] = useState(null);
-  const [next, setNext] = useState(false);
-
-  const setText = (value) => {
-    setFilterText(value); 
-  }
+  const [filteredSongs, setFilteredSongs] = useState([]);
+  const [selectedSong, setSelectedSong] = useState({});
+  const [focus, setFocus] = useState(false);
 
   const getData = () => {
     Promise.all([getSongs(), getArtists()])
       .then(([songsResponse, artistsResponse]) => {
-        setArtists(artistsResponse.artists);
         const data = songsResponse.songs.map((song) => {
           const artist = artistsResponse.artists.find(
             (artist) => artist._id === song.artistId
@@ -36,33 +30,61 @@ const Home = () => {
           };
         });
         setSongs(data);
+        setFilteredSongs(data);
       })
       .catch((err) => console.error(err));
   };
   
   useEffect(() => {
     getData();
-  }, [])
+  }, []);
 
-  const itemSelected = (item, index) => {
-    setSongIndex(index);
-    setSelectedSong(!item ? [] : item);
-    setNext(false);
+  const onSelectSong = (index) => {
+    setSelectedSong(filteredSongs[index]);
   }
 
-  const nextSong = () => {
-    //const val = songIndex + 1;
-    setNext(true);
+ const onChangeText = (text) => {
+   const filtered = songs?.filter((song) => {
+     if (text[0] !== " " && (song.name
+      .toLocaleLowerCase()
+      .includes(text.toLocaleLowerCase().trim()) ||
+      song.artistName
+      .toLocaleLowerCase()
+      .includes(text.toLocaleLowerCase().trim()))) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredSongs(filtered);
+    setFilterText(text);
+ }
+
+  const isFocus = (value) => {
+    setFocus(value);
   }
+
+  const goToNext = (loop) => {
+    if (loop === false) {
+      const indexOfSong = filteredSongs.findIndex((s) => s._id === selectedSong?._id);
+      const nextSong = indexOfSong === filteredSongs.length - 1 ? filteredSongs[0] : filteredSongs[indexOfSong + 1];
+      setSelectedSong(nextSong)
+    }
+  };
+
+  const goToBack = () => {
+      const indexOfSong = filteredSongs.findIndex((s) => s._id === selectedSong?._id);
+      const nextSong = indexOfSong === 0 ? filteredSongs[filteredSongs?.length - 1] : filteredSongs[indexOfSong - 1];
+      setSelectedSong(nextSong)
+  };
 
   return (
     <div className="row home-page">
       <SidebarHome />
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
-          <HomeHeader setText={setText} />      
-          <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} next={next} selectedSong={selectedSong} />
-          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} nextSong={nextSong} />}    
+          <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />      
+          <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
+          {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>
       </div>
     </div>
