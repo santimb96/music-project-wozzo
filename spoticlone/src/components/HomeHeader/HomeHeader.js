@@ -1,11 +1,7 @@
 import React from "react";
 import './index.scss';
 
-const HomeHeader = ({setText, isFocus}) => {
-  
-  const onChangeText = (value) => {
-    setText(value);
-  };
+const HomeHeader = ({onChangeText, isFocus}) => {
 
   const onFocus = () => {
     isFocus(true);

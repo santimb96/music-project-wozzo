@@ -8,80 +8,13 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 
-const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
-  const [text, setText] = useState("");
-  const [filteredSongs, setFilteredSongs] = useState([]);
+const MediaList = ({ songs, filterText, onSelectSong, song }) => {
 
-  const playRef = useRef();
-  const playingRefIndex = useRef();
   const tableRef = useRef();
-
-  useEffect(() => {}, []);
-
-  useEffect(() => {
-    const filtered = songs?.filter((song) => {
-      if (text[0] !== " ") {
-        if (
-          song.name
-            .toLocaleLowerCase()
-            .includes(text.toLocaleLowerCase().trim()) ||
-          song.artistName
-            .toLocaleLowerCase()
-            .includes(text.toLocaleLowerCase().trim())
-        ) {
-          //setNotFound(false);
-          return true;
-        }
-        //setNotFound(true);
-        return false;
-      } else {
-        // setNotFound(true);
-        return false;
-      }
-    });
-
-    setFilteredSongs(filtered);
-  }, [text]);
-
-  useEffect(() => {
-    setText(filter);
-  }, [filter]);
-
-  const itemsToShow = () => {
-    if (text?.length) {
-      return filteredSongs;
-    }
-    return songs;
-  };
-
-  const songSelected = (song, element, index) => {
-    if (typeof playRef.current === "undefined") {
-      playRef.current = element;
-    }
-    playRef.current.classList.remove("song-row-playing");
-
-    element.classList.add("song-row-playing");
-    playRef.current = element;
-    playingRefIndex.current = index;
-
-    itemSelected(song, index);
-  };
-
-  useEffect(() => {
-    if (next !== false) {
-      const nextIndex =
-        songs.findIndex((song) => song._id === selectedSong._id) + 1 ===
-        songs.length
-          ? 0
-          : songs.findIndex((song) => song._id === selectedSong._id) + 1;
-      const nextSong = songs[nextIndex];
-      songSelected(nextSong, tableRef.current.childNodes[nextIndex], nextIndex);
-    }
-  }, [next]);
 
   const msg = (element) => (
     <div className="col-12 d-flex justify-content-center align-items-center">
@@ -92,7 +25,7 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center table-container">
-        {filteredSongs?.length === 0 && text !== "" ? (
+        {songs?.length === 0 && filterText !== "" ? (
           msg(<h2 className="text-light">No hay resultados</h2>)
         ) : !songs.length || songs === null ? (
           <div className="row">
@@ -137,15 +70,15 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {itemsToShow()?.map((song, index) => {
+                {songs?.map((s, index) => {
                   return (
                     <TableRow
                       onDoubleClick={(e) =>
-                        songSelected(song, e.currentTarget, index)
+                        onSelectSong(index)
                       }
-                      key={song._id}
+                      key={s._id}
                       value={index}
-                      className="song-row-home"
+                      className={`song-row-home ${song?._id === s?._id ? "song-row-playing" : ""}`}
                     >
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
@@ -157,20 +90,20 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {song.name}
+                        {s.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {song.artistName}
+                        {s.artistName}
                       </TableCell>
 
                       <TableCell
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {playingRefIndex.current === index ? (
+                        {song?._id === s?._id ? (
                           <i className="fa-solid fa-play play-row-button"></i>
                         ) : (
                           ""
@@ -186,8 +119,8 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
       </div>
       <div className="col 12 songs-found">
         <p>
-          {itemsToShow()?.length || itemsToShow()
-            ? `${itemsToShow()?.length} canciones encontradas`
+          {songs.length
+            ? `${songs.length} canciones encontradas`
             : ""}
         </p>
       </div>

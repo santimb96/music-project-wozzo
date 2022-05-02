@@ -3,7 +3,7 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song, goToNext, focus }) => {
+const MediaPlayer = ({ song, onChangeSong, focus }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [loop, setLoop] = useState(false);
@@ -46,30 +46,13 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
    */
 
   useEffect(() => {
-    audioRef.current.src = song.audioUrl;
     play(0);
-
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);
     }, [100]);
     return () => clearInterval(intervalRef.current);
   }, [song]);
-
-  useEffect(() => {
-    loop
-      ? loopRef.current.classList.add("loop-button-active")
-      : loopRef.current.classList.remove("loop-button-active");
-    audioRef.current.onended = () => {
-      if (loop) {
-        setPlaying(true);
-        play(0);
-      } else {
-        pause();
-        goToNext();
-      }
-    };
-  }, [loop]);
 
   const onLoop = () => {
     setLoop((prev) => (prev ? false : true));
@@ -116,9 +99,22 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
               <i
                 ref={loopRef}
                 onClick={() => onLoop()}
-                class="fa-solid fa-repeat loop-button"
+                class={`fa-solid fa-repeat loop-button ${loop ? "loop-button-active" : ""}`}
               ></i>
             </div>
+            <audio
+              ref={audioRef}
+              src={song?.audioUrl}
+              onEnded={() => {
+                if (loop) {
+                  setPlaying(true);
+                  play(0);
+                } else {
+                  pause();
+                  onChangeSong(loop);
+                }
+              }}
+            />
             <div className="col-2 d-flex justify-content-end p-2">
               <i
                 ref={controlRef}
