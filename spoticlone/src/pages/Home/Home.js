@@ -17,6 +17,7 @@ const Home = () => {
   const [selectedSong, setSelectedSong] = useState([]);
   const [songIndex, setSongIndex] = useState(null);
   const [next, setNext] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const setText = (value) => {
     setFilterText(value); 
@@ -51,8 +52,11 @@ const Home = () => {
   }
 
   const nextSong = () => {
-    //const val = songIndex + 1;
     setNext(true);
+  }
+
+  const isFocus = (value) => {
+    setFocus(value);
   }
 
   return (
@@ -60,9 +64,9 @@ const Home = () => {
       <SidebarHome />
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
-          <HomeHeader setText={setText} />      
+          <HomeHeader setText={setText} isFocus={isFocus} />      
           <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} next={next} selectedSong={selectedSong} />
-          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} nextSong={nextSong} />}    
+          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} nextSong={nextSong} focus={focus} />}    
         </div>
       </div>
     </div>

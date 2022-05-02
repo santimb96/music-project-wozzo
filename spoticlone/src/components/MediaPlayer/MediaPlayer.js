@@ -3,36 +3,60 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song, nextSong }) => {
+const MediaPlayer = ({ song, nextSong, focus }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
-  const [volControl, setVolControl] = useState(0.3);
-  const [mute, setMute] = useState(false);
   const [loop, setLoop] = useState(false);
-  const [ended, setEnded] = useState(false);
 
   const audioRef = useRef(new Audio(""));
   const intervalRef = useRef();
+  const controlRef = useRef();
 
-  const progressBarRef = useRef();
-  const volBarRef = useRef();
   const loopRef = useRef();
   const { duration } = audioRef.current;
 
+  
   useEffect(() => {
-    audioRef.current.src = song.audioUrl;
-    setTrackProgress(0);
+    const onSpace = (e) => {
+      console.warn(focus);
+      if(focus) return false;
+      if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
+        if (audioRef.current.paused) {
+          play(audioRef?.current?.currentTime);
+        } else {
+          pause();
+        }
+      }
+    };
+    document.addEventListener("keydown", onSpace);
+    return () => document.removeEventListener("keydown", onSpace);
+  }, [focus]);
+
+  const play = (position) => {
+    audioRef.current.currentTime = position;
     audioRef.current.play();
     setPlaying(true);
-  }, [song]);
+  };
 
-  const startTimer = () => {
-    clearInterval(intervalRef.current);
+  const pause = () => {
+    audioRef.current.pause();
+    setPlaying(false);
+  };
 
+  /**
+   * When the song changes, change the song and play at position 0
+   */
+
+  useEffect(() => {
+    audioRef.current.src = song.audioUrl;
+    play(0);
+
+    // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);
-    }, [1000]);
-  };
+    }, [100]);
+    return () => clearInterval(intervalRef.current);
+  }, [song]);
 
   useEffect(() => {
     loop
@@ -41,90 +65,40 @@ const MediaPlayer = ({ song, nextSong }) => {
     audioRef.current.onended = () => {
       if (loop) {
         setPlaying(true);
-        onPlay();
+        play(0);
       } else {
-        setPlaying(false);
-        setEnded(true);
-        clearInterval(intervalRef.current);
-        nextSongToPlay();
+        pause();
+        nextSong();
       }
     };
   }, [loop]);
-
-  const nextSongToPlay = () => {
-    nextSong();
-  };
 
   const onLoop = () => {
     setLoop((prev) => (prev ? false : true));
   };
 
-  const onPlay = () => {
-    if (playing) {
-      audioRef.current.play();
-      startTimer();
-    } else {
-      clearInterval(intervalRef.current);
-      audioRef.current.pause();
-    }
-  };
-
-  useEffect(() => {
-    onPlay();
-  }, [playing]);
-
-  useEffect(() => {
-    if (mute) {
-      audioRef.current.volume = 0;
-      setVolControl(0);
-    } else if (!mute && volControl > 0) {
-      audioRef.current.volume = volControl;
-      setVolControl(audioRef.current.volume);
-    } else {
+  const onMute = () => {
+    if (audioRef?.current?.volume === 0) {
       audioRef.current.volume = 0.3;
-      setVolControl(0.3);
+    } else {
+      audioRef.current.volume = 0;
     }
-  }, [mute]);
-
-  useEffect(() => {
-    if (volControl === 0) setMute(true);
-    audioRef.current.volume = volControl;
-  }, [volControl]);
-
-  const onChangeTrack = (value) => {
-    clearInterval(intervalRef.current);
-    audioRef.current.currentTime = value;
-    setTrackProgress(audioRef.current.currentTime);
-    startTimer();
-  };
-
-  const onChangeVol = (value) => {
-    setVolControl(value / 100);
   };
 
   const volIconRender = () => {
-    if (mute && volControl === 0) {
-      return (
-        <i
-          onClick={() => setMute((prev) => (prev ? false : true))}
-          className="fa-solid fa-volume-xmark pe-3 text-light vol-icon"
-        ></i>
-      );
-    } else if (volControl <= 0.5 && volControl !== 0) {
-      return (
-        <i
-          onClick={() => setMute((prev) => (prev ? false : true))}
-          className="fa-solid fa-volume-down pe-3 text-light vol-icon"
-        ></i>
-      );
+    let cls = "fa-solid pe-3 text-light vol-icon ";
+
+    if (audioRef?.current?.volume === 0) {
+      cls = cls + "fa-volume-mute";
+    } else if (
+      audioRef?.current?.volume <= 0.5 &&
+      audioRef?.current?.volume !== 0
+    ) {
+      cls = cls + "fa-volume-down";
     } else {
-      return (
-        <i
-          onClick={() => setMute((prev) => (prev ? false : true))}
-          className="fa-solid fa-volume-high pe-3 text-light vol-icon"
-        ></i>
-      );
+      cls = cls + "fa-volume-high";
     }
+    return <i onClick={onMute} className={cls}></i>;
   };
 
   return (
@@ -148,29 +122,32 @@ const MediaPlayer = ({ song, nextSong }) => {
               ></i>
             </div>
             <div className="col-2 d-flex justify-content-end p-2">
-              {playing ? (
-                <i
-                  onClick={() => setPlaying(false)}
-                  className="fa-solid fa-circle-pause player-buttons"
-                ></i>
-              ) : (
-                <i
-                  onClick={() => setPlaying(true)}
-                  className="fa-solid fa-circle-play player-buttons"
-                ></i>
-              )}
+              <i
+                ref={controlRef}
+                onClick={() =>
+                  playing ? pause() : play(audioRef?.current?.currentTime)
+                }
+                className={
+                  playing
+                    ? "fa-solid fa-circle-pause player-buttons"
+                    : "fa-solid fa-circle-play player-buttons"
+                }
+              ></i>
             </div>
             <div className="col-6 d-flex justify-content-center align-items-center pt-3">
               {volIconRender()}
               <input
-                ref={volBarRef}
                 type="range"
-                value={volControl * 100}
+                value={audioRef?.current?.volume * 100}
                 step="1"
                 min="0"
                 max="100"
                 className="slider-vol"
-                onChange={(e) => onChangeVol(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value / 100 !== audioRef.current.value) {
+                    audioRef.current.volume = e.target.value / 100;
+                  }
+                }}
               />
             </div>
           </div>
@@ -180,14 +157,15 @@ const MediaPlayer = ({ song, nextSong }) => {
             </p>
             <div className="progress-bar">
               <input
-                ref={progressBarRef}
                 type="range"
                 value={trackProgress}
                 step="1"
                 min="0"
                 max={duration ? duration : `${duration}`}
                 className="slider"
-                onChange={(e) => onChangeTrack(e.target.value)}
+                onChange={(e) =>
+                  (audioRef.current.currentTime = e.target.value)
+                }
               />
             </div>
             <p className="current-time-player">
@@ -209,4 +187,5 @@ MediaPlayer.defaultProps = {
     artistName: "StatusQuo",
   },
 };
+
 export default MediaPlayer;
