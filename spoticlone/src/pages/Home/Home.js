@@ -71,6 +71,12 @@ const Home = () => {
     }
   };
 
+  const goToBack = () => {
+      const indexOfSong = filteredSongs.findIndex((s) => s._id === selectedSong?._id);
+      const nextSong = indexOfSong === 0 ? filteredSongs[filteredSongs?.length - 1] : filteredSongs[indexOfSong - 1];
+      setSelectedSong(nextSong)
+  };
+
   return (
     <div className="row home-page">
       <SidebarHome />
@@ -78,7 +84,7 @@ const Home = () => {
         <div className="row">
           <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />      
           <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
-          {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} focus={focus} />}  
+          {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>
       </div>
     </div>

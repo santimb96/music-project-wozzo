@@ -3,7 +3,7 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song, goToNext, focus }) => {
+const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [loop, setLoop] = useState(false);
@@ -14,10 +14,10 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
 
   const loopRef = useRef();
   const { duration } = audioRef.current;
-  
+
   useEffect(() => {
     const onSpace = (e) => {
-      if(focus) return false;
+      if (focus) return false;
       if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
         if (audioRef.current.paused) {
           play(audioRef?.current?.currentTime);
@@ -86,22 +86,25 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
     <div className="row d-flex justify-content-center mt-2 media-container">
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="player-container">
-          <div className="row">
-            <div className="col-3 d-flex d-flex justify-content-end pt-3">
-              <div className="d-flex flex-column">
+          <div className="row d-flex justify-content-center">
+            <div className="col-4 d-flex d-flex justify-content-center pt-3">
+              <div className="d-flex flex-column me-3">
                 <h5 className="text-center song-title-player">{song.name}</h5>
                 <h6 className="text-center song-artist-name-player">
                   {song.artistName}
                 </h6>
               </div>
+              <div className="d-flex justify-content-center align-items-center">
+                <i
+                  ref={loopRef}
+                  onClick={() => onLoop()}
+                  class={`fa-solid fa-repeat loop-button ${
+                    loop ? "loop-button-active" : ""
+                  }`}
+                ></i>
+              </div>
             </div>
-            <div className="col-1 d-flex justify-content-center pt-4">
-              <i
-                ref={loopRef}
-                onClick={() => onLoop()}
-                class={`fa-solid fa-repeat loop-button ${loop ? "loop-button-active" : ""}`}
-              ></i>
-            </div>
+
             <audio
               ref={audioRef}
               src={song?.audioUrl}
@@ -115,20 +118,30 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
                 }
               }}
             />
-            <div className="col-2 d-flex justify-content-end p-2">
-              <i
-                ref={controlRef}
-                onClick={() =>
-                  playing ? pause() : play(audioRef?.current?.currentTime)
-                }
-                className={
-                  playing
-                    ? "fa-solid fa-circle-pause player-buttons"
-                    : "fa-solid fa-circle-play player-buttons"
-                }
-              ></i>
+            <div className="col-4 pt-3">
+              <div className="row d-flex justify-content-center">
+                <div className="col-1 d-flex justify-content-center align-items-center">
+                <i onClick={() => goToBack()}  className="fa-solid fa-backward-step back-next-buttons"></i>
+                </div>
+                <div className="col-4 d-flex justify-content-center align-items-center">
+                  <i
+                    ref={controlRef}
+                    onClick={() =>
+                      playing ? pause() : play(audioRef?.current?.currentTime)
+                    }
+                    className={
+                      playing
+                        ? "fa-solid fa-circle-pause player-buttons"
+                        : "fa-solid fa-circle-play player-buttons"
+                    }
+                  ></i>
+                </div>
+                <div className="col-1 d-flex justify-content-center align-items-center">
+                <i onClick={() => goToNext(false)} className="fa-solid fa-forward-step back-next-buttons"></i>
+                </div>
+              </div>
             </div>
-            <div className="col-6 d-flex justify-content-center align-items-center pt-3">
+            <div className="col-4 d-flex justify-content-start align-items-center pt-3">
               {volIconRender()}
               <input
                 type="range"
