@@ -22,17 +22,21 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
 
   useEffect(() => {
     const filtered = songs?.filter((song) => {
-      if (
-        song.name
-          .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim()) ||
-        song.artistName
-          .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim())
-      ) {
-        return true;
+      if (text[0] !== " ") {
+        if (
+          song.name
+            .toLocaleLowerCase()
+            .includes(text.toLocaleLowerCase().trim()) ||
+          song.artistName
+            .toLocaleLowerCase()
+            .includes(text.toLocaleLowerCase().trim())
+        ) {
+          return true;
+        }
+        return false;
+      } else {
+        return false;
       }
-      return false;
     });
 
     setFilteredSongs(filtered);
@@ -55,7 +59,7 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
     }
     playRef.current.classList.remove("song-row-playing");
 
-    element.classList.add('song-row-playing');
+    element.classList.add("song-row-playing");
     playRef.current = element;
     playingRefIndex.current = index;
 
@@ -63,18 +67,22 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   };
 
   useEffect(() => {
-    if(next !== false){
-      const nextIndex = songs.findIndex(song => song._id === selectedSong._id) + 1 === songs.length ? 0 : songs.findIndex(song => song._id === selectedSong._id) + 1;
+    if (next !== false) {
+      const nextIndex =
+        songs.findIndex((song) => song._id === selectedSong._id) + 1 ===
+        songs.length
+          ? 0
+          : songs.findIndex((song) => song._id === selectedSong._id) + 1;
       const nextSong = songs[nextIndex];
       songSelected(nextSong, tableRef.current.childNodes[nextIndex], nextIndex);
     }
-  }, [next])
+  }, [next]);
 
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center">
         <TableContainer className="table-content" sx={{ maxHeight: 440 }}>
-          {!itemsToShow().length || itemsToShow() === null ? (
+          {!songs.length || songs === null ? (
             <div className="spinner-table-loading">
               <SpinnerLoading />
             </div>
@@ -112,46 +120,56 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {itemsToShow()?.map((song, index) => {
-                  return (
-                    <TableRow
-                      onDoubleClick={(e) => songSelected(song, e.currentTarget, index)}
-                      key={song._id}
-                      value={index}
-                      className="song-row-home"
-                    >
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
+                {itemsToShow()?.length === 0 ? (
+                  <div className="d-flex justify-content-end me-5 pe-5">
+                    <h2 className="text-light">
+                      No se han encontrado resultados
+                    </h2>
+                  </div>
+                ) : (
+                  itemsToShow()?.map((song, index) => {
+                    return (
+                      <TableRow
+                        onDoubleClick={(e) =>
+                          songSelected(song, e.currentTarget, index)
+                        }
+                        key={song._id}
+                        value={index}
+                        className="song-row-home"
                       >
-                        {index + 1}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {song.name}
-                      </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {song.artistName}
-                      </TableCell>
+                        <TableCell
+                          style={{ color: theme.palette.secondary.light }}
+                          align="left"
+                        >
+                          {index + 1}
+                        </TableCell>
+                        <TableCell
+                          style={{ color: theme.palette.secondary.light }}
+                          align="left"
+                        >
+                          {song.name}
+                        </TableCell>
+                        <TableCell
+                          style={{ color: theme.palette.secondary.light }}
+                          align="left"
+                        >
+                          {song.artistName}
+                        </TableCell>
 
-                      <TableCell
-                        style={{ color: theme.palette.secondary.light }}
-                        align="left"
-                      >
-                        {playingRefIndex.current === index ? (
-                          <i className="fa-solid fa-play play-row-button"></i>
-                        ) : (
-                          ""
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        <TableCell
+                          style={{ color: theme.palette.secondary.light }}
+                          align="left"
+                        >
+                          {playingRefIndex.current === index ? (
+                            <i className="fa-solid fa-play play-row-button"></i>
+                          ) : (
+                            ""
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })
+                )}
               </TableBody>
             </Table>
           )}
