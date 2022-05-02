@@ -15,6 +15,7 @@ import "./index.scss";
 const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
+  const [notFound, setNotFound] = useState(false);
 
   const playRef = useRef();
   const playingRefIndex = useRef();
@@ -33,14 +34,18 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
             .toLocaleLowerCase()
             .includes(text.toLocaleLowerCase().trim())
         ) {
+          //setNotFound(false);
           return true;
         }
+        //setNotFound(true);
         return false;
       } else {
+        // setNotFound(true);
         return false;
       }
     });
 
+    filtered?.length === 0 && text !== "" ? setNotFound(true) : setNotFound(false);
     setFilteredSongs(filtered);
   }, [text]);
 
@@ -89,7 +94,9 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center table-container">
-        {!songs.length || songs === null ? (
+        {notFound ? (
+          msg(<h2 className="text-light">No hay resultados</h2>)
+        ) : !songs.length || songs === null ? (
           <div className="row">
             {msg(
               <div className="spinner-table-loading">

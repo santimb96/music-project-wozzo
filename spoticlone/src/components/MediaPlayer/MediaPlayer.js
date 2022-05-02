@@ -14,7 +14,6 @@ const MediaPlayer = ({ song, goToNext, focus }) => {
 
   const loopRef = useRef();
   const { duration } = audioRef.current;
-
   
   useEffect(() => {
     const onSpace = (e) => {
