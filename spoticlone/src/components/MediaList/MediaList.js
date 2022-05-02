@@ -20,6 +20,8 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   const playingRefIndex = useRef();
   const tableRef = useRef();
 
+  useEffect(() => {}, []);
+
   useEffect(() => {
     const filtered = songs?.filter((song) => {
       if (text[0] !== " ") {
@@ -78,15 +80,25 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
     }
   }, [next]);
 
+  const msg = (element) => (
+    <div className="col-12 d-flex justify-content-center align-items-center">
+      {element}
+    </div>
+  );
+
   return (
     <div className="row">
-      <div className="col-12 d-flex justify-content-center">
-        <TableContainer className="table-content" sx={{ maxHeight: 440 }}>
-          {!songs.length || songs === null ? (
-            <div className="spinner-table-loading">
-              <SpinnerLoading />
-            </div>
-          ) : (
+      <div className="col-12 d-flex justify-content-center table-container">
+        {!songs.length || songs === null ? (
+          <div className="row">
+            {msg(
+              <div className="spinner-table-loading">
+                <SpinnerLoading />
+              </div>
+            )}
+          </div>
+        ) : (
+          <TableContainer className="table-content" sx={{ maxHeight: 440 }}>
             <Table
               size="medium"
               className="table-content"
@@ -120,60 +132,52 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {itemsToShow()?.length === 0 ? (
-                  <div className="d-flex justify-content-end me-5 pe-5">
-                    <h2 className="text-light">
-                      No se han encontrado resultados
-                    </h2>
-                  </div>
-                ) : (
-                  itemsToShow()?.map((song, index) => {
-                    return (
-                      <TableRow
-                        onDoubleClick={(e) =>
-                          songSelected(song, e.currentTarget, index)
-                        }
-                        key={song._id}
-                        value={index}
-                        className="song-row-home"
+                {itemsToShow()?.map((song, index) => {
+                  return (
+                    <TableRow
+                      onDoubleClick={(e) =>
+                        songSelected(song, e.currentTarget, index)
+                      }
+                      key={song._id}
+                      value={index}
+                      className="song-row-home"
+                    >
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
                       >
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {index + 1}
-                        </TableCell>
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {song.name}
-                        </TableCell>
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {song.artistName}
-                        </TableCell>
+                        {index + 1}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {song.name}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {song.artistName}
+                      </TableCell>
 
-                        <TableCell
-                          style={{ color: theme.palette.secondary.light }}
-                          align="left"
-                        >
-                          {playingRefIndex.current === index ? (
-                            <i className="fa-solid fa-play play-row-button"></i>
-                          ) : (
-                            ""
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                )}
+                      <TableCell
+                        style={{ color: theme.palette.secondary.light }}
+                        align="left"
+                      >
+                        {playingRefIndex.current === index ? (
+                          <i className="fa-solid fa-play play-row-button"></i>
+                        ) : (
+                          ""
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
               </TableBody>
             </Table>
-          )}
-        </TableContainer>
+          </TableContainer>
+        )}
       </div>
       <div className="col 12 songs-found">
         <p>

@@ -51,7 +51,7 @@ const Home = () => {
     setNext(false);
   }
 
-  const nextSong = () => {
+  const goToNext = () => {
     setNext(true);
   }
 
@@ -66,7 +66,7 @@ const Home = () => {
         <div className="row">
           <HomeHeader setText={setText} isFocus={isFocus} />      
           <MediaList songs={songs} filter={filterText} itemSelected={itemSelected} next={next} selectedSong={selectedSong} />
-          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} nextSong={nextSong} focus={focus} />}    
+          {selectedSong.length === 0 ? '' : <MediaPlayer song={selectedSong} goToNext={goToNext} focus={focus} />}    
         </div>
       </div>
     </div>

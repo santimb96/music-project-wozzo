@@ -3,7 +3,7 @@ import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
 import format from "format-duration";
 import "./index.scss";
 
-const MediaPlayer = ({ song, nextSong, focus }) => {
+const MediaPlayer = ({ song, goToNext, focus }) => {
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [loop, setLoop] = useState(false);
@@ -18,7 +18,6 @@ const MediaPlayer = ({ song, nextSong, focus }) => {
   
   useEffect(() => {
     const onSpace = (e) => {
-      console.warn(focus);
       if(focus) return false;
       if (e.key === " " || e.code === "Space" || e.keyCode === 32) {
         if (audioRef.current.paused) {
@@ -68,7 +67,7 @@ const MediaPlayer = ({ song, nextSong, focus }) => {
         play(0);
       } else {
         pause();
-        nextSong();
+        goToNext();
       }
     };
   }, [loop]);
