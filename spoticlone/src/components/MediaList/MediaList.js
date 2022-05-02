@@ -15,7 +15,6 @@ import "./index.scss";
 const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   const [text, setText] = useState("");
   const [filteredSongs, setFilteredSongs] = useState([]);
-  const [notFound, setNotFound] = useState(false);
 
   const playRef = useRef();
   const playingRefIndex = useRef();
@@ -45,7 +44,6 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
       }
     });
 
-    filtered?.length === 0 && text !== "" ? setNotFound(true) : setNotFound(false);
     setFilteredSongs(filtered);
   }, [text]);
 
@@ -94,7 +92,7 @@ const MediaList = ({ songs, filter, itemSelected, next, selectedSong }) => {
   return (
     <div className="row">
       <div className="col-12 d-flex justify-content-center table-container">
-        {notFound ? (
+        {filteredSongs?.length === 0 && text !== "" ? (
           msg(<h2 className="text-light">No hay resultados</h2>)
         ) : !songs.length || songs === null ? (
           <div className="row">
