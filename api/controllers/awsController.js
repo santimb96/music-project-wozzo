@@ -1,6 +1,6 @@
 
 import aws from 'aws-sdk';
-import fs from 'fs';
+//import fs from 'fs';
 
 import * as dotenv from 'dotenv';
 import process from 'process';
@@ -19,8 +19,10 @@ const getDataFromAws = (req) => new Promise((resolve, reject) => {
   const s3 = new aws.S3();
   const params = {
     Bucket: process.env.BUCKET,
-    Body: fs.createReadStream(req.file.path),
+    Body: req.file.buffer,
     Key: `song/${req.file.originalname}`,
+    ContentEncoding: req.file.encoding,
+    ContentType: req.file.mimetype,
     CacheControl: 'public'
   };
 
@@ -28,7 +30,6 @@ const getDataFromAws = (req) => new Promise((resolve, reject) => {
     if (err) {
       reject(err);
     }
-    fs.unlinkSync(req.file.path);
 
     resolve(data);
   });
