@@ -1,5 +1,31 @@
 @import "../../scss/colors";
 
+
+@media (max-width: 768px) {
+
+      .spotilogo{
+        margin-right: 14%;
+        img{
+          width: 20%;
+        }
+      }
+      .sidebar-backoffice {
+        display: none;
+        padding-top: 0;
+      }
+      .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button {
+        display: grid;
+      }
+
+      .input {
+        min-width: 172px;
+      }
+    }
+ 
+
 .hamburguer-button {
   display: none;
   color: white;
@@ -61,26 +87,30 @@
 // .nav-link:hover .fa {
 //   transform: rotate(360deg);
 // }
+.logo{
+  width: 30%;
+}
 
 }
 
-@media (max-width: 767px) {
-  html {
-    body {
-      .sidebar-backoffice {
-        display: none;
-        padding-top: 0;
-      }
-      .show-sidebar-button {
-        display: grid;
-      }
-      .hamburguer-button {
-        display: grid;
-      }
+// @media (max-width: 767px) {
+//   html {
+//     body {
+//       .sidebar-backoffice {
+//         display: none;
+//         padding-top: 0;
+//       }
+//       .show-sidebar-button {
+//         display: grid;
+//       }
+//       .hamburguer-button {
+//         display: grid;
+//       }
 
-      .input {
-        min-width: 172px;
-      }
-    }
-  }
-}
+//       .input {
+//         min-width: 172px;
+//       }
+//     }
+//   }
+// }
+

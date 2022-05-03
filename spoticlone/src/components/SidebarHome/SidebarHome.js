@@ -44,11 +44,11 @@ const SidebarHome = () => {
       <div className="d-flex justify-content-center">
       <header className="pt-3">
           <Link to="/">
-            <div className="d-flex justify-content-center">
+            <div className="d-flex justify-content-center spotilogo">
               <img
                 src={spotiLogo}
                 alt="spoticloneLogo"
-                style={{ width: "30%" }}
+                style={{ maxWidth: "30%" }}
               ></img>
             </div>
           </Link>
