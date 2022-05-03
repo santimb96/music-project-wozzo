@@ -8,9 +8,15 @@
 }
 
 html {
+  
+  overflow-x: hidden;
+  overflow-y: hidden;
   body {
+    
     overflow-x: hidden;
     overflow-y: hidden;
+    background: $darkColor;
+    width: 100vw;
 
     // .sticky-header {
     //   position: sticky;
@@ -657,3 +663,32 @@ html {
 //     }
 //   }
 // }
+
+@media (max-width: 576px) {
+  html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    body {    
+    overflow-x: hidden;
+    overflow-y: hidden;
+    margin: 0;
+    padding: 0;
+
+    position: relative;
+      .sidebar-backoffice {
+        display: none;
+        padding-top: 0;
+      }
+      .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button {
+        display: grid;
+      }
+
+      .input {
+        min-width: 172px;
+      }
+    }
+  }
+}

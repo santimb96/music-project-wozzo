@@ -1,6 +1,6 @@
+
 .header-home {
   min-height: 10vh;
-
   .input-search-home-container {
     margin-top: 3.5vh;
     margin-left: 30vh;
@@ -20,3 +20,21 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .header-home {
+    margin-left: 11px;
+    .input-search-home-container {
+      display: flex;
+      justify-content: start;
+      margin-top: 2.5vh;
+      margin-left: 0;
+      .input-search-home{
+        margin-left: 0;
+        width: 100vw;
+      }
+    }
+  }
+}
+
+

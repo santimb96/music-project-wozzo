@@ -75,7 +75,25 @@
         display: grid;
       }
       .hamburguer-button {
-        display: grid;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        padding: 1rem;
+        font-size: 1.3rem;
+        margin: 1rem;
+        transition: 0.1s;
+      }
+      .hamburguer-button:hover {
+        background-color: transparent;
+        color: $secondaryColor;
+        outline: none;
+        box-shadow: none;
+      }
+      .hamburguer-button:focus,
+      .hamburguer-button:active {
+        outline: none;
+        box-shadow: none;
       }
       .input {
         min-width: 172px;

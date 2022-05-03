@@ -1,13 +1,65 @@
-@import '../../scss/colors';;
+@import '../../scss/colors';
+
+@media (max-width: 768px) {
+  .cont-res{
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    margin-left: 11px;
+
+  .player-container{
+    margin-top: 1%;
+    width: 100vw;
+    border-radius: none;
+    .control-buttons{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .song-title-player{
+      font-size: 0.7rem;
+    }
+    .song-artist-name-player{
+      font-size: 0.6rem;
+    }
+    .player-buttons {
+      font-size: 2.5rem;
+    }
+    .current-time-player {
+      font-size: 0.6rem;
+      color: $tablePresentationColor;
+      padding: 1rem;
+    }
+    .loop-button {
+      font-size: 1.2rem;
+    }
+    .vol-icon {
+      display: none;
+    }
+    .slider-vol{
+      display: none
+    }
+    .back-next-buttons{
+      font-size: 1.4rem;
+      transition: 0.1s;
+    } 
+    .data-container{
+      display: flex;
+      justify-content: end;
+      margin-right: -10px;
+    }
+  }
+}
+}
 
 .vol-icon {
   width: 2rem;
 }
-.media-container {
-  margin-top: 5vh;
-}
+.cont-res{
+  width: 100vw;;
 .player-container {
-  position: sticky;
+  //position: sticky;
   background-color: $mediaBack;
   border-radius: 15px;
 }
@@ -105,5 +157,6 @@ div.progress-bar {
 }
 .table-container {
   height: 60vh;
+}
 }
 

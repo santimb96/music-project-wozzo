@@ -1,5 +1,15 @@
 @import "../../scss/colors";
 
+
+
+.header-responsive {
+  .spotilogo {
+    img {
+      max-width: 15vh;
+    }
+  }
+}
+
 .hamburguer-button {
   display: none;
   color: white;
@@ -20,7 +30,6 @@
   box-shadow: none;
 }
 
-
 .sidebar-link {
   text-decoration: none;
   display: flex;
@@ -34,53 +43,72 @@
   i {
     color: white;
   }
-  
-.nav-link {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 4rem;
-  margin-left: 4%;
-  margin-right: 4%;
-  transition: 0.1s;
-  border-radius: 2px;
-  color: white;
-  i {
+
+  .nav-link {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 4rem;
+    margin-left: 4%;
+    margin-right: 4%;
+    transition: 0.1s;
+    border-radius: 2px;
+    color: white;
+    i {
+      color: white;
+    }
+  }
+  .nav-link:hover {
+    background-color: $secondaryColor;
     color: white;
   }
-}
-.nav-link:hover {
-  background-color: $secondaryColor;
-  color: white;
-}
 
-.nav-link .fa {
-  transition: all 1s;
-}
-
-// .nav-link:hover .fa {
-//   transform: rotate(360deg);
-// }
+  .nav-link .fa {
+    transition: all 1s;
+  }
 
 }
 
-@media (max-width: 767px) {
-  html {
-    body {
-      .sidebar-backoffice {
-        display: none;
-        padding-top: 0;
-      }
-      .show-sidebar-button {
-        display: grid;
-      }
-      .hamburguer-button {
-        display: grid;
-      }
+@media (max-width: 768px) {
+  .spotilogo, img{
+    display: none;
+  }
 
-      .input {
-        min-width: 172px;
+  .sidebar-global-div {
+    height: 20%;
+
+    .sidebar-backoffice {
+      display: none;
+      padding-top: 0;
+    }
+    .show-sidebar-button {
+      display: grid;
+    }
+    .hamburguer-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+      transition: 0.1s;
+      outline: none;
+      i {
+        font-size: 1.2rem;
+        color: white;
       }
+    }
+    .hamburguer-button:is(:hover) {
+      background: transparent;
+      i {
+        color: $spotiLogoColor;
+      }
+    }
+    .hamburguer-button:focus {
+      box-shadow: none;
+    }
+
+    .input {
+      min-width: 172px;
     }
   }
 }
+

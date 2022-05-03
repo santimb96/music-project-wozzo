@@ -83,11 +83,11 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   };
 
   return (
-    <div className="row d-flex justify-content-center mt-2 media-container">
-      <div className="col-12 col-md-10 p-0 bg-dark">
+    <div className="row mt-2 media-container">
+      <div className="col-12 bg-dark cont-res">
         <div className="player-container">
           <div className="row d-flex justify-content-center">
-            <div className="col-4 d-flex d-flex justify-content-center pt-3">
+            <div className="col-4 d-flex d-flex justify-content-center pt-3 data-container">
               <div className="d-flex flex-column me-3">
                 <h5 className="text-center song-title-player">{song.name}</h5>
                 <h6 className="text-center song-artist-name-player">
@@ -98,7 +98,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
                 <i
                   ref={loopRef}
                   onClick={() => onLoop()}
-                  class={`fa-solid fa-repeat loop-button ${
+                  className={`fa-solid fa-repeat loop-button ${
                     loop ? "loop-button-active" : ""
                   }`}
                 ></i>
@@ -118,7 +118,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
                 }
               }}
             />
-            <div className="col-4 pt-3">
+            <div className="col-4 pt-3 control-buttons">
               <div className="row d-flex justify-content-center">
                 <div className="col-1 d-flex justify-content-center align-items-center">
                 <i onClick={() => goToBack()}  className="fa-solid fa-backward-step back-next-buttons"></i>
