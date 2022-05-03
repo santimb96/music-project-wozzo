@@ -43,7 +43,7 @@ const SidebarHome = () => {
   return (
     <div className="col-12 col-md-2 bg-dark d-flex justify-content-center sidebar-global-div">
       <div className="d-flex justify-content-center header-responsive">
-      <header className="pt-3 d-flex justify-content-center">
+      <header className="pt-3 d-flex justify-content-center header-link">
           <Link to="/">
             <div className="spotilogo">
               <div className="d-flex justify-content-center">
