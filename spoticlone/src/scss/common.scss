@@ -11,6 +11,8 @@ html {
   body {
     overflow-x: hidden;
     overflow-y: hidden;
+    background: $darkColor;
+    width: 100vw;
 
     // .sticky-header {
     //   position: sticky;
@@ -665,6 +667,8 @@ html {
     body {    
     overflow-x: hidden;
     overflow-y: hidden;
+    margin: 0;
+    padding: 0;
 
     position: relative;
       .sidebar-backoffice {

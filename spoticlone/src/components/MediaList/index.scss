@@ -55,46 +55,19 @@
   }
 }
 
-@media(min-width: 370px) and (max-width: 768px) {
+
+
+@media(max-width: 768px) {
   .songs-found {
-    font-size: 0.7rem;
-    display: flex;
-    justify-content: center;
-    color: $tablePresentationColor;
-    margin-left: 5vh;
-    height: 3vh;
+    display: none;
+    // font-size: 0.7rem;
+    // display: flex;
+    // justify-content: center;
+    // color: $tablePresentationColor;
+    // height: 3vh;
   }
   .table-container{
-    
-    min-height: 30vh;
-    max-height: 50vh;
-  .table-content {
-    margin-top: 2vh;
-    max-width: 100%;
-    table{
-      //margin-left: 2vh;
-      min-width: 60vw;
-      max-width: 100vw;
-
-      th, td{
-        font-size: 0.9rem;
-      }
-    }
-  }
-}
-}
-
-@media(max-width: 375px) {
-  .songs-found {
-    font-size: 0.7rem;
-    display: flex;
-    justify-content: center;
-    color: $tablePresentationColor;
-    margin-left: 5vh;
-    height: 3vh;
-  }
-  .table-container{
-    
+    margin-right: 0;
     min-height: 30vh;
     max-height: 50vh;
   .table-content {
@@ -103,7 +76,7 @@
     min-height: 10vh;
     max-height: 50vh;
     table{
-      margin-left: 2vh;
+      //margin-left: 2vh;
       min-width: 60vw;
       max-width: 100vw;
       th, td{

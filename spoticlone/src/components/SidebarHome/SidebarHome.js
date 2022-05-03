@@ -8,6 +8,7 @@ import theme from "../../palette/palette.js";
 import { useState, useRef } from "react";
 import spotiLogo from "../../images/spoticlone-logo.png";
 import './index.scss';
+import { ListItem } from "@mui/material";
 
 const SidebarHome = () => {
   const authContext = useContext(AuthContext);
@@ -40,16 +41,17 @@ const SidebarHome = () => {
 
 
   return (
-    <div className="col-12 col-md-2 bg-dark">
-      <div className="d-flex justify-content-center">
-      <header className="pt-3">
+    <div className="col-12 col-md-2 bg-dark d-flex justify-content-center sidebar-global-div">
+      <div className="d-flex justify-content-center header-responsive">
+      <header className="pt-3 d-flex justify-content-center">
           <Link to="/">
-            <div className="d-flex justify-content-center spotilogo">
+            <div className="spotilogo">
+              <div className="d-flex justify-content-center">
               <img
                 src={spotiLogo}
                 alt="spoticloneLogo"
-                style={{ maxWidth: "30%" }}
               ></img>
+              </div>
             </div>
           </Link>
         </header>

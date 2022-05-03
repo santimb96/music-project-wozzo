@@ -1,30 +1,64 @@
 @import "../../scss/colors";
 
-
 @media (max-width: 768px) {
+  .sidebar-global-div{
+    height: 20%;
+  .header-responsive {
+    height: 10vh;
 
-      .spotilogo{
-        margin-right: 14%;
-        img{
-          width: 20%;
-        }
-      }
-      .sidebar-backoffice {
+    .spotilogo {
+      margin-right: 35vw;
+      img {
         display: none;
-        padding-top: 0;
-      }
-      .show-sidebar-button {
-        display: grid;
-      }
-      .hamburguer-button {
-        display: grid;
-      }
-
-      .input {
-        min-width: 172px;
       }
     }
- 
+  }
+  .sidebar-backoffice {
+    display: none;
+    padding-top: 0;
+  }
+  .show-sidebar-button {
+    display: grid;
+  }
+  .hamburguer-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    transition: 0.1s;
+    outline: none;
+    i{
+      font-size: 3rem;
+      color: white;
+    }
+  }
+  .hamburguer-button:is(:hover) {
+    background: transparent;
+    i{
+      color: $spotiLogoColor;
+    }
+  }
+  .hamburguer-button:focus{
+    box-shadow: none;
+  }
+
+  .input {
+    min-width: 172px;
+  }
+}
+}
+
+
+
+.header-responsive {
+  .spotilogo {
+    width: 20px;
+    margin-right: 14%;
+    img {
+      max-width: 10vh;
+    }
+  }
+}
 
 .hamburguer-button {
   display: none;
@@ -46,7 +80,6 @@
   box-shadow: none;
 }
 
-
 .sidebar-link {
   text-decoration: none;
   display: flex;
@@ -60,57 +93,27 @@
   i {
     color: white;
   }
-  
-.nav-link {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 4rem;
-  margin-left: 4%;
-  margin-right: 4%;
-  transition: 0.1s;
-  border-radius: 2px;
-  color: white;
-  i {
+
+  .nav-link {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 4rem;
+    margin-left: 4%;
+    margin-right: 4%;
+    transition: 0.1s;
+    border-radius: 2px;
+    color: white;
+    i {
+      color: white;
+    }
+  }
+  .nav-link:hover {
+    background-color: $secondaryColor;
     color: white;
   }
+
+  .nav-link .fa {
+    transition: all 1s;
+  }
 }
-.nav-link:hover {
-  background-color: $secondaryColor;
-  color: white;
-}
-
-.nav-link .fa {
-  transition: all 1s;
-}
-
-// .nav-link:hover .fa {
-//   transform: rotate(360deg);
-// }
-.logo{
-  width: 30%;
-}
-
-}
-
-// @media (max-width: 767px) {
-//   html {
-//     body {
-//       .sidebar-backoffice {
-//         display: none;
-//         padding-top: 0;
-//       }
-//       .show-sidebar-button {
-//         display: grid;
-//       }
-//       .hamburguer-button {
-//         display: grid;
-//       }
-
-//       .input {
-//         min-width: 172px;
-//       }
-//     }
-//   }
-// }
-
