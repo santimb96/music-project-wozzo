@@ -56,6 +56,14 @@
 }
 
 @media(min-width: 370px) and (max-width: 768px) {
+  .songs-found {
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    color: $tablePresentationColor;
+    margin-left: 5vh;
+    height: 3vh;
+  }
   .table-container{
     
     min-height: 30vh;
@@ -77,6 +85,14 @@
 }
 
 @media(max-width: 375px) {
+  .songs-found {
+    font-size: 0.7rem;
+    display: flex;
+    justify-content: center;
+    color: $tablePresentationColor;
+    margin-left: 5vh;
+    height: 3vh;
+  }
   .table-container{
     
     min-height: 30vh;

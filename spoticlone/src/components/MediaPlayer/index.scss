@@ -1,4 +1,35 @@
-@import '../../scss/colors';;
+@import '../../scss/colors';
+
+@media (max-width: 768px) {
+  .player-container{
+    margin-left: 4vh;
+    min-width: 80vw;
+    max-width: 100vw;
+    
+    .song-title-player{
+      font-size: 0.6rem;
+    }
+    .song-artist-name-player{
+      font-size: 0.5rem;
+    }
+    .player-buttons {
+      font-size: 1.7rem;
+    }
+    .current-time-player {
+      font-size: 0.6rem;
+      color: $tablePresentationColor;
+      padding: 1rem;
+    }
+    .loop-button {
+      font-size: 1rem;
+    }
+    
+    .back-next-buttons{
+      font-size: 1rem;
+      transition: 0.1s;
+    }    
+  }
+}
 
 .vol-icon {
   width: 2rem;
