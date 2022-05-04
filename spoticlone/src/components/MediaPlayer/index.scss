@@ -43,6 +43,9 @@
     .back-next-buttons{
       font-size: 1.4rem;
       transition: 0.1s;
+    }
+    .back-next-buttons:is(:hover, :focus, :focus-visible, :active){
+      color: white;
     } 
     .data-container{
       display: flex;
