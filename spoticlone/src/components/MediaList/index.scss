@@ -61,32 +61,37 @@
 }
 
 @media (max-width: 768px) {
-  
-.spinner-table-loading {
-  display: flex;
-  justify-content: center;
-}
-.contaner-list {
-  height: 50vh;
-  .table-container {
-    margin-right: 0;
-    
-    .table-content {
-      margin-top: 2vh;
-      max-width: 100%;
-      min-height: 10vh;
-      max-height: 50vh;
-      table {
-        //margin-left: 2vh;
-        min-width: 60vw;
-        max-width: 100vw;
-        th,
-        td {
-          font-size: 0.8rem;
+  .contaner-list {
+    height: 50vh;
+    .spinner-table-loading {
+      display: flex;
+      justify-content: start;
+      width: 100vw;
+    }
+    .table-container {
+      margin-right: 0;
+
+      .table-content {
+        margin-top: 2vh;
+        max-width: 100%;
+        min-height: 10vh;
+        max-height: 50vh;
+        table {
+          min-width: 60vw;
+          max-width: 100vw;
+          th,
+          td {
+            font-size: 0.8rem;
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+          }
         }
       }
     }
-  }
     .song-row-home {
       .play-row-button {
         font-size: 1rem;
