@@ -19,41 +19,55 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
   };
 
   const logOut = () => {
+    authContext.setUser({});
+    authContext.setUserRole("");
     removeUserStorage();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <div className="bg-dark header-home">
       {user && user._id === localStorage.getItem("userId") ? (
-        
-          <div className="dropdown auth-user">
-            <button
-              className="btn dropdown-toggle auth-drop"
-              type="button"
-              id="dropdownMenuButton"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              Bienvenido, {user.name}
-            </button>
-            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              {authContext.userRole === "admin" ? (
-                <>
-                <button className="dropdown-item"><Link to="/backoffice/roles">BO-Roles</Link></button>
-                <button className="dropdown-item"><Link to="/backoffice/users">BO-Usuarios</Link></button>
-                <button className="dropdown-item"><Link to="/backoffice/artists">BO-Artistas</Link></button>
-                <button className="dropdown-item"><Link to="/backoffice/songs">BO-Canciones</Link></button>
+        <div className="dropdown auth-user">
+          <button
+            className="btn dropdown-toggle auth-drop"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Bienvenido, {user.name}
+          </button>
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {authContext.userRole === "admin" ? (
+              <>
+                <button className="dropdown-item">
+                  <Link to="/backoffice/roles">BO-Roles</Link>
+                </button>
+                <button className="dropdown-item">
+                  <Link to="/backoffice/users">BO-Usuarios</Link>
+                </button>
+                <button className="dropdown-item">
+                  <Link to="/backoffice/artists">BO-Artistas</Link>
+                </button>
+                <button className="dropdown-item">
+                  <Link to="/backoffice/songs">BO-Canciones</Link>
+                </button>
                 <hr></hr>
-                <button onClick={logOut} className="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar Sesión</button>  
-                </>
-              ) : (
-                <button onClick={logOut} className="dropdown-item"><i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar Sesión</button>
-              )}
-            </div>
+                <button onClick={logOut} className="dropdown-item">
+                  <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <button onClick={logOut} className="dropdown-item">
+                <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
+                Sesión
+              </button>
+            )}
           </div>
-       
+        </div>
       ) : (
         <div className="auth-fields">
           <button className="btn btn-auth">
