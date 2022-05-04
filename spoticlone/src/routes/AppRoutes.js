@@ -13,7 +13,7 @@ import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
 
 const AppRoutes = () => {
-  const authSet = useContext(AuthContext);
+  const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -26,35 +26,38 @@ const AppRoutes = () => {
     //si están los tres, seguimos
     if (expiryDate && token && userId) {
       if (expiryDate >= dateNow) {
+        setLoading(true);
         autoLogin(userId, token)
           .then((userLog) => {
             //metemos user y userRole en authContext
-            authSet.setUser(userLog);
-            authSet.setUserRole(userLog.user.userRoleId.name);
+            setUser(userLog);
+            setUserRole(userLog.user.userRoleId.name);
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
             removeUserStorage();
             navigate("/login");
-          });
+          })
+          .finally(() => setLoading(false))
       } else {
         removeUserStorage();
+        setLoading(false);
         navigate("/login");
       }
     } else {
       removeUserStorage();
       const found = routes.find((r) => r.route === window.location.pathname);
+      setLoading(false);
       if (found) {
         navigate("/login");
       }
     }
   }, [window.location.pathname]);
 
-  const checkLogin = () => {
+  const isAdmin = () => {
     if (
-      authSet.user.user &&
-      authSet.userRole === "admin" &&
-      authSet.user.user._id === localStorage.getItem("userId")
+      user &&
+      userRole === "admin" 
     ) {
       return true;
     } else {
@@ -63,28 +66,32 @@ const AppRoutes = () => {
     }
   };
 
+  if(loading) {
+    return <div className="loading-page">Loading</div>
+  }
+
   return (
     //
-    //   <Route element={<Login/>} path="/login"  render={() => checkLogin(Login)}/>
-    //   <Route path="/register"render={() => checkLogin(Register)} />
+    //   <Route element={<Login/>} path="/login"  render={() => isAdmin(Login)}/>
+    //   <Route path="/register"render={() => isAdmin(Register)} />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/backoffice/roles"
-        element={checkLogin() ? <UserRoleBackoffice /> : <Home />}
+        element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/users"
-        element={checkLogin() ? <UserBackoffice /> : <Home />}
+        element={isAdmin() ? <UserBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/artists"
-        element={checkLogin() ? <ArtistBackoffice /> : <Home />}
+        element={isAdmin() ? <ArtistBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/songs"
-        element={checkLogin() ? <SongBackoffice /> : <Home />}
+        element={isAdmin() ? <SongBackoffice /> : <Home />}
       />
     </Routes>
   );

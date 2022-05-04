@@ -27,7 +27,7 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
 
   return (
     <div className="bg-dark header-home">
-      {user && user._id === localStorage.getItem("userId") ? (
+      {!!user  ? (
         <div className="dropdown auth-user">
           <button
             className="btn dropdown-toggle auth-drop"
