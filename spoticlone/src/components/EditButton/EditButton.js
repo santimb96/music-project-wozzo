@@ -17,7 +17,7 @@ const EditButton = ({ setData, item, loading }) => {
     >
       <div className="edit-button-table">
         <button
-        onClick={() => send(item)}
+          onClick={() => send(item)}
           className="button-icons"
           {...(loading ? { disabled: true } : {})}
         >

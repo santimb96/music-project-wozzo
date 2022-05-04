@@ -68,7 +68,6 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     formData.append('artistId', artistId);
 
     if(audioUrl){
-
       formData.append('audioUrl', audioUrl);
     }
     

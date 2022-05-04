@@ -28,26 +28,39 @@ const findId = async (req, res) => {
 const updateById = async (req, res) => {
   
   const songToUpdate = req.body;
+  console.log(req.body);
 
-  getDataFromAws(req)
-    .then((data) => {
 
-      const locationUrl = data.Location;
-      let newSongToUpdate = { ...songToUpdate, audioUrl: locationUrl };
+  if(req.file){
+    getDataFromAws(req)
+      .then((data) => {
+        const locationUrl = data.Location;
+        let newSongToUpdate = { ...songToUpdate, audioUrl: locationUrl };
 
-      songToUpdate.audioUrl = locationUrl;
+        songToUpdate.audioUrl = locationUrl;
 
-      Song.findOneAndUpdate({ _id: req.params.id }, newSongToUpdate)
-        .then((song) =>
-          res
-            .status(201)
-            .send({ status: 201, message: `${song.name} se ha actualizado` })
-        )
-        .catch(() =>
-          handleError(404, 'No se ha podido actualizar la canción', res)
-        );
-    })
-    .catch(() => handleError(404, 'No se ha podido actualizar la canción', res));
+        Song.findOneAndUpdate({ _id: req.params.id }, newSongToUpdate)
+          .then((song) =>
+            res
+              .status(201)
+              .send({ status: 201, message: `${song.name} se ha actualizado` })
+          )
+          .catch(() =>
+            handleError(404, 'No se ha podido actualizar la canción', res)
+          );
+      })
+      .catch(() => handleError(404, 'No se ha podido actualizar la canción', res));
+  } else {
+    Song.findOneAndUpdate({ _id: req.params.id }, songToUpdate)
+      .then((song) =>
+        res
+          .status(201)
+          .send({ status: 201, message: `${song.name} se ha actualizado` })
+      )
+      .catch(() =>
+        handleError(404, 'No se ha podido actualizar la canción', res)
+      );
+  }
 };
 
 const create = async (req, res) => {
