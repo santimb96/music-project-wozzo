@@ -29,8 +29,8 @@ const AppRoutes = () => {
         autoLogin(userId, token)
           .then((userLog) => {
             //metemos user y userRole en authContext
-              authSet.setUser(userLog);
-              authSet.setUserRole(userLog.user.userRoleId.name);
+            authSet.setUser(userLog);
+            authSet.setUserRole(userLog.user.userRoleId.name);
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
@@ -48,18 +48,20 @@ const AppRoutes = () => {
         navigate("/login");
       }
     }
-  }, [ window.location.pathname ]);
+  }, [window.location.pathname]);
 
-  // const checkLogin = (element) => {
-  //   // si hay user y userRole redirigir a backoffice
-  //   if(user && userRole) {
-  //     return AdminBackoffice;
-  //   }
-  //   // si no hay devolver el element
-  //   return element;
-  // }
-
-  //si es admin, poner sidebar, si no, nada
+  const checkLogin = () => {
+    if (
+      authSet.user.user &&
+      authSet.userRole === "admin" &&
+      authSet.user.user._id === localStorage.getItem("userId")
+    ) {
+      return true;
+    } else {
+      window.history.pushState({}, null, "/");
+      return false;
+    }
+  };
 
   return (
     //
@@ -68,13 +70,22 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      {/* <Route path="/register" element={<Register />} /> */}
-      <Route path="/backoffice/roles" element={<UserRoleBackoffice />} />
-      <Route path="/backoffice/users" element={<UserBackoffice />} />
-      <Route path="/backoffice/artists" element={<ArtistBackoffice />} />
-      <Route path="/backoffice/songs" element={<SongBackoffice />} />
-      {/* <Route path="/backoffice/artists" element={<AdminBackoffice />} />
-      <Route path="/backoffice/songs" element={<AdminBackoffice />} /> */}
+      <Route
+        path="/backoffice/roles"
+        element={checkLogin() ? <UserRoleBackoffice /> : <Home />}
+      />
+      <Route
+        path="/backoffice/users"
+        element={checkLogin() ? <UserBackoffice /> : <Home />}
+      />
+      <Route
+        path="/backoffice/artists"
+        element={checkLogin() ? <ArtistBackoffice /> : <Home />}
+      />
+      <Route
+        path="/backoffice/songs"
+        element={checkLogin() ? <SongBackoffice /> : <Home />}
+      />
     </Routes>
   );
 };

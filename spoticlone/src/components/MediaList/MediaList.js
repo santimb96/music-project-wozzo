@@ -23,7 +23,7 @@ const MediaList = ({ songs, filterText, onSelectSong, song }) => {
   );
 
   return (
-    <div className="row">
+    <div className="row contaner-list">
       <div className="col-12 d-flex justify-content-center table-container">
         {songs?.length === 0 && filterText !== "" ? (
           msg(<h2 className="text-light">No hay resultados</h2>)

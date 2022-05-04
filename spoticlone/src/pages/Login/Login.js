@@ -22,8 +22,7 @@ const Login = () => {
         localStorage.setItem("userId", user.user._id);
         localStorage.setItem("token", user.token);
         localStorage.setItem("expiryDate", user.expiryDate);
-        setLoading(false);
-        navigate('/backoffice/roles');
+        user.role === "admin" ?  navigate('/backoffice/roles') : navigate('/');
       })
       .catch(() => {
         navigate('/login');
