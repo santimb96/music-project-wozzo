@@ -48,6 +48,7 @@ const SongBackoffice = () => {
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
+  const [stringUrl, setStringUrl] = useState("");
   const [filterDropdown, setFilterDropdown] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
