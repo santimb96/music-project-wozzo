@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import SidebarHome from "../../components/SidebarHome/SidebarHome";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
@@ -6,9 +6,11 @@ import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import './index.scss';
-
+import AuthModal from "../../components/AuthModal/AuthModal";
+import AuthContext from "../../contexts/AuthContext";
 
 const Home = () => {
+  const authContext = useContext(AuthContext);
 
   const [filterText, setFilterText] = useState("");
 
@@ -16,6 +18,7 @@ const Home = () => {
   const [filteredSongs, setFilteredSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState({});
   const [focus, setFocus] = useState(false);
+  const [formStatus, setFormStatus] = useState({status: false, type: ""});
 
   const getData = () => {
     Promise.all([getSongs(), getArtists()])
@@ -77,12 +80,22 @@ const Home = () => {
       setSelectedSong(nextSong)
   };
 
+  const onChangeFormStatus = (status, type) => {
+    console.log("hi change form status");
+    setFormStatus({status, type});
+  }
+
+  const restartFormStatus = (status, type) => {
+    setFormStatus({status, type});
+  }
+
   return (
     <div className="row home-page">
       <SidebarHome />
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
-          <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />      
+          <HomeHeader onChangeText={onChangeText} isFocus={isFocus} onChangeFormStatus={onChangeFormStatus} />      
+          <AuthModal isOpen={formStatus} restartFormStatus={restartFormStatus} />
           <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
           {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>

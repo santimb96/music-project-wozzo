@@ -1,6 +1,6 @@
 import { BASE_URI_USER } from "../urls/urls";
 import ROLES from "../utils/roleId";
-import { checkEmailOnDB } from "../utils/validators";
+
 
 const login = (email, password) =>
   new Promise((resolve, reject) => {

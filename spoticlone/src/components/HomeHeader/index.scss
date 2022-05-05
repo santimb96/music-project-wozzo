@@ -2,6 +2,7 @@
 
 .header-home {
   min-height: 10vh;
+  
   .auth-drop {
     background: transparent;
     color: white;
@@ -68,6 +69,7 @@
     padding: 0;
     margin-bottom: 1%;
     background: transparent;
+    color: white;
   }
   a {
     color: white;
@@ -77,8 +79,10 @@
   a:is(:hover) {
     color: $spotiLogoColor;
   }
-  .btn-auth:is(:hover, :focus, :focus-visible, :active) {
+  .btn-auth:is(:hover) {
     color: $spotiLogoColor;
+  }
+  .btn-auth:is(:focus, :focus-visible){
     outline: none;
     box-shadow: none;
   }

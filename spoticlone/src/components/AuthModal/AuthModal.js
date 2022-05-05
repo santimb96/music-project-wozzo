@@ -1,406 +1,304 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
+import TextField from "@mui/material/TextField";
+import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../../constants";
+import {
+  checkEmail,
+  checkEmailOnRegister,
+  checkPassword,
+} from "../../utils/validators.js";
+import CloseIcon from "@mui/icons-material/Close";
+import { Link } from "react-router-dom";
+import AuthContext from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import spotiLogo from "../../images/spoticlone-logo.png";
+import { login } from "../../services/user";
+import "./index.scss";
 
-const AuthModal = ({ isOpen }) => {
+const AuthModal = ({ isOpen, restartFormStatus }) => {
+  // USER CONTEXT
+  const authContext = useContext(AuthContext);
+  // NAVIGATE
+
+  const navigate = useNavigate();
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loginState, setLoginState] = useState(false);
+  const [registerState, setRegisterState] = useState(true);
+
+  // LOGIN FIELDS
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  // REGISTER FIELDS
+  const [name, setName] = useState("");
+  const [passRepeat, setPassRepeat] = useState("");
+  const role = "user";
+
+  const [errors, setErrors] = useState(false);
+
+  const handleCloseForm = () => {
+    setOpen(false);
+    setErrors(false);
+  }
+  const handleOpenForm = () => setOpen(true);
+
+  const isLogin = () => {
+    setLoginState(true);
+    setRegisterState(false);
+  };
+
+  const isRegister = () => {
+    setLoginState(false);
+    setRegisterState(true);
+  };
+
+  const onLogin = () => {
+    console.warn('hi');
+    if (validateData()) {
+      authContext.setLoading(true);
+      setLoading(true);
+      login(email, password)
+        .then((user) => {
+          authContext.setUser(user.user);
+          authContext.setUserRole(user.role);
+          localStorage.setItem("userId", user.user._id);
+          localStorage.setItem("token", user.token);
+          localStorage.setItem("expiryDate", user.expiryDate);
+          clearData();
+          setLoginState(false);
+          setLoading(false);
+          authContext.setLoading(false);
+          handleCloseForm();
+          user.role === "admin" ? navigate("/backoffice/roles") : navigate("/");
+        })
+        .catch(() => {
+          clearData();
+          navigate("/");
+        });
+    } else {
+      setErrors(true);
+    }
+  };
+
+  const onRegister = () => {};
+
+  const clearData = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassRepeat("");
+  };
+
+  const validateData = () => {
+    if (loginState) {
+      if (email?.length && password?.length) {
+        if (checkEmailOnRegister(email)) {
+          return true;
+        }
+        return false;
+      }
+    } else {
+      if (
+        name?.length &&
+        email?.length &&
+        password?.length &&
+        passRepeat?.length &&
+        role
+      ) {
+        if (
+          checkPassword(password, passRepeat) &&
+          checkEmailOnRegister(email)
+        ) {
+          return true;
+        }
+        return false;
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen.status) {
+        setOpen(isOpen.status);
+        if(isOpen.type === "login"){
+          setRegisterState(false);
+          setLoginState(true);
+          handleOpenForm();
+        } else {
+          setLoginState(false);
+          setRegisterState(true);
+          handleOpenForm();
+        }
+    }
+  }, [isOpen]);
+
   return (
-    <div className="col-md-6">
-      <div
-        className="modal fade"
-        id="modalLRForm"
-        tabindex="-1"
-        role="dialog"
-        aria-labelledby="myModalLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog cascading-modal" role="document">
-          <div className="modal-content">
-            <div className="modal-c-tabs">
-              <ul
-                className="nav nav-tabs md-tabs tabs-2 light-blue darken-3"
-                role="tablist"
-              >
-                <li className="nav-item waves-effect waves-light">
-                  <a
-                    className="nav-link active"
-                    data-toggle="tab"
-                    href="#panel7"
-                    role="tab"
-                  >
-                    <i className="fas fa-user mr-1"></i>
-                    Login
-                  </a>
-                </li>
-                <li className="nav-item waves-effect waves-light">
-                  <a
-                    className="nav-link"
-                    data-toggle="tab"
-                    href="#panel8"
-                    role="tab"
-                  >
-                    <i className="fas fa-user-plus mr-1"></i>
-                    Register
-                  </a>
-                </li>
-              </ul>
-
-              <div className="tab-content">
-                <div
-                  className="tab-pane fade in show active"
-                  id="panel7"
-                  role="tabpanel"
-                >
-                  <div className="modal-body mb-1">
-                    <div className="md-form form-sm mb-5">
-                      <i className="fas fa-envelope prefix"></i>
-                      <input
-                        type="email"
-                        id="modalLRInput1"
-                        className="form-control form-control-sm validate"
-                      />
-                      <label
-                        data-error="wrong"
-                        data-success="right"
-                        for="modalLRInput1"
-                      >
-                        Your email
-                      </label>
-                    </div>
-
-                    <div className="md-form form-sm mb-4">
-                      <i className="fas fa-lock prefix"></i>
-                      <input
-                        type="password"
-                        id="modalLRInput2"
-                        className="form-control form-control-sm validate"
-                      />
-                      <label
-                        data-error="wrong"
-                        data-success="right"
-                        for="modalLRInput2"
-                      >
-                        Your password
-                      </label>
-                    </div>
-                    <div className="text-center mt-2">
-                      <button className="btn btn-info waves-effect waves-light">
-                        Log in <i className="fas fa-sign-in ml-1"></i>
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="modal-footer">
-                    <div className="options text-center text-md-right mt-1">
-                      <p>
-                        Not a member?{" "}
-                        <a  className="blue-text">
-                          Sign Up
-                        </a>
-                      </p>
-                      <p>
-                        Forgot{" "}
-                        <a  className="blue-text">
-                          Password?
-                        </a>
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-info waves-effect ml-auto"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-                {/*<!--/.Panel 7-->*/}
-
-                {/* <!--Panel 8-->*/}
-                <div className="tab-pane fade" id="panel8" role="tabpanel">
-                  {/* <!--Body--> */}
-                  <div className="modal-body">
-                    <div className="md-form form-sm mb-5">
-                      <i className="fas fa-envelope prefix"></i>
-                      <input
-                        type="email"
-                        id="modalLRInput3"
-                        className="form-control form-control-sm validate"
-                      />
-                      <label
-                        data-error="wrong"
-                        data-success="right"
-                        for="modalLRInput3"
-                      >
-                        Your email
-                      </label>
-                    </div>
-
-                    <div className="md-form form-sm mb-5">
-                      <i className="fas fa-lock prefix"></i>
-                      <input
-                        type="password"
-                        id="modalLRInput4"
-                        className="form-control form-control-sm validate"
-                      />
-                      <label
-                        data-error="wrong"
-                        data-success="right"
-                        for="modalLRInput4"
-                      >
-                        Your password
-                      </label>
-                    </div>
-
-                    <div className="md-form form-sm mb-4">
-                      <i className="fas fa-lock prefix"></i>
-                      <input
-                        type="password"
-                        id="modalLRInput5"
-                        className="form-control form-control-sm validate"
-                      />
-                      <label
-                        data-error="wrong"
-                        data-success="right"
-                        for="modalLRInput5"
-                      >
-                        Repeat password
-                      </label>
-                    </div>
-
-                    <div className="text-center form-sm mt-2">
-                      <button className="btn btn-info waves-effect waves-light">
-                        Sign up <i className="fas fa-sign-in ml-1"></i>
-                      </button>
-                    </div>
-                  </div>
-                  {/* <!--Footer--> */}
-                  <div className="modal-footer">
-                    <div className="options text-right">
-                      <p className="pt-1">
-                        Already have an account?{" "}
-                        <a  className="blue-text">
-                          Log In
-                        </a>
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-info waves-effect ml-auto"
-                      data-dismiss="modal"
-                    >
-                      Close
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <Modal
+      open={open}
+      onClose={handleCloseForm}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      disableEnforceFocus
+    >
+      <Box className="modal-delete">
+        <div onClick={handleCloseForm} className="d-flex justify-content-end">
+          <button
+            {...(loading ? { disabled: true } : {})}
+            className="close-modal-button"
+          >
+            <CloseIcon />
+          </button>
         </div>
-      </div>
+        <div className="d-flex justify-content-around m-2">
+          <button
+            onClick={() => isLogin()}
+            className={
+              loginState
+                ? "btn-modal-form-active mb-2 mt-2"
+                : "btn-modal-auth mb-2 mt-2"
+            }
+            disabled={loading}
+          >
+            Iniciar Sesión
+          </button>
+          <button
+            onClick={() => isRegister()}
+            className={
+              registerState
+                ? "btn-modal-form-active mb-2 mt-2"
+                : "btn-modal-auth mb-2 mt-2"
+            }
+            disabled={loading}
+          >
+            Registrarse
+          </button>
+        </div>
+        <div className="d-flex flex-column">
+          
+          {registerState ? (
+            <>
+              <label htmlFor="name">Nombre*</label>
+              <TextField
+                disabled={loading}
+                value={name}
+                type="text"
+                className="input"
+                id="name"
+                placeholder="nombre"
+                onChange={(e) => setName(e.target.value)}
+                error={errors && name?.length === 0}
+                helperText={
+                  errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+                }
+              />
+            </>
+          ) : (
+            ""
+          )}
+          <label htmlFor="email">Email*</label>
+          <TextField
+            disabled={loading}
+            autoComplete="off"
+            className="input"
+            type="email"
+            value={email}
+            id="email"
+            variant="outlined"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+            error={
+              (errors && email?.length === 0) || (errors && !checkEmail(email))
+            }
+            helperText={
+              errors && email?.length === 0
+                ? EMPTY_FIELD_MESSAGE
+                : errors && !checkEmail(email)
+                ? EMAIL_NOT_VALID_MESSAGE
+                : ""
+            }
+          />
 
-      <div className="text-center">
-        <a
-          href=""
-          className="btn btn-default btn-rounded my-3 waves-effect waves-light"
-          data-toggle="modal"
-          data-target="#modalLRForm"
-        >
-          Launch Modal LogIn/Register
-        </a>
-      </div>
+          <label htmlFor="password">Contraseña*</label>
+          <TextField
+            disabled={loading}
+            autoComplete="off"
+            className="input"
+            type="password"
+            value={password}
+            id="password"
+            variant="outlined"
+            placeholder="contraseña"
+            onChange={(e) => setPassword(e.target.value)}
+            error={errors && password?.length === 0}
+            helperText={
+              errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+            }
+          />
+        </div>
 
-      <div className="modal-dialog cascading-modal" role="document">
-        {/* <!--Content--> */}
-        <div className="modal-content">
-          {/* <!--Modal cascading tabs--> */}
-          <div className="modal-c-tabs">
-            {/* <!-- Nav tabs --> */}
-            <ul
-              className="nav nav-tabs md-tabs tabs-2 light-blue darken-3"
-              role="tablist"
+        {registerState ? (
+          <>
+            <label htmlFor="password">Contraseña*</label>
+            <TextField
+              disabled={loading}
+              autoComplete="off"
+              className="input"
+              type="password"
+              value={password}
+              id="password"
+              variant="outlined"
+              placeholder="contraseña"
+              onChange={(e) => setPassword(e.target.value)}
+              error={errors && password?.length === 0}
+              helperText={
+                errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+              }
+            />
+            <label htmlFor="passRepeat">Repite contraseña*</label>
+            <TextField
+              disabled={loading}
+              className="input"
+              type="password"
+              value={passRepeat}
+              id="passRepeat"
+              variant="outlined"
+              placeholder="repite contraseña"
+              onChange={(e) => setPassRepeat(e.target.value)}
+              error={errors && passRepeat?.length === 0}
+              helperText={
+                errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ""
+              }
+            />
+          </>
+        ) : (
+          ""
+        )}
+
+        <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <div className="typo-flex">
+            <button
+              onClick={() => (loginState ? onLogin() : onRegister())}
+              className="auth-buttons"
+              disabled={loading}
             >
-              <li className="nav-item waves-effect waves-light">
-                <a
-                  className="nav-link active"
-                  data-toggle="tab"
-                  href="#panel1"
-                  role="tab"
-                  aria-selected="true"
-                >
-                  <i className="fas fa-user mr-1"></i>
-                  Login
-                </a>
-              </li>
-              <li className="nav-item waves-effect waves-light">
-                <a
-                  className="nav-link"
-                  data-toggle="tab"
-                  href="#panel2"
-                  role="tab"
-                  aria-selected="false"
-                >
-                  <i className="fas fa-user-plus mr-1"></i>
-                  Register
-                </a>
-              </li>
-            </ul>
-
-            {/* <!-- Tab panels --> */}
-            <div className="tab-content">
-              {/* <!--Panel 1--> */}
-              <div
-                className="tab-pane fade in active show"
-                id="panel1"
-                role="tabpanel"
-              >
-                {/* <!--Body--> */}
-                <div className="modal-body mb-1">
-                  <div className="md-form form-sm mb-5">
-                    <i className="fas fa-envelope prefix"></i>
-                    <input
-                      type="email"
-                      id="modalLRInput6"
-                      className="form-control form-control-sm validate"
-                    />
-                    <label
-                      data-error="wrong"
-                      data-success="right"
-                      for="modalLRInput6"
-                    >
-                      Your email
-                    </label>
-                  </div>
-
-                  <div className="md-form form-sm mb-4">
-                    <i className="fas fa-lock prefix"></i>
-                    <input
-                      type="password"
-                      id="modalLRInput7"
-                      className="form-control form-control-sm validate"
-                    />
-                    <label
-                      data-error="wrong"
-                      data-success="right"
-                      for="modalLRInput7"
-                    >
-                      Your password
-                    </label>
-                  </div>
-                  <div className="text-center mt-2">
-                    <button className="btn btn-info waves-effect waves-light">
-                      Log in <i className="fas fa-sign-in ml-1"></i>
-                    </button>
-                  </div>
-                </div>
-                {/* <!--Footer--> */}
-                <div className="modal-footer display-footer">
-                  <div className="options text-center text-md-right mt-1">
-                    <p>
-                      Not a member?{" "}
-                      <a  className="blue-text">
-                        Sign Up
-                      </a>
-                    </p>
-                    <p>
-                      Forgot{" "}
-                      <a  className="blue-text">
-                        Password?
-                      </a>
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-info waves-effects ml-auto"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-              {/* <!--/.Panel 1--> */}
-
-              {/* <!--Panel 2--> */}
-              <div className="tab-pane fade" id="panel2" role="tabpanel">
-                {/* <!--Body--> */}
-                <div className="modal-body">
-                  <div className="md-form form-sm mb-5">
-                    <i className="fas fa-envelope prefix"></i>
-                    <input
-                      type="email"
-                      id="modalLRInput10"
-                      className="form-control form-control-sm validate"
-                    />
-                    <label
-                      data-error="wrong"
-                      data-success="right"
-                      for="modalLRInput10"
-                    >
-                      Your email
-                    </label>
-                  </div>
-
-                  <div className="md-form form-sm mb-5">
-                    <i className="fas fa-lock prefix"></i>
-                    <input
-                      type="password"
-                      id="modalLRInput8"
-                      className="form-control form-control-sm validate"
-                    />
-                    <label
-                      data-error="wrong"
-                      data-success="right"
-                      for="modalLRInput8"
-                    >
-                      Your password
-                    </label>
-                  </div>
-
-                  <div className="md-form form-sm mb-4">
-                    <i className="fas fa-lock prefix"></i>
-                    <input
-                      type="password"
-                      id="modalLRInput9"
-                      className="form-control form-control-sm validate"
-                    />
-                    <label
-                      data-error="wrong"
-                      data-success="right"
-                      for="modalLRInput9"
-                    >
-                      Repeat password
-                    </label>
-                  </div>
-
-                  <div className="text-center form-sm mt-2">
-                    <button className="btn btn-info waves-effect waves-light">
-                      Sign up <i className="fas fa-sign-in ml-1"></i>
-                    </button>
-                  </div>
-                </div>
-                {/* <!--Footer--> */}
-                <div className="modal-footer">
-                  <div className="options text-right">
-                    <p className="pt-1">
-                      Already have an account?{" "}
-                      <a  className="blue-text">
-                        Log In
-                      </a>
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-info waves-effect ml-auto"
-                    data-dismiss="modal"
-                  >
-                    Close
-                  </button>
-                </div>
-              </div>
-              {/* <!--/.Panel 2--> */}
-            </div>
+              {loginState ? "Iniciar Sesión" : "Registrarse"}
+            </button>
           </div>
-        </div>
-        {/* <!--/.Content--> */}
-      </div>
-    </div>
+        </Typography>
+        {loading ? (
+          <Typography className="d-flex justify-content-center ">
+            <SpinnerLoading />
+          </Typography>
+        ) : (
+          ""
+        )}
+        <small className="small-style">*Campos requeridos</small>
+      </Box>
+    </Modal>
   );
 };
 

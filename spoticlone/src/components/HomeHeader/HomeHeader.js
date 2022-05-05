@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
 import { useNavigate } from "react-router-dom";
 
-const HomeHeader = ({ onChangeText, isFocus }) => {
+const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const { user } = authContext.user;
@@ -22,12 +22,12 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
     authContext.setUser({});
     authContext.setUserRole("");
     removeUserStorage();
-    navigate("/login");
+    navigate("/");
   };
 
   return (
     <div className="bg-dark header-home">
-      {!!user  ? (
+      {!!user ? (
         <div className="dropdown auth-user">
           <button
             className="btn dropdown-toggle auth-drop"
@@ -70,11 +70,11 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
         </div>
       ) : (
         <div className="auth-fields">
-          <button className="btn btn-auth">
-            <Link to="/login">Iniciar sesión</Link>
+          <button onClick={() => onChangeFormStatus(true, 'login')} className="btn btn-auth">
+            Iniciar sesión
           </button>
-          <button className="btn btn-auth">
-            <Link to="/register">Registrarse</Link>
+          <button onClick={() => onChangeFormStatus(true, 'register')} className="btn btn-auth">
+            Registrarse
           </button>
         </div>
       )}

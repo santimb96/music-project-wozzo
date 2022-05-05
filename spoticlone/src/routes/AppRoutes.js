@@ -11,6 +11,7 @@ import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
 import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
+import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
@@ -67,7 +68,7 @@ const AppRoutes = () => {
   };
 
   if(loading) {
-    return <div className="loading-page">Loading</div>
+    return <GlobalLoading />
   }
 
   return (
