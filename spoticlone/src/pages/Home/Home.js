@@ -85,17 +85,13 @@ const Home = () => {
     setFormStatus({status, type});
   }
 
-  const restartFormStatus = (status, type) => {
-    setFormStatus({status, type});
-  }
-
   return (
     <div className="row home-page">
       <SidebarHome />
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
           <HomeHeader onChangeText={onChangeText} isFocus={isFocus} onChangeFormStatus={onChangeFormStatus} />      
-          <AuthModal isOpen={formStatus} restartFormStatus={restartFormStatus} />
+          <AuthModal isOpen={formStatus} />
           <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
           {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>

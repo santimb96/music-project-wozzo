@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
 import "./index.scss";
 
-const AuthModal = ({ isOpen, restartFormStatus }) => {
+const AuthModal = ({ isOpen }) => {
   // USER CONTEXT
   const authContext = useContext(AuthContext);
   // NAVIGATE
