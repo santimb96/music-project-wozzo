@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
-import AuthContext from "../../contexts/AuthContext";
+import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
-import { useNavigate } from "react-router-dom";
 
-const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
-  const authContext = useContext(AuthContext);
-  const {user} = authContext?.user;
-  const navigate = useNavigate();
+const HomeHeader = ({ onChangeText, isFocus }) => {
+  const { user, setUser, setUserRole, userRole, setShowAuthModal, setAuthModalType } = useContext(AuthContext);
 
   const onFocus = () => {
     isFocus(true);
@@ -19,15 +16,14 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
   };
 
   const logOut = () => {
-    authContext.setUser({});
-    authContext.setUserRole("");
+    setUser(null);
+    setUserRole("");
     removeUserStorage();
-    window.location.reload();
   };
 
   return (
     <div className="bg-dark header-home">
-      {user ? (
+      {user?._id && (
         <div className="dropdown auth-user">
           <button
             className="btn dropdown-toggle auth-drop"
@@ -40,7 +36,7 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
             Bienvenido, {user.name}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {authContext.userRole === "admin" ? (
+            {userRole === "admin" && (
               <>
                 <button className="dropdown-item">
                   <Link to="/backoffice/roles">BO-Roles</Link>
@@ -55,25 +51,33 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
                   <Link to="/backoffice/songs">BO-Canciones</Link>
                 </button>
                 <hr></hr>
-                <button onClick={logOut} className="dropdown-item">
-                  <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>
-                  Cerrar Sesión
-                </button>
               </>
-            ) : (
-              <button onClick={logOut} className="dropdown-item">
+            )}
+            <button onClick={logOut} className="dropdown-item">
                 <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
                 Sesión
               </button>
-            )}
           </div>
         </div>
-      ) : (
+      )}
+      {!user?._id && (
         <div className="auth-fields">
-          <button onClick={() => onChangeFormStatus(true, 'login')} className="btn btn-auth">
+          <button
+            onClick={() => {
+              setShowAuthModal(true);
+              setAuthModalType(MODAL_STATES.LOGIN);
+            }}
+            className="btn btn-auth"
+          >
             Iniciar sesión
           </button>
-          <button onClick={() => onChangeFormStatus(true, 'register')} className="btn btn-auth">
+          <button
+            onClick={() => {
+              setShowAuthModal(true);
+              setAuthModalType(MODAL_STATES.REGISTER);
+            }}
+            className="btn btn-auth"
+          >
             Registrarse
           </button>
         </div>
@@ -89,6 +93,7 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
           placeholder="Artistas o canciones"
         />
       </div>
+      
     </div>
   );
 };

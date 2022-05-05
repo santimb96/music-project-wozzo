@@ -32,7 +32,7 @@ const AppRoutes = () => {
         autoLogin(userId, token)
           .then((userLog) => {
             //metemos user y userRole en authContext
-            setUser(userLog);
+            setUser(userLog?.user);
             setUserRole(userLog.user.userRoleId.name);
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
@@ -11,22 +11,18 @@ import {
   checkPassword,
 } from "../../utils/validators.js";
 import CloseIcon from "@mui/icons-material/Close";
-import AuthContext from "../../contexts/AuthContext";
+import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
 import "./index.scss";
+import SnackBarError from "../SnackBarError/SnackBarError";
 
-const AuthModal = ({ isOpen }) => {
+const AuthModal = () => {
   // USER CONTEXT
-  const authContext = useContext(AuthContext);
+  const { showAuthModal, setAuthModalType, setUser, setUserRole, authModalType, setShowAuthModal } = useContext(AuthContext);
   // NAVIGATE
-
   const navigate = useNavigate();
-
-  const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loginState, setLoginState] = useState(false);
-  const [registerState, setRegisterState] = useState(true);
 
   // LOGIN FIELDS
   const [email, setEmail] = useState("");
@@ -36,71 +32,74 @@ const AuthModal = ({ isOpen }) => {
   const [passRepeat, setPassRepeat] = useState("");
   const role = "user";
 
-  const [errorsLogin, setErrorsLogin] = useState(false);
-  const [errorsRegister, setErrorsRegister] = useState(false);
+  const [errors, setErrors] = useState(false);
+  const [errorSnack, setErrorSnack] = useState(false);
+
+  //CLOSE FORM
 
   const handleCloseForm = () => {
-    setOpen(false);
-    setErrorsLogin(false);
-    setErrorsRegister(false);
+    setShowAuthModal(false);
+    setErrors(false);
   }
-  //const handleOpenForm = () => setOpen(true);
 
-  const isLogin = () => {
-    setLoginState(true);
-    setRegisterState(false);
-  };
+  const changeModalType = (type) => {
+    setErrors(false);
+    setAuthModalType(type);
+  }
+  const handleErrorClose = () => setErrorSnack(false);
 
-  const isRegister = () => {
-    setLoginState(false);
-    setRegisterState(true);
-  };
+  //LOGIN SYSTEM
 
   const onLogin = () => {
     if (validateData()) {
       setLoading(true);
       login(email, password)
         .then((user) => {
-          authContext.setUser(user.user);
-          authContext.setUserRole(user.role);
+          setUser(user.user);
+          setUserRole(user.role);
           localStorage.setItem("userId", user.user._id);
           localStorage.setItem("token", user.token);
           localStorage.setItem("expiryDate", user.expiryDate);
-          clearData();
-          setLoginState(false);
-          setLoading(false);
-          setOpen(false);
-          // handleCloseForm();
-          user.role === "admin" ? navigate("/backoffice/roles") : window.location.reload();;
+          setShowAuthModal(false);
+          if(user.role === "admin"){
+            navigate("/backoffice/roles");
+          }
         })
         .catch(() => {
-          clearData();
-          navigate("/");
-        });
+          // todo show error message
+          setLoading(false);
+          setShowAuthModal(false);
+          setErrorSnack(true);
+        })
+        .finally(() => setLoading(false));
     } else {
-      setErrorsLogin(true);
+      setErrors(true);
     }
   };
+
+  //REGISTER SYSTEM
 
   const onRegister = () => {
     if (validateData()) {
       setLoading(true);
       register(name, email, password, role)
-        .then((user) => {
+        .then(() => {
           clearData();
-          setRegisterState(false);
+          setAuthModalType(MODAL_STATES.REGISTER);
           setLoading(false);
-          setOpen(false);
-          window.location.reload();
+          setShowAuthModal(false);
         })
         .catch(() => {
-          clearData();
-          navigate("/");
+          setLoading(false);
+          setShowAuthModal(false);
+          setErrorSnack(true);
         });
     } else {
-      setErrorsRegister(true);
+      setErrors(true);
     }
-  }
+  };
+
+  //CLEAR ALL DATA AFTER EACH OPERATION
 
   const clearData = () => {
     setName("");
@@ -109,8 +108,10 @@ const AuthModal = ({ isOpen }) => {
     setPassRepeat("");
   };
 
+  //VALIDATE DATA FROM STATES(FORM FIELDS)
+
   const validateData = () => {
-    if (loginState) {
+    if (authModalType === MODAL_STATES.LOGIN) {
       if (email?.length && password?.length) {
         if (checkEmailOnRegister(email)) {
           return true;
@@ -136,24 +137,10 @@ const AuthModal = ({ isOpen }) => {
     }
   };
 
-  useEffect(() => {
-    if (isOpen.status) {
-      if(isOpen.type === "login"){
-          setRegisterState(false);
-          setLoginState(true);
-          setOpen(isOpen.status);
-        } else {
-
-          setLoginState(false);
-          setRegisterState(true);
-          setOpen(isOpen.status);
-        }
-    }
-  }, [isOpen]);
-
   return (
+    <div>
     <Modal
-      open={open}
+      open={showAuthModal}
       onClose={handleCloseForm}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -170,9 +157,9 @@ const AuthModal = ({ isOpen }) => {
         </div>
         <div className="d-flex justify-content-around m-2">
           <button
-            onClick={() => isLogin()}
+            onClick={() => changeModalType(MODAL_STATES.LOGIN)}
             className={
-              loginState
+              authModalType === MODAL_STATES.LOGIN
                 ? "btn-modal-form-active mb-2 mt-2"
                 : "btn-modal-auth mb-2 mt-2"
             }
@@ -181,9 +168,9 @@ const AuthModal = ({ isOpen }) => {
             Iniciar Sesión
           </button>
           <button
-            onClick={() => isRegister()}
+            onClick={() => changeModalType(MODAL_STATES.REGISTER)}
             className={
-              registerState
+              authModalType === MODAL_STATES.REGISTER
                 ? "btn-modal-form-active mb-2 mt-2"
                 : "btn-modal-auth mb-2 mt-2"
             }
@@ -193,8 +180,7 @@ const AuthModal = ({ isOpen }) => {
           </button>
         </div>
         <div className="d-flex flex-column">
-          
-          {registerState ? (
+          {authModalType === MODAL_STATES.REGISTER && (
             <>
               <label htmlFor="name">Nombre*</label>
               <TextField
@@ -205,14 +191,12 @@ const AuthModal = ({ isOpen }) => {
                 id="name"
                 placeholder="nombre"
                 onChange={(e) => setName(e.target.value)}
-                error={errorsRegister && name?.length === 0}
+                error={errors && name?.length === 0}
                 helperText={
-                  errorsRegister && name?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+                  errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
                 }
               />
             </>
-          ) : (
-            ""
           )}
           <label htmlFor="email">Email*</label>
           <TextField
@@ -226,12 +210,12 @@ const AuthModal = ({ isOpen }) => {
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
             error={
-              ((errorsLogin || errorsRegister) && email?.length === 0) || ((errorsLogin || errorsRegister) && !checkEmail(email))
+              ((errors || errors) && email?.length === 0) || ((errors || errors) && !checkEmail(email))
             }
             helperText={
-              (errorsLogin || errorsRegister) && email?.length === 0
+              (errors || errors) && email?.length === 0
                 ? EMPTY_FIELD_MESSAGE
-                : (errorsLogin || errorsRegister) && !checkEmail(email)
+                : (errors || errors) && !checkEmail(email)
                 ? EMAIL_NOT_VALID_MESSAGE
                 : ""
             }
@@ -248,14 +232,14 @@ const AuthModal = ({ isOpen }) => {
             variant="outlined"
             placeholder="contraseña"
             onChange={(e) => setPassword(e.target.value)}
-            error={(errorsLogin || errorsRegister) && password?.length === 0}
+            error={(errors || errors) && password?.length === 0}
             helperText={
-              (errorsLogin || errorsRegister) && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+              (errors || errors) && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
             }
           />
         </div>
 
-        {registerState ? (
+        {authModalType === MODAL_STATES.REGISTER && (
           <>
             <label htmlFor="passRepeat">Repite contraseña*</label>
             <TextField
@@ -267,24 +251,22 @@ const AuthModal = ({ isOpen }) => {
               variant="outlined"
               placeholder="repite contraseña"
               onChange={(e) => setPassRepeat(e.target.value)}
-              error={errorsRegister && passRepeat?.length === 0}
+              error={errors && passRepeat?.length === 0}
               helperText={
-                errorsRegister && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ""
+                errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ""
               }
             />
           </>
-        ) : (
-          ""
         )}
 
         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
           <div className="typo-flex">
             <button
-              onClick={() => (loginState ? onLogin() : onRegister())}
+              onClick={() => authModalType === MODAL_STATES.LOGIN ? onLogin() : onRegister()}
               className="auth-buttons"
               disabled={loading}
             >
-              {loginState ? "Iniciar Sesión" : "Registrarse"}
+              {authModalType === MODAL_STATES.LOGIN ? "Iniciar Sesión" : "Registrarse"}
             </button>
           </div>
         </Typography>
@@ -298,6 +280,8 @@ const AuthModal = ({ isOpen }) => {
         <small className="small-style">*Campos requeridos</small>
       </Box>
     </Modal>
+    <SnackBarError open={errorSnack} handleErrorClose={handleErrorClose} />
+    </div>
   );
 };
 
