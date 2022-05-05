@@ -36,11 +36,13 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
   const [passRepeat, setPassRepeat] = useState("");
   const role = "user";
 
-  const [errors, setErrors] = useState(false);
+  const [errorsLogin, setErrorsLogin] = useState(false);
+  const [errorsRegister, setErrorsRegister] = useState(false);
 
   const handleCloseForm = () => {
     setOpen(false);
-    setErrors(false);
+    setErrorsLogin(false);
+    setErrorsRegister(false);
   }
   //const handleOpenForm = () => setOpen(true);
 
@@ -76,7 +78,7 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
           navigate("/");
         });
     } else {
-      setErrors(true);
+      setErrorsLogin(true);
     }
   };
 
@@ -96,7 +98,7 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
           navigate("/");
         });
     } else {
-      setErrors(true);
+      setErrorsRegister(true);
     }
   }
 
@@ -203,9 +205,9 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
                 id="name"
                 placeholder="nombre"
                 onChange={(e) => setName(e.target.value)}
-                error={errors && name?.length === 0}
+                error={errorsRegister && name?.length === 0}
                 helperText={
-                  errors && name?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+                  errorsRegister && name?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
                 }
               />
             </>
@@ -224,12 +226,12 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
             error={
-              (errors && email?.length === 0) || (errors && !checkEmail(email))
+              ((errorsLogin || errorsRegister) && email?.length === 0) || ((errorsLogin || errorsRegister) && !checkEmail(email))
             }
             helperText={
-              errors && email?.length === 0
+              (errorsLogin || errorsRegister) && email?.length === 0
                 ? EMPTY_FIELD_MESSAGE
-                : errors && !checkEmail(email)
+                : (errorsLogin || errorsRegister) && !checkEmail(email)
                 ? EMAIL_NOT_VALID_MESSAGE
                 : ""
             }
@@ -246,9 +248,9 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
             variant="outlined"
             placeholder="contraseña"
             onChange={(e) => setPassword(e.target.value)}
-            error={errors && password?.length === 0}
+            error={(errorsLogin || errorsRegister) && password?.length === 0}
             helperText={
-              errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
+              (errorsLogin || errorsRegister) && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
             }
           />
         </div>
@@ -265,9 +267,9 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
               variant="outlined"
               placeholder="repite contraseña"
               onChange={(e) => setPassRepeat(e.target.value)}
-              error={errors && passRepeat?.length === 0}
+              error={errorsRegister && passRepeat?.length === 0}
               helperText={
-                errors && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ""
+                errorsRegister && passRepeat?.length === 0 ? EMPTY_FIELD_MESSAGE : ""
               }
             />
           </>
