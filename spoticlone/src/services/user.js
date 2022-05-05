@@ -45,7 +45,6 @@ const login = (email, password) =>
 
 const register = (name, email, password, role) =>
   new Promise((resolve, reject) => {
-    
     let setRole = ROLES.find(r => r.role === role);
 
     if (!name || !email || !password) {
