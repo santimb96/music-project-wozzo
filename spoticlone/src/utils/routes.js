@@ -1,8 +1,5 @@
 const routes = [
     {
-      route: '/backoffice/admin'
-    },
-    {
       route: '/backoffice/users'
     },
     {

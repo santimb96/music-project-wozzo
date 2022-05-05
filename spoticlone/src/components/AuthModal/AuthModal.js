@@ -45,7 +45,7 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
     setOpen(false);
     setErrors(false);
   }
-  const handleOpenForm = () => setOpen(true);
+  //const handleOpenForm = () => setOpen(true);
 
   const isLogin = () => {
     setLoginState(true);
@@ -58,7 +58,6 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
   };
 
   const onLogin = () => {
-    console.warn('hi');
     if (validateData()) {
       authContext.setLoading(true);
       setLoading(true);
@@ -74,7 +73,7 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
           setLoading(false);
           authContext.setLoading(false);
           handleCloseForm();
-          user.role === "admin" ? navigate("/backoffice/roles") : navigate("/");
+          user.role === "admin" ? navigate("/backoffice/roles") : window.location.reload();
         })
         .catch(() => {
           clearData();
@@ -123,15 +122,15 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
 
   useEffect(() => {
     if (isOpen.status) {
-        setOpen(isOpen.status);
-        if(isOpen.type === "login"){
+      if(isOpen.type === "login"){
           setRegisterState(false);
           setLoginState(true);
-          handleOpenForm();
+          setOpen(isOpen.status);
         } else {
+
           setLoginState(false);
           setRegisterState(true);
-          handleOpenForm();
+          setOpen(isOpen.status);
         }
     }
   }, [isOpen]);

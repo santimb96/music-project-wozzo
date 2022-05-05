@@ -12,6 +12,7 @@ import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
+import NotFound from "../components/NotFound/NotFound";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
@@ -67,9 +68,10 @@ const AppRoutes = () => {
     }
   };
 
-  if(loading) {
-    return <GlobalLoading />
-  }
+  if(loading) return <GlobalLoading />
+  
+  if(!routes.find((r) => r.route === window.location.pathname) && !['/login', '/register', '/'].includes(window.location.pathname)) return <NotFound />;
+  
 
   return (
     //

@@ -22,7 +22,7 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
     authContext.setUser({});
     authContext.setUserRole("");
     removeUserStorage();
-    navigate("/");
+    window.location.reload();
   };
 
   return (
