@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import "./index.scss";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
   const authContext = useContext(AuthContext);
+  const {user} = authContext?.user;
   const navigate = useNavigate();
-  const { user } = authContext.user;
 
   const onFocus = () => {
     isFocus(true);
@@ -27,7 +27,7 @@ const HomeHeader = ({ onChangeText, isFocus, onChangeFormStatus }) => {
 
   return (
     <div className="bg-dark header-home">
-      {!!user ? (
+      {user ? (
         <div className="dropdown auth-user">
           <button
             className="btn dropdown-toggle auth-drop"

@@ -43,8 +43,11 @@ const login = (email, password) =>
   });
 
 
-const register = (name, email, password) =>
+const register = (name, email, password, role) =>
   new Promise((resolve, reject) => {
+    
+    let setRole = ROLES.find(r => r.role === role);
+
     if (!name || !email || !password) {
       reject("Error de parámetros");
     } else {
@@ -57,7 +60,7 @@ const register = (name, email, password) =>
           name,
           email,
           password,
-          userRoleId: "6246cedb97335a4a24ae3cb5",
+          userRoleId: setRole ? setRole.id : "6246cedb97335a4a24ae3cb5" ,
         }),
       })
         .then((response) => resolve(response.json()))

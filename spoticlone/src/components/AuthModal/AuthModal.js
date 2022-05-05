@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
@@ -12,11 +11,9 @@ import {
   checkPassword,
 } from "../../utils/validators.js";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import spotiLogo from "../../images/spoticlone-logo.png";
-import { login } from "../../services/user";
+import { login, register } from "../../services/user";
 import "./index.scss";
 
 const AuthModal = ({ isOpen, restartFormStatus }) => {
@@ -59,7 +56,6 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
 
   const onLogin = () => {
     if (validateData()) {
-      authContext.setLoading(true);
       setLoading(true);
       login(email, password)
         .then((user) => {
@@ -71,9 +67,9 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
           clearData();
           setLoginState(false);
           setLoading(false);
-          authContext.setLoading(false);
-          handleCloseForm();
-          user.role === "admin" ? navigate("/backoffice/roles") : window.location.reload();
+          setOpen(false);
+          // handleCloseForm();
+          user.role === "admin" ? navigate("/backoffice/roles") : window.location.reload();;
         })
         .catch(() => {
           clearData();
@@ -84,7 +80,25 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
     }
   };
 
-  const onRegister = () => {};
+  const onRegister = () => {
+    if (validateData()) {
+      setLoading(true);
+      register(name, email, password, role)
+        .then((user) => {
+          clearData();
+          setRegisterState(false);
+          setLoading(false);
+          setOpen(false);
+          window.location.reload();
+        })
+        .catch(() => {
+          clearData();
+          navigate("/");
+        });
+    } else {
+      setErrors(true);
+    }
+  }
 
   const clearData = () => {
     setName("");
@@ -241,22 +255,6 @@ const AuthModal = ({ isOpen, restartFormStatus }) => {
 
         {registerState ? (
           <>
-            <label htmlFor="password">Contraseña*</label>
-            <TextField
-              disabled={loading}
-              autoComplete="off"
-              className="input"
-              type="password"
-              value={password}
-              id="password"
-              variant="outlined"
-              placeholder="contraseña"
-              onChange={(e) => setPassword(e.target.value)}
-              error={errors && password?.length === 0}
-              helperText={
-                errors && password?.length === 0 ? EMPTY_FIELD_MESSAGE : " "
-              }
-            />
             <label htmlFor="passRepeat">Repite contraseña*</label>
             <TextField
               disabled={loading}
