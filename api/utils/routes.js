@@ -40,6 +40,19 @@ const routes = {
       method: 'GET',
       route: '/songs/:id',
     },
+    {
+      method: 'GET',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'POST',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'DELETE',
+      route: '/favouriteSongs/:id',
+    }
+
 
   ], 
   'admin': [
@@ -125,6 +138,18 @@ const routes = {
     {
       method: 'GET',
       route: '/userRoles/:id'
+    },
+    {
+      method: 'GET',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'POST',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'DELETE',
+      route: '/favouriteSongs/:id',
     }
   ]
 };
