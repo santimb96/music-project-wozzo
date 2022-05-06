@@ -15,7 +15,7 @@ import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
 import "./index.scss";
-import SnackBarError from "../SnackBarError/SnackBarError";
+
 
 const AuthModal = () => {
   // USER CONTEXT

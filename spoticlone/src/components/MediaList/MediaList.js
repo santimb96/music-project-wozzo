@@ -111,9 +111,9 @@ const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
                         align="left"
                       >
                         {s?.favSong && user?._id ? (
-                          <i onClick={() => onFav(song, true)} className="fa-solid fa-heart"></i>
+                          <i onClick={() => onFav(s.favSong._id, true)} className="fa-solid fa-heart"></i>
                         ) : (
-                          <i onClick={() => onFav(song, false)} className="fa-regular fa-heart"></i>
+                          <i onClick={() => onFav(s, false)} className="fa-regular fa-heart"></i>
                         )}
                       </TableCell>
                       <TableCell

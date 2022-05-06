@@ -61,6 +61,7 @@ const FavouriteSongBackoffice = () => {
   const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   /**
    *
@@ -170,9 +171,12 @@ const FavouriteSongBackoffice = () => {
 
   const validateData = () => {
     const checkUser = users.find((user) => user._id === userId);
+    const checkRepeat = favouriteSongs.find(
+      (favSong) => favSong.songName === songName && favSong.userName === userName
+    );
     const checkSong = songs.find((song) => song._id === songId);
 
-    return checkUser && checkSong ? true : false;
+    return checkUser && checkSong && !checkRepeat ? true : false;
   };
 
   const setData = (favouriteSong) => {
@@ -194,6 +198,7 @@ const FavouriteSongBackoffice = () => {
       setLoading(true);
       postFavSong(createFavSong, token)
         .then(() => {
+          setErrorMessage(null);
           setOpenForm(false);
           setLoading(false);
           setSuccessOpen(true);
@@ -202,9 +207,7 @@ const FavouriteSongBackoffice = () => {
         .catch(() => setErrorOpen(true));
     } else {
       setLoading(false);
-      setErrors(true);
-      handleOpenError();
-      handleCloseError();
+      setErrorMessage("Campos incorrectos");
     }
   };
 
@@ -232,6 +235,7 @@ const FavouriteSongBackoffice = () => {
       setLoading(true);
       updatefavSong(favouriteSongId, updatedfavSong, token)
         .then(() => {
+          setErrorMessage(null);
           setOpenForm(false);
           setSuccessOpen(true);
           setLoading(false);
@@ -243,9 +247,7 @@ const FavouriteSongBackoffice = () => {
         });
     } else {
       setLoading(false);
-      setErrors(true);
-      handleOpenError();
-      handleCloseError();
+      setErrorMessage("Campos incorrectos");
     }
   };
 
@@ -376,6 +378,11 @@ const FavouriteSongBackoffice = () => {
                           <CloseIcon />
                         </button>
                       </div>
+                      {errorMessage && (
+                        <div className="text-danger justify-content-center">
+                          <p className="text-center">{errorMessage}</p>
+                        </div>
+                      )}
                       <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">

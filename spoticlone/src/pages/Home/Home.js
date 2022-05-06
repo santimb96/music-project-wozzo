@@ -5,7 +5,7 @@ import SidebarHome from "../../components/SidebarHome/SidebarHome";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
 import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
-import { getFavSong } from "../../services/favouriteSongs";
+import { deleteFavSong, getFavSong, postFavSong } from "../../services/favouriteSongs";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import './index.scss';
 import AuthModal from "../../components/AuthModal/AuthModal";
@@ -13,6 +13,7 @@ import AuthModal from "../../components/AuthModal/AuthModal";
 const Home = () => {
   const authContext = useContext(AuthContext);
   const {user} = authContext;
+  const token = localStorage.getItem("token");
 
   const [filterText, setFilterText] = useState("");
 
@@ -32,7 +33,7 @@ const Home = () => {
           return {
             ...song,
             artistName: artist.name,
-            favSong: favSong ? true : false,
+            favSong: favSong ? favSong : false,
           };
         });
         setSongs(data);
@@ -83,18 +84,31 @@ const Home = () => {
       setSelectedSong(nextSong)
   };
 
-  const deleteFav = () => {
-    console.warn('delete fav');
+  const deleteFav = (song) => {
+    deleteFavSong(song, token)
+      .then(()=> {
+        getData();
+      })
+      .catch((err) => console.error(err));
   }
-  const addFav = () =>{
-    console.log('add fav');
+
+  const addFav = (song) =>{
+    const favSong = {
+      userId: user?._id,
+      songId: song._id,
+    }
+    postFavSong(favSong, token)
+      .then(() => {
+        getData();
+      })
+      .catch((err) => console.error(err));
   }
 
   const onFav = (song, onDelete) => {
     if (onDelete) {
-      deleteFav();
+      deleteFav(song);
     } else {
-      addFav();
+      addFav(song);
     }
   }
 
