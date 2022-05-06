@@ -25,11 +25,19 @@ const deleteById = async (req, res) => {
       .send({ status: 200, message: 'Registro borrados con éxito!' }))
     .catch(() => handleError(404, 'No se ha podido borrar el favorito', res));
 };
+const updateById = async (req, res) => {
+  FavouriteSong.findOneAndUpdate({_id: req.params.id}, req.body)
+    .then(favouriteSong => res
+      .status(201)
+      .send({status: 201, message: `${favouriteSong._id} ha sido actualizad@` }))
+    .catch(()=>  handleError(404, 'Artista no encontrado', res));
+};
  
 
 
 export default {
   getAll,
   create,
-  deleteById
+  deleteById,
+  updateById
 };

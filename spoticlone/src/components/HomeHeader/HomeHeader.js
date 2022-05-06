@@ -50,6 +50,9 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
                 <button className="dropdown-item">
                   <Link to="/backoffice/songs">BO-Canciones</Link>
                 </button>
+                <button className="dropdown-item">
+                  <Link to="/backoffice/favouriteSongs">BO-Canciones Fav</Link>
+                </button>
                 <hr></hr>
               </>
             )}

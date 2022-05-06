@@ -150,6 +150,10 @@ const routes = {
     {
       method: 'DELETE',
       route: '/favouriteSongs/:id',
+    },
+    {
+      method: 'PUT',
+      route: '/favouriteSongs/:id',
     }
   ]
 };

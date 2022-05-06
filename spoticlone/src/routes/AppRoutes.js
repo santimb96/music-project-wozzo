@@ -7,10 +7,13 @@ import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
+
 import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
 import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
+import FavouriteSongBackoffice from "../pages/FavouriteSongBackoffice/FavouriteSongBackoffice";
+
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
 import NotFound from "../components/NotFound/NotFound";
 
@@ -98,7 +101,7 @@ const AppRoutes = () => {
       />
       <Route
         path="/backoffice/favouriteSongs"
-        element={isAdmin() ? <SongBackoffice /> : <Home />}
+        element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
       />
     </Routes>
   );
