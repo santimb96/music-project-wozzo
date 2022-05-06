@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import SidebarBackoffice from "../../components/SidebarBackoffice/SidebarBackoffice";
-import {
-  createSong,
-  getSongs,
-  removeSong,
-  updateSong,
-} from "../../services/songs.js";
-
-import { getArtists } from "../../services/artists.js";
+import { getSongs } from "../../services/songs";
+import { getUsers } from "../../services/user";
 import Box from "@mui/material/Box";
 import {
   Table,
@@ -25,34 +19,49 @@ import Modal from "@mui/material/Modal";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import TextField from "@mui/material/TextField";
 import { EMPTY_FIELD_MESSAGE } from "../../constants";
-import CreateButton from "../../components/CreateButton/CreateButton";
 import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import CreateButton from "../../components/CreateButton/CreateButton";
 import EditButton from "../../components/EditButton/EditButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
-import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
+import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import CloseIcon from "@mui/icons-material/Close";
-import './index.scss';
+import "./index.scss";
+import {
+  deleteFavSong,
+  getFavSong,
+  postFavSong,
+  updatefavSong,
+} from "../../services/favouriteSongs";
 
-const SongBackoffice = () => {
+const FavouriteSongBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [songs, setSongs] = useState(null);
+  const [songs, setSongs] = useState([]);
+  const [favouriteSongs, setFavouriteSongs] = useState(null);
+  const [users, setUsers] = useState([]);
+
+  const [userName, setUserName] = useState("Selecciona");
+  const [songName, setSongName] = useState("Selecciona");
+
+  const [filteredFavSongs, setFilteredFavSongs] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [filteredSongs, setFilteredSongs] = useState([]);
+
   const [text, setText] = useState("");
-  const [name, setName] = useState("");
-  const [artistName, setArtistName] = useState("Selecciona");
-  const [artistId, setArtistId] = useState("");
-  const [audioUrl, setAudioUrl] = useState([]);
-  const [id, setId] = useState("");
+  const [filterUserDropdown, setFilterUserDropdown] = useState("");
+  const [filterSongDropdown, setFilterSongDropdown] = useState("");
+
+  const [favouriteSongId, setFavouriteSongId] = useState("");
+  const [userId, setUserId] = useState("");
+  const [songId, setSongId] = useState("");
+
   const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
-  const [artists, setArtists] = useState([]);
-  const [filterDropdown, setFilterDropdown] = useState("");
-  const [filteredArtists, setFilteredArtists] = useState([]);
   const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   /**
    *
@@ -75,9 +84,9 @@ const SongBackoffice = () => {
    */
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenDelete = (userId) => {
+  const handleOpenDelete = (artistId) => {
     setOpenDelete(true);
-    setId(userId);
+    setFavouriteSongId(artistId);
   };
 
   const handleCloseDelete = () => setOpenDelete(false);
@@ -88,14 +97,9 @@ const SongBackoffice = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleOpenForm = (post = false) => {
-    if (post) {
-      setCreate(true);
-      setErrors(false);
-      setOpenForm(true);
-    } else {
-      setErrors(false);
-      setOpenForm(true);
-    }
+    setCreate(post);
+    setErrors(false);
+    setOpenForm(true);
   };
 
   const handleCloseForm = () => {
@@ -105,22 +109,36 @@ const SongBackoffice = () => {
     setOpenForm(false);
   };
 
+  const clearData = () => {
+    setFavouriteSongId("");
+    setSongId("");
+    setUserId("");
+    setUserName("Selecciona");
+    setSongName("Selecciona");
+    setFavouriteSongId("");
+  };
+
   const getData = () => {
-    Promise.all([getSongs(), getArtists()])
-      .then(([songsResponse, artistsResponse]) => {
-        setArtists(artistsResponse.artists);
-        const data = songsResponse.songs.map((song) => {
-          const artist = artistsResponse.artists.find(
-            (artist) => artist._id === song.artistId
+    Promise.all([getSongs(), getUsers(token), getFavSong()])
+      .then(([songsResponse, usersResponse, favouriteSongsResponse]) => {
+        setUsers(usersResponse.users);
+        setSongs(songsResponse.songs);
+        const data = favouriteSongsResponse.favouriteSong.map((favSong) => {
+          const user = usersResponse.users.find(
+            (user) => user._id === favSong.userId
+          );
+          const song = songsResponse.songs.find(
+            (song) => song._id === favSong.songId
           );
           return {
-            ...song,
-            artistName: artist.name,
+            ...favSong,
+            userName: user.name,
+            songName: song.name,
           };
         });
-        setSongs(data);
+        setFavouriteSongs(data);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch(() => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -128,12 +146,12 @@ const SongBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = songs?.filter((song) => {
+    const filtered = favouriteSongs?.filter((favouriteSong) => {
       if (
-        song.name
+        favouriteSong.userName
           .toLocaleLowerCase()
           .includes(text.toLocaleLowerCase().trim()) ||
-        song.artistName
+        favouriteSong.songName
           .toLocaleLowerCase()
           .includes(text.toLocaleLowerCase().trim())
       ) {
@@ -141,106 +159,103 @@ const SongBackoffice = () => {
       }
       return false;
     });
-
-    setFilteredSongs(filtered);
+    setFilteredFavSongs(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredSongs;
+      return filteredFavSongs;
     }
-    return songs;
+    return favouriteSongs;
   };
 
-  const validateData = (method = false) => {
-    if (method && artistName !== "Selecciona") {
-      return true;
-    } else {
-      if (
-        name?.length &&
-        artistId?.length &&
-        //checkUrl(audioUrl) &&
-        artistName !== "Selecciona"
-      ) {
-        return true;
-      }
-      return false;
-    }
+  const validateData = () => {
+    const checkUser = users.find((user) => user._id === userId);
+    const checkRepeat = favouriteSongs.find(
+      (favSong) => favSong.songName === songName && favSong.userName === userName
+    );
+    const checkSong = songs.find((song) => song._id === songId);
+
+    return checkUser && checkSong && !checkRepeat ? true : false;
   };
 
-  const setData = (song) => {
-    setId(song._id);
-    setName(song.name);
-    setArtistName(song.artistName);
-    setArtistId(song.artistId);
-    setAudioUrl(song.audioUrl);
+  const setData = (favouriteSong) => {
+    setFavouriteSongId(favouriteSong._id);
+    setUserName(favouriteSong.userName);
+    setSongName(favouriteSong.songName);
+    setUserId(favouriteSong.userId);
+    setSongId(favouriteSong.songId);
     handleOpenForm();
   };
 
-  const postSong = () => {
+  const createFavSong = () => {
     if (validateData()) {
+      const createFavSong = {
+        userId,
+        songId,
+      };
       setErrors(false);
       setLoading(true);
-      createSong(name, artistId, audioUrl, token)
+      postFavSong(createFavSong, token)
         .then(() => {
-          setSuccessOpen(true);
-          setLoading(false);
+          setErrorMessage(null);
           setOpenForm(false);
-          clearData();
+          setLoading(false);
+          setSuccessOpen(true);
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch(() => setErrorOpen(true));
     } else {
-      setErrors(true);
-      handleOpenError();
-      handleCloseError();
+      setLoading(false);
+      setErrorMessage("Campos incorrectos");
     }
   };
 
   const deleteItem = (id) => {
     setLoading(true);
-    removeSong(id, token)
+    deleteFavSong(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch((err) => {
+        setLoading(false);
+        setErrorOpen(true);
+      });
   };
 
-  const editSong = (method) => {
-    if (validateData(method)) {
+  const editFavSong = () => {
+    if (validateData()) {
+      const updatedfavSong = {
+        songId,
+      };
+      setErrors(false);
       setLoading(true);
-      
-      updateSong(id, name, artistId, audioUrl, token)
+      updatefavSong(favouriteSongId, updatedfavSong, token)
         .then(() => {
+          setErrorMessage(null);
           setOpenForm(false);
-          setLoading(false);
           setSuccessOpen(true);
-          clearData();
+          setLoading(false);
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch((err) => {
+          setLoading(false);
+          setErrorOpen(true);
+        });
     } else {
-      setErrors(false);
-      handleOpenError();
-      handleCloseError();
+      setLoading(false);
+      setErrorMessage("Campos incorrectos");
     }
   };
 
-  const clearData = () => {
-    setName("");
-    setArtistName("Selecciona");
-    setAudioUrl("");
-    setId("");
-  };
-
-  const duplicateArtists = () => {
+  const duplicateUsers = () => {
     const seen = new Set();
-    const filtered = artists.filter((artist) => {
-      const duplicate = seen.has(artist._id);
-      seen.add(artist._id);
+    const filtered = users.filter((user) => {
+      const duplicate = seen.has(user._id);
+      seen.add(user._id);
       return !duplicate;
     });
 
@@ -248,29 +263,65 @@ const SongBackoffice = () => {
   };
 
   useEffect(() => {
-    const filtered = duplicateArtists()?.filter((artist) => {
+    const filtered = duplicateUsers()?.filter((user) => {
       if (
-        artist.name
+        user.name
           .toLocaleLowerCase()
-          .includes(filterDropdown.toLocaleLowerCase().trim())
+          .includes(filterUserDropdown.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
-    setFilteredArtists(filtered);
-  }, [filterDropdown]);
+    setFilteredUsers(filtered);
+  }, [filterUserDropdown]);
 
-  const artistsToShow = () => {
-    if (filterDropdown?.length) {
-      return filteredArtists;
+  const duplicateSongs = (item) => {
+    const seen = new Set();
+    const filtered = songs.filter((song) => {
+      const duplicate = seen.has(song._id);
+      seen.add(song._id);
+      return !duplicate;
+    });
+
+    return filtered.sort((a, b) => a.name.localeCompare(b.name));
+  };
+
+  useEffect(() => {
+    const filtered = duplicateSongs()?.filter((song) => {
+      if (
+        song.name
+          .toLocaleLowerCase()
+          .includes(filterSongDropdown.toLocaleLowerCase().trim())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredSongs(filtered);
+  }, [filterSongDropdown]);
+
+  const usersToShow = () => {
+    if (filterUserDropdown?.length) {
+      return filteredUsers;
     }
-    return duplicateArtists();
+    return duplicateUsers();
+  };
+
+  const songsToShow = () => {
+    if (filterSongDropdown?.length) {
+      return filteredSongs;
+    }
+    return duplicateSongs();
   };
 
   return (
     <div className="row">
-      {!loading? <SidebarBackoffice/> : <div className="col-12 col-md-2 bg-dark"></div> }
+      {!loading ? (
+        <SidebarBackoffice />
+      ) : (
+        <div className="col-12 col-md-2 bg-dark"></div>
+      )}
       <div className="col-12 col-md-10 p-0">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
@@ -305,7 +356,7 @@ const SongBackoffice = () => {
                     handleCloseDelete={handleCloseDelete}
                     loading={loading}
                     deleteItem={deleteItem}
-                    id={id}
+                    id={favouriteSongId}
                   />
 
                   <Modal
@@ -320,51 +371,86 @@ const SongBackoffice = () => {
                         onClick={handleCloseForm}
                         className="d-flex justify-content-end"
                       >
-                        <button {...(loading ? { disabled: true } : {})} className="close-modal-button">
+                        <button
+                          {...(loading ? { disabled: true } : {})}
+                          className="close-modal-button"
+                        >
                           <CloseIcon />
                         </button>
                       </div>
+                      {errorMessage && (
+                        <div className="text-danger justify-content-center">
+                          <p className="text-center">{errorMessage}</p>
+                        </div>
+                      )}
                       <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
-                            {create ? "Crear canción" : "Actualizar canción"}
+                            {create ? "Crear favorito" : "Actualizar favorito"}
                           </h2>
                         </div>
-                        <label className="label-form-modal" htmlFor="titulo">
-                          Título de la canción*
-                        </label>
-                        <TextField
-                          disabled={loading}
-                          value={name}
-                          type="text"
-                          className="input"
-                          id="titulo"
-                          placeholder="Título"
-                          onChange={(e) => setName(e.target.value)}
-                          error={errors && name?.length === 0}
-                          helperText={
-                            errors && name?.length === 0
-                              ? EMPTY_FIELD_MESSAGE
-                              : " "
-                          }
-                        />
-                        <label htmlFor="audioUrl">URL de la canción*</label>
-                        <TextField
-                        disabled={loading}
-                          className="input"
-                          type="file"
-                          id="audioUrl"
-                          variant="outlined"
-                          placeholder="URL del audio"
-                          onChange={(e) => setAudioUrl(e.target.files[0])}
-                          error={errors && audioUrl?.length === 0}
-                          helperText={
-                            errors && audioUrl?.length === 0
-                              ? EMPTY_FIELD_MESSAGE
-                              : " "
-                          }
-                        />
-                        <label htmlFor="drop">Compositor*</label>
+                        {/* USER INFO */}
+                        {!create ? (
+                          <>
+                            <label htmlFor="user">Usuario*</label>
+                            <div
+                              id="user"
+                              className="d-flex justify-content-center text-light"
+                            >
+                              <h5>{userName}</h5>
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <label htmlFor="drop">Usuario*</label>
+                            <div className="dropdown d-flex justify-content-center">
+                              <button
+                                {...(loading ? { disabled: true } : {})}
+                                className="btn btn-dropdown dropdown-toggle"
+                                type="button"
+                                id="drop"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                              >
+                                {userName}
+                              </button>
+                              <div
+                                className="dropdown-menu dropdown-menu-left  scrollable-menu"
+                                aria-labelledby="drop"
+                              >
+                                <input
+                                  {...(loading ? { disabled: true } : {})}
+                                  type="text"
+                                  placeholder="Filtrar..."
+                                  className="search-filter-dropdown"
+                                  onChange={(e) =>
+                                    setFilterUserDropdown(e.target.value)
+                                  }
+                                />
+
+                                {usersToShow()?.map((user) => (
+                                  <button
+                                    {...(loading ? { disabled: true } : {})}
+                                    key={user.name}
+                                    value={user._id}
+                                    onClick={(e) => {
+                                      setUserId(e.target.value);
+                                      setUserName(user.name);
+                                    }}
+                                    className="dropdown-item"
+                                    type="button"
+                                  >
+                                    {user.name}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </>
+                        )}
+
+                        {/* SONG DROPDOWN */}
+                        <label htmlFor="drop">Canción*</label>
                         <div className="dropdown d-flex justify-content-center">
                           <button
                             {...(loading ? { disabled: true } : {})}
@@ -375,7 +461,7 @@ const SongBackoffice = () => {
                             aria-haspopup="true"
                             aria-expanded="false"
                           >
-                            {artistName}
+                            {songName}
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
@@ -387,23 +473,23 @@ const SongBackoffice = () => {
                               placeholder="Filtrar..."
                               className="search-filter-dropdown"
                               onChange={(e) =>
-                                setFilterDropdown(e.target.value)
+                                setFilterSongDropdown(e.target.value)
                               }
                             />
 
-                            {artistsToShow()?.map((artist) => (
+                            {songsToShow()?.map((song) => (
                               <button
                                 {...(loading ? { disabled: true } : {})}
-                                key={artist.name}
-                                value={artist._id}
+                                key={song.name}
+                                value={song._id}
                                 onClick={(e) => {
-                                  setArtistId(e.target.value);
-                                  setArtistName(artist.name);
+                                  setSongId(e.target.value);
+                                  setSongName(song.name);
                                 }}
                                 className="dropdown-item"
                                 type="button"
                               >
-                                {artist.name}
+                                {song.name}
                               </button>
                             ))}
                           </div>
@@ -414,16 +500,16 @@ const SongBackoffice = () => {
                           <div className="typo-flex">
                             {create ? (
                               <Button
-                               disabled={loading}
-                                onClick={() => postSong()}
+                                disabled={loading}
+                                onClick={() => createFavSong()}
                                 className="btn-modal-form"
                               >
                                 Crear
                               </Button>
                             ) : (
                               <Button
-                              disabled={loading}
-                                onClick={() => editSong(true)}
+                                disabled={loading}
+                                onClick={() => editFavSong(true)}
                                 className="btn-modal-form"
                               >
                                 Actualizar
@@ -445,19 +531,13 @@ const SongBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Título
+                      Usuario
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Artista
-                    </TableCell>
-                    <TableCell
-                      style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
-                      URL de la canción
+                      Canción
                     </TableCell>
 
                     <TableCell
@@ -475,9 +555,9 @@ const SongBackoffice = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="pointer-table">
-                  {itemsToShow()?.map((song) => (
+                  {itemsToShow()?.map((favouriteSong) => (
                     <TableRow
-                      key={song.name}
+                      key={favouriteSong._id}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -486,24 +566,23 @@ const SongBackoffice = () => {
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {song.name}
+                        {favouriteSong.userName}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {song.artistName}
+                        {favouriteSong.songName}
                       </TableCell>
-                      <TableCell
-                        style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
-                        {song.audioUrl}
-                      </TableCell>
-                      <EditButton setData={setData} item={song} loading={loading} />
+
+                      <EditButton
+                        setData={setData}
+                        item={favouriteSong}
+                        loading={loading}
+                      />
                       <DeleteButton
                         handleOpenDelete={handleOpenDelete}
-                        id={song._id}
+                        id={favouriteSong._id}
                         loading={loading}
                       />
                     </TableRow>
@@ -524,4 +603,4 @@ const SongBackoffice = () => {
   );
 };
 
-export default SongBackoffice;
+export default FavouriteSongBackoffice;

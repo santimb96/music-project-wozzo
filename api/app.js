@@ -7,6 +7,7 @@ import User from './routes/user.js';
 import Artist from './routes/artist.js';
 import Song from './routes/song.js';
 import UserRole from './routes/userRole.js';
+import FavouriteSong from './routes/favouriteSong.js';
 import { conn } from './config/database.js';
 import { config } from './config/config.js';
 import { masterToken } from './config/masterToken.js';
@@ -95,6 +96,7 @@ app
   .use('/users', User)
   .use('/artists', Artist)
   .use('/songs', Song)
-  .use('/userRoles', UserRole);
+  .use('/userRoles', UserRole)
+  .use('/favouriteSongs', FavouriteSong);
 
 export { app };

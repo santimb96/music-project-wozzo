@@ -1,35 +1,10 @@
-import React, { useContext, useEffect } from "react";
-import { Link } from "react-router-dom";
-import AuthContext from "../../contexts/AuthContext.js";
-import { removeUserStorage } from "../../utils/localStorage.js";
-import List from "@mui/material/List";
-import Box from "@mui/material/Box";
-import theme from "../../palette/palette.js";
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import spotiLogo from "../../images/spoticlone-logo.png";
 import "./index.scss";
-import { ListItem } from "@mui/material";
 
 const SidebarHome = () => {
-  const authContext = useContext(AuthContext);
   const [openSidebar, setOpenSidebar] = useState(false);
   const sidebarRef = useRef();
-  const [found, setFound] = useState(false);
-  const localUserId = localStorage.getItem("userId");
-  const { _id } =
-    typeof authContext.user.user !== "undefined"
-      ? authContext.user.user
-      : { _id: "" };
-
-  const logOut = () => {
-    authContext.setUser({});
-    authContext.setUserRole("");
-    removeUserStorage();
-  };
-
-  useEffect(() => {
-    localUserId === _id ? setFound(true) : setFound(false);
-  }, []);
 
   const handleOpenSidebar = () => {
     if (openSidebar) {

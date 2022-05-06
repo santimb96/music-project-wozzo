@@ -7,13 +7,18 @@ import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
+
 import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
 import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
+import FavouriteSongBackoffice from "../pages/FavouriteSongBackoffice/FavouriteSongBackoffice";
+
+import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
+import NotFound from "../components/NotFound/NotFound";
 
 const AppRoutes = () => {
-  const authSet = useContext(AuthContext);
+  const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -26,35 +31,38 @@ const AppRoutes = () => {
     //si están los tres, seguimos
     if (expiryDate && token && userId) {
       if (expiryDate >= dateNow) {
+        setLoading(true);
         autoLogin(userId, token)
           .then((userLog) => {
             //metemos user y userRole en authContext
-            authSet.setUser(userLog);
-            authSet.setUserRole(userLog.user.userRoleId.name);
+            setUser(userLog?.user);
+            setUserRole(userLog.user.userRoleId.name);
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
             removeUserStorage();
             navigate("/login");
-          });
+          })
+          .finally(() => setLoading(false))
       } else {
         removeUserStorage();
+        setLoading(false);
         navigate("/login");
       }
     } else {
       removeUserStorage();
       const found = routes.find((r) => r.route === window.location.pathname);
+      setLoading(false);
       if (found) {
         navigate("/login");
       }
     }
   }, [window.location.pathname]);
 
-  const checkLogin = () => {
+  const isAdmin = () => {
     if (
-      authSet.user.user &&
-      authSet.userRole === "admin" &&
-      authSet.user.user._id === localStorage.getItem("userId")
+      user &&
+      userRole === "admin" 
     ) {
       return true;
     } else {
@@ -63,28 +71,37 @@ const AppRoutes = () => {
     }
   };
 
+  if(loading) return <GlobalLoading />
+  
+  if(!routes.find((r) => r.route === window.location.pathname) && !['/login', '/register', '/'].includes(window.location.pathname)) return <NotFound />;
+  
+
   return (
     //
-    //   <Route element={<Login/>} path="/login"  render={() => checkLogin(Login)}/>
-    //   <Route path="/register"render={() => checkLogin(Register)} />
+    //   <Route element={<Login/>} path="/login"  render={() => isAdmin(Login)}/>
+    //   <Route path="/register"render={() => isAdmin(Register)} />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route
         path="/backoffice/roles"
-        element={checkLogin() ? <UserRoleBackoffice /> : <Home />}
+        element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/users"
-        element={checkLogin() ? <UserBackoffice /> : <Home />}
+        element={isAdmin() ? <UserBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/artists"
-        element={checkLogin() ? <ArtistBackoffice /> : <Home />}
+        element={isAdmin() ? <ArtistBackoffice /> : <Home />}
       />
       <Route
         path="/backoffice/songs"
-        element={checkLogin() ? <SongBackoffice /> : <Home />}
+        element={isAdmin() ? <SongBackoffice /> : <Home />}
+      />
+      <Route
+        path="/backoffice/favouriteSongs"
+        element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
       />
     </Routes>
   );

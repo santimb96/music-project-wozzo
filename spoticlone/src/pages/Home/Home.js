@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
+import AuthContext from "../../contexts/AuthContext";
 import MediaList from "../../components/MediaList/MediaList";
 import SidebarHome from "../../components/SidebarHome/SidebarHome";
 import HomeHeader from "../../components/HomeHeader/HomeHeader";
 import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
+import { deleteFavSong, getFavSong, postFavSong } from "../../services/favouriteSongs";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import './index.scss';
-
+import AuthModal from "../../components/AuthModal/AuthModal";
 
 const Home = () => {
+  const authContext = useContext(AuthContext);
+  const {user} = authContext;
+  const token = localStorage.getItem("token");
 
   const [filterText, setFilterText] = useState("");
 
@@ -18,15 +23,17 @@ const Home = () => {
   const [focus, setFocus] = useState(false);
 
   const getData = () => {
-    Promise.all([getSongs(), getArtists()])
-      .then(([songsResponse, artistsResponse]) => {
+    Promise.all([getSongs(), getArtists(), getFavSong()])
+      .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
         const data = songsResponse.songs.map((song) => {
           const artist = artistsResponse.artists.find(
             (artist) => artist._id === song.artistId
           );
+          const favSong = favouriteSongsResponse.favouriteSong.find(fav => fav.songId === song._id && fav.userId === user?._id);
           return {
             ...song,
-            artistName: artist.name
+            artistName: artist.name,
+            favSong: favSong ? favSong : false,
           };
         });
         setSongs(data);
@@ -37,7 +44,7 @@ const Home = () => {
   
   useEffect(() => {
     getData();
-  }, []);
+  }, [user]);
 
   const onSelectSong = (index) => {
     setSelectedSong(filteredSongs[index]);
@@ -77,13 +84,42 @@ const Home = () => {
       setSelectedSong(nextSong)
   };
 
+  const deleteFav = (song) => {
+    deleteFavSong(song, token)
+      .then(()=> {
+        getData();
+      })
+      .catch((err) => console.error(err));
+  }
+
+  const addFav = (song) =>{
+    const favSong = {
+      userId: user?._id,
+      songId: song._id,
+    }
+    postFavSong(favSong, token)
+      .then(() => {
+        getData();
+      })
+      .catch((err) => console.error(err));
+  }
+
+  const onFav = (song, onDelete) => {
+    if (onDelete) {
+      deleteFav(song);
+    } else {
+      addFav(song);
+    }
+  }
+
   return (
     <div className="row home-page">
       <SidebarHome />
       <div className="col-12 col-md-10 p-0 bg-dark">
         <div className="row">
-          <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />      
-          <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
+          <HomeHeader onChangeText={onChangeText} isFocus={isFocus}/>      
+          <AuthModal />
+          <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} onFav={onFav} />
           {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>
       </div>

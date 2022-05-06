@@ -4,7 +4,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { login } from "../../services/user.js";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import spotiLogo from "../../images/spoticlone-logo.png";
-import './index.scss';
+import "./index.scss";
 
 const Login = () => {
   const authContext = useContext(AuthContext);
@@ -22,10 +22,10 @@ const Login = () => {
         localStorage.setItem("userId", user.user._id);
         localStorage.setItem("token", user.token);
         localStorage.setItem("expiryDate", user.expiryDate);
-        user.role === "admin" ?  navigate('/backoffice/roles') : navigate('/');
+        user.role === "admin" ? navigate("/backoffice/roles") : navigate("/");
       })
       .catch(() => {
-        navigate('/login');
+        navigate("/login");
       });
   };
 
@@ -39,53 +39,54 @@ const Login = () => {
           <div className="col-12" style={{ maxWidth: "540px" }}>
             {!loading ? (
               <div className="login-form bg-dark mt-4 p-4 text-light">
-              <div className="d-flex justify-content-center">
-              <img
-                src={spotiLogo}
-                alt="spoticloneLogo"
-                style={{ width: "30%" }}
-              ></img>
-            </div>
-              <div className="mb-5 mt-5">
-                <div className="mt-3">
-                  <input
-                    className="form-control"
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="email"
-                    placeholder="email"
-                  ></input>
-                </div>
-                <div className="mt-3">
-                  <input
-                    className="form-control"
-                    onChange={(e) => setPassword(e.target.value)}
-                    type="password"
-                    placeholder="password"
-                  ></input>
-                </div>
-              </div>
-              <div className="col-12 d-flex justify-content-center">
-                <button
-                  type="submit"
-                  className="btn btn-dark float-end submit-button p-2"
-                  onClick={onLogin}
-                >
-                  Iniciar sesión
-                </button>
-              </div>
-              <hr className="mt-4" />
-              <div className="col-12">
-                <h6 className="text-center mb-0">
-                  Aún no tienes cuenta?{" "}
+                  <Link to="/" className="d-flex justify-content-center">
+                    <img
+                      src={spotiLogo}
+                      alt="spoticloneLogo"
+                      style={{ width: "30%" }}
+                    ></img>
+                  </Link>
+                
+                <div className="mb-5 mt-5">
                   <div className="mt-3">
-                    <Link className="change-route-link" to="/register">
-                      Regístrate
-                    </Link>
+                    <input
+                      className="form-control"
+                      onChange={(e) => setEmail(e.target.value)}
+                      type="email"
+                      placeholder="email"
+                    ></input>
                   </div>
-                </h6>
+                  <div className="mt-3">
+                    <input
+                      className="form-control"
+                      onChange={(e) => setPassword(e.target.value)}
+                      type="password"
+                      placeholder="password"
+                    ></input>
+                  </div>
+                </div>
+                <div className="col-12 d-flex justify-content-center">
+                  <button
+                    type="submit"
+                    className="btn btn-dark float-end submit-button p-2"
+                    onClick={onLogin}
+                  >
+                    Iniciar sesión
+                  </button>
+                </div>
+                <hr className="mt-4" />
+                <div className="col-12">
+                  <h6 className="text-center mb-0">
+                    Aún no tienes cuenta?{" "}
+                    <div className="mt-3">
+                      <Link className="change-route-link" to="/register">
+                        Regístrate
+                      </Link>
+                    </div>
+                  </h6>
+                </div>
               </div>
-            </div>
-            ): (
+            ) : (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
               </div>
