@@ -33,7 +33,8 @@ const AuthModal = () => {
   const role = "user";
 
   const [errors, setErrors] = useState(false);
-  const [errorSnack, setErrorSnack] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  // const [errorSnack, setErrorSnack] = useState(false);
 
   //CLOSE FORM
 
@@ -46,12 +47,13 @@ const AuthModal = () => {
     setErrors(false);
     setAuthModalType(type);
   }
-  const handleErrorClose = () => setErrorSnack(false);
+  // const handleErrorClose = () => setErrorSnack(false);
 
   //LOGIN SYSTEM
 
   const onLogin = () => {
     if (validateData()) {
+      setErrorMessage(null);
       setLoading(true);
       login(email, password)
         .then((user) => {
@@ -68,11 +70,13 @@ const AuthModal = () => {
         .catch(() => {
           // todo show error message
           setLoading(false);
-          setShowAuthModal(false);
-          setErrorSnack(true);
+          setErrorMessage("Usuario o contraseña incorrectos");
+
+          // setErrorSnack(true);
         })
         .finally(() => setLoading(false));
     } else {
+      setErrorMessage(null);
       setErrors(true);
     }
   };
@@ -81,6 +85,7 @@ const AuthModal = () => {
 
   const onRegister = () => {
     if (validateData()) {
+      setErrorMessage(null);
       setLoading(true);
       register(name, email, password, role)
         .then(() => {
@@ -89,10 +94,9 @@ const AuthModal = () => {
           setLoading(false);
           setShowAuthModal(false);
         })
-        .catch(() => {
+        .catch(() => {          
           setLoading(false);
-          setShowAuthModal(false);
-          setErrorSnack(true);
+          setErrorMessage("Algo ha ido mal. Vuelve a intentarlo!");
         });
     } else {
       setErrors(true);
@@ -155,6 +159,11 @@ const AuthModal = () => {
             <CloseIcon />
           </button>
         </div>
+        { errorMessage && (
+          <div className="text-danger justify-content-center">
+            <p className="text-center">{errorMessage}</p>
+          </div>
+        )}
         <div className="d-flex justify-content-around m-2">
           <button
             onClick={() => changeModalType(MODAL_STATES.LOGIN)}
@@ -280,7 +289,7 @@ const AuthModal = () => {
         <small className="small-style">*Campos requeridos</small>
       </Box>
     </Modal>
-    <SnackBarError open={errorSnack} handleErrorClose={handleErrorClose} />
+    {/* <SnackBarError open={errorSnack} handleErrorClose={handleErrorClose} /> */}
     </div>
   );
 };

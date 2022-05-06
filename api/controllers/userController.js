@@ -65,7 +65,8 @@ const create = async (req, res) => {
           .send({ status: 201, message: `${userCreated.name} ha sido cread@` });
       });
     });
-  });
+  })
+    .catch(() => handleError(500, 'No se ha podido crear al usuario', res));
 };
 
 const deleteById = async (req, res) => {
@@ -90,33 +91,29 @@ const login = (req, res) => {
     User.findOne({ email: req.body.email })
       .populate('userRoleId')
       .then((user) => {
-        if (user) {
-          bcrypt
-            .compare(req.body.password, user.password)
-            .then((pass) => {
-              if (pass) {
-                delete user._doc.password;
-                const token = jwt.sign({ user }, app.get('masterKey'), {
-                  expiresIn: EXPIRE_DATE,
-                });
-                const expDate = new Date(Date.now() + 3600 * 1000 * 24);
+        bcrypt
+          .compare(req.body.password, user.password)
+          .then((pass) => {
+            if (pass) {
+              delete user._doc.password;
+              const token = jwt.sign({ user }, app.get('masterKey'), {
+                expiresIn: EXPIRE_DATE,
+              });
+              const expDate = new Date(Date.now() + 3600 * 1000 * 24);
 
-                res.status(200).send({
-                  user,
-                  role: user.userRoleId.name,
-                  token: token,
-                  expiryDate: format(expDate, 'dd/MM/yyyy HH:mm'),
-                });
-              } else {
-                handleError(401.1, 'Contraseña incorrecta', res);
-              }
-            })
-            .catch(() => handleError(404, 'Usuario no encontrado', res));
-        }
+              res.status(200).send({
+                user,
+                role: user.userRoleId.name,
+                token: token,
+                expiryDate: format(expDate, 'dd/MM/yyyy HH:mm'),
+              });
+            } else {
+              handleError(401.1, 'Contraseña incorrecta', res);
+            }
+          })
+          .catch(() => handleError(404, 'Usuario no encontrado', res));
       })
-      .catch(() => {
-        handleError(404, 'Usuario no encontrado', res);
-      });
+      .catch(() => handleError(404, 'Usuario no encontrado', res));
   }
 };
 
@@ -131,7 +128,8 @@ const autoLogin = (req, res) => {
       } else {
         handleError(404, 'Usuario no encontrado', res);
       }
-    });
+    })
+    .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
 export default {
