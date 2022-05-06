@@ -34,7 +34,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "watch": "sass --watch src/scss/common.scss:public/css/common.css"
+    "watch": "sass --watch src/scss/common.scss:src/styles/common.css"
   },
   "eslintConfig": {
     "extends": [
