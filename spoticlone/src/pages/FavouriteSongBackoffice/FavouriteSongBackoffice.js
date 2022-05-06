@@ -274,7 +274,7 @@ const FavouriteSongBackoffice = () => {
     setFilteredUsers(filtered);
   }, [filterUserDropdown]);
 
-  const duplicateSongs = () => {
+  const duplicateSongs = (item) => {
     const seen = new Set();
     const filtered = songs.filter((song) => {
       const duplicate = seen.has(song._id);
