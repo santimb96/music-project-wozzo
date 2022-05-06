@@ -36,7 +36,7 @@ const SidebarBackoffice = () => {
 
   return (
     <div className="col-12 col-md-2 bg-dark">
-      <div className="d-flex justify-content-center pt-5">
+      <div className="d-flex justify-content-center">
         <button
           onClick={() => handleOpenSidebar()}
           className="btn hamburguer-button"
@@ -93,6 +93,15 @@ const SidebarBackoffice = () => {
                 <ListItemButton className="nav-link">
                   <i className="fa fa-music"></i>
                   <ListItemText className="ps-2" primary="Canciones" />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+
+            <Link to="/backoffice/favouriteSongs" className="sidebar-link">
+              <ListItem disablePadding>
+                <ListItemButton className="nav-link">
+                  <i className="fa-solid fa-heart"></i>
+                  <ListItemText className="ps-2" primary="Favourite songs" />
                 </ListItemButton>
               </ListItem>
             </Link>
