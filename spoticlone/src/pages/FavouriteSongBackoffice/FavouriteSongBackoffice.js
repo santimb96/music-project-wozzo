@@ -297,7 +297,7 @@ const FavouriteSongBackoffice = () => {
       return false;
     });
     setFilteredSongs(filtered);
-  }, [filterUserDropdown]);
+  }, [filterSongDropdown]);
 
   const usersToShow = () => {
     if (filterUserDropdown?.length) {
