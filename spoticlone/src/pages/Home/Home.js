@@ -83,6 +83,21 @@ const Home = () => {
       setSelectedSong(nextSong)
   };
 
+  const deleteFav = () => {
+    console.warn('delete fav');
+  }
+  const addFav = () =>{
+    console.log('add fav');
+  }
+
+  const onFav = (song, onDelete) => {
+    if (onDelete) {
+      deleteFav();
+    } else {
+      addFav();
+    }
+  }
+
   return (
     <div className="row home-page">
       <SidebarHome />
@@ -90,7 +105,7 @@ const Home = () => {
         <div className="row">
           <HomeHeader onChangeText={onChangeText} isFocus={isFocus}/>      
           <AuthModal />
-          <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} />
+          <MediaList songs={filteredSongs} song={selectedSong} onSelectSong={onSelectSong} filterText={filterText} onFav={onFav} />
           {selectedSong?._id && <MediaPlayer song={selectedSong} goToNext={goToNext} goToBack={goToBack} focus={focus} />}  
         </div>
       </div>

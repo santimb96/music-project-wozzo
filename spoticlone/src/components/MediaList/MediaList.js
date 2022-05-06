@@ -13,7 +13,7 @@ import PropTypes from "prop-types";
 import AuthContext from "../../contexts/AuthContext";
 import "./index.scss";
 
-const MediaList = ({ songs, filterText, onSelectSong, song }) => {
+const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
   const authContext = useContext(AuthContext);
   const { user } = authContext;
 
@@ -111,9 +111,9 @@ const MediaList = ({ songs, filterText, onSelectSong, song }) => {
                         align="left"
                       >
                         {s?.favSong && user?._id ? (
-                          <i class="fa-solid fa-heart"></i>
+                          <i onClick={() => onFav(song, true)} className="fa-solid fa-heart"></i>
                         ) : (
-                          <i class="fa-regular fa-heart"></i>
+                          <i onClick={() => onFav(song, false)} className="fa-regular fa-heart"></i>
                         )}
                       </TableCell>
                       <TableCell
