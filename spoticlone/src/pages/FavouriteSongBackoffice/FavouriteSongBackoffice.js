@@ -55,10 +55,8 @@ const FavouriteSongBackoffice = () => {
   const [userId, setUserId] = useState("");
   const [songId, setSongId] = useState("");
 
-  const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
-  const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -74,11 +72,7 @@ const FavouriteSongBackoffice = () => {
    */
   const handleErrorClose = () => setErrorOpen(false);
 
-  /**
-   * ERROR MODAL
-   */
-  const handleOpenError = () => setOpenError(true);
-  const handleCloseError = () => setTimeout(() => setOpenError(false), 1500);
+ 
   /**
    * DELETE MODAL
    */
@@ -98,13 +92,11 @@ const FavouriteSongBackoffice = () => {
 
   const handleOpenForm = (post = false) => {
     setCreate(post);
-    setErrors(false);
     setOpenForm(true);
   };
 
   const handleCloseForm = () => {
     clearData();
-    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
@@ -194,7 +186,7 @@ const FavouriteSongBackoffice = () => {
         userId,
         songId,
       };
-      setErrors(false);
+
       setLoading(true);
       postFavSong(createFavSong, token)
         .then(() => {
@@ -231,7 +223,7 @@ const FavouriteSongBackoffice = () => {
       const updatedfavSong = {
         songId,
       };
-      setErrors(false);
+
       setLoading(true);
       updatefavSong(favouriteSongId, updatedfavSong, token)
         .then(() => {
@@ -392,7 +384,7 @@ const FavouriteSongBackoffice = () => {
                         {/* USER INFO */}
                         {!create ? (
                           <>
-                            <label htmlFor="user">Usuario*</label>
+                            <label htmlFor="user">Usuario</label>
                             <div
                               id="user"
                               className="d-flex justify-content-center text-light"

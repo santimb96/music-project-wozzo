@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext.js";
 import { removeUserStorage } from "../../utils/localStorage.js";
@@ -24,13 +24,13 @@ const SidebarBackoffice = () => {
   };
 
   const handleOpenSidebar = () => {
-    if (openSidebar) {
-      sidebarRef.current.style.display = "none";
-      setOpenSidebar(false);
-    } else {
+    if(!openSidebar){
+      setOpenSidebar(true);
       sidebarRef.current.style.display = "grid";
       sidebarRef.current.style.width = "100%";
-      setOpenSidebar(true);
+    } else {
+      setOpenSidebar(false);
+      sidebarRef.current.style.display = "none";
     }
   };
 
