@@ -14,6 +14,9 @@ const routes = [
   {
     route: "/backoffice/userRoles",
   },
+  {
+    route: "/backoffice/favouriteSongs",
+  }
 ];
 
 export default routes;

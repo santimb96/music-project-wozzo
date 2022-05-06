@@ -96,6 +96,10 @@ const AppRoutes = () => {
         path="/backoffice/songs"
         element={isAdmin() ? <SongBackoffice /> : <Home />}
       />
+      <Route
+        path="/backoffice/favouriteSongs"
+        element={isAdmin() ? <SongBackoffice /> : <Home />}
+      />
     </Routes>
   );
 };
