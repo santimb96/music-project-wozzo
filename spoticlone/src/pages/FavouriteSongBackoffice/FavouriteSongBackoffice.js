@@ -72,7 +72,6 @@ const FavouriteSongBackoffice = () => {
    */
   const handleErrorClose = () => setErrorOpen(false);
 
- 
   /**
    * DELETE MODAL
    */
@@ -156,15 +155,18 @@ const FavouriteSongBackoffice = () => {
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredFavSongs;
+      return filteredFavSongs.sort((a, b) =>
+        a.userName > b.userName ? 1 : -1
+      );
     }
-    return favouriteSongs;
+    return favouriteSongs.sort((a, b) => (a.userName > b.userName ? 1 : -1));
   };
 
   const validateData = () => {
     const checkUser = users.find((user) => user._id === userId);
     const checkRepeat = favouriteSongs.find(
-      (favSong) => favSong.songName === songName && favSong.userName === userName
+      (favSong) =>
+        favSong.songName === songName && favSong.userName === userName
     );
     const checkSong = songs.find((song) => song._id === songId);
 
@@ -243,19 +245,8 @@ const FavouriteSongBackoffice = () => {
     }
   };
 
-  const duplicateUsers = () => {
-    const seen = new Set();
-    const filtered = users.filter((user) => {
-      const duplicate = seen.has(user._id);
-      seen.add(user._id);
-      return !duplicate;
-    });
-
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  };
-
   useEffect(() => {
-    const filtered = duplicateUsers()?.filter((user) => {
+    const filtered = users?.filter((user) => {
       if (
         user.name
           .toLocaleLowerCase()
@@ -268,19 +259,8 @@ const FavouriteSongBackoffice = () => {
     setFilteredUsers(filtered);
   }, [filterUserDropdown]);
 
-  const duplicateSongs = (item) => {
-    const seen = new Set();
-    const filtered = songs.filter((song) => {
-      const duplicate = seen.has(song._id);
-      seen.add(song._id);
-      return !duplicate;
-    });
-
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  };
-
   useEffect(() => {
-    const filtered = duplicateSongs()?.filter((song) => {
+    const filtered = songs?.filter((song) => {
       if (
         song.name
           .toLocaleLowerCase()
@@ -293,18 +273,24 @@ const FavouriteSongBackoffice = () => {
     setFilteredSongs(filtered);
   }, [filterSongDropdown]);
 
+  const sortItems = (list) => {
+    return list.sort((a, b) =>
+      a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1
+    );
+  };
+
   const usersToShow = () => {
     if (filterUserDropdown?.length) {
-      return filteredUsers;
+      return sortItems(filteredUsers);
     }
-    return duplicateUsers();
+    return sortItems(users);
   };
 
   const songsToShow = () => {
     if (filterSongDropdown?.length) {
-      return filteredSongs;
+      return sortItems(filteredSongs);
     }
-    return duplicateSongs();
+    return sortItems(songs);
   };
 
   return (
