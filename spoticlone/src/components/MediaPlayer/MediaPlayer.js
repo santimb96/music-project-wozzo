@@ -31,14 +31,14 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   }, [focus]);
 
   const play = (position) => {
-    document.title = `Escuchando: ${song.name}`;
+    document.title = `${song.name}`;
     audioRef.current.currentTime = position;
     audioRef.current.play();
     setPlaying(true);
   };
 
   const pause = () => {
-    document.title = `Pausa  : ${song.name}`;
+    document.title = `Spoticlone`;
     audioRef.current.pause();
     setPlaying(false);
   };
@@ -49,7 +49,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
 
   useEffect(() => {
     play(0);
-    document.title = `Escuchando: ${song.name}`; // Set the title
+    document.title = `${song.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);

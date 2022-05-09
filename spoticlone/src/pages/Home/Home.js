@@ -45,7 +45,6 @@ const Home = () => {
         });
         setSongs(data);
         setFilteredSongs(data);
-        console.warn(favouriteSongsResponse);
         setFavouriteSongs(favouriteSongsResponse?.favouriteSongs);
       })
       .catch((err) => console.error(err));
