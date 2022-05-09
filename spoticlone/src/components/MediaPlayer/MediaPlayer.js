@@ -47,6 +47,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
 
   useEffect(() => {
     play(0);
+    document.title = `Escuchando: ${song.name}`;
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);
