@@ -29,7 +29,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import "./index.scss";
 import {
   deleteFavSong,
-  getFavSong,
+  getFavSongs,
   postFavSong,
   updatefavSong,
 } from "../../services/favouriteSongs";
@@ -111,7 +111,7 @@ const FavouriteSongBackoffice = () => {
   };
 
   const getData = () => {
-    Promise.all([getSongs(), getUsers(token), getFavSong()])
+    Promise.all([getSongs(), getUsers(token), getFavSongs()])
       .then(([songsResponse, usersResponse, favouriteSongsResponse]) => {
         setUsers(usersResponse.users);
         setSongs(songsResponse.songs);

@@ -76,7 +76,6 @@ const AuthModal = () => {
           // todo show error message
           setLoading(false);
           setErrorMessage("Usuario o contraseña incorrectos");
-          // setErrorSnack(true);
         })
         .finally(() => setLoading(false));
     } else {
