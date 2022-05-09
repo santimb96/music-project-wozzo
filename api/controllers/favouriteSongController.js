@@ -9,6 +9,17 @@ const getAll = async (req, res) => {
     );
 };
 
+const getUserFavouriteSongs = (req, res) => {
+  FavouriteSong.find({ userId: req.params.userId })
+    .then((favouriteSongs) => {
+      res.status(200);
+      res.send({ favouriteSongs });
+    })
+    .catch(() =>
+      handleError(404, 'No se ha podido obtener ningún favorito', res)
+    );
+};
+
 const create = async (req, res) => {
   const FavouriteSongToCreate = req.body;
   FavouriteSong.create(FavouriteSongToCreate)
@@ -37,6 +48,7 @@ const updateById = async (req, res) => {
 
 export default {
   getAll,
+  getUserFavouriteSongs,
   create,
   deleteById,
   updateById

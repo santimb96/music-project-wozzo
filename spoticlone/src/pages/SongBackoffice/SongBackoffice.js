@@ -33,6 +33,7 @@ import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 import './index.scss';
+import sortItems from "../../utils/sortItems";
 
 const SongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -44,7 +45,6 @@ const SongBackoffice = () => {
   const [artistId, setArtistId] = useState("");
   const [audioUrl, setAudioUrl] = useState([]);
   const [id, setId] = useState("");
-  const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
@@ -65,11 +65,6 @@ const SongBackoffice = () => {
    */
   const handleErrorClose = () => setErrorOpen(false);
 
-  /**
-   * ERROR MODAL
-   */
-  const handleOpenError = () => setOpenError(true);
-  const handleCloseError = () => setTimeout(() => setOpenError(false), 1500);
   /**
    * DELETE MODAL
    */
@@ -141,15 +136,14 @@ const SongBackoffice = () => {
       }
       return false;
     });
-
     setFilteredSongs(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredSongs;
+      return sortItems(filteredSongs ? filteredSongs : songs);
     }
-    return songs;
+    return sortItems(songs ? songs : []);
   };
 
   const validateData = (method = false) => {
@@ -159,7 +153,6 @@ const SongBackoffice = () => {
       if (
         name?.length &&
         artistId?.length &&
-        //checkUrl(audioUrl) &&
         artistName !== "Selecciona"
       ) {
         return true;
@@ -189,11 +182,9 @@ const SongBackoffice = () => {
           clearData();
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch(() => setErrorOpen(true));
     } else {
       setErrors(true);
-      handleOpenError();
-      handleCloseError();
     }
   };
 
@@ -221,11 +212,9 @@ const SongBackoffice = () => {
           clearData();
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch(() => setErrorOpen(true));
     } else {
       setErrors(false);
-      handleOpenError();
-      handleCloseError();
     }
   };
 
@@ -236,19 +225,8 @@ const SongBackoffice = () => {
     setId("");
   };
 
-  const duplicateArtists = () => {
-    const seen = new Set();
-    const filtered = artists.filter((artist) => {
-      const duplicate = seen.has(artist._id);
-      seen.add(artist._id);
-      return !duplicate;
-    });
-
-    return filtered.sort((a, b) => a.name.localeCompare(b.name));
-  };
-
   useEffect(() => {
-    const filtered = duplicateArtists()?.filter((artist) => {
+    const filtered = artists?.filter((artist) => {
       if (
         artist.name
           .toLocaleLowerCase()
@@ -263,9 +241,9 @@ const SongBackoffice = () => {
 
   const artistsToShow = () => {
     if (filterDropdown?.length) {
-      return filteredArtists;
+      return sortItems(filteredArtists ? filteredArtists : artists);
     }
-    return duplicateArtists();
+    return sortItems(artists ? artists : []);
   };
 
   return (

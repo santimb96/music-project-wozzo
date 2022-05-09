@@ -5,6 +5,7 @@ const checkEmailOnDB = (email, users) => users?.find(user => user.email === emai
 const checkEmail = (email, users) => isValidEmail(email) && !checkEmailOnDB(email, users) ? true: false;
 const checkEmailOnRegister = (email) => isValidEmail(email);
 const checkPassword = (password, passRepeat) => password === passRepeat ? true : false;
+const checkPasswordLength = (password) => password.length >= 6 ? true : false;
 
 
 const checkUrl = (url) => validUrl.isUri(url);
@@ -15,5 +16,6 @@ export {
   checkEmailOnRegister,
   checkPassword,
   checkUrl,
-  checkEmailOnDB
+  checkEmailOnDB,
+  checkPasswordLength,
 }

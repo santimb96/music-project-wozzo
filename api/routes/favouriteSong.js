@@ -6,6 +6,7 @@ const router = express.Router();
 
 router
   .get('/', favouriteSong.getAll)
+  .get('/:userId', favouriteSong.getUserFavouriteSongs)
   .post('/', favouriteSong.create)
   .delete('/:id', favouriteSong.deleteById)
   .put('/:id', favouriteSong.updateById);

@@ -7,7 +7,7 @@ import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
 import {
   deleteFavSong,
-  getFavSong,
+  getUserFavSongs,
   postFavSong,
 } from "../../services/favouriteSongs";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
@@ -18,9 +18,7 @@ const Home = () => {
   const authContext = useContext(AuthContext);
   const {
     user,
-    showAuthModal,
     setShowAuthModal,
-    authModalType,
     setAuthModalType,
   } = authContext;
   const token = localStorage.getItem("token");
@@ -29,30 +27,37 @@ const Home = () => {
 
   const [songs, setSongs] = useState([]);
   const [filteredSongs, setFilteredSongs] = useState([]);
+  const [favouriteSongs, setFavouriteSongs] = useState([]);
   const [selectedSong, setSelectedSong] = useState({});
   const [focus, setFocus] = useState(false);
 
   const getData = () => {
-    Promise.all([getSongs(), getArtists(), getFavSong()])
-      .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
-        const data = songsResponse.songs.map((song) => {
-          const artist = artistsResponse.artists.find(
-            (artist) => artist._id === song.artistId
-          );
-          const favSong = favouriteSongsResponse.favouriteSong.find(
-            (fav) => fav.songId === song._id && fav.userId === user?._id
+    Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
+    .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
+      const data = songsResponse.songs.map((song) => {
+        const artist = artistsResponse.artists.find(
+          (artist) => artist._id === song.artistId
           );
           return {
             ...song,
             artistName: artist.name,
-            favSong: favSong ? favSong : false,
           };
         });
         setSongs(data);
         setFilteredSongs(data);
+        console.warn(favouriteSongsResponse);
+        setFavouriteSongs(favouriteSongsResponse?.favouriteSongs);
       })
       .catch((err) => console.error(err));
   };
+
+  const getFavourites = () => {
+    getUserFavSongs(user?._id)
+      .then((favs) => {
+        setFavouriteSongs(favs?.favouriteSongs)
+      })
+      .catch((err) => console.error(err));
+  }
 
   useEffect(() => {
     getData();
@@ -112,29 +117,30 @@ const Home = () => {
   const deleteFav = (song) => {
     deleteFavSong(song, token)
       .then(() => {
-        getData();
+        getFavourites();
       })
       .catch((err) => console.error(err));
   };
 
-  const addFav = (song) => {
+  const addFav = (songId) => {
     const favSong = {
       userId: user?._id,
-      songId: song._id,
+      songId: songId,
     };
     postFavSong(favSong, token)
       .then(() => {
-        getData();
+        getFavourites();
       })
       .catch((err) => console.error(err));
   };
 
-  const onFav = (song, onDelete) => {
+  const onClickFavourite = (songId, onDelete) => {
     if (user?._id) {
       if (onDelete) {
-        deleteFav(song);
+        const match = favouriteSongs.find((f) => f.songId === songId && f.userId === user?._id);
+        deleteFav(match._id);
       } else {
-        addFav(song);
+        addFav(songId);
       }
     } else {
       setAuthModalType(MODAL_STATES.LOGIN);
@@ -151,10 +157,11 @@ const Home = () => {
           <AuthModal />
           <MediaList
             songs={filteredSongs}
+            favouriteSongs={favouriteSongs}
             song={selectedSong}
             onSelectSong={onSelectSong}
             filterText={filterText}
-            onFav={onFav}
+            onClickFavourite={onClickFavourite}
           />
           {selectedSong?._id && (
             <MediaPlayer

@@ -8,22 +8,19 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useRef, useContext } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
-import AuthContext from "../../contexts/AuthContext";
 import "./index.scss";
 
-const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
-  const authContext = useContext(AuthContext);
-  const { user } = authContext;
-
+const MediaList = ({ songs, favouriteSongs, filterText, onSelectSong, song, onClickFavourite }) => {
   const tableRef = useRef();
-
   const msg = (element) => (
     <div className="col-12 d-flex justify-content-center align-items-center">
       {element}
     </div>
   );
+
+
 
   return (
     <div className="row contaner-list">
@@ -78,7 +75,7 @@ const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {songs?.map((s, index) => {
+                {songs?.sort((a, b) => a.name > b.name ? 1 : -1).map((s, index) => {
                   return (
                     <TableRow
                       onDoubleClick={(e) => onSelectSong(index)}
@@ -110,10 +107,10 @@ const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
                         style={{ color: theme.palette.secondary.light }}
                         align="left"
                       >
-                        {s?.favSong && user?._id ? (
-                          <i onClick={() => onFav(s.favSong._id, true)} className="fa-solid fa-heart fav-icon-fav"></i>
-                        ) : (
-                          <i onClick={() => onFav(s, false)} className="fa-regular fa-heart fav-icon"></i>
+                        {favouriteSongs?.find((f) => f?.songId === s?._id)? (
+                          <i onClick={() => onClickFavourite(s?._id, true)} className="fa-solid fa-heart fav-icon-fav"></i>
+                          ) : (
+                          <i onClick={() => onClickFavourite(s?._id, false)} className="fa-regular fa-heart fav-icon"></i>
                         )}
                       </TableCell>
                       <TableCell
@@ -139,16 +136,13 @@ const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
   );
 };
 
-MediaList.defaultProps = {
-  songs: [],
-  artists: [],
-  filter: "",
-};
-
 MediaList.propTypes = {
   songs: PropTypes.array,
-  artists: PropTypes.array,
-  filter: PropTypes.string,
+  favouriteSongs: PropTypes.array,
+  filterText: PropTypes.string,
+  onSelectSong: PropTypes.func.isRequired,
+  song: PropTypes.object,
+  onClickFavourite: PropTypes.func.isRequired,
 };
 
 export default MediaList;
