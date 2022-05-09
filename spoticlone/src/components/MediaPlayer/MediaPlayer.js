@@ -31,7 +31,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   }, [focus]);
 
   const play = (position) => {
-    document.title = `${song.name}`;
+    document.title = `${song?.name}`;
     audioRef.current.currentTime = position;
     audioRef.current.play();
     setPlaying(true);
@@ -49,7 +49,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
 
   useEffect(() => {
     play(0);
-    document.title = `${song.name}`; // Set the title
+    document.title = `${song?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);
@@ -92,9 +92,9 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
           <div className="row d-flex justify-content-center">
             <div className="col-4 d-flex d-flex justify-content-center pt-3 data-container">
               <div className="d-flex flex-column me-3">
-                <h5 className="text-center song-title-player">{song.name}</h5>
+                <h5 className="text-center song-title-player">{song?.name}</h5>
                 <h6 className="text-center song-artist-name-player">
-                  {song.artistName}
+                  {song?.artistName}
                 </h6>
               </div>
               <div className="d-flex justify-content-center align-items-center">

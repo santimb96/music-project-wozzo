@@ -8,8 +8,8 @@
 .row > .contaner-list {
   padding-right: 1rem;
   height: 54vh;
+  width: 100%;
   .table-container {
-    height: 50vh;
     .table-content {
       color: $secondaryColor;
       background-color: $darkColor;
@@ -56,12 +56,14 @@
   background: $rowBackground;
 }
 .songs-found {
-  height: 1vh;
+  position: absolute;
+  margin-left: 70vw;
+  top: 15%;
+  padding: 0;
+
   font-size: 0.8rem;
-  display: flex;
-  justify-content: end;
   color: $tablePresentationColor;
-  margin: 1vh;
+  
 }
 
 @media (max-width: 768px) {
@@ -82,7 +84,6 @@
 
 @media (max-width: 768px) {
   .contaner-list {
-    height: 45vh;
     .spinner-table-loading {
       display: flex;
       justify-content: start;
@@ -93,8 +94,6 @@
       .table-content {
         margin-top: 2vh;
         max-width: 100%;
-        min-height: 10vh;
-        max-height: 50vh;
         table {
           min-width: 60vw;
           max-width: 100vw;

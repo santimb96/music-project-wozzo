@@ -13,9 +13,14 @@ import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
 import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
 import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
 import FavouriteSongBackoffice from "../pages/FavouriteSongBackoffice/FavouriteSongBackoffice";
+import Favourites from "../pages/Favourites/Favourites";
 
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
 import NotFound from "../components/NotFound/NotFound";
+import SidebarHome from "../components/SidebarHome/SidebarHome";
+import AuthModal from "../components/AuthModal/AuthModal";
+import HomeHeader from "../components/HomeHeader/HomeHeader";
+import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
@@ -73,13 +78,15 @@ const AppRoutes = () => {
 
   if(loading) return <GlobalLoading />
   
-  if(!routes.find((r) => r.route === window.location.pathname) && !['/login', '/register', '/'].includes(window.location.pathname)) return <NotFound />;
+  if(!routes.find((r) => r.route === window.location.pathname) && !['/login', '/register', '/', '/favourites'].includes(window.location.pathname)) return <NotFound />;
   
 
   return (
-    //
-    //   <Route element={<Login/>} path="/login"  render={() => isAdmin(Login)}/>
-    //   <Route path="/register"render={() => isAdmin(Register)} />
+    <>
+    <SidebarHome/>
+    <HomeHeader/>
+    <AuthModal />
+    <MediaPlayer/>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route
@@ -93,7 +100,7 @@ const AppRoutes = () => {
       <Route
         path="/backoffice/artists"
         element={isAdmin() ? <ArtistBackoffice /> : <Home />}
-      />
+        />
       <Route
         path="/backoffice/songs"
         element={isAdmin() ? <SongBackoffice /> : <Home />}
@@ -102,7 +109,12 @@ const AppRoutes = () => {
         path="/backoffice/favouriteSongs"
         element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
       />
+      <Route
+        path="/favourites"
+        element={<Favourites />}
+      />
     </Routes>
+  </>
   );
 };
 

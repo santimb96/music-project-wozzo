@@ -24,6 +24,12 @@ html {
     //   top: 0;
     // }
 
+    .App {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+    }
+
     .link-disabled {
       pointer-events: none;
     }

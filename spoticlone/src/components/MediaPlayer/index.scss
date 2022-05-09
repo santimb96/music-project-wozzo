@@ -58,11 +58,19 @@
 }
 }
 
+.media-container {
+  position: absolute;
+  width: 80vw;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .vol-icon {
   width: 2rem;
 }
 .cont-res{
-  width: 100vw;;
+  width: 10vw;
 .player-container {
   //position: sticky;
   background-color: $mediaBack;

@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import MediaList from "../../components/MediaList/MediaList";
-import SidebarHome from "../../components/SidebarHome/SidebarHome";
-import HomeHeader from "../../components/HomeHeader/HomeHeader";
 import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
 import {
@@ -13,6 +11,7 @@ import {
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import "./index.scss";
 import AuthModal from "../../components/AuthModal/AuthModal";
+import Search from "../../components/Search/Search";
 
 const Home = () => {
   const authContext = useContext(AuthContext);
@@ -148,30 +147,16 @@ const Home = () => {
   };
 
   return (
-    <div className="row home-page">
-      <SidebarHome />
-      <div className="col-12 col-md-10 p-0 bg-dark">
-        <div className="row">
-          <HomeHeader onChangeText={onChangeText} isFocus={isFocus} />
-          <AuthModal />
-          <MediaList
-            songs={filteredSongs}
-            favouriteSongs={favouriteSongs}
-            song={selectedSong}
-            onSelectSong={onSelectSong}
-            filterText={filterText}
-            onClickFavourite={onClickFavourite}
-          />
-          {selectedSong?._id && (
-            <MediaPlayer
-              song={selectedSong}
-              goToNext={goToNext}
-              goToBack={goToBack}
-              focus={focus}
-            />
-          )}
-        </div>
-      </div>
+    <div className="home-page">
+      <Search isFocus={isFocus} onChangeText={onChangeText}/>
+      <MediaList
+        songs={filteredSongs}
+        favouriteSongs={favouriteSongs}
+        song={selectedSong}
+        onSelectSong={onSelectSong}
+        filterText={filterText}
+        onClickFavourite={onClickFavourite}
+      />
     </div>
   );
 };

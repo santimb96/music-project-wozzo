@@ -4,16 +4,8 @@ import { Link } from "react-router-dom";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
 
-const HomeHeader = ({ onChangeText, isFocus }) => {
+const HomeHeader = () => {
   const { user, setUser, setUserRole, userRole, setShowAuthModal, setAuthModalType } = useContext(AuthContext);
-
-  const onFocus = () => {
-    isFocus(true);
-  };
-
-  const onBlur = () => {
-    isFocus(false);
-  };
 
   const logOut = () => {
     setUser(null);
@@ -85,17 +77,6 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
           </button>
         </div>
       )}
-
-      <div className="input-search-home-container d-flex justify-content-start">
-        <input
-          type="search"
-          className="input-search-home"
-          onChange={(e) => onChangeText(e.target.value)}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          placeholder="Artistas o canciones"
-        />
-      </div>
       
     </div>
   );

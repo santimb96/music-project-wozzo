@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import spotiLogo from "../../images/spoticlone-logo.png";
+import { Link } from "react-router-dom";
 import "./index.scss";
 
 const SidebarHome = () => {
@@ -23,6 +24,7 @@ const SidebarHome = () => {
         <header className="col-12 pt-3 spotilogo d-flex justify-content-center">  
             <img onClick={() => handleOpenSidebar()} src={spotiLogo} alt="spoticloneLogo"></img>
         </header>
+        <Link to="/favourites">Favourites</Link>
       </div>
 {/* 
       <div ref={sidebarRef} className="row">

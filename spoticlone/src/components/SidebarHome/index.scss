@@ -3,6 +3,10 @@
 
 
 .header-responsive {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10vw;
   .spotilogo {
     img {
       max-width: 15vh;
