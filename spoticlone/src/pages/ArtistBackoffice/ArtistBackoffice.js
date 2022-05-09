@@ -31,6 +31,7 @@ import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import CloseIcon from "@mui/icons-material/Close";
 import './index.scss';
+import sortItems from "../../utils/sortItems";
 
 const ArtistBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -41,7 +42,6 @@ const ArtistBackoffice = () => {
   const [description, setDescription] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [id, setId] = useState("");
-  const [openError, setOpenError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
@@ -58,12 +58,6 @@ const ArtistBackoffice = () => {
    * SNACK ERROR
    */
   const handleErrorClose = () => setErrorOpen(false);
-
-  /**
-   * ERROR MODAL
-   */
-  const handleOpenError = () => setOpenError(true);
-  const handleCloseError = () => setTimeout(() => setOpenError(false), 1500);
   /**
    * DELETE MODAL
    */
@@ -106,7 +100,7 @@ const ArtistBackoffice = () => {
       .then((artist) => {
         setArtists(artist?.artists);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch(() => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -129,9 +123,9 @@ const ArtistBackoffice = () => {
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredArtists;
+      return sortItems(filteredArtists ? filteredArtists : artists);
     }
-    return artists;
+    return sortItems(artists ? artists : []);
   };
 
   const validateData = () => {
@@ -165,12 +159,11 @@ const ArtistBackoffice = () => {
           setSuccessOpen(true);
           getData();
         })
-        .catch((err) => setErrorOpen(true));
+        .catch(() => setErrorOpen(true));
     } else {
       setLoading(false);
       setErrors(true);
-      handleOpenError();
-      handleCloseError();
+
     }
   };
 
@@ -183,7 +176,7 @@ const ArtistBackoffice = () => {
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setLoading(false);
         setErrorOpen(true);
       });
@@ -205,15 +198,14 @@ const ArtistBackoffice = () => {
           setLoading(false);
           getData();
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
           setErrorOpen(true);
         });
     } else {
       setLoading(false);
       setErrors(true);
-      handleOpenError();
-      handleCloseError();
+
     }
   };
   return (

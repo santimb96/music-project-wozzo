@@ -33,6 +33,7 @@ import {
   postFavSong,
   updatefavSong,
 } from "../../services/favouriteSongs";
+import sortItems from "../../utils/sortItems.js";
 
 const FavouriteSongBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -155,11 +156,11 @@ const FavouriteSongBackoffice = () => {
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredFavSongs.sort((a, b) =>
+      return filteredFavSongs?.sort((a, b) =>
         a.userName > b.userName ? 1 : -1
       );
     }
-    return favouriteSongs.sort((a, b) => (a.userName > b.userName ? 1 : -1));
+    return favouriteSongs?.sort((a, b) => (a.userName > b.userName ? 1 : -1));
   };
 
   const validateData = () => {
@@ -273,11 +274,7 @@ const FavouriteSongBackoffice = () => {
     setFilteredSongs(filtered);
   }, [filterSongDropdown]);
 
-  const sortItems = (list) => {
-    return list.sort((a, b) =>
-      a.name.toLocaleLowerCase() > b.name.toLocaleLowerCase() ? 1 : -1
-    );
-  };
+
 
   const usersToShow = () => {
     if (filterUserDropdown?.length) {
