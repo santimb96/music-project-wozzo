@@ -34,6 +34,7 @@ import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 import './index.scss';
+import sortItems from "../../utils/sortItems";
 
 const UserBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -47,8 +48,6 @@ const UserBackoffice = () => {
   const [passRepeat, setPassRepeat] = useState("");
   const [role, setRole] = useState("user");
   const [id, setId] = useState("");
-  const [roleId, setRoleId] = useState(null);
-  const [openError, setOpenError] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -65,11 +64,7 @@ const UserBackoffice = () => {
    * SNACK ERROR
    */
   const handleErrorClose = () => setErrorOpen(false);
-  /**
-   * ERROR MODAL
-   */
-  const handleOpenError = () => setOpenError(true);
-  const handleCloseError = () => setTimeout(() => setOpenError(false), 1500);
+
   /**
    * DELETE MODAL
    */
@@ -144,9 +139,9 @@ const UserBackoffice = () => {
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredUsers;
+      return sortItems(filteredUsers ? filteredUsers : users);
     }
-    return users;
+    return sortItems(users ? users : []);
   };
 
   const validateData = (method = false) => {
@@ -178,7 +173,6 @@ const UserBackoffice = () => {
     setName(user.name);
     setEmail(user.email);
     setRole(roleName.role);
-    setRoleId(roleName.id);
     handleOpenForm();
   };
 
@@ -202,8 +196,6 @@ const UserBackoffice = () => {
       setLoading(false);
       setErrorOpen(true);
       setErrors(true);
-      handleOpenError();
-      handleCloseError();
     }
   };
 
@@ -241,15 +233,13 @@ const UserBackoffice = () => {
           clearData();
           getData();
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
           setErrorOpen(true);
         });
     } else {
       setLoading(false);
       setErrors(true);
-      handleOpenError();
-      handleCloseError();
     }
   };
 
@@ -260,7 +250,6 @@ const UserBackoffice = () => {
     setPassRepeat("");
     setRole("user");
     setId("");
-    setRoleId(null);
   };
 
   return (
