@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import inTheArmyNow from "../../audio/inTheArmyNow.mp3";
+import PropTypes from "prop-types";
 import format from "format-duration";
 import "./index.scss";
 
@@ -186,13 +186,11 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
     </div>
   );
 };
-
-MediaPlayer.defaultProps = {
-  song: {
-    audioUrl: inTheArmyNow,
-    name: "In The Army Now",
-    artistName: "StatusQuo",
-  },
+MediaPlayer.propTypes = {
+  song: PropTypes.object.isRequired,
+  goToNext: PropTypes.func.isRequired,
+  goToBack: PropTypes.func.isRequired,
+  focus: PropTypes.bool.isRequired,
 };
 
 export default MediaPlayer;

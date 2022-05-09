@@ -18,9 +18,7 @@ const Home = () => {
   const authContext = useContext(AuthContext);
   const {
     user,
-    showAuthModal,
     setShowAuthModal,
-    authModalType,
     setAuthModalType,
   } = authContext;
   const token = localStorage.getItem("token");

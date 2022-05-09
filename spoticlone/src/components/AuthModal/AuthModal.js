@@ -9,6 +9,7 @@ import {
   checkEmail,
   checkEmailOnRegister,
   checkPassword,
+  checkPasswordLength
 } from "../../utils/validators.js";
 import CloseIcon from "@mui/icons-material/Close";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
@@ -116,7 +117,7 @@ const AuthModal = () => {
 
   const validateData = () => {
     if (authModalType === MODAL_STATES.LOGIN) {
-      if (email?.length && password?.length) {
+      if (email?.length && checkPasswordLength(password)) {
         if (checkEmailOnRegister(email)) {
           return true;
         }
@@ -132,7 +133,8 @@ const AuthModal = () => {
       ) {
         if (
           checkPassword(password, passRepeat) &&
-          checkEmailOnRegister(email)
+          checkEmailOnRegister(email) &&
+          checkPasswordLength(password)
         ) {
           return true;
         }
