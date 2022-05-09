@@ -82,7 +82,6 @@ const AppRoutes = () => {
     //   <Route path="/register"render={() => isAdmin(Register)} />
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route path="/login" element={<Login />} /> */}
       <Route
         path="/backoffice/roles"
         element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
