@@ -41,20 +41,20 @@ const AppRoutes = () => {
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
             removeUserStorage();
-            navigate("/login");
+            navigate("/");
           })
           .finally(() => setLoading(false))
       } else {
         removeUserStorage();
         setLoading(false);
-        navigate("/login");
+        navigate("/");
       }
     } else {
       removeUserStorage();
       const found = routes.find((r) => r.route === window.location.pathname);
       setLoading(false);
       if (found) {
-        navigate("/login");
+        navigate("/");
       }
     }
   }, [window.location.pathname]);
@@ -82,7 +82,7 @@ const AppRoutes = () => {
     //   <Route path="/register"render={() => isAdmin(Register)} />
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      {/* <Route path="/login" element={<Login />} /> */}
       <Route
         path="/backoffice/roles"
         element={isAdmin() ? <UserRoleBackoffice /> : <Home />}

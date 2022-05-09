@@ -20,8 +20,6 @@ const MediaList = ({ songs, favouriteSongs, filterText, onSelectSong, song, onCl
     </div>
   );
 
-
-
   return (
     <div className="row contaner-list">
       <div className="col-12 d-flex justify-content-center table-container">
