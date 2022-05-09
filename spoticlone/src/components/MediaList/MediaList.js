@@ -78,7 +78,7 @@ const MediaList = ({ songs, filterText, onSelectSong, song, onFav }) => {
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {songs?.map((s, index) => {
+                {songs?.sort((a, b) => a.name > b.name ? 1 : -1).map((s, index) => {
                   return (
                     <TableRow
                       onDoubleClick={(e) => onSelectSong(index)}
