@@ -23,7 +23,8 @@ import HomeHeader from "../components/HomeHeader/HomeHeader";
 import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
 
 const AppRoutes = () => {
-  const { setLoading, loading, setUser, setUserRole, user, userRole } = useContext(AuthContext);
+  const { setLoading, loading, setUser, setUserRole, user, userRole } =
+    useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -48,7 +49,7 @@ const AppRoutes = () => {
             removeUserStorage();
             navigate("/");
           })
-          .finally(() => setLoading(false))
+          .finally(() => setLoading(false));
       } else {
         removeUserStorage();
         setLoading(false);
@@ -65,10 +66,7 @@ const AppRoutes = () => {
   }, [window.location.pathname]);
 
   const isAdmin = () => {
-    if (
-      user &&
-      userRole === "admin" 
-    ) {
+    if (user && userRole === "admin") {
       return true;
     } else {
       window.history.pushState({}, null, "/");
@@ -76,45 +74,49 @@ const AppRoutes = () => {
     }
   };
 
-  if(loading) return <GlobalLoading />
-  
-  if(!routes.find((r) => r.route === window.location.pathname) && !['/login', '/register', '/', '/favourites'].includes(window.location.pathname)) return <NotFound />;
-  
+  if (loading) return <GlobalLoading />;
+
+  if (
+    !routes.find((r) => r.route === window.location.pathname) &&
+    !["/login", "/register", "/", "/favourites"].includes(
+      window.location.pathname
+    )
+  )
+    return <NotFound />;
 
   return (
     <>
-    <SidebarHome/>
-    <HomeHeader/>
-    <AuthModal />
-    <MediaPlayer/>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route
-        path="/backoffice/roles"
-        element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
-      />
-      <Route
-        path="/backoffice/users"
-        element={isAdmin() ? <UserBackoffice /> : <Home />}
-      />
-      <Route
-        path="/backoffice/artists"
-        element={isAdmin() ? <ArtistBackoffice /> : <Home />}
+      <SidebarHome />
+      <HomeHeader />
+      <AuthModal />
+      <MediaPlayer />
+      <Routes>
+        {/* PUBLIC ROUTES */}
+        <Route path="/" element={<Home />} />
+        <Route path="/favourites" element={<Favourites />} />
+        {/* PRIVATE ROUTES */}
+        <Route
+          path="/backoffice/roles"
+          element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
         />
-      <Route
-        path="/backoffice/songs"
-        element={isAdmin() ? <SongBackoffice /> : <Home />}
-      />
-      <Route
-        path="/backoffice/favouriteSongs"
-        element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
-      />
-      <Route
-        path="/favourites"
-        element={<Favourites />}
-      />
-    </Routes>
-  </>
+        <Route
+          path="/backoffice/users"
+          element={isAdmin() ? <UserBackoffice /> : <Home />}
+        />
+        <Route
+          path="/backoffice/artists"
+          element={isAdmin() ? <ArtistBackoffice /> : <Home />}
+        />
+        <Route
+          path="/backoffice/songs"
+          element={isAdmin() ? <SongBackoffice /> : <Home />}
+        />
+        <Route
+          path="/backoffice/favouriteSongs"
+          element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
+        />
+      </Routes>
+    </>
   );
 };
 

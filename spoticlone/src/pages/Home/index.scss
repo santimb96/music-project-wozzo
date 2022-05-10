@@ -1,9 +1,21 @@
 @import '../../scss/colors';
 
 
-.home-page {
-  margin-left: 10vw;
-  margin-right: 2vw;
-  height: 100vh;
+
+  .home-page {
+    /* margin-left: 10vw; */
+   
+  }
+
+
+@media (min-width: 800px) {
+  .home-page {
+    position: absolute;
+    margin-right: 2vw;
+    height: 100vh;
+    top: 10%;
+    left: 10vw;
+    width: 100vw;
+  }
 }
 
