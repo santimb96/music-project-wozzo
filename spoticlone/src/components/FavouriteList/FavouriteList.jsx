@@ -1,5 +1,8 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import MediaContext from "../../contexts/MediaContext";
+import AuthContext from "../../contexts/AuthContext";
+import { getUserFavSongs } from "../../services/favouriteSongs";
+import { getSongs } from "../../services/songs";
 import {
   Table,
   TableCell,
@@ -10,23 +13,50 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import './index.scss';
+import "./index.scss";
 
 const FavouriteList = () => {
-  const { songList, favouriteList, selectedSong, setSelectedSong, goToNext, setGoToNext, goToPrevious, setGoToPrevious } = useContext(MediaContext);
+  const {
+    songList,
+    setSongList,
+    favouriteList,
+    setFavouriteList,
+    selectedSong,
+    setSelectedSong,
+    goToNext,
+    setGoToNext,
+    goToPrevious,
+    setGoToPrevious,
+  } = useContext(MediaContext);
 
+  const { user } = useContext(AuthContext);
   const [songsFavList, setSongsFavList] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const onSelectSong = (id) => {
-    setSelectedSong(songList?.find(s => s._id === id));
+    setSelectedSong(songList?.find((s) => s?._id === id));
   };
+  console.log(favouriteList);
 
   useEffect(() => {
-    const formatted = favouriteList.map((fav) => {
+    setLoading(true);
+    if(!favouriteList?.length){
+    Promise.all([getSongs(), getUserFavSongs(user?._id)])
+      .then(([songsResponse, favSongsResponse]) => {
+        setSongList(songsResponse?.songs);
+        setFavouriteList(favSongsResponse?.favouriteSongs);
+      })
+      .catch(err => console.warn(err))
+    }
+
+    const formatted = favouriteList?.map((fav) => {
       return songList?.find((song) => song?._id === fav?.songId);
     });
+    setLoading(false);
     setSongsFavList(formatted);
   }, [favouriteList]);
+
 
   useEffect(() => {
     if (goToNext) {
@@ -41,7 +71,7 @@ const FavouriteList = () => {
       setGoToNext(false);
     }
 
-    if(goToPrevious){
+    if (goToPrevious) {
       const indexOfSong = songsFavList?.findIndex(
         (s) => s._id === selectedSong?._id
       );
@@ -63,12 +93,12 @@ const FavouriteList = () => {
   );
 
   return (
-
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        {songsFavList?.length === 0 ? (
+        {songsFavList?.length === 0 && (
           msg(<h2 className="text-light">No hay resultados</h2>)
-        ) : !songsFavList?.length || songsFavList === null ? (
+        )} 
+        {loading ? (
           <>
             {msg(
               <div className="spinner-table-loading">
@@ -150,9 +180,7 @@ const FavouriteList = () => {
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          <i
-                            className="fa-solid fa-heart fav-icon-fav"
-                          ></i>
+                          <i className="fa-solid fa-heart fav-icon-fav"></i>
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}

@@ -97,7 +97,7 @@ const AppRoutes = () => {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />
-        <Route path="/favourites" element={<Favourites />} />
+        <Route path="/favourites" element={user?._id ? <Favourites /> : <NotFound />} />
         {/* PRIVATE ROUTES */}
         <Route
           path="/backoffice/roles"
