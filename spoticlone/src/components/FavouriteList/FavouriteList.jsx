@@ -1,33 +1,61 @@
+import React, { useContext, useEffect, useRef, useState } from "react";
+import MediaContext from "../../contexts/MediaContext";
 import {
-    Table,
-    TableCell,
-    TableRow,
-    TableBody,
-    TableHead,
-    TableContainer,
-  } from "@mui/material";
+  Table,
+  TableCell,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableContainer,
+} from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useContext, useRef } from "react";
-import PropTypes from "prop-types";
-import MediaContext from "../../contexts/MediaContext";
-import "./index.scss";
+import './index.scss';
 
-const MediaList = ({
-  filterText,
-  onSelectSong,
-  song,
-  onClickFavourite,
-}) => {
+const FavouriteList = () => {
+  const { songList, favouriteList, selectedSong, setSelectedSong, goToNext, setGoToNext, goToPrevious, setGoToPrevious } = useContext(MediaContext);
 
-  const {
-    songList,
-    filteredSongList,
-    favouriteList,
-    selectedSong,
-    
-  } = useContext(MediaContext);
+  const [songsFavList, setSongsFavList] = useState([]);
+
+  const onSelectSong = (id) => {
+    setSelectedSong(songList?.find(s => s._id === id));
+  };
+
+  useEffect(() => {
+    const formatted = favouriteList.map((fav) => {
+      return songList?.find((song) => song?._id === fav?.songId);
+    });
+    setSongsFavList(formatted);
+  }, [favouriteList]);
+
+  useEffect(() => {
+    if (goToNext) {
+      const indexOfSong = songsFavList?.findIndex(
+        (s) => s._id === selectedSong?._id
+      );
+      const nextSong =
+        indexOfSong === songsFavList?.length - 1
+          ? songsFavList?.[0]
+          : songsFavList?.[indexOfSong + 1];
+      setSelectedSong(nextSong);
+      setGoToNext(false);
+    }
+
+    if(goToPrevious){
+      const indexOfSong = songsFavList?.findIndex(
+        (s) => s._id === selectedSong?._id
+      );
+      const previousSong =
+        indexOfSong === 0
+          ? songsFavList?.[songsFavList?.length - 1]
+          : songsFavList?.[indexOfSong - 1];
+      setSelectedSong(previousSong);
+      setGoToPrevious(false);
+    }
+  }, [goToNext, goToPrevious]);
+
   const tableRef = useRef();
+
   const msg = (element) => (
     <div className="d-flex justify-content-center align-items-center">
       {element}
@@ -35,11 +63,12 @@ const MediaList = ({
   );
 
   return (
+
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        {filteredSongList?.length === 0 && filterText !== "" ? (
+        {songsFavList?.length === 0 ? (
           msg(<h2 className="text-light">No hay resultados</h2>)
-        ) : !filteredSongList?.length || filteredSongList === null ? (
+        ) : !songsFavList?.length || songsFavList === null ? (
           <>
             {msg(
               <div className="spinner-table-loading">
@@ -48,7 +77,7 @@ const MediaList = ({
             )}
           </>
         ) : (
-          <TableContainer className="table-content" >
+          <TableContainer className="table-content">
             <Table
               size="medium"
               className="table-content"
@@ -87,16 +116,16 @@ const MediaList = ({
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {filteredSongList
+                {songsFavList
                   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
                   .map((s, index) => {
                     return (
                       <TableRow
-                        onDoubleClick={(e) => onSelectSong(index)}
-                        key={s._id}
+                        onDoubleClick={() => onSelectSong(s?._id)}
+                        key={s?._id}
                         value={index}
                         className={`song-row-home ${
-                          song?._id === s?._id ? "song-row-playing" : ""
+                          selectedSong?._id === s?._id ? "song-row-playing" : ""
                         }`}
                       >
                         <TableCell
@@ -121,17 +150,9 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {favouriteList?.find((f) => f?.songId === s?._id) ? (
-                            <i
-                              onClick={() => onClickFavourite(s?._id, true)}
-                              className="fa-solid fa-heart fav-icon-fav"
-                            ></i>
-                          ) : (
-                            <i
-                              onClick={() => onClickFavourite(s?._id, false)}
-                              className="fa-regular fa-heart fav-icon"
-                            ></i>
-                          )}
+                          <i
+                            className="fa-solid fa-heart fav-icon-fav"
+                          ></i>
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
@@ -150,19 +171,14 @@ const MediaList = ({
         )}
       </div>
       <div className="col 12 songs-found">
-        <p>{songList.length ? `${songList.length} canciones encontradas` : ""}</p>
+        <p>
+          {songsFavList?.length
+            ? `${songsFavList?.length} canciones encontradas`
+            : ""}
+        </p>
       </div>
     </div>
   );
 };
 
-MediaList.propTypes = {
-  songs: PropTypes.array,
-  favouriteSongs: PropTypes.array,
-  filterText: PropTypes.string,
-  onSelectSong: PropTypes.func.isRequired,
-  song: PropTypes.object,
-  onClickFavourite: PropTypes.func.isRequired,
-};
-
-export default MediaList;
+export default FavouriteList;

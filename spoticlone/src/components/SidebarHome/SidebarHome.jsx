@@ -20,19 +20,18 @@ const SidebarHome = () => {
 
   return (
     <div className="sidebar">
-      <div className="row header-responsive">
-        <header className="col-12 pt-3 spotilogo d-flex justify-content-center">
+      <div className="header-responsive">
+        <header className="pt-3 spotilogo ">
           <img
             onClick={() => handleOpenSidebar()}
             src={spotiLogo}
             alt="spoticloneLogo"
           ></img>
         </header>
-        <div className="sidebar-list">
-
-            <Link to="/favourites">Favoritos</Link>
-
-        </div>
+      </div>
+      <div className="sidebar-list">
+        <Link to="/">Inicio</Link>
+        <Link to="/favourites">Favoritos</Link>
       </div>
     </div>
   );
