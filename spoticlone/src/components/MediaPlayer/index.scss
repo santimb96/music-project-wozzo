@@ -11,110 +11,89 @@
   /* justify-content: center; */
   /* right: 0; */
   /* margin-right: 41%; */
-}
 
-.vol-icon {
-  width: 2rem;
-}
+  .player-container {
+    //position: sticky;
+    background-color: $mediaBack;
+    border-radius: 15px;
+  }
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .song-title-player {
+    font-size: 0.6rem;
+    color: white;
+    margin-left: 1vh;
+  }
+  .song-artist-name-player {
+    font-size: 0.5rem;
+    color: $tablePresentationColor;
+  }
+  .player-buttons {
+    //padding-top: 0.5rem;
+    color: white;
+    font-size: 2rem;
+  }
+  .vol-icon {
+    display: none;
+  }
+  .slider-vol {
+    display: none;
+  }
+  .player {
+    margin-top: -10px;
+  }
 
-.player-container {
-  //position: sticky;
-  background-color: $mediaBack;
-  border-radius: 15px;
-}
-.song-title-player {
-  font-size: 0.8rem;
-  color: white;
-  margin-left: 1vh;
-}
-.song-artist-name-player {
-  font-size: 0.7rem;
-  color: $tablePresentationColor;
-}
-.player-buttons {
-  //padding-top: 0.5rem;
-  color: white;
-  font-size: 2rem;
-}
-
-.slider-vol {
-  background: transparent;
-  width: 48%;
-}
-.slider-vol::-moz-range-progress {
-  background-color: $spotiLogoColor;
-}
-.slider-vol::-moz-range-track {
-  background-color: $mediaBar;
-}
-.slider-vol::-moz-range-thumb,
-.slider::-webkit-slider-thumb {
-  width: 15px;
-  height: 15px;
-  border: none;
-  border-radius: 50%;
-  background: white;
-  cursor: pointer;
-}
-.player {
-  margin-top: -10px;
-}
-
-.current-time-player {
-  font-size: 0.7rem;
-  color: $tablePresentationColor;
-  padding: 1rem;
-}
-div.progress-bar {
-  width: 72%;
-  background: transparent;
-  background-color: transparent;
-  .slider {
+  .current-time-player {
+    font-size: 0.7rem;
+    color: $tablePresentationColor;
+    padding: 1rem;
+  }
+  div.progress-bar {
+    width: 72%;
+    background: transparent;
     background-color: transparent;
-    //-webkit-appearance: none;
+    .slider {
+      background-color: transparent;
+      //-webkit-appearance: none;
+    }
+    .slider::-moz-range-progress {
+      background-color: $spotiLogoColor;
+    }
+    .slider::-moz-range-track,
+    .slider::-webkit-slider-runnable-track {
+      -webkit-appearance: none;
+      background-color: $mediaBar;
+    }
+    .slider::-moz-range-thumb,
+    .slider::-webkit-slider-thumb {
+      width: 15px;
+      height: 15px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
   }
-  .slider::-moz-range-progress {
-    background-color: $spotiLogoColor;
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
   }
-  .slider::-moz-range-track,
-  .slider::-webkit-slider-runnable-track {
-    -webkit-appearance: none;
-    background-color: $mediaBar;
+  .loop-button {
+    color: white;
+    font-size: 1.1rem;
+    transition: 0.1s;
+    background-color: transparent;
   }
-  .slider::-moz-range-thumb,
-  .slider::-webkit-slider-thumb {
-    width: 15px;
-    height: 15px;
-    border: none;
-    border-radius: 50%;
-    background: white;
-    cursor: pointer;
-    -webkit-appearance: none;
-  }
-}
-.slider:hover {
-  opacity: 1; /* Fully shown on mouse-over */
-}
-.loop-button {
-  color: white;
-  font-size: 1.1rem;
-  transition: 0.1s;
-  background-color: transparent;
-}
 
-.back-next-buttons {
-  color: white;
-  font-size: 1.1rem;
-  transition: 0.1s;
-  background-color: transparent;
-}
-
-.back-next-buttons:hover {
-  color: $spotiLogoColor;
-}
-
-.loop-button-active {
-  color: $spotiLogoColor;
+  .back-next-buttons {
+    color: white;
+    font-size: 1.1rem;
+    transition: 0.1s;
+    background-color: transparent;
+  }
 }
 
 @media (min-width: 800px) {
@@ -122,35 +101,49 @@ div.progress-bar {
     position: absolute;
     width: 100vw;
     top: 80%;
-    /* margin-left: 90vw; */
-    /* left: 0; */
-    /* transform: translate(-50%, -50%); */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* right: 0; */
-    /* margin-right: 41%; */
-  }
 
-  .player-container {
-    width: 100vw;
-    border-radius: none;
-    .control-buttons {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    .player-container {
+      width: 100vw;
+      border-radius: none;
     }
-
     .song-title-player {
-      padding-left: 5%;
-      font-size: 0.6rem;
+      width: 20vw;
+      font-size: 0.8rem;
+      margin-left: 0vw;
     }
     .song-artist-name-player {
-      padding-left: 5%;
-      font-size: 0.5rem;
+      width: 20vwvw;
+      font-size: 0.7rem;
     }
     .player-buttons {
       font-size: 2.5rem;
     }
+
+    .vol-icon {
+      display: flex;
+      width: 2rem;
+    }
+    .slider-vol {
+      display: flex;
+      background: transparent;
+      width: 48%;
+    }
+    .slider-vol::-moz-range-progress {
+      background-color: $spotiLogoColor;
+    }
+    .slider-vol::-moz-range-track {
+      background-color: $mediaBar;
+    }
+    .slider-vol::-moz-range-thumb,
+    .slider::-webkit-slider-thumb {
+      width: 15px;
+      height: 15px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+    }
+
     .current-time-player {
       font-size: 0.6rem;
       color: $tablePresentationColor;
@@ -159,18 +152,18 @@ div.progress-bar {
     .loop-button {
       font-size: 1.2rem;
     }
-    .vol-icon {
-      display: none;
-    }
-    .slider-vol {
-      display: none;
-    }
+
     .back-next-buttons {
       font-size: 1.4rem;
       transition: 0.1s;
     }
-    .back-next-buttons:is(:hover, :focus, :focus-visible, :active) {
-      color: white;
+
+    .back-next-buttons:hover {
+      color: $spotiLogoColor;
+    }
+
+    .loop-button-active {
+      color: $spotiLogoColor;
     }
     .data-container {
       display: flex;

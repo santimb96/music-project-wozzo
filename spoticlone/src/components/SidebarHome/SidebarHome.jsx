@@ -30,7 +30,7 @@ const SidebarHome = () => {
         </header>
         <div className="sidebar-list">
 
-            <Link to="/favourites">Favourites</Link>
+            <Link to="/favourites">Favoritos</Link>
 
         </div>
       </div>

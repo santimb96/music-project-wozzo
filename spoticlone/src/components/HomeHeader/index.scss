@@ -1,6 +1,8 @@
 @import "../../scss/colors";
 
 .header-home {
+  top: 1.5vh;
+  position: relative;
   width: 100vw;
   .auth-drop {
     background: transparent;
@@ -44,8 +46,8 @@
   }
   .auth-user {
     display: flex;
-    justify-content: space-around;
-    width: 100vw;
+    justify-content: center;
+    
     p {
       color: white;
     }
@@ -75,10 +77,10 @@
 
 @media (min-width: 800px) {
   .header-home {
-    min-height: 10vh;
-    position: relative;
-    width: 80vw;
-    left: 10vw;
+      position: absolute;
+      width: 90vw;
+      left: 10vw;
+      /* top: -100vh; */
     
     .auth-drop {
       background: transparent;
@@ -126,7 +128,7 @@
   .auth-user {
     display: flex;
     justify-content: end;
-    width: 100%;
+
     p {
       color: white;
   

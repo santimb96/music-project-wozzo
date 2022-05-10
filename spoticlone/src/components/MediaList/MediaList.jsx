@@ -8,8 +8,9 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
+import MediaContext from "../../contexts/MediaContext";
 import "./index.scss";
 
 const MediaList = ({
@@ -20,6 +21,14 @@ const MediaList = ({
   song,
   onClickFavourite,
 }) => {
+
+  const {
+    songList,
+    filteredSongList,
+    favouriteList,
+    selectedSong,
+    
+  } = useContext(MediaContext);
   const tableRef = useRef();
   const msg = (element) => (
     <div className="d-flex justify-content-center align-items-center">
@@ -30,9 +39,9 @@ const MediaList = ({
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        {songs?.length === 0 && filterText !== "" ? (
+        {filteredSongList?.length === 0 && filterText !== "" ? (
           msg(<h2 className="text-light">No hay resultados</h2>)
-        ) : !songs.length || songs === null ? (
+        ) : !filteredSongList?.length || filteredSongList === null ? (
           <>
             {msg(
               <div className="spinner-table-loading">
@@ -80,7 +89,7 @@ const MediaList = ({
                 </TableRow>
               </TableHead>
               <TableBody ref={tableRef}>
-                {songs
+                {filteredSongList
                   ?.sort((a, b) => (a.name > b.name ? 1 : -1))
                   .map((s, index) => {
                     return (
@@ -114,7 +123,7 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {favouriteSongs?.find((f) => f?.songId === s?._id) ? (
+                          {favouriteList?.find((f) => f?.songId === s?._id) ? (
                             <i
                               onClick={() => onClickFavourite(s?._id, true)}
                               className="fa-solid fa-heart fav-icon-fav"
@@ -130,7 +139,7 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {song?._id === s?._id && (
+                          {selectedSong?._id === s?._id && (
                             <i className="fa-solid fa-play play-row-button"></i>
                           )}
                         </TableCell>
@@ -143,7 +152,7 @@ const MediaList = ({
         )}
       </div>
       <div className="col 12 songs-found">
-        <p>{songs.length ? `${songs.length} canciones encontradas` : ""}</p>
+        <p>{songList.length ? `${songList.length} canciones encontradas` : ""}</p>
       </div>
     </div>
   );

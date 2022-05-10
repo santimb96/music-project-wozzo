@@ -2,17 +2,17 @@
 
 
 
-  .home-page {
-    /* margin-left: 10vw; */
-   
-  }
+.home-page {
+  position: absolute;
+  width: 100vw;
+}
 
 
 @media (min-width: 800px) {
   .home-page {
     position: absolute;
     margin-right: 2vw;
-    height: 100vh;
+    height: 70vh;
     top: 10%;
     left: 10vw;
     width: 100vw;

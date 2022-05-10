@@ -7,13 +7,11 @@
     width: 100vw;
   }
 .table-container{
-  height: 55vh;
+  height: 56vh;
     .table-content {
-      height: 50vh;
       margin-top: 2vh;
       width: 100vw;
       table {
-        height: 55vh;
         width: 100vw;
         th,
         td {
@@ -44,6 +42,7 @@
   /* margin-right: 49%; */
   font-size: 0.8rem;
   color: #aaaaaa;
+  padding-top: 2%;
 }
 
 
@@ -55,10 +54,8 @@
 
  .contaner-list {
     padding-right: 1rem;
-    height: 54vh;
     width: 100vw;
     .table-container {
-      height: 54vh;
       .table-content {
         color: $secondaryColor;
         background-color: $darkColor;
@@ -117,5 +114,6 @@
     font-size: 0.8rem;
     color: #aaaaaa;
     padding-right: 5%;
+    padding-top: 0;
   }
 }

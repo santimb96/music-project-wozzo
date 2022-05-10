@@ -8,7 +8,7 @@ export const MODAL_STATES = {
 }
 
 export const AuthProvider = ({children}) => {
-  const [user, setUser] = useState(null);
+  const [ user, setUser] = useState(null);
   const [ userRole, setUserRole ] = useState('');
   const [ loading, setLoading ] = useState(true);
   const [ showAuthModal, setShowAuthModal ] = useState(false);

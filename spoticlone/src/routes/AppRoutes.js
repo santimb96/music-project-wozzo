@@ -21,10 +21,12 @@ import SidebarHome from "../components/SidebarHome/SidebarHome";
 import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
 import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
+import MediaContext from "../contexts/MediaContext";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
+  const { selectedSong } = useContext(MediaContext);
 
   const navigate = useNavigate();
 
@@ -89,7 +91,9 @@ const AppRoutes = () => {
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
-      <MediaPlayer />
+      {selectedSong?._id && (
+        <MediaPlayer />
+      )}
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />

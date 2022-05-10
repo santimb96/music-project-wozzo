@@ -1,15 +1,18 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PropTypes from 'prop-types';
 import './index.scss';
+import MediaContext from '../../contexts/MediaContext';
 
-const Search = ({ onChangeText, isFocus }) => {
+const Search = ({ onChangeText }) => {
+
+  const {setFocus} = useContext(MediaContext);
 
   const onFocus = () => {
-    isFocus(true);
+    setFocus(true);
   };
 
   const onBlur = () => {
-    isFocus(false);
+    setFocus(false);
   };
   return (
     <div className="input-search-home-container">
@@ -27,7 +30,7 @@ const Search = ({ onChangeText, isFocus }) => {
 
 Search.propTypes = {
   onChangeText: PropTypes.func.isRequired,
-  isFocus: PropTypes.func.isRequired
+
 }
 
 export default Search
