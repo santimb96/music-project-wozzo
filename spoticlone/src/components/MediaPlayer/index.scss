@@ -1,92 +1,17 @@
-@import '../../scss/colors';
+@import "../../scss/colors";
 
-@media (max-width: 768px) {
-  .cont-res{
-    width: 100vw;
-    padding-right: 0;
-    padding-left: 0;
-    margin-left: 11px;
-
-    .media-container {
-      .media-container {
-        position: absolute;
-        width: 100vw;
-        /* margin-left: 90vw; */
-        top: 80%;
-        /* left: 0; */
-        /* transform: translate(-50%, -50%); */
-        /* display: flex; */
-        /* justify-content: center; */
-        /* right: 0; */
-        /* margin-right: 41%; */
-      }
-    }
-    
-
-  .player-container{
-    margin-top: 1%;
-    width: 100vw;
-    border-radius: none;
-    .control-buttons{
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .song-title-player{
-      padding-left: 5%;
-      font-size: 0.6rem;
-    }
-    .song-artist-name-player{
-      padding-left: 5%;
-      font-size: 0.5rem;
-    }
-    .player-buttons {
-      font-size: 2.5rem;
-    }
-    .current-time-player {
-      font-size: 0.6rem;
-      color: $tablePresentationColor;
-      padding: 1rem;
-    }
-    .loop-button {
-      font-size: 1.2rem;
-    }
-    .vol-icon {
-      display: none;
-    }
-    .slider-vol{
-      display: none
-    }
-    .back-next-buttons{
-      font-size: 1.4rem;
-      transition: 0.1s;
-    }
-    .back-next-buttons:is(:hover, :focus, :focus-visible, :active){
-      color: white;
-    } 
-    .data-container{
-      display: flex;
-      justify-content: end;
-      margin-right: -10px;
-    }
-  }
+.media-container {
+  position: absolute;
+  width: 100vw;
+  /* margin-left: 90vw; */
+  top: 75%;
+  /* left: 0; */
+  /* transform: translate(-50%, -50%); */
+  /* display: flex; */
+  /* justify-content: center; */
+  /* right: 0; */
+  /* margin-right: 41%; */
 }
-}
-
-
-  .media-container {
-    position: absolute;
-    width: 100vw;
-    /* margin-left: 90vw; */
-    top: 80%;
-    /* left: 0; */
-    /* transform: translate(-50%, -50%); */
-    /* display: flex; */
-    /* justify-content: center; */
-    /* right: 0; */
-    /* margin-right: 41%; */
-  }
 
 .vol-icon {
   width: 2rem;
@@ -97,12 +22,12 @@
   background-color: $mediaBack;
   border-radius: 15px;
 }
-.song-title-player{
+.song-title-player {
   font-size: 0.8rem;
   color: white;
   margin-left: 1vh;
 }
-.song-artist-name-player{
+.song-artist-name-player {
   font-size: 0.7rem;
   color: $tablePresentationColor;
 }
@@ -112,7 +37,7 @@
   font-size: 2rem;
 }
 
-.slider-vol{
+.slider-vol {
   background: transparent;
   width: 48%;
 }
@@ -122,7 +47,8 @@
 .slider-vol::-moz-range-track {
   background-color: $mediaBar;
 }
-.slider-vol::-moz-range-thumb, .slider::-webkit-slider-thumb {
+.slider-vol::-moz-range-thumb,
+.slider::-webkit-slider-thumb {
   width: 15px;
   height: 15px;
   border: none;
@@ -150,11 +76,13 @@ div.progress-bar {
   .slider::-moz-range-progress {
     background-color: $spotiLogoColor;
   }
-  .slider::-moz-range-track, .slider::-webkit-slider-runnable-track {
+  .slider::-moz-range-track,
+  .slider::-webkit-slider-runnable-track {
     -webkit-appearance: none;
     background-color: $mediaBar;
   }
-  .slider::-moz-range-thumb, .slider::-webkit-slider-thumb {
+  .slider::-moz-range-thumb,
+  .slider::-webkit-slider-thumb {
     width: 15px;
     height: 15px;
     border: none;
@@ -174,7 +102,7 @@ div.progress-bar {
   background-color: transparent;
 }
 
-.back-next-buttons{
+.back-next-buttons {
   color: white;
   font-size: 1.1rem;
   transition: 0.1s;
@@ -185,11 +113,69 @@ div.progress-bar {
   color: $spotiLogoColor;
 }
 
-.loop-button-active{
+.loop-button-active {
   color: $spotiLogoColor;
 }
-.table-container {
-  height: 60vh;
+
+@media (min-width: 800px) {
+  .media-container {
+    position: absolute;
+    width: 100vw;
+    top: 80%;
+    /* margin-left: 90vw; */
+    /* left: 0; */
+    /* transform: translate(-50%, -50%); */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* right: 0; */
+    /* margin-right: 41%; */
+  }
+
+  .player-container {
+    width: 100vw;
+    border-radius: none;
+    .control-buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .song-title-player {
+      padding-left: 5%;
+      font-size: 0.6rem;
+    }
+    .song-artist-name-player {
+      padding-left: 5%;
+      font-size: 0.5rem;
+    }
+    .player-buttons {
+      font-size: 2.5rem;
+    }
+    .current-time-player {
+      font-size: 0.6rem;
+      color: $tablePresentationColor;
+      padding: 1rem;
+    }
+    .loop-button {
+      font-size: 1.2rem;
+    }
+    .vol-icon {
+      display: none;
+    }
+    .slider-vol {
+      display: none;
+    }
+    .back-next-buttons {
+      font-size: 1.4rem;
+      transition: 0.1s;
+    }
+    .back-next-buttons:is(:hover, :focus, :focus-visible, :active) {
+      color: white;
+    }
+    .data-container {
+      display: flex;
+      justify-content: end;
+      margin-right: -10px;
+    }
+  }
 }
-
-

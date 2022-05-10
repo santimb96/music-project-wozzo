@@ -1,5 +1,6 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
+import './index.scss';
 
 const Search = ({ onChangeText, isFocus }) => {
 
@@ -11,7 +12,7 @@ const Search = ({ onChangeText, isFocus }) => {
     isFocus(false);
   };
   return (
-    <div className="input-search-home-container d-flex justify-content-start">
+    <div className="input-search-home-container">
     <input
       type="search"
       className="input-search-home"
@@ -24,6 +25,9 @@ const Search = ({ onChangeText, isFocus }) => {
   )
 }
 
-Search.propTypes = {}
+Search.propTypes = {
+  onChangeText: PropTypes.func.isRequired,
+  isFocus: PropTypes.func.isRequired
+}
 
 export default Search
