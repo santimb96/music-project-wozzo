@@ -2,10 +2,26 @@
 
 @media (max-width: 768px) {
   .cont-res{
-    width: 100%;
+    width: 100vw;
     padding-right: 0;
     padding-left: 0;
     margin-left: 11px;
+
+    .media-container {
+      .media-container {
+        position: absolute;
+        width: 100vw;
+        /* margin-left: 90vw; */
+        top: 80%;
+        /* left: 0; */
+        /* transform: translate(-50%, -50%); */
+        /* display: flex; */
+        /* justify-content: center; */
+        /* right: 0; */
+        /* margin-right: 41%; */
+      }
+    }
+    
 
   .player-container{
     margin-top: 1%;
@@ -58,20 +74,24 @@
 }
 }
 
-.media-container {
-  position: absolute;
-  width: 120vw;
-  margin-left: 90vw;
-  top: 90%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
+
+  .media-container {
+    position: absolute;
+    width: 100vw;
+    /* margin-left: 90vw; */
+    top: 80%;
+    /* left: 0; */
+    /* transform: translate(-50%, -50%); */
+    /* display: flex; */
+    /* justify-content: center; */
+    /* right: 0; */
+    /* margin-right: 41%; */
+  }
 
 .vol-icon {
   width: 2rem;
 }
-.cont-res{
-  width: 10vw;
+
 .player-container {
   //position: sticky;
   background-color: $mediaBack;
@@ -155,7 +175,6 @@ div.progress-bar {
 }
 
 .back-next-buttons{
-  
   color: white;
   font-size: 1.1rem;
   transition: 0.1s;
@@ -172,5 +191,5 @@ div.progress-bar {
 .table-container {
   height: 60vh;
 }
-}
+
 

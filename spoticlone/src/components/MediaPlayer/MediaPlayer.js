@@ -86,8 +86,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   };
 
   return (
-    <div className="row mt-2 media-container">
-      <div className="col-12 bg-dark cont-res">
+    <div className=" mt-2 media-container">
         <div className="player-container">
           <div className="row d-flex justify-content-center">
             <div className="col-4 d-flex d-flex justify-content-center pt-3 data-container">
@@ -186,7 +185,6 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 MediaPlayer.propTypes = {
