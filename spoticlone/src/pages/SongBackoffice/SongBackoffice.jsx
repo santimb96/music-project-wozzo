@@ -267,11 +267,12 @@ const SongBackoffice = () => {
             ) : (
               <Table
                 size="medium"
-                aria-label="a dense table"
+                aria-label="sticky table"
                 className="table-content"
+                id="table"
                 sx={{ height: "max-content" }}
               >
-                <TableHead>
+                <TableHead className="sticky-header">
                   <ModalDelete
                     openDelete={openDelete}
                     handleCloseDelete={handleCloseDelete}
@@ -279,7 +280,6 @@ const SongBackoffice = () => {
                     deleteItem={deleteItem}
                     id={id}
                   />
-
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
