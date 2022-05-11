@@ -9,12 +9,17 @@
     width: 100vw;
   }
 .table-container{
+  .css-1ex1afd-MuiTableCell-root {
+    border-bottom: 0; 
+  }
+  
   height: 56vh;
     .table-content {
       margin-top: 2vh;
       width: 100vw;
       table {
         width: 100vw;
+        
         th,
         td {
           font-size: 0.8rem;
@@ -25,6 +30,7 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
+      
         .fav-icon,
           .fav-icon-fav {
             font-size: 1rem;

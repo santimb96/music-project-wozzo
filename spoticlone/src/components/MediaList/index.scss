@@ -1,5 +1,6 @@
 @import "../../scss/colors";
 
+
 .contaner-list {
   .spinner-table-loading {
     display: flex;
@@ -7,6 +8,10 @@
     width: 100vw;
   }
 .table-container{
+  .css-1ex1afd-MuiTableCell-root {
+    border-bottom: 0; 
+  }
+  
   height: 56vh;
     .table-content {
       margin-top: 2vh;
