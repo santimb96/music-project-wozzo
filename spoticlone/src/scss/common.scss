@@ -1,6 +1,6 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
-@import 'colors';
+@import "colors";
 
 %itemHorizontal {
   display: flex;
@@ -8,11 +8,26 @@
 }
 
 html {
-  
   overflow-x: hidden;
   overflow-y: hidden;
   body {
-    
+    scrollbar-width: thin !important; /* "auto" or "thin" */
+    scrollbar-color: $spotiLogoColor $darkColor; /* scroll thumb and track */
+
+    body::-webkit-scrollbar {
+      width: 12px; /* width of the entire scrollbar */
+    }
+
+    body::-webkit-scrollbar-track {
+      background: $spotiLogoColor; /* color of the tracking area */
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background-color: $darkColor; /* color of the scroll thumb */
+      border-radius: 20px; /* roundness of the scroll thumb */
+      border: 3px solid $spotiLogoColor; /* creates padding around scroll thumb */
+    }
+
     overflow-x: hidden;
     overflow-y: hidden;
     background: $darkColor;
@@ -40,83 +55,83 @@ html {
       pointer-events: none;
       opacity: 0.7;
     }
-    
-.table-head-item {
-  display: flex;
-  justify-content: space-around;
 
-  tr {
-    color: white;
-  }
-}
-.input {
-  font-size: 1rem;
-  padding-left: 1rem;
-  display: flex;
-  justify-content: center;
-  height: 7%;
+    .table-head-item {
+      display: flex;
+      justify-content: space-around;
 
-  input {
-    height: 10px;
-    border-radius: 5px;
-    background-color: white;
-  }
+      tr {
+        color: white;
+      }
+    }
+    .input {
+      font-size: 1rem;
+      padding-left: 1rem;
+      display: flex;
+      justify-content: center;
+      height: 7%;
 
-  input:focus-visible {
-    box-shadow: 0 0 0 0.15rem $secondaryColor;
-  }
-  .MuiOutlinedInput-root {
-    background-color: #fff;
-  }
-  .MuiOutlinedInput-root:hover {
-    box-shadow: 0 0 0 0.15rem $secondaryColor;
-  }
-  .MuiOutlinedInput-notchedOutline {
-    display: none;
-  }
-}
-#drop {
-  background: $secondaryColor;
-  color: white;
-  min-width: 50%;
-  transition: 0.2;
-  margin-top: 5%;
-  margin-bottom: 5%;
-  transition: 0.2;
-}
-#drop:hover {
-  color: black;
-  background-color: white;
-}
-#drop:focus,
-#drop:active {
-  color: black;
-  background-color: white;
-  outline: none;
-  box-shadow: none;
-}
-.dropdown-menu {
-  width: 10%;
-  background-color: white;
-  color: $secondaryColor;
-  border-radius: 5px;
-  transition: 0.2;
-}
-.dropdown-item {
-  text-align: center;
-  padding: 0.5rem;
-}
-.dropdown-item:hover {
-  background-color: $secondaryColor;
-  color: white;
-  transition: 0.2;
-}
+      input {
+        height: 10px;
+        border-radius: 5px;
+        background-color: white;
+      }
+
+      input:focus-visible {
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-root {
+        background-color: #fff;
+      }
+      .MuiOutlinedInput-root:hover {
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-notchedOutline {
+        display: none;
+      }
+    }
+    #drop {
+      background: $secondaryColor;
+      color: white;
+      min-width: 50%;
+      transition: 0.2;
+      margin-top: 5%;
+      margin-bottom: 5%;
+      transition: 0.2;
+    }
+    #drop:hover {
+      color: black;
+      background-color: white;
+    }
+    #drop:focus,
+    #drop:active {
+      color: black;
+      background-color: white;
+      outline: none;
+      box-shadow: none;
+    }
+    .dropdown-menu {
+      width: 10%;
+      background-color: white;
+      color: $secondaryColor;
+      border-radius: 5px;
+      transition: 0.2;
+    }
+    .dropdown-item {
+      text-align: center;
+      padding: 0.5rem;
+    }
+    .dropdown-item:hover {
+      background-color: $secondaryColor;
+      color: white;
+      transition: 0.2;
+    }
 
     .table-content {
       color: $secondaryColor;
       background: $darkColor;
     }
-  
+
     .modal-delete {
       position: absolute;
       top: 50%;
@@ -144,15 +159,20 @@ html {
       background-color: red;
     }
 
-    
     .input-search-home {
       border-radius: 20px;
       /* min-width: 100vw; */
       border: 1px solid #555;
       display: block;
       padding: 9px 4px 9px 40px;
-      background: white url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 class=%27bi bi-search%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z%27%3E%3C/path%3E%3C/svg%3E") no-repeat 13px center;
+      background: white
+        url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 class=%27bi bi-search%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z%27%3E%3C/path%3E%3C/svg%3E")
+        no-repeat 13px center;
       width: 80vw;
+    }
+    .input-search-home:is(:focus, :active, :focus-visible) {
+      outline: none;
+      box-shadow: none;
     }
 
     .backoffice-container {
@@ -162,19 +182,26 @@ html {
       width: 100vw;
       left: 0vw;
       height: 70vh;
-      .css-yks931-MuiPaper-root-MuiTableContainer-root{
+      .sticky-header {
+        position: sticky;
+        background-color: $darkColor;
+        top: 0;
+      }
+      .css-yks931-MuiPaper-root-MuiTableContainer-root {
         height: 50vh;
       }
       .css-10aorn8 {
         height: 50vh;
       }
-      table{
-        thead{
-            background: $darkColor;
-            width: 100vw;
+      table {
+        thead {
+          background: $darkColor;
+          width: 100vw;
         }
-        tbody{
-          //
+        tr,
+        th,
+        td {
+          color: $spotiLogoColor;
         }
       }
     }
@@ -182,15 +209,22 @@ html {
     @media (min-width: 800px) {
       .backoffice-container {
         position: absolute;
-        top: 10vh;
+        top: 11vh;
         width: 90vw;
         left: 10vw;
         height: 70vh;
+
+        .css-yks931-MuiPaper-root-MuiTableContainer-root {
+          height: 56vh;
+        }
+        .css-10aorn8 {
+          height: 56vh;
+        }
       }
     }
     .edit-button-table:hover,
     .delete-button-table:hover {
-      background-color: $secondaryColor;
+      background-color: $spotiLogoColor;
     }
 
     .search-filter-dropdown {
@@ -243,7 +277,8 @@ html {
       display: flex;
       justify-content: space-around;
 
-      .btn-modal, .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+      .btn-modal,
+      .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
         color: white;
         padding: 1rem;
         width: 90%;
@@ -251,14 +286,15 @@ html {
         transition: 0.1s;
       }
 
-      .btn-modal:hover, .css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
+      .btn-modal:hover,
+      .css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
         background-color: $secondaryColor;
       }
       .btn-delete:hover {
         background-color: red;
       }
     }
-        .btn-modal-form {
+    .btn-modal-form {
       color: white;
       width: 50%;
       transition: 0.1s;
@@ -267,7 +303,7 @@ html {
     .btn-modal-form:hover {
       background-color: $secondaryColor;
     }
-    
+
     .spinner-table-loading {
       display: flex;
       justify-content: center;
@@ -284,7 +320,6 @@ html {
       justify-content: start;
       padding-top: 10%;
     }
-    
   }
 }
 
@@ -292,13 +327,13 @@ html {
   html {
     overflow-x: hidden;
     overflow-y: hidden;
-    body {    
-    overflow-x: hidden;
-    overflow-y: hidden;
-    margin: 0;
-    padding: 0;
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+      margin: 0;
+      padding: 0;
 
-    position: relative;
+      position: relative;
       .sidebar-backoffice {
         display: none;
         padding-top: 0;

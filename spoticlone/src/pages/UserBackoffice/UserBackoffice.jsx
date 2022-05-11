@@ -269,7 +269,7 @@ const UserBackoffice = () => {
             component={Paper}
             className="table-content"
             sx={{ height: "80%" }}
-          >
+            >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -277,12 +277,12 @@ const UserBackoffice = () => {
             ) : (
               <Table
                 size="medium"
-                aria-label="a dense table"
+                aria-label="sticky table"
                 className="table-content"
                 id="table"
                 sx={{ height: "max-content" }}
               >
-                <TableHead>
+                <TableHead className="sticky-header">
                   <ModalDelete
                     openDelete={openDelete}
                     handleCloseDelete={handleCloseDelete}
