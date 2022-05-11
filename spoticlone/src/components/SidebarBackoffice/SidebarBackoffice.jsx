@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext.js";
 import { removeUserStorage } from "../../utils/localStorage.js";
@@ -106,7 +106,7 @@ const SidebarBackoffice = () => {
               </ListItem>
             </Link>
             <hr />
-            <Link to="/login" className="sidebar-link">
+            <Link to="/" className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link" onClick={logOut}>
                   <i class="fa-solid fa-arrow-right-from-bracket"></i>

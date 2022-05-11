@@ -25,6 +25,13 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
+        .fav-icon,
+          .fav-icon-fav {
+            font-size: 1rem;
+          }
+          .fav-icon-fav {
+            color: $spotiLogoColor;
+          }
       }
   }
   .song-row-home {
@@ -77,9 +84,7 @@
           .fav-icon-fav {
             font-size: 1.2rem;
           }
-          .fav-icon-fav {
-            color: $spotiLogoColor;
-          }
+          
         }
       }
       .sticky-header {

@@ -5,7 +5,14 @@ import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
 
 const HomeHeader = () => {
-  const { user, setUser, setUserRole, userRole, setShowAuthModal, setAuthModalType } = useContext(AuthContext);
+  const {
+    user,
+    setUser,
+    setUserRole,
+    userRole,
+    setShowAuthModal,
+    setAuthModalType,
+  } = useContext(AuthContext);
 
   const logOut = () => {
     setUser(null);
@@ -30,6 +37,18 @@ const HomeHeader = () => {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {userRole === "admin" && (
               <>
+                {window.location.pathname.includes("backoffice") && (
+                  <>
+                    <button className="dropdown-item">
+                      <Link to="/">Inicio</Link>
+                    </button>
+                    <button className="dropdown-item">
+                      <Link to="/favourites">Favoritos</Link>
+                    </button>
+                    <hr></hr>
+                  </>
+                )}
+
                 <button className="dropdown-item">
                   <Link to="/backoffice/roles">BO-Roles</Link>
                 </button>
@@ -49,9 +68,9 @@ const HomeHeader = () => {
               </>
             )}
             <button onClick={logOut} className="dropdown-item">
-                <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
-                Sesión
-              </button>
+              <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
+              Sesión
+            </button>
           </div>
         </div>
       )}
@@ -77,7 +96,6 @@ const HomeHeader = () => {
           </button>
         </div>
       )}
-      
     </div>
   );
 };

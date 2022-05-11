@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidebarBackoffice from "../../components/SidebarBackoffice/SidebarBackoffice";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import {
   createUser,
   getUsers,
@@ -33,7 +33,6 @@ import { checkEmail, checkPassword } from "../../utils/validators.js";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
-import './index.scss';
 import sortItems from "../../utils/sortItems";
 
 const UserBackoffice = () => {
@@ -255,19 +254,14 @@ const UserBackoffice = () => {
   return (
     <div className="row">
       {!loading ? (
-        <SidebarBackoffice />
+        <Sidebar />
       ) : (
         <div className="col-12 col-md-2 bg-dark"></div>
       )}
-      <div className="col-12 col-md-10 p-0">
+      <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
-            <TextField
-              className="input"
-              placeholder="busca..."
-              onChange={(e) => setText(e.target.value)}
-              disabled={loading}
-            />
+            <input type="search" class="input-search-home" placeholder="Usuario o correo..." disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
             <CreateButton handleOpenForm={handleOpenForm} />
           </div>
 

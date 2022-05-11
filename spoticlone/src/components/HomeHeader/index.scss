@@ -23,6 +23,8 @@
   .dropdown-menu {
     background: $darkColor;
     .dropdown-item {
+      display: flex;
+      justify-content: start;
       color: white;
       transition: 0.1s;
       a {

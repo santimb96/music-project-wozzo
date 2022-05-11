@@ -16,7 +16,7 @@ import Favourites from "../pages/Favourites/Favourites";
 
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
 import NotFound from "../components/NotFound/NotFound";
-import SidebarHome from "../components/SidebarHome/SidebarHome";
+import SidebarHome from "../components/Sidebar/Sidebar";
 import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
 import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
@@ -26,7 +26,7 @@ const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
   const { selectedSong } = useContext(MediaContext);
-  const isUser = user?._id && userRole === "user";
+  const isUser = user?._id && (userRole === "user" || userRole === "admin");
   const isAdmin = user?._id && userRole === "admin";
 
   const navigate = useNavigate();

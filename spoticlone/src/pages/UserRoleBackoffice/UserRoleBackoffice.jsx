@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidebarBackoffice from "../../components/SidebarBackoffice/SidebarBackoffice";
+import Sidebar from "../../components/Sidebar/Sidebar";
 import { getRoles } from "../../services/roles";
 import Box from "@mui/material/Box";
 import theme from "../../palette/palette.js";
@@ -14,8 +14,6 @@ import { TextField } from "@mui/material";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
-import './index.scss';
-
 
 const UserRoleBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -70,15 +68,11 @@ const UserRoleBackoffice = () => {
 
   return (
     <div className="row">
-      <SidebarBackoffice />
-      <div className="col-12 col-md-10 p-0">
+      <Sidebar />
+      <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-            <TextField
-              className="input"
-              placeholder="busca..."
-              onChange={(e) => setText(e.target.value)}
-            />
+          <input type="search" class="input-search-home" placeholder="Usuario o correo..." onChange={(e) => setText(e.target.value)} ></input>
           </div>
 
           {!itemsToShow() ? (
