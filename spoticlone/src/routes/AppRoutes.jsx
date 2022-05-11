@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
-import Login from "../pages/Login/Login";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
 import Home from "../pages/Home/Home";
@@ -27,6 +26,8 @@ const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
   const { selectedSong } = useContext(MediaContext);
+  const isUser = user?._id && userRole === "user";
+  const isAdmin = user?._id && userRole === "admin";
 
   const navigate = useNavigate();
 
@@ -67,57 +68,82 @@ const AppRoutes = () => {
     }
   }, [window.location.pathname]);
 
-  const isAdmin = () => {
-    if (user && userRole === "admin") {
-      return true;
+  const RequireUser = ({ children }) => {
+    if (isUser) {
+      return children;
     } else {
-      window.history.pushState({}, null, "/");
-      return false;
+      return <Navigate to="/" replace></Navigate>;
+    }
+  };
+
+  const RequireAdmin = ({ children }) => {
+    if (isAdmin) {
+      return children;
+    } else {
+      return <Navigate to="/" replace></Navigate>;
     }
   };
 
   if (loading) return <GlobalLoading />;
-
-  if (
-    !routes.find((r) => r.route === window.location.pathname) &&
-    !["/login", "/register", "/", "/favourites"].includes(
-      window.location.pathname
-    )
-  )
-    return <NotFound />;
-
+  
   return (
     <>
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
-      {selectedSong?._id && (
-        <MediaPlayer />
-      )}
+      {selectedSong?._id && <MediaPlayer />}
       <Routes>
+        <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<Home />} />
-        <Route path="/favourites" element={user?._id ? <Favourites /> : <NotFound />} />
+        <Route
+          path="/favourites"
+          element={
+            <RequireUser>
+              <Favourites />
+            </RequireUser>
+          }
+        />
         {/* PRIVATE ROUTES */}
         <Route
           path="/backoffice/roles"
-          element={isAdmin() ? <UserRoleBackoffice /> : <Home />}
+          element={
+            <RequireAdmin>
+              <UserRoleBackoffice />
+            </RequireAdmin>
+          }
         />
         <Route
           path="/backoffice/users"
-          element={isAdmin() ? <UserBackoffice /> : <Home />}
+          element={
+            <RequireAdmin>
+              <UserBackoffice />
+            </RequireAdmin>
+          }
         />
         <Route
           path="/backoffice/artists"
-          element={isAdmin() ? <ArtistBackoffice /> : <Home />}
+          element={
+            <RequireAdmin>
+              <ArtistBackoffice />
+            </RequireAdmin>
+          }
         />
         <Route
           path="/backoffice/songs"
-          element={isAdmin() ? <SongBackoffice /> : <Home />}
+          element={
+            <RequireAdmin>
+              <SongBackoffice />
+            </RequireAdmin>
+          }
         />
         <Route
           path="/backoffice/favouriteSongs"
-          element={isAdmin() ? <FavouriteSongBackoffice /> : <Home />}
+          element={
+            <RequireAdmin>
+              <FavouriteSongBackoffice />
+            </RequireAdmin>
+          }
         />
       </Routes>
     </>

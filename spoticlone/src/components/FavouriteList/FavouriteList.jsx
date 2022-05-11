@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import MediaContext from "../../contexts/MediaContext";
-import AuthContext from "../../contexts/AuthContext";
-import { getUserFavSongs } from "../../services/favouriteSongs";
-import { getSongs } from "../../services/songs";
 import {
   Table,
   TableCell,
@@ -15,12 +12,9 @@ import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import "./index.scss";
 
-const FavouriteList = () => {
+const FavouriteList = ({loading, songsFavList}) => {
   const {
     songList,
-    setSongList,
-    favouriteList,
-    setFavouriteList,
     selectedSong,
     setSelectedSong,
     goToNext,
@@ -29,33 +23,10 @@ const FavouriteList = () => {
     setGoToPrevious,
   } = useContext(MediaContext);
 
-  const { user } = useContext(AuthContext);
-  const [songsFavList, setSongsFavList] = useState([]);
-
-  const [loading, setLoading] = useState(false);
-
   const onSelectSong = (id) => {
     setSelectedSong(songList?.find((s) => s?._id === id));
   };
-  console.log(favouriteList);
 
-  useEffect(() => {
-    setLoading(true);
-    if(!favouriteList?.length){
-    Promise.all([getSongs(), getUserFavSongs(user?._id)])
-      .then(([songsResponse, favSongsResponse]) => {
-        setSongList(songsResponse?.songs);
-        setFavouriteList(favSongsResponse?.favouriteSongs);
-      })
-      .catch(err => console.warn(err))
-    }
-
-    const formatted = favouriteList?.map((fav) => {
-      return songList?.find((song) => song?._id === fav?.songId);
-    });
-    setLoading(false);
-    setSongsFavList(formatted);
-  }, [favouriteList]);
 
 
   useEffect(() => {
@@ -95,9 +66,6 @@ const FavouriteList = () => {
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        {songsFavList?.length === 0 && (
-          msg(<h2 className="text-light">No hay resultados</h2>)
-        )} 
         {loading ? (
           <>
             {msg(

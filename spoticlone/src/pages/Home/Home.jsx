@@ -13,14 +13,11 @@ import "./index.scss";
 import AuthModal from "../../components/AuthModal/AuthModal";
 import Search from "../../components/Search/Search";
 import MediaContext from "../../contexts/MediaContext";
+import NoResultsFound from "../../components/NoResultsFound/NoResultsFound";
 
 const Home = () => {
   const authContext = useContext(AuthContext);
-  const {
-    user,
-    setShowAuthModal,
-    setAuthModalType,
-  } = authContext;
+  const { user, setShowAuthModal, setAuthModalType } = authContext;
 
   const {
     selectedSong,
@@ -42,10 +39,10 @@ const Home = () => {
 
   const getData = () => {
     Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
-    .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
-      const data = songsResponse.songs.map((song) => {
-        const artist = artistsResponse.artists.find(
-          (artist) => artist._id === song.artistId
+      .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
+        const data = songsResponse.songs.map((song) => {
+          const artist = artistsResponse.artists.find(
+            (artist) => artist._id === song.artistId
           );
           return {
             ...song,
@@ -62,10 +59,10 @@ const Home = () => {
   const getFavourites = () => {
     getUserFavSongs(user?._id)
       .then((favs) => {
-        setFavouriteList(favs?.favouriteSongs)
+        setFavouriteList(favs?.favouriteSongs);
       })
       .catch((err) => console.error(err));
-  }
+  };
 
   useEffect(() => {
     getData();
@@ -107,7 +104,7 @@ const Home = () => {
       setGoToNext(false);
     }
 
-    if(goToPrevious){
+    if (goToPrevious) {
       const indexOfSong = filteredSongList?.findIndex(
         (s) => s._id === selectedSong?._id
       );
@@ -118,7 +115,7 @@ const Home = () => {
       setSelectedSong(previousSong);
       setGoToPrevious(false);
     }
-  }, [goToNext, goToPrevious])
+  }, [goToNext, goToPrevious]);
 
   const deleteFav = (song) => {
     deleteFavSong(song, token)
@@ -143,7 +140,9 @@ const Home = () => {
   const onClickFavourite = (songId, onDelete) => {
     if (user?._id) {
       if (onDelete) {
-        const match = favouriteList.find((f) => f.songId === songId && f.userId === user?._id);
+        const match = favouriteList.find(
+          (f) => f.songId === songId && f.userId === user?._id
+        );
         deleteFav(match._id);
       } else {
         addFav(songId);
@@ -156,12 +155,16 @@ const Home = () => {
 
   return (
     <div className="home-page">
-      <Search onChangeText={onChangeText}/>
-      <MediaList
-        onSelectSong={onSelectSong}
-        filterText={filterText}
-        onClickFavourite={onClickFavourite}
-      />
+      <Search onChangeText={onChangeText} />
+      {filteredSongList?.length === 0 && filterText !== "" ? (
+        <NoResultsFound msg={<h2 className="text-light">No hay resultados</h2>} />
+      ) : (
+        <MediaList
+          onSelectSong={onSelectSong}
+          filterText={filterText}
+          onClickFavourite={onClickFavourite}
+        />
+      )}
     </div>
   );
 };

@@ -28,6 +28,7 @@ const MediaList = ({
     
   } = useContext(MediaContext);
   const tableRef = useRef();
+  
   const msg = (element) => (
     <div className="d-flex justify-content-center align-items-center">
       {element}
@@ -37,16 +38,13 @@ const MediaList = ({
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        {filteredSongList?.length === 0 && filterText !== "" ? (
-          msg(<h2 className="text-light">No hay resultados</h2>)
-        ) : !filteredSongList?.length || filteredSongList === null ? (
-          <>
-            {msg(
+        { !filteredSongList?.length || filteredSongList === null ? (
+            msg(
               <div className="spinner-table-loading">
                 <SpinnerLoading />
               </div>
-            )}
-          </>
+            )
+         
         ) : (
           <TableContainer className="table-content" >
             <Table
