@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import PropTypes from "prop-types";
 import format from "format-duration";
 import "./index.scss";
 import MediaContext from "../../contexts/MediaContext";
@@ -16,6 +15,7 @@ const MediaPlayer = () => {
 
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
+  const [volControl, setVolControl] = useState(0.3);
   const [loop, setLoop] = useState(false);
 
   const audioRef = useRef(new Audio(""));
@@ -95,8 +95,10 @@ const MediaPlayer = () => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
+  console.log(audioRef.current.volume);
+
   return (
-    <div className=" mt-2 media-container">
+    <div className="mt-2 media-container">
         <div className="player-container">
           <div className="row d-flex justify-content-center">
             <div className="col-4 d-flex d-flex justify-content-center pt-3 data-container">
@@ -157,7 +159,7 @@ const MediaPlayer = () => {
               {volIconRender()}
               <input
                 type="range"
-                value={audioRef?.current?.volume * 100}
+                value={playing ? audioRef?.current?.volume * 100 : volControl * 100}
                 step="1"
                 min="0"
                 max="100"
@@ -165,6 +167,7 @@ const MediaPlayer = () => {
                 onChange={(e) => {
                   if (e.target.value / 100 !== audioRef.current.value) {
                     audioRef.current.volume = e.target.value / 100;
+                    setVolControl(e.target.value / 100);
                   }
                 }}
               />
@@ -196,12 +199,6 @@ const MediaPlayer = () => {
         </div>
       </div>
   );
-};
-MediaPlayer.propTypes = {
-  song: PropTypes.object.isRequired,
-  goToNext: PropTypes.func.isRequired,
-  goToBack: PropTypes.func.isRequired,
-  focus: PropTypes.bool.isRequired,
 };
 
 export default MediaPlayer;
