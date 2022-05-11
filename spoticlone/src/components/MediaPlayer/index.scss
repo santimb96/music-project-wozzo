@@ -103,11 +103,10 @@
   .media-container {
     position: absolute;
     width: 100vw;
-    top: 80%;
-
+    top: 82.5vh;
     .player-container {
       width: 100vw;
-      border-radius: none;
+      border-radius: 0;
     }
     .song-title-player {
       width: 20vw;

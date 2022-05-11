@@ -59,6 +59,7 @@ const MediaPlayer = () => {
 
   useEffect(() => {
     play(0);
+    audioRef.current.volume = 0.3;
     document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
