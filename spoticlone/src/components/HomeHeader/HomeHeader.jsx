@@ -37,7 +37,7 @@ const HomeHeader = () => {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {userRole === "admin" && (
               <>
-                {window.location.pathname.includes("backoffice") && (
+                {(window.location.pathname.includes("backoffice") || window.location.pathname.includes("favourites")) && (
                   <>
                     <button className="dropdown-item">
                       <Link to="/">Inicio</Link>
