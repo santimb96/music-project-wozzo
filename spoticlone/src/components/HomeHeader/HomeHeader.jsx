@@ -4,16 +4,15 @@ import { Link } from "react-router-dom";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
 
-const HomeHeader = ({ onChangeText, isFocus }) => {
-  const { user, setUser, setUserRole, userRole, setShowAuthModal, setAuthModalType } = useContext(AuthContext);
-
-  const onFocus = () => {
-    isFocus(true);
-  };
-
-  const onBlur = () => {
-    isFocus(false);
-  };
+const HomeHeader = () => {
+  const {
+    user,
+    setUser,
+    setUserRole,
+    userRole,
+    setShowAuthModal,
+    setAuthModalType,
+  } = useContext(AuthContext);
 
   const logOut = () => {
     setUser(null);
@@ -38,6 +37,18 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {userRole === "admin" && (
               <>
+                {(window.location.pathname.includes("backoffice") || window.location.pathname.includes("favourites")) && (
+                  <>
+                    <button className="dropdown-item">
+                      <Link to="/">Inicio</Link>
+                    </button>
+                    <button className="dropdown-item">
+                      <Link to="/favourites">Favoritos</Link>
+                    </button>
+                    <hr></hr>
+                  </>
+                )}
+
                 <button className="dropdown-item">
                   <Link to="/backoffice/roles">BO-Roles</Link>
                 </button>
@@ -57,9 +68,9 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
               </>
             )}
             <button onClick={logOut} className="dropdown-item">
-                <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
-                Sesión
-              </button>
+              <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
+              Sesión
+            </button>
           </div>
         </div>
       )}
@@ -85,18 +96,6 @@ const HomeHeader = ({ onChangeText, isFocus }) => {
           </button>
         </div>
       )}
-
-      <div className="input-search-home-container d-flex justify-content-start">
-        <input
-          type="search"
-          className="input-search-home"
-          onChange={(e) => onChangeText(e.target.value)}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          placeholder="Artistas o canciones"
-        />
-      </div>
-      
     </div>
   );
 };

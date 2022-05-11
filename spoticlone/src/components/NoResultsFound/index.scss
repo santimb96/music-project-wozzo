@@ -1,0 +1,10 @@
+@import '../../scss/colors';
+
+.msg-container{
+  height: 50vh;
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

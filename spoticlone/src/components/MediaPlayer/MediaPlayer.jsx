@@ -1,11 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import format from "format-duration";
 import "./index.scss";
+import MediaContext from "../../contexts/MediaContext";
 
-const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
+const MediaPlayer = () => {
+
+  const {
+    selectedSong,
+    setGoToNext,
+    setGoToPrevious,
+    focus
+  } = useContext(MediaContext);
+
+
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
+  const [volControl, setVolControl] = useState(0.3);
   const [loop, setLoop] = useState(false);
 
   const audioRef = useRef(new Audio(""));
@@ -31,14 +41,14 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
   }, [focus]);
 
   const play = (position) => {
-    document.title = `Escuchando: ${song.name}`;
+    document.title = `${selectedSong?.name}`;
     audioRef.current.currentTime = position;
     audioRef.current.play();
     setPlaying(true);
   };
 
   const pause = () => {
-    document.title = `Pausa  : ${song.name}`;
+    document.title = `Spoticlone`;
     audioRef.current.pause();
     setPlaying(false);
   };
@@ -49,13 +59,13 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
 
   useEffect(() => {
     play(0);
-    document.title = `Escuchando: ${song.name}`; // Set the title
+    document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
       setTrackProgress(audioRef.current.currentTime);
     }, [100]);
     return () => clearInterval(intervalRef.current);
-  }, [song]);
+  }, [selectedSong]);
 
   const onLoop = () => {
     setLoop((prev) => (prev ? false : true));
@@ -85,16 +95,17 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
+  console.log(audioRef.current.volume);
+
   return (
-    <div className="row mt-2 media-container">
-      <div className="col-12 bg-dark cont-res">
+    <div className="mt-2 media-container">
         <div className="player-container">
           <div className="row d-flex justify-content-center">
             <div className="col-4 d-flex d-flex justify-content-center pt-3 data-container">
               <div className="d-flex flex-column me-3">
-                <h5 className="text-center song-title-player">{song.name}</h5>
+                <h5 className="text-center song-title-player">{selectedSong?.name}</h5>
                 <h6 className="text-center song-artist-name-player">
-                  {song.artistName}
+                  {selectedSong?.artistName}
                 </h6>
               </div>
               <div className="d-flex justify-content-center align-items-center">
@@ -110,21 +121,21 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
 
             <audio
               ref={audioRef}
-              src={song?.audioUrl}
+              src={selectedSong?.audioUrl}
               onEnded={() => {
                 if (loop) {
                   setPlaying(true);
                   play(0);
                 } else {
                   pause();
-                  goToNext(loop);
+                  setGoToNext(true);
                 }
               }}
             />
             <div className="col-4 pt-3 control-buttons">
               <div className="row d-flex justify-content-center">
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => goToBack()}  className="fa-solid fa-backward-step back-next-buttons"></i>
+                <i onClick={() => setGoToPrevious(true)}  className="fa-solid fa-backward-step back-next-buttons"></i>
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <i
@@ -140,7 +151,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
                   ></i>
                 </div>
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => goToNext(false)} className="fa-solid fa-forward-step back-next-buttons"></i>
+                <i onClick={() => setGoToNext(true)} className="fa-solid fa-forward-step back-next-buttons"></i>
                 </div>
               </div>
             </div>
@@ -148,7 +159,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
               {volIconRender()}
               <input
                 type="range"
-                value={audioRef?.current?.volume * 100}
+                value={playing ? audioRef?.current?.volume * 100 : volControl * 100}
                 step="1"
                 min="0"
                 max="100"
@@ -156,6 +167,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
                 onChange={(e) => {
                   if (e.target.value / 100 !== audioRef.current.value) {
                     audioRef.current.volume = e.target.value / 100;
+                    setVolControl(e.target.value / 100);
                   }
                 }}
               />
@@ -186,14 +198,7 @@ const MediaPlayer = ({ song, goToNext, goToBack, focus }) => {
           </div>
         </div>
       </div>
-    </div>
   );
-};
-MediaPlayer.propTypes = {
-  song: PropTypes.object.isRequired,
-  goToNext: PropTypes.func.isRequired,
-  goToBack: PropTypes.func.isRequired,
-  focus: PropTypes.bool.isRequired,
 };
 
 export default MediaPlayer;

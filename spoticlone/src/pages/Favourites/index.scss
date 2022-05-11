@@ -2,13 +2,14 @@
 
 
 
-.home-page {
+.favourites-page {
   position: absolute;
   width: 100vw;
 }
 
+
 @media (min-width: 800px) {
-  .home-page {
+  .favourites-page {
     position: absolute;
     margin-right: 2vw;
     height: 70vh;
@@ -17,4 +18,3 @@
     width: 100vw;
   }
 }
-
