@@ -9,13 +9,14 @@
     width: 100vw;
   }
 .table-container{
+  margin-top: 1vh;
   .css-1ex1afd-MuiTableCell-root {
     border-bottom: 0; 
   }
   
   height: 56vh;
     .table-content {
-      margin-top: 2vh;
+      margin-top: 0vh;
       width: 100vw;
       table {
         width: 100vw;
@@ -39,6 +40,11 @@
             color: $spotiLogoColor;
           }
       }
+  }
+  .sticky-header {
+    position: sticky;
+    background-color: $darkColor;
+    top: 0;
   }
   .song-row-home {
     .play-row-button {
@@ -93,11 +99,7 @@
           
         }
       }
-      .sticky-header {
-        position: sticky;
-        background-color: $darkColor;
-        top: 0;
-      }
+      
       .song-row-home {
         transition: 0.5ms;
         .play-row-button {

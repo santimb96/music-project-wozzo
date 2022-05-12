@@ -8,9 +8,7 @@ import {
   getUserFavSongs,
   postFavSong,
 } from "../../services/favouriteSongs";
-import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import "./index.scss";
-import AuthModal from "../../components/AuthModal/AuthModal";
 import Search from "../../components/Search/Search";
 import MediaContext from "../../contexts/MediaContext";
 import NoResultsFound from "../../components/NoResultsFound/NoResultsFound";

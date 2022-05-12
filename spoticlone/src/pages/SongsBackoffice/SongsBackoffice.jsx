@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { getSongs } from "../../services/songs";
-import { getUsers } from "../../services/user";
+import {
+  createSong,
+  getSongs,
+  removeSong,
+  updateSong,
+} from "../../services/songs.js";
+
+import { getArtists } from "../../services/artists.js";
 import Box from "@mui/material/Box";
 import {
   Table,
@@ -18,47 +24,34 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import TextField from "@mui/material/TextField";
-import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import { EMPTY_FIELD_MESSAGE } from "../../constants";
 import CreateButton from "../../components/CreateButton/CreateButton";
+import ModalDelete from "../../components/ModalDelete/ModalDelete";
 import EditButton from "../../components/EditButton/EditButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
-import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  deleteFavSong,
-  getFavSongs,
-  postFavSong,
-  updatefavSong,
-} from "../../services/favouriteSongs";
-import sortItems from "../../utils/sortItems.js";
+import sortItems from "../../utils/sortItems";
 
-const FavouriteSongBackoffice = () => {
+const SongsBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [songs, setSongs] = useState([]);
-  const [favouriteSongs, setFavouriteSongs] = useState(null);
-  const [users, setUsers] = useState([]);
-
-  const [userName, setUserName] = useState("Selecciona");
-  const [songName, setSongName] = useState("Selecciona");
-
-  const [filteredFavSongs, setFilteredFavSongs] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [songs, setSongs] = useState(null);
   const [filteredSongs, setFilteredSongs] = useState([]);
-
   const [text, setText] = useState("");
-  const [filterUserDropdown, setFilterUserDropdown] = useState("");
-  const [filterSongDropdown, setFilterSongDropdown] = useState("");
-
-  const [favouriteSongId, setFavouriteSongId] = useState("");
-  const [userId, setUserId] = useState("");
-  const [songId, setSongId] = useState("");
-
+  const [name, setName] = useState("");
+  const [artistName, setArtistName] = useState("Selecciona");
+  const [artistId, setArtistId] = useState("");
+  const [audioUrl, setAudioUrl] = useState([]);
+  const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
+  const [artists, setArtists] = useState([]);
+  const [filterDropdown, setFilterDropdown] = useState("");
+  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
 
   /**
    *
@@ -76,9 +69,9 @@ const FavouriteSongBackoffice = () => {
    */
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenDelete = (artistId) => {
+  const handleOpenDelete = (userId) => {
     setOpenDelete(true);
-    setFavouriteSongId(artistId);
+    setId(userId);
   };
 
   const handleCloseDelete = () => setOpenDelete(false);
@@ -89,46 +82,39 @@ const FavouriteSongBackoffice = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleOpenForm = (post = false) => {
-    setCreate(post);
-    setOpenForm(true);
+    if (post) {
+      setCreate(true);
+      setErrors(false);
+      setOpenForm(true);
+    } else {
+      setErrors(false);
+      setOpenForm(true);
+    }
   };
 
   const handleCloseForm = () => {
     clearData();
+    setErrors(false);
     setCreate(false);
     setOpenForm(false);
   };
 
-  const clearData = () => {
-    setFavouriteSongId("");
-    setSongId("");
-    setUserId("");
-    setUserName("Selecciona");
-    setSongName("Selecciona");
-    setFavouriteSongId("");
-  };
-
   const getData = () => {
-    Promise.all([getSongs(), getUsers(token), getFavSongs()])
-      .then(([songsResponse, usersResponse, favouriteSongsResponse]) => {
-        setUsers(usersResponse.users);
-        setSongs(songsResponse.songs);
-        const data = favouriteSongsResponse.favouriteSong.map((favSong) => {
-          const user = usersResponse.users.find(
-            (user) => user._id === favSong.userId
-          );
-          const song = songsResponse.songs.find(
-            (song) => song._id === favSong.songId
+    Promise.all([getSongs(), getArtists()])
+      .then(([songsResponse, artistsResponse]) => {
+        setArtists(artistsResponse.artists);
+        const data = songsResponse.songs.map((song) => {
+          const artist = artistsResponse.artists.find(
+            (artist) => artist._id === song.artistId
           );
           return {
-            ...favSong,
-            userName: user.name,
-            songName: song.name,
+            ...song,
+            artistName: artist.name,
           };
         });
-        setFavouriteSongs(data);
+        setSongs(data);
       })
-      .catch(() => setErrorOpen(true));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -136,12 +122,12 @@ const FavouriteSongBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = favouriteSongs?.filter((favouriteSong) => {
+    const filtered = songs?.filter((song) => {
       if (
-        favouriteSong.userName
+        song.name
           .toLocaleLowerCase()
           .includes(text.toLocaleLowerCase().trim()) ||
-        favouriteSong.songName
+        song.artistName
           .toLocaleLowerCase()
           .includes(text.toLocaleLowerCase().trim())
       ) {
@@ -149,156 +135,123 @@ const FavouriteSongBackoffice = () => {
       }
       return false;
     });
-    setFilteredFavSongs(filtered);
+    setFilteredSongs(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return filteredFavSongs?.sort((a, b) =>
-        a.userName > b.userName ? 1 : -1
-      );
+      return sortItems(filteredSongs ? filteredSongs : songs);
     }
-    return favouriteSongs?.sort((a, b) => (a.userName > b.userName ? 1 : -1));
+    return sortItems(songs ? songs : []);
   };
 
-  const validateData = () => {
-    const checkUser = users.find((user) => user._id === userId);
-    const checkRepeat = favouriteSongs.find(
-      (favSong) =>
-        favSong.songName === songName && favSong.userName === userName
-    );
-    const checkSong = songs.find((song) => song._id === songId);
-
-    return checkUser && checkSong && !checkRepeat ? true : false;
+  const validateData = (method = false) => {
+    if (method && artistName !== "Selecciona") {
+      return true;
+    } else {
+      if (
+        name?.length &&
+        artistId?.length &&
+        artistName !== "Selecciona"
+      ) {
+        return true;
+      }
+      return false;
+    }
   };
 
-  const setData = (favouriteSong) => {
-    setFavouriteSongId(favouriteSong._id);
-    setUserName(favouriteSong.userName);
-    setSongName(favouriteSong.songName);
-    setUserId(favouriteSong.userId);
-    setSongId(favouriteSong.songId);
+  const setData = (song) => {
+    setId(song._id);
+    setName(song.name);
+    setArtistName(song.artistName);
+    setArtistId(song.artistId);
+    setAudioUrl(song.audioUrl);
     handleOpenForm();
   };
 
-  const createFavSong = () => {
+  const postSong = () => {
     if (validateData()) {
-      const createFavSong = {
-        userId,
-        songId,
-      };
-
+      setErrors(false);
       setLoading(true);
-      postFavSong(createFavSong, token)
+      createSong(name, artistId, audioUrl, token)
         .then(() => {
-          setErrorMessage(null);
-          setOpenForm(false);
-          setLoading(false);
           setSuccessOpen(true);
+          setLoading(false);
+          setOpenForm(false);
+          clearData();
           getData();
         })
         .catch(() => setErrorOpen(true));
     } else {
-      setLoading(false);
-      setErrorMessage("Campos incorrectos");
+      setErrors(true);
     }
   };
 
   const deleteItem = (id) => {
     setLoading(true);
-    deleteFavSong(id, token)
+    removeSong(id, token)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch((err) => {
-        setLoading(false);
-        setErrorOpen(true);
-      });
+      .catch((err) => setErrorOpen(true));
   };
 
-  const editFavSong = () => {
-    if (validateData()) {
-      const updatedfavSong = {
-        songId,
-      };
-
+  const editSong = (method) => {
+    if (validateData(method)) {
       setLoading(true);
-      updatefavSong(favouriteSongId, updatedfavSong, token)
+      
+      updateSong(id, name, artistId, audioUrl, token)
         .then(() => {
-          setErrorMessage(null);
           setOpenForm(false);
-          setSuccessOpen(true);
           setLoading(false);
+          setSuccessOpen(true);
+          clearData();
           getData();
         })
-        .catch((err) => {
-          setLoading(false);
-          setErrorOpen(true);
-        });
+        .catch(() => setErrorOpen(true));
     } else {
-      setLoading(false);
-      setErrorMessage("Campos incorrectos");
+      setErrors(false);
     }
   };
 
+  const clearData = () => {
+    setName("");
+    setArtistName("Selecciona");
+    setAudioUrl("");
+    setId("");
+  };
+
   useEffect(() => {
-    const filtered = users?.filter((user) => {
+    const filtered = artists?.filter((artist) => {
       if (
-        user.name
+        artist.name
           .toLocaleLowerCase()
-          .includes(filterUserDropdown.toLocaleLowerCase().trim())
+          .includes(filterDropdown.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
-    setFilteredUsers(filtered);
-  }, [filterUserDropdown]);
+    setFilteredArtists(filtered);
+  }, [filterDropdown]);
 
-  useEffect(() => {
-    const filtered = songs?.filter((song) => {
-      if (
-        song.name
-          .toLocaleLowerCase()
-          .includes(filterSongDropdown.toLocaleLowerCase().trim())
-      ) {
-        return true;
-      }
-      return false;
-    });
-    setFilteredSongs(filtered);
-  }, [filterSongDropdown]);
-
-
-
-  const usersToShow = () => {
-    if (filterUserDropdown?.length) {
-      return sortItems(filteredUsers);
+  const artistsToShow = () => {
+    if (filterDropdown?.length) {
+      return sortItems(filteredArtists ? filteredArtists : artists);
     }
-    return sortItems(users);
-  };
-
-  const songsToShow = () => {
-    if (filterSongDropdown?.length) {
-      return sortItems(filteredSongs);
-    }
-    return sortItems(songs);
+    return sortItems(artists ? artists : []);
   };
 
   return (
     <div className="row">
-      {!loading ? (
-        <Sidebar />
-      ) : (
-        <div className="col-12 col-md-2 bg-dark"></div>
-      )}
+      {!loading? <Sidebar/> : <div className="col-12 col-md-2 bg-dark"></div> }
       <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
-          <input type="search" class="input-search-home" placeholder="Usuario o correo..." disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
+          <input type="search" class="input-search-home" placeholder="Cancion o artista" disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
             <CreateButton handleOpenForm={handleOpenForm} loading={loading} />
           </div>
 
@@ -325,9 +278,8 @@ const FavouriteSongBackoffice = () => {
                     handleCloseDelete={handleCloseDelete}
                     loading={loading}
                     deleteItem={deleteItem}
-                    id={favouriteSongId}
+                    id={id}
                   />
-
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -340,86 +292,51 @@ const FavouriteSongBackoffice = () => {
                         onClick={handleCloseForm}
                         className="d-flex justify-content-end"
                       >
-                        <button
-                          {...(loading ? { disabled: true } : {})}
-                          className="close-modal-button"
-                        >
+                        <button {...(loading ? { disabled: true } : {})} className="close-modal-button">
                           <CloseIcon />
                         </button>
                       </div>
-                      {errorMessage && (
-                        <div className="text-danger justify-content-center">
-                          <p className="text-center">{errorMessage}</p>
-                        </div>
-                      )}
                       <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
-                            {create ? "Crear favorito" : "Actualizar favorito"}
+                            {create ? "Crear canción" : "Actualizar canción"}
                           </h2>
                         </div>
-                        {/* USER INFO */}
-                        {!create ? (
-                          <>
-                            <label htmlFor="user">Usuario</label>
-                            <div
-                              id="user"
-                              className="d-flex justify-content-center text-light"
-                            >
-                              <h5>{userName}</h5>
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <label htmlFor="drop">Usuario*</label>
-                            <div className="dropdown d-flex justify-content-center">
-                              <button
-                                {...(loading ? { disabled: true } : {})}
-                                className="btn btn-dropdown dropdown-toggle"
-                                type="button"
-                                id="drop"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                              >
-                                {userName}
-                              </button>
-                              <div
-                                className="dropdown-menu dropdown-menu-left  scrollable-menu"
-                                aria-labelledby="drop"
-                              >
-                                <input
-                                  {...(loading ? { disabled: true } : {})}
-                                  type="text"
-                                  placeholder="Filtrar..."
-                                  className="search-filter-dropdown"
-                                  onChange={(e) =>
-                                    setFilterUserDropdown(e.target.value)
-                                  }
-                                />
-
-                                {usersToShow()?.map((user) => (
-                                  <button
-                                    {...(loading ? { disabled: true } : {})}
-                                    key={user.name}
-                                    value={user._id}
-                                    onClick={(e) => {
-                                      setUserId(e.target.value);
-                                      setUserName(user.name);
-                                    }}
-                                    className="dropdown-item"
-                                    type="button"
-                                  >
-                                    {user.name}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          </>
-                        )}
-
-                        {/* SONG DROPDOWN */}
-                        <label htmlFor="drop">Canción*</label>
+                        <label className="label-form-modal" htmlFor="titulo">
+                          Título de la canción*
+                        </label>
+                        <TextField
+                          disabled={loading}
+                          value={name}
+                          type="text"
+                          className="input"
+                          id="titulo"
+                          placeholder="Título"
+                          onChange={(e) => setName(e.target.value)}
+                          error={errors && name?.length === 0}
+                          helperText={
+                            errors && name?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
+                        />
+                        <label htmlFor="audioUrl">URL de la canción*</label>
+                        <TextField
+                        disabled={loading}
+                          className="input"
+                          type="file"
+                          id="audioUrl"
+                          variant="outlined"
+                          placeholder="URL del audio"
+                          onChange={(e) => setAudioUrl(e.target.files[0])}
+                          error={errors && audioUrl?.length === 0}
+                          helperText={
+                            errors && audioUrl?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
+                        />
+                        <label htmlFor="drop">Compositor*</label>
                         <div className="dropdown d-flex justify-content-center">
                           <button
                             {...(loading ? { disabled: true } : {})}
@@ -430,7 +347,7 @@ const FavouriteSongBackoffice = () => {
                             aria-haspopup="true"
                             aria-expanded="false"
                           >
-                            {songName}
+                            {artistName}
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left  scrollable-menu"
@@ -442,23 +359,23 @@ const FavouriteSongBackoffice = () => {
                               placeholder="Filtrar..."
                               className="search-filter-dropdown"
                               onChange={(e) =>
-                                setFilterSongDropdown(e.target.value)
+                                setFilterDropdown(e.target.value)
                               }
                             />
 
-                            {songsToShow()?.map((song) => (
+                            {artistsToShow()?.map((artist) => (
                               <button
                                 {...(loading ? { disabled: true } : {})}
-                                key={song.name}
-                                value={song._id}
+                                key={artist.name}
+                                value={artist._id}
                                 onClick={(e) => {
-                                  setSongId(e.target.value);
-                                  setSongName(song.name);
+                                  setArtistId(e.target.value);
+                                  setArtistName(artist.name);
                                 }}
                                 className="dropdown-item"
                                 type="button"
                               >
-                                {song.name}
+                                {artist.name}
                               </button>
                             ))}
                           </div>
@@ -469,16 +386,16 @@ const FavouriteSongBackoffice = () => {
                           <div className="typo-flex">
                             {create ? (
                               <Button
-                                disabled={loading}
-                                onClick={() => createFavSong()}
+                               disabled={loading}
+                                onClick={() => postSong()}
                                 className="btn-modal-form"
                               >
                                 Crear
                               </Button>
                             ) : (
                               <Button
-                                disabled={loading}
-                                onClick={() => editFavSong(true)}
+                              disabled={loading}
+                                onClick={() => editSong(true)}
                                 className="btn-modal-form"
                               >
                                 Actualizar
@@ -500,13 +417,19 @@ const FavouriteSongBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Usuario
+                      Título
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Canción
+                      Artista
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      URL de la canción
                     </TableCell>
 
                     <TableCell
@@ -524,9 +447,9 @@ const FavouriteSongBackoffice = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody className="pointer-table">
-                  {itemsToShow()?.map((favouriteSong) => (
+                  {itemsToShow()?.map((song) => (
                     <TableRow
-                      key={favouriteSong._id}
+                      key={song.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -535,23 +458,24 @@ const FavouriteSongBackoffice = () => {
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {favouriteSong.userName}
+                        {song.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {favouriteSong.songName}
+                        {song.artistName}
                       </TableCell>
-
-                      <EditButton
-                        setData={setData}
-                        item={favouriteSong}
-                        loading={loading}
-                      />
+                      <TableCell
+                        style={{ color: theme.palette.secondary.mainLight }}
+                        align="left"
+                      >
+                        {song.audioUrl}
+                      </TableCell>
+                      <EditButton setData={setData} item={song} loading={loading} />
                       <DeleteButton
                         handleOpenDelete={handleOpenDelete}
-                        id={favouriteSong._id}
+                        id={song._id}
                         loading={loading}
                       />
                     </TableRow>
@@ -572,4 +496,4 @@ const FavouriteSongBackoffice = () => {
   );
 };
 
-export default FavouriteSongBackoffice;
+export default SongsBackoffice;

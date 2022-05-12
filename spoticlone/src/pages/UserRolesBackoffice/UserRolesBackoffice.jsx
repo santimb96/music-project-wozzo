@@ -10,12 +10,11 @@ import {
   TableBody,
   TableHead,
 } from "@mui/material";
-import { TextField } from "@mui/material";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 
-const UserRoleBackoffice = () => {
+const UserRolesBackoffice = () => {
   const token = localStorage.getItem("token");
   const [roles, setRoles] = useState(null);
   const [filteredRoles, setFilteredRoles] = useState([]);
@@ -72,7 +71,7 @@ const UserRoleBackoffice = () => {
       <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item">
-          <input type="search" class="input-search-home" placeholder="Usuario o correo..." onChange={(e) => setText(e.target.value)} ></input>
+          <input type="search" class="input-search-home" placeholder="Rol" onChange={(e) => setText(e.target.value)} ></input>
           </div>
 
           {!itemsToShow() ? (
@@ -135,4 +134,4 @@ const UserRoleBackoffice = () => {
   );
 };
 
-export default UserRoleBackoffice;
+export default UserRolesBackoffice;
