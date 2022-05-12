@@ -65,9 +65,7 @@ const Home = () => {
       .catch((err) => console.error(err)/*TODO custom error*/);
   };
 
-  useEffect(() => {
-    getData();
-  }, [user]);
+  if(songList?.length === 0) getData();
 
   const onSelectSong = (index) => {
     setTrack(null);

@@ -23,8 +23,7 @@ const FavouriteList = ({loading}) => {
     goToPrevious,
     setGoToPrevious,
     songsFavList,
-    setTrack,
-    setVolume
+    setTrack
   } = useContext(MediaContext);
 
   const onSelectSong = (id) => {

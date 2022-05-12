@@ -60,10 +60,19 @@ const MediaPlayer = () => {
   /**
    * When the song changes, change the song and play at position 0
    */
+  const controlVolumeContext = () => {
+    if(volume){
+      return volume;
+    } else if (volume === 0){
+      return 0;
+    } else {
+      return 0.3;
+    }
+  }
 
   useEffect(() => {
     play(track || 0);
-    audioRef.current.volume = volume || 0.3;
+    audioRef.current.volume =  controlVolumeContext();
     document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
@@ -72,11 +81,9 @@ const MediaPlayer = () => {
     return () => clearInterval(intervalRef.current);
   }, [selectedSong]);
 
-  console.log(audioRef?.current.volume);
-
   useEffect(()=> {
+    setVolume(audioRef?.current.volume);
     setTrack(trackProgress);
-    setVolume(audioRef?.current?.volume);
   }, [window.location.pathname])
 
   const onLoop = () => {
@@ -138,7 +145,7 @@ const MediaPlayer = () => {
                   play(0);
                 } else {
                   pause();
-                  setVolume(audioRef?.current?.volume);
+                  setVolume(audioRef?.current.volume);
                   setTrack(null);
                   setGoToNext(true);
                 }
