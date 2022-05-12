@@ -29,7 +29,7 @@ const Home = () => {
     goToNext,
     setGoToNext,
     goToPrevious,
-    setGoToPrevious,
+    setGoToPrevious
   } = useContext(MediaContext);
   const token = localStorage.getItem("token");
 

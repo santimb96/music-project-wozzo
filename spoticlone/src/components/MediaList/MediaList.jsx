@@ -14,7 +14,6 @@ import MediaContext from "../../contexts/MediaContext";
 import "./index.scss";
 
 const MediaList = ({
-  filterText,
   onSelectSong,
   song,
   onClickFavourite,
