@@ -96,8 +96,6 @@ const MediaPlayer = () => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
-  console.log(audioRef.current.volume);
-
   return (
     <div className="mt-2 media-container">
         <div className="player-container">

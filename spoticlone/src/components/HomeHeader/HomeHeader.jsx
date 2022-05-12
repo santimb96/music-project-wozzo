@@ -68,7 +68,7 @@ const HomeHeader = () => {
               </>
             )}
             <button onClick={logOut} className="dropdown-item">
-              <i class="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
+              <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
               Sesión
             </button>
           </div>
