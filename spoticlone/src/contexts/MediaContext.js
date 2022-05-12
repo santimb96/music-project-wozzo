@@ -7,10 +7,12 @@ export const MediaProvider = ({ children }) => {
   const [songList, setSongList] = useState([]);
   const [filteredSongList, setFilteredSongList] = useState([]);
   const [favouriteList, setFavouriteList] = useState([]);
+  const [songsFavList, setSongsFavList] = useState([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [focus, setFocus] = useState(false);
   const [goToNext, setGoToNext] = useState(false);
   const [goToPrevious, setGoToPrevious] = useState(false);
+
 
   return (
     <MediaContext.Provider
@@ -30,7 +32,9 @@ export const MediaProvider = ({ children }) => {
         goToNext,
         setGoToNext,
         goToPrevious,
-        setGoToPrevious
+        setGoToPrevious,
+        songsFavList,
+        setSongsFavList
       }}
     >
       {children}

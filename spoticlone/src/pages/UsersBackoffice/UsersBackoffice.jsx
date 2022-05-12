@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import {
-  getArtists,
-  deleteArtist,
-  postArtist,
-  updateArtist,
-} from "../../services/artists";
+  createUser,
+  getUsers,
+  removeUser,
+  updateUser,
+} from "../../services/user.js";
+import { getRoles } from "../../services/roles.js";
 import Box from "@mui/material/Box";
 import {
   Table,
@@ -15,37 +16,42 @@ import {
   TableHead,
   TableContainer,
 } from "@mui/material";
-import theme from "../../palette/palette";
+import theme from "../../palette/palette.js";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SpinnerLoading from "../../components/SpinnerLoading/SpinnerLoading";
+import ROLES from "../../utils/roleId";
 import TextField from "@mui/material/TextField";
-import { EMPTY_FIELD_MESSAGE } from "../../constants";
-import ModalDelete from "../../components/ModalDelete/ModalDelete";
+import { EMPTY_FIELD_MESSAGE, EMAIL_NOT_VALID_MESSAGE } from "../../constants";
 import CreateButton from "../../components/CreateButton/CreateButton";
+import ModalDelete from "../../components/ModalDelete/ModalDelete";
 import EditButton from "../../components/EditButton/EditButton";
 import DeleteButton from "../../components/DeleteButton/DeleteButton";
-import SnackBarError from "../../components/SnackBarError/SnackBarError";
+import { checkEmail, checkPassword } from "../../utils/validators.js";
 import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
+import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 import sortItems from "../../utils/sortItems";
 
-const ArtistBackoffice = () => {
+const UsersBackoffice = () => {
   const token = localStorage.getItem("token");
-  const [artists, setArtists] = useState(null);
-  const [filteredArtists, setFilteredArtists] = useState([]);
+  const [users, setUsers] = useState(null);
+  const [roles, setRoles] = useState(null);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [profileImage, setProfileImage] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passRepeat, setPassRepeat] = useState("");
+  const [role, setRole] = useState("user");
   const [id, setId] = useState("");
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [errors, setErrors] = useState(false);
-  const [successOpen, setSuccessOpen] = useState(false);
-  const [errorOpen, setErrorOpen] = useState(false);
 
   /**
    *
@@ -57,14 +63,15 @@ const ArtistBackoffice = () => {
    * SNACK ERROR
    */
   const handleErrorClose = () => setErrorOpen(false);
+
   /**
    * DELETE MODAL
    */
   const [openDelete, setOpenDelete] = useState(false);
 
-  const handleOpenDelete = (artistId) => {
+  const handleOpenDelete = (userId) => {
     setOpenDelete(true);
-    setId(artistId);
+    setId(userId);
   };
 
   const handleCloseDelete = () => setOpenDelete(false);
@@ -75,9 +82,14 @@ const ArtistBackoffice = () => {
   const [openForm, setOpenForm] = useState(false);
 
   const handleOpenForm = (post = false) => {
-    setCreate(post);
-    setErrors(false);
-    setOpenForm(true);
+    if (post) {
+      setCreate(true);
+      setErrors(false);
+      setOpenForm(true);
+    } else {
+      setErrors(false);
+      setOpenForm(true);
+    }
   };
 
   const handleCloseForm = () => {
@@ -87,19 +99,22 @@ const ArtistBackoffice = () => {
     setOpenForm(false);
   };
 
-  const clearData = () => {
-    setName("");
-    setDescription("");
-    setProfileImage("");
-    setId("");
-  };
-
   const getData = () => {
-    getArtists(token)
-      .then((artist) => {
-        setArtists(artist?.artists);
+    Promise.all([getUsers(token), getRoles(token)])
+      .then(([usersResponse, rolesResponse]) => {
+        setRoles(rolesResponse.userRoles);
+        const data = usersResponse.users.map((user) => {
+          const role = rolesResponse.userRoles.find(
+            (role) => role._id === user.userRoleId
+          );
+          return {
+            ...user,
+            roleName: role.name,
+          };
+        });
+        setUsers(data);
       })
-      .catch(() => setErrorOpen(true));
+      .catch((err) => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -107,94 +122,114 @@ const ArtistBackoffice = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = artists?.filter((artist) => {
+    const filtered = users?.filter((user) => {
       if (
-        artist.name
+        user.name
           .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim())
+          .includes(text.toLocaleLowerCase().trim()) ||
+        user.email.toLocaleLowerCase().includes(text.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
-    setFilteredArtists(filtered);
+    setFilteredUsers(filtered);
   }, [text]);
 
   const itemsToShow = () => {
     if (text?.length) {
-      return sortItems(filteredArtists ? filteredArtists : artists);
+      return sortItems(filteredUsers ? filteredUsers : users);
     }
-    return sortItems(artists ? artists : []);
+    return sortItems(users ? users : []);
   };
 
-  const validateData = () => {
-    if (name?.length && description?.length && profileImage?.length) {
-      return true;
+  const validateData = (method = false) => {
+    if (method) {
+      if (name?.length && email?.length && role) {
+        if (checkEmail(email)) {
+          return true;
+        }
+        return false;
+      }
+    } else {
+      if (
+        name?.length &&
+        email?.length &&
+        password?.length &&
+        passRepeat?.length
+      ) {
+        if (checkPassword(password, passRepeat) && checkEmail(email, users)) {
+          return true;
+        }
+        return false;
+      }
     }
-    return false;
   };
 
-  const setData = (artist) => {
-    setId(artist._id);
-    setName(artist.name);
-    setDescription(artist.description);
-    setProfileImage(artist.profileImage);
+  const setData = (user) => {
+    const roleName = ROLES.find((r) => r.id === user.userRoleId);
+    setId(user._id);
+    setName(user.name);
+    setEmail(user.email);
+    setRole(roleName.role);
     handleOpenForm();
   };
 
-  const createArtist = () => {
+  const postUser = () => {
     if (validateData()) {
-      const artist = {
-        name,
-        description,
-        profileImage,
-      };
-      setErrors(false);
       setLoading(true);
-      postArtist(artist, token)
+      createUser(name, email, password, role, token)
         .then(() => {
           setOpenForm(false);
           setLoading(false);
           setSuccessOpen(true);
+          setCreate(false);
+          clearData();
           getData();
         })
-        .catch(() => setErrorOpen(true));
+        .catch((err) => {
+          setLoading(false);
+          setErrorOpen(true);
+        });
     } else {
       setLoading(false);
+      setErrorOpen(true);
       setErrors(true);
-
     }
   };
 
-  const deleteItem = (id) => {
+  const deleteItem = async (id) => {
     setLoading(true);
-    deleteArtist(id, token)
+    removeUser(id, token)
       .then(() => {
         getData();
+        setText("");
         setOpenDelete(false);
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch(() => {
+      .catch((err) => {
         setLoading(false);
         setErrorOpen(true);
       });
   };
 
-  const editArtist = () => {
-    if (validateData()) {
-      const artist = {
-        name,
-        description,
-        profileImage,
-      };
-      setErrors(false);
+  const editUser = (method) => {
+    if (validateData(method)) {
       setLoading(true);
-      updateArtist(id, artist, token)
+      const roleName = ROLES.find((r) => r.role === role);
+      const newUser = {
+        name,
+        userRoleId: roleName.id,
+        email,
+        password,
+      };
+      updateUser(id, newUser, token)
         .then(() => {
           setOpenForm(false);
-          setSuccessOpen(true);
           setLoading(false);
+          setSuccessOpen(true);
+          clearData();
           getData();
         })
         .catch(() => {
@@ -204,9 +239,18 @@ const ArtistBackoffice = () => {
     } else {
       setLoading(false);
       setErrors(true);
-
     }
   };
+
+  const clearData = () => {
+    setName("");
+    setEmail("");
+    setPassword("");
+    setPassRepeat("");
+    setRole("user");
+    setId("");
+  };
+
   return (
     <div className="row">
       {!loading ? (
@@ -217,15 +261,15 @@ const ArtistBackoffice = () => {
       <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
-          <input type="search" class="input-search-home" placeholder="Usuario o correo..." disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
-            <CreateButton handleOpenForm={handleOpenForm} loading={loading} />
+            <input type="search" class="input-search-home" placeholder="Usuario o correo" disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
+            <CreateButton handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
             component={Paper}
             className="table-content"
             sx={{ height: "80%" }}
-          >
+            >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -246,6 +290,7 @@ const ArtistBackoffice = () => {
                     deleteItem={deleteItem}
                     id={id}
                   />
+
                   <Modal
                     open={openForm}
                     onClose={handleCloseForm}
@@ -254,22 +299,21 @@ const ArtistBackoffice = () => {
                     disableEnforceFocus
                   >
                     <Box className="modal-delete">
-                      <div>
-                        <div
-                          onClick={handleCloseForm}
-                          className="d-flex justify-content-end"
+                      <div
+                        onClick={handleCloseForm}
+                        className="d-flex justify-content-end"
+                      >
+                        <button
+                          {...(loading ? { disabled: true } : {})}
+                          className="close-modal-button"
                         >
-                          <button
-                            {...(loading ? { disabled: true } : {})}
-                            className="close-modal-button"
-                          >
-                            <CloseIcon />
-                          </button>
-                        </div>
-                        <div className="d-flex flex-column">
+                          <CloseIcon />
+                        </button>
+                      </div>
+                      <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
-                            {create ? "Crear artista" : "Actualizar artista"}
+                            {create ? "Crear usuario" : "Actualizar usuario"}
                           </h2>
                         </div>
                         <label htmlFor="name">Nombre*</label>
@@ -288,49 +332,113 @@ const ArtistBackoffice = () => {
                               : " "
                           }
                         />
-                        <label htmlFor="description">Descripción*</label>
+                        <label htmlFor="email">Email*</label>
                         <TextField
                           disabled={loading}
+                          autoComplete="off"
                           className="input"
-                          minRows={2}
-                          multiline
-                          type="text"
-                          value={description}
-                          placeholder="descripción"
-                          id="description"
-                          onChange={(e) => setDescription(e.target.value)}
-                          error={errors && description?.length === 0}
-                          helperText={
-                            errors && description?.length === 0
-                              ? EMPTY_FIELD_MESSAGE
-                              : " "
-                          }
-                        />
-                        <label htmlFor="image">Imagen del cantante*</label>
-                        <TextField
-                          disabled={loading}
-                          className="input"
-                          type="text"
-                          value={profileImage}
-                          id="image"
+                          type="email"
+                          value={email}
+                          id="email"
                           variant="outlined"
-                          placeholder="imagen"
-                          onChange={(e) => setProfileImage(e.target.value)}
-                          error={errors && profileImage?.length === 0}
+                          placeholder="email"
+                          onChange={(e) => setEmail(e.target.value)}
+                          error={
+                            (errors && email?.length === 0) ||
+                            (errors && !checkEmail(email))
+                          }
                           helperText={
-                            errors && profileImage?.length === 0
+                            errors && email?.length === 0
                               ? EMPTY_FIELD_MESSAGE
-                              : " "
+                              : errors && !checkEmail(email)
+                              ? EMAIL_NOT_VALID_MESSAGE
+                              : ""
                           }
                         />
+                        {create ? (
+                          <>
+                            <label htmlFor="password">Contraseña*</label>
+                            <TextField
+                              disabled={loading}
+                              autoComplete="off"
+                              className="input"
+                              type="password"
+                              value={password}
+                              id="password"
+                              variant="outlined"
+                              placeholder="contraseña"
+                              onChange={(e) => setPassword(e.target.value)}
+                              error={errors && password?.length === 0}
+                              helperText={
+                                errors && password?.length === 0
+                                  ? EMPTY_FIELD_MESSAGE
+                                  : " "
+                              }
+                            />
+                            <label htmlFor="passRepeat">
+                              Repite contraseña*
+                            </label>
+                            <TextField
+                              disabled={loading}
+                              className="input"
+                              type="password"
+                              value={passRepeat}
+                              id="passRepeat"
+                              variant="outlined"
+                              placeholder="repite contraseña"
+                              onChange={(e) => setPassRepeat(e.target.value)}
+                              error={errors && passRepeat?.length === 0}
+                              helperText={
+                                errors && passRepeat?.length === 0
+                                  ? EMPTY_FIELD_MESSAGE
+                                  : ""
+                              }
+                            />
+                          </>
+                        ) : (
+                          ""
+                        )}
+                        <label htmlFor="role">Rol*</label>
+                        <div className="dropdown d-flex justify-content-center">
+                          <button
+                            {...(loading ? { disabled: true } : {})}
+                            id="drop"
+                            className="btn btn-dropdown dropdown-toggle"
+                            type="button"
+                            //id="role"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            {role === "user" ? "Usuario" : "Administrador"}
+                          </button>
+                          <div
+                            className="dropdown-menu dropdown-menu-left"
+                            aria-labelledby="role"
+                          >
+                            {roles?.map((role) => (
+                              <button
+                                {...(loading ? { disabled: true } : {})}
+                                key={role.name}
+                                value={role.name}
+                                onClick={(e) => setRole(role.name)}
+                                className="dropdown-item"
+                                type="button"
+                              >
+                                {role.name === "user"
+                                  ? "Usuario"
+                                  : "Administrador"}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
                       </div>
-                      
                       {!loading ? (
                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                           <div className="typo-flex">
                             {create ? (
                               <Button
-                                onClick={() => createArtist()}
+                                onClick={() => postUser()}
                                 className="btn-modal-form"
                                 disabled={loading}
                               >
@@ -338,7 +446,7 @@ const ArtistBackoffice = () => {
                               </Button>
                             ) : (
                               <Button
-                                onClick={() => editArtist(true)}
+                                onClick={() => editUser(true)}
                                 className="btn-modal-form"
                                 disabled={loading}
                               >
@@ -353,17 +461,10 @@ const ArtistBackoffice = () => {
                         </Typography>
                       )}
                       <small>*Campos requeridos</small>
-                      </div>
                     </Box>
                   </Modal>
 
                   <TableRow>
-                    <TableCell
-                      style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
-                      Perfil
-                    </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
@@ -374,7 +475,13 @@ const ArtistBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Descripción
+                      Email
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
+                      Rol
                     </TableCell>
 
                     <TableCell
@@ -391,10 +498,10 @@ const ArtistBackoffice = () => {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {itemsToShow()?.map((artist) => (
+                <TableBody className="pointer-table">
+                  {itemsToShow()?.map((user) => (
                     <TableRow
-                      key={artist.name}
+                      key={user.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -403,30 +510,28 @@ const ArtistBackoffice = () => {
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.profileImage}
+                        {user.name}
                       </TableCell>
-
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.name}
+                        {user.email}
                       </TableCell>
-
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
-                        {artist.description}
+                        {user.roleName}
                       </TableCell>
                       <EditButton
                         setData={setData}
-                        item={artist}
+                        item={user}
                         loading={loading}
                       />
                       <DeleteButton
                         handleOpenDelete={handleOpenDelete}
-                        id={artist._id}
+                        id={user._id}
                         loading={loading}
                       />
                     </TableRow>
@@ -437,7 +542,6 @@ const ArtistBackoffice = () => {
           </TableContainer>
         </Box>
       </div>
-
       <SnackBarSuccess
         open={successOpen}
         handleSuccessClose={handleSuccessClose}
@@ -447,4 +551,4 @@ const ArtistBackoffice = () => {
   );
 };
 
-export default ArtistBackoffice;
+export default UsersBackoffice;

@@ -10,9 +10,10 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
+import NoResultsFound from "../NoResultsFound/NoResultsFound";
 import "./index.scss";
 
-const FavouriteList = ({loading, songsFavList}) => {
+const FavouriteList = ({loading}) => {
   const {
     songList,
     selectedSong,
@@ -21,12 +22,12 @@ const FavouriteList = ({loading, songsFavList}) => {
     setGoToNext,
     goToPrevious,
     setGoToPrevious,
+    songsFavList
   } = useContext(MediaContext);
 
   const onSelectSong = (id) => {
-    setSelectedSong(songList?.find((s) => s?._id === id));
+    setSelectedSong(songsFavList?.find((s) => s?._id === id));
   };
-
 
 
   useEffect(() => {
@@ -66,6 +67,7 @@ const FavouriteList = ({loading, songsFavList}) => {
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
+       
         {loading ? (
           <>
             {msg(

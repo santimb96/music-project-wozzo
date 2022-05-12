@@ -8,9 +8,7 @@ import {
   getUserFavSongs,
   postFavSong,
 } from "../../services/favouriteSongs";
-import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import "./index.scss";
-import AuthModal from "../../components/AuthModal/AuthModal";
 import Search from "../../components/Search/Search";
 import MediaContext from "../../contexts/MediaContext";
 import NoResultsFound from "../../components/NoResultsFound/NoResultsFound";
@@ -31,12 +29,12 @@ const Home = () => {
     goToNext,
     setGoToNext,
     goToPrevious,
-    setGoToPrevious,
+    setGoToPrevious
   } = useContext(MediaContext);
   const token = localStorage.getItem("token");
 
   const [filterText, setFilterText] = useState("");
-
+  //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
     Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
       .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
@@ -56,12 +54,13 @@ const Home = () => {
       .catch((err) => console.error(err));
   };
 
+  //when we add or delete a fav song, the list changes and we render the list again  
   const getFavourites = () => {
     getUserFavSongs(user?._id)
       .then((favs) => {
         setFavouriteList(favs?.favouriteSongs);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err)/*TODO custom error*/);
   };
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const Home = () => {
   const onSelectSong = (index) => {
     setSelectedSong(filteredSongList[index]);
   };
-
+  //when we search, we filter the list
   const onChangeText = (text) => {
     const filtered = songList?.filter((song) => {
       if (

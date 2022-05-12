@@ -7,11 +7,11 @@ import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 
-import UserBackoffice from "../pages/UserBackoffice/UserBackoffice";
-import UserRoleBackoffice from "../pages/UserRoleBackoffice/UserRoleBackoffice";
-import ArtistBackoffice from "../pages/ArtistBackoffice/ArtistBackoffice";
-import SongBackoffice from "../pages/SongBackoffice/SongBackoffice";
-import FavouriteSongBackoffice from "../pages/FavouriteSongBackoffice/FavouriteSongBackoffice";
+import UsersBackoffice from "../pages/UsersBackoffice/UsersBackoffice";
+import UserRolesBackoffice from "../pages/UserRolesBackoffice/UserRolesBackoffice";
+import ArtistsBackoffice from "../pages/ArtistsBackoffice/ArtistsBackoffice";
+import SongsBackoffice from "../pages/SongsBackoffice/SongsBackoffice";
+import FavouritesSongBackoffice from "../pages/FavouriteSongsBackoffice/FavouriteSongsBackoffice";
 import Favourites from "../pages/Favourites/Favourites";
 
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
@@ -30,6 +30,7 @@ const AppRoutes = () => {
   const isAdmin = user?._id && userRole === "admin";
 
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const expiryDate = localStorage.getItem("expiryDate");
@@ -91,7 +92,7 @@ const AppRoutes = () => {
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
-      {selectedSong?._id && <MediaPlayer />}
+      {selectedSong?._id && !window.location.pathname.includes('backoffice') && <MediaPlayer />}
       <Routes>
         <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
@@ -109,7 +110,7 @@ const AppRoutes = () => {
           path="/backoffice/roles"
           element={
             <RequireAdmin>
-              <UserRoleBackoffice />
+              <UserRolesBackoffice />
             </RequireAdmin>
           }
         />
@@ -117,7 +118,7 @@ const AppRoutes = () => {
           path="/backoffice/users"
           element={
             <RequireAdmin>
-              <UserBackoffice />
+              <UsersBackoffice />
             </RequireAdmin>
           }
         />
@@ -125,7 +126,7 @@ const AppRoutes = () => {
           path="/backoffice/artists"
           element={
             <RequireAdmin>
-              <ArtistBackoffice />
+              <ArtistsBackoffice />
             </RequireAdmin>
           }
         />
@@ -133,7 +134,7 @@ const AppRoutes = () => {
           path="/backoffice/songs"
           element={
             <RequireAdmin>
-              <SongBackoffice />
+              <SongsBackoffice />
             </RequireAdmin>
           }
         />
@@ -141,7 +142,7 @@ const AppRoutes = () => {
           path="/backoffice/favouriteSongs"
           element={
             <RequireAdmin>
-              <FavouriteSongBackoffice />
+              <FavouritesSongBackoffice />
             </RequireAdmin>
           }
         />
