@@ -1,18 +1,17 @@
 @import "../../scss/colors";
 
-
 .contaner-list {
   .spinner-table-loading {
     display: flex;
     justify-content: start;
     width: 100vw;
   }
-.table-container{
-  margin-top: 1vh;
-  height: 55vh;
-  .css-1ex1afd-MuiTableCell-root {
-    border-bottom: 0; 
-  }
+  .table-container {
+    margin-top: 1vh;
+    height: 58vh;
+    .css-1ex1afd-MuiTableCell-root {
+      border-bottom: 0;
+    }
     .table-content {
       margin-top: 0vh;
       width: 100vw;
@@ -29,18 +28,18 @@
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
       }
-  }
-  .sticky-header {
-    position: sticky;
-    background-color: $darkColor;
-    top: 0;
-  }
-  .song-row-home {
-    .play-row-button {
-      font-size: 1rem;
+    }
+    .sticky-header {
+      position: sticky;
+      background-color: $darkColor;
+      top: 0;
+    }
+    .song-row-home {
+      .play-row-button {
+        font-size: 1rem;
+      }
     }
   }
-}
 }
 .songs-found {
   top: 60vh;
@@ -55,17 +54,17 @@
   padding-top: 1%;
 }
 
-
 @media (min-width: 800px) {
   .spinner-table-loading {
     display: flex;
     justify-content: center;
   }
 
- .contaner-list {
+  .contaner-list {
     padding-right: 1rem;
     width: 100vw;
     .table-container {
+      height: 55vh;
       .table-content {
         color: $secondaryColor;
         background-color: $darkColor;
@@ -90,8 +89,8 @@
           }
         }
       }
-    
-      .song-row-home {       
+
+      .song-row-home {
         transition: 0.5ms;
         .play-row-button {
           color: white;
