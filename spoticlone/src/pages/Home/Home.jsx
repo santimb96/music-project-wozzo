@@ -34,7 +34,7 @@ const Home = () => {
   const token = localStorage.getItem("token");
 
   const [filterText, setFilterText] = useState("");
-
+  //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
     Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
       .then(([songsResponse, artistsResponse, favouriteSongsResponse]) => {
@@ -54,12 +54,13 @@ const Home = () => {
       .catch((err) => console.error(err));
   };
 
+  //when we add or delete a fav song, the list changes and we render the list again  
   const getFavourites = () => {
     getUserFavSongs(user?._id)
       .then((favs) => {
         setFavouriteList(favs?.favouriteSongs);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.error(err)/*TODO custom error*/);
   };
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const Home = () => {
   const onSelectSong = (index) => {
     setSelectedSong(filteredSongList[index]);
   };
-
+  //when we search, we filter the list
   const onChangeText = (text) => {
     const filtered = songList?.filter((song) => {
       if (

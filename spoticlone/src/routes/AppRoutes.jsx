@@ -31,6 +31,7 @@ const AppRoutes = () => {
 
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const expiryDate = localStorage.getItem("expiryDate");
     const token = localStorage.getItem("token");
@@ -91,7 +92,7 @@ const AppRoutes = () => {
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
-      {selectedSong?._id && <MediaPlayer />}
+      {selectedSong?._id && !window.location.pathname.includes('backoffice') && <MediaPlayer />}
       <Routes>
         <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
