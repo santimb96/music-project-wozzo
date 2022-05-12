@@ -21,12 +21,8 @@ const Favourites = () => {
 
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (
-      favouriteList?.length === 0 ||
-      favouriteList?.length !== songsFavList?.length
-    ) {
-      setLoading(true);
+  const getData = () => {
+    setLoading(true);
       Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
         .then(([songsResponse, artistsResponse, favSongsResponse]) => {
           const data = songsResponse.songs.map((song) => {
@@ -47,8 +43,11 @@ const Favourites = () => {
         })
         .catch((err) => console.warn(err))
         .finally(() => setLoading(false));
-    }
-  }, [favouriteList]);
+  }
+
+  useEffect(() => {
+    if(favouriteList?.length === 0 || favouriteList?.length !== songsFavList?.length) getData();
+  }, [favouriteList])
 
   return (
     <div className="favourites-page">
