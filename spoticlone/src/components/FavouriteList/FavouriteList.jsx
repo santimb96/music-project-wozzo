@@ -22,10 +22,13 @@ const FavouriteList = ({loading}) => {
     setGoToNext,
     goToPrevious,
     setGoToPrevious,
-    songsFavList
+    songsFavList,
+    setTrack,
+    setVolume
   } = useContext(MediaContext);
 
   const onSelectSong = (id) => {
+    setTrack(null);
     setSelectedSong(songsFavList?.find((s) => s?._id === id));
   };
 

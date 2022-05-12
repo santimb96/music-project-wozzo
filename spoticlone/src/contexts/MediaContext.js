@@ -14,6 +14,12 @@ export const MediaProvider = ({ children }) => {
   const [goToPrevious, setGoToPrevious] = useState(false);
 
 
+  // SONG CONTEXT
+
+  const [track, setTrack] = useState(null);
+  const [volume, setVolume] = useState(null);
+
+
   return (
     <MediaContext.Provider
       value={{
@@ -34,7 +40,11 @@ export const MediaProvider = ({ children }) => {
         goToPrevious,
         setGoToPrevious,
         songsFavList,
-        setSongsFavList
+        setSongsFavList,
+        track,
+        setTrack,
+        volume,
+        setVolume
       }}
     >
       {children}

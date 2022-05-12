@@ -9,7 +9,11 @@ const MediaPlayer = () => {
     selectedSong,
     setGoToNext,
     setGoToPrevious,
-    focus
+    focus,
+    track,
+    setTrack,
+    volume, 
+    setVolume
   } = useContext(MediaContext);
 
 
@@ -58,15 +62,22 @@ const MediaPlayer = () => {
    */
 
   useEffect(() => {
-    play(0);
-    audioRef.current.volume = 0.3;
+    play(track || 0);
+    audioRef.current.volume = volume || 0.3;
     document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
-      setTrackProgress(audioRef.current.currentTime);
+      setTrackProgress(audioRef?.current?.currentTime);
     }, [100]);
     return () => clearInterval(intervalRef.current);
   }, [selectedSong]);
+
+  console.log(audioRef?.current.volume);
+
+  useEffect(()=> {
+    setTrack(trackProgress);
+    setVolume(audioRef?.current?.volume);
+  }, [window.location.pathname])
 
   const onLoop = () => {
     setLoop((prev) => (prev ? false : true));
@@ -127,6 +138,8 @@ const MediaPlayer = () => {
                   play(0);
                 } else {
                   pause();
+                  setVolume(audioRef?.current?.volume);
+                  setTrack(null);
                   setGoToNext(true);
                 }
               }}

@@ -29,7 +29,9 @@ const Home = () => {
     goToNext,
     setGoToNext,
     goToPrevious,
-    setGoToPrevious
+    setGoToPrevious,
+    setTrack,
+    setVolume
   } = useContext(MediaContext);
   const token = localStorage.getItem("token");
 
@@ -68,6 +70,7 @@ const Home = () => {
   }, [user]);
 
   const onSelectSong = (index) => {
+    setTrack(null);
     setSelectedSong(filteredSongList[index]);
   };
   //when we search, we filter the list
