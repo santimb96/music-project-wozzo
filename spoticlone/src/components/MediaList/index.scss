@@ -9,11 +9,10 @@
   }
 .table-container{
   margin-top: 1vh;
+  height: 55vh;
   .css-1ex1afd-MuiTableCell-root {
     border-bottom: 0; 
   }
-  
-  height: 56vh;
     .table-content {
       margin-top: 0vh;
       width: 100vw;
@@ -92,7 +91,7 @@
         }
       }
     
-      .song-row-home {
+      .song-row-home {       
         transition: 0.5ms;
         .play-row-button {
           color: white;
@@ -105,10 +104,10 @@
   }
 
   .song-row-home:hover {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .song-row-playing {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .songs-found {
     top: 60vh;

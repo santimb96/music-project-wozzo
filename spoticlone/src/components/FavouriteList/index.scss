@@ -14,7 +14,7 @@
     border-bottom: 0; 
   }
   
-  height: 56vh;
+  height: 55vh;
     .table-content {
       margin-top: 0vh;
       width: 100vw;
@@ -113,10 +113,10 @@
   }
 
   .song-row-home:hover {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .song-row-playing {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .songs-found {
     top: 60vh;
