@@ -42,11 +42,16 @@ const Sidebar = () => {
       </div>
       <div className="sidebar-list">
         <ul>
-          <li>
-            <i className="fa-solid fa-house"></i>
-            <Link to="/">Inicio</Link>
-          </li>
-          <hr />
+          {userRole === "user" && (
+            <>
+              <li>
+                <i className="fa-solid fa-house"></i>
+                <Link to="/">Inicio</Link>
+              </li>
+              <hr />
+            </>
+          )}
+
           {user?._id &&
             userRole === "admin" &&
             window.location.pathname.includes("backoffice") && (

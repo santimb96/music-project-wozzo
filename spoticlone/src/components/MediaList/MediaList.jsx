@@ -8,9 +8,10 @@ import {
   } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
+import AuthContext from "../../contexts/AuthContext";
 
 const MediaList = ({
   onSelectSong,
@@ -20,6 +21,8 @@ const MediaList = ({
   selectedSong,
 
 }) => {
+
+  const { user } = useContext(AuthContext);
   const tableRef = useRef();
   
   const msg = (element) => (
@@ -83,7 +86,7 @@ const MediaList = ({
                   .map((s, index) => {
                     return (
                       <TableRow
-                        onDoubleClick={(e) => onSelectSong(index, "mediaList")}
+                        onDoubleClick={() => onSelectSong(index, "mediaList")}
                         key={s._id}
                         value={index}
                         className={`song-row-home ${
@@ -112,7 +115,7 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {favouriteList?.find((f) => f?.songId === s?._id) ? (
+                          {favouriteList?.find((f) => f?.songId === s?._id) && user?._id ? (
                             <i
                               onClick={() => onClickFavourite(s?._id, true)}
                               className="fa-solid fa-heart fav-icon-fav"

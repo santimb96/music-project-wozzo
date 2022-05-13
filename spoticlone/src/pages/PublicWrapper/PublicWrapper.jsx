@@ -54,7 +54,7 @@ const PublicWrapper = () => {
         setFilteredSongList(data);
         setFavouriteList(favSongsResponse?.favouriteSongs);
         const formatted = favSongsResponse?.favouriteSongs.map((fav) => {
-          return data.find((song) => song?._id === fav?.songId);
+          return data?.find((song) => song?._id === fav?.songId);
         });
         setSongsFavList(formatted);
       })
@@ -63,15 +63,15 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    if (songList?.length === 0) getData();
-  }, []);
+    if (songList?.length === 0 || user?._id) getData();
+  }, [user]);
 
   const getFavourites = () => {
     getUserFavSongs(user?._id)
       .then((favs) => {
         setFavouriteList(favs?.favouriteSongs);
         const formatted = favs?.favouriteSongs.map((fav) => {
-          return songList.find((song) => song?._id === fav?.songId);
+          return songList?.find((song) => song?._id === fav?.songId);
         });
         setSongsFavList(formatted);
       })

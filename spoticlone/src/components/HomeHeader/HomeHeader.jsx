@@ -35,16 +35,17 @@ const HomeHeader = () => {
             Bienvenido, {user.name}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {userRole === "user" && (
+              <>
+                <button className="dropdown-item">
+                  <Link to="/">Inicio</Link>
+                </button>
+                <hr></hr>
+              </>
+            )}
+
             {userRole === "admin" && (
               <>
-                {window.location.pathname.includes("backoffice") && (
-                  <>
-                    <button className="dropdown-item">
-                      <Link to="/">Inicio</Link>
-                    </button>
-                  </>
-                )}
-                <hr></hr>
                 <button className="dropdown-item">
                   <Link to="/backoffice/roles">BO-Roles</Link>
                 </button>
@@ -64,8 +65,8 @@ const HomeHeader = () => {
               </>
             )}
             <button onClick={logOut} className="dropdown-item">
-              <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>Cerrar
-              Sesión
+              <i className="fa-solid fa-arrow-right-from-bracket pe-2"></i>
+              Cerrar Sesión
             </button>
           </div>
         </div>

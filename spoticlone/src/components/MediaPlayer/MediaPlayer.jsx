@@ -88,6 +88,8 @@ const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
+  console.log(audioRef.current.currentTime);
+
   return (
     <div className="mt-2 media-container">
         <div className="player-container">
@@ -182,8 +184,8 @@ const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
               />
             </div>
             <p className="current-time-player">
-              {audioRef && audioRef.current.currentTime > 0
-                ? format(audioRef.current.duration * 1000)
+              {audioRef && audioRef?.current?.currentTime > 0.5
+                ? format(audioRef?.current?.duration * 1000)
                 : "00:00"}
             </p>
           </div>
