@@ -4,7 +4,6 @@ import "./index.scss";
 
 const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
 
-
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
   const [volControl, setVolControl] = useState(0.3);
