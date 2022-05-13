@@ -37,17 +37,13 @@ const HomeHeader = () => {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {userRole === "admin" && (
               <>
-                {(window.location.pathname.includes("backoffice") ||
-                  window.location.pathname.includes("favourites")) && (
+                {window.location.pathname.includes("backoffice") && (
                   <>
                     <button className="dropdown-item">
                       <Link to="/">Inicio</Link>
                     </button>
                   </>
                 )}
-                <button className="dropdown-item">
-                  <Link to="/favourites">Favoritos</Link>
-                </button>
                 <hr></hr>
                 <button className="dropdown-item">
                   <Link to="/backoffice/roles">BO-Roles</Link>

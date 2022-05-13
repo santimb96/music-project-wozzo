@@ -13,7 +13,7 @@ const Sidebar = () => {
   const sidebarRef = useRef();
 
   const logOut = () => {
-    setUser({});
+    setUser(null);
     setUserRole("");
     removeUserStorage();
   };
@@ -45,10 +45,6 @@ const Sidebar = () => {
           <li>
             <i className="fa-solid fa-house"></i>
             <Link to="/">Inicio</Link>
-          </li>
-          <li>
-          <i className="fa-solid fa-star"></i>
-            <Link to="/favourites">Favoritos</Link>
           </li>
           <hr />
           {user?._id &&

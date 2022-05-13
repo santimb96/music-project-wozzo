@@ -1,20 +1,8 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import format from "format-duration";
 import "./index.scss";
-import MediaContext from "../../contexts/MediaContext";
 
-const MediaPlayer = () => {
-
-  const {
-    selectedSong,
-    setGoToNext,
-    setGoToPrevious,
-    focus,
-    track,
-    setTrack,
-    volume, 
-    setVolume
-  } = useContext(MediaContext);
+const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
 
 
   const [playing, setPlaying] = useState(false);
@@ -50,29 +38,20 @@ const MediaPlayer = () => {
     audioRef.current.play();
     setPlaying(true);
   };
-
+  
   const pause = () => {
     document.title = `Spoticlone`;
     audioRef.current.pause();
     setPlaying(false);
   };
-
+  
   /**
    * When the song changes, change the song and play at position 0
    */
-  const controlVolumeContext = () => {
-    if(volume){
-      return volume;
-    } else if (volume === 0){
-      return 0;
-    } else {
-      return 0.3;
-    }
-  }
-
+  
   useEffect(() => {
-    play(track || 0);
-    audioRef.current.volume =  controlVolumeContext();
+    play(0);
+    audioRef.current.volume =  volControl;
     document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
@@ -81,18 +60,13 @@ const MediaPlayer = () => {
     return () => clearInterval(intervalRef.current);
   }, [selectedSong]);
 
-  useEffect(()=> {
-    setVolume(audioRef?.current.volume);
-    setTrack(trackProgress);
-  }, [window.location.pathname])
-
   const onLoop = () => {
     setLoop((prev) => (prev ? false : true));
   };
 
   const onMute = () => {
     if (audioRef?.current?.volume === 0) {
-      audioRef.current.volume = 0.3;
+      audioRef.current.volume = volControl; //prevous value. 0.3
     } else {
       audioRef.current.volume = 0;
     }
@@ -145,16 +119,14 @@ const MediaPlayer = () => {
                   play(0);
                 } else {
                   pause();
-                  setVolume(audioRef?.current.volume);
-                  setTrack(null);
-                  setGoToNext(true);
+                  goToNext(true);
                 }
               }}
             />
             <div className="col-4 pt-3 control-buttons">
               <div className="row d-flex justify-content-center">
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => setGoToPrevious(true)}  className="fa-solid fa-backward-step back-next-buttons"></i>
+                <i onClick={() => goToPrevious(true)}  className="fa-solid fa-backward-step back-next-buttons"></i>
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <i
@@ -170,7 +142,7 @@ const MediaPlayer = () => {
                   ></i>
                 </div>
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => setGoToNext(true)} className="fa-solid fa-forward-step back-next-buttons"></i>
+                <i onClick={() => goToNext(true)} className="fa-solid fa-forward-step back-next-buttons"></i>
                 </div>
               </div>
             </div>
@@ -178,7 +150,7 @@ const MediaPlayer = () => {
               {volIconRender()}
               <input
                 type="range"
-                value={playing ? audioRef?.current?.volume * 100 : volControl * 100}
+                value={audioRef?.current?.volume * 100}
                 step="1"
                 min="0"
                 max="100"
@@ -186,7 +158,7 @@ const MediaPlayer = () => {
                 onChange={(e) => {
                   if (e.target.value / 100 !== audioRef.current.value) {
                     audioRef.current.volume = e.target.value / 100;
-                    setVolControl(e.target.value / 100);
+                    setVolControl(audioRef?.current?.volume);
                   }
                 }}
               />

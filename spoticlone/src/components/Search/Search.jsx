@@ -1,11 +1,8 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import './index.scss';
-import MediaContext from '../../contexts/MediaContext';
 
-const Search = ({ onChangeText }) => {
-
-  const {setFocus} = useContext(MediaContext);
+const Search = ({ onChangeText, setFocus }) => {
 
   const onFocus = () => {
     setFocus(true);
@@ -14,6 +11,7 @@ const Search = ({ onChangeText }) => {
   const onBlur = () => {
     setFocus(false);
   };
+  
   return (
     <div className="input-search-home-container">
     <input
