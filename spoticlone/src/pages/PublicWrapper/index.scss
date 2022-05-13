@@ -1,0 +1,47 @@
+@import "../../scss/colors";
+
+.public-wrapper {
+  position: absolute;
+  width: 100vw;
+  top: 10vh;
+  .alternate-public-pages {
+    top: -5vh;
+    position: relative;
+    background: $spotiLogoColor;
+    color: white;
+    padding: 0.2rem;
+    left: 3vw;
+    width: 20vw;
+    /* outline: none; */
+  }
+  .alternate-public-pages:hover {
+    background: white;
+    color: black;
+  }
+  .alternate-public-pages:is(:hover, :active, :focus) {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 800px) {
+  .public-wrapper {
+    position: absolute;
+    margin-right: 2vw;
+    height: 70vh;
+    top: 10%;
+    left: 10vw;
+    width: 100vw;
+    .alternate-public-pages {
+      top: -5vh;
+      position: absolute;
+      background: $spotiLogoColor;
+      color: white;
+      padding: 0.3rem;
+      width: 10vw;
+      left: 3vw;
+      /* outline: none; */
+    }
+  }
+
+}

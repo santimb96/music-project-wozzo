@@ -13,7 +13,7 @@ const Sidebar = () => {
   const sidebarRef = useRef();
 
   const logOut = () => {
-    setUser({});
+    setUser(null);
     setUserRole("");
     removeUserStorage();
   };
@@ -42,15 +42,16 @@ const Sidebar = () => {
       </div>
       <div className="sidebar-list">
         <ul>
-          <li>
-            <i class="fa-solid fa-house"></i>
-            <Link to="/">Inicio</Link>
-          </li>
-          <li>
-          <i class="fa-solid fa-star"></i>
-            <Link to="/favourites">Favoritos</Link>
-          </li>
-          <hr />
+          {userRole === "user" && (
+            <>
+              <li>
+                <i className="fa-solid fa-house"></i>
+                <Link to="/">Inicio</Link>
+              </li>
+              <hr />
+            </>
+          )}
+
           {user?._id &&
             userRole === "admin" &&
             window.location.pathname.includes("backoffice") && (
@@ -77,7 +78,7 @@ const Sidebar = () => {
                 </li>
                 <hr></hr>
                 <li onClick={logOut}>
-                  <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                  <i className="fa-solid fa-arrow-right-from-bracket"></i>
                   <Link to="/">Cerrar sesión</Link>
                 </li>
               </>

@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
-import Home from "../pages/Home/Home";
 import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 
@@ -12,7 +11,6 @@ import UserRolesBackoffice from "../pages/UserRolesBackoffice/UserRolesBackoffic
 import ArtistsBackoffice from "../pages/ArtistsBackoffice/ArtistsBackoffice";
 import SongsBackoffice from "../pages/SongsBackoffice/SongsBackoffice";
 import FavouritesSongBackoffice from "../pages/FavouriteSongsBackoffice/FavouriteSongsBackoffice";
-import Favourites from "../pages/Favourites/Favourites";
 
 import GlobalLoading from "../components/GlobalLoading/GlobalLoading";
 import NotFound from "../components/NotFound/NotFound";
@@ -20,12 +18,11 @@ import SidebarHome from "../components/Sidebar/Sidebar";
 import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
 import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
-import MediaContext from "../contexts/MediaContext";
+import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
-  const { selectedSong } = useContext(MediaContext);
   const isUser = user?._id && (userRole === "user" || userRole === "admin");
   const isAdmin = user?._id && userRole === "admin";
 
@@ -92,19 +89,10 @@ const AppRoutes = () => {
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
-      {selectedSong?._id && !window.location.pathname.includes('backoffice') && <MediaPlayer />}
       <Routes>
         <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/favourites"
-          element={
-            <RequireUser>
-              <Favourites />
-            </RequireUser>
-          }
-        />
+        <Route path="/" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
         <Route
           path="/backoffice/roles"

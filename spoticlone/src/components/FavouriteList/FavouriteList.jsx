@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useRef } from "react";
-import MediaContext from "../../contexts/MediaContext";
+import React, { useRef } from "react";
 import {
   Table,
   TableCell,
@@ -10,51 +9,9 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import NoResultsFound from "../NoResultsFound/NoResultsFound";
 import "./index.scss";
 
-const FavouriteList = ({loading}) => {
-  const {
-    songList,
-    selectedSong,
-    setSelectedSong,
-    goToNext,
-    setGoToNext,
-    goToPrevious,
-    setGoToPrevious,
-    songsFavList
-  } = useContext(MediaContext);
-
-  const onSelectSong = (id) => {
-    setSelectedSong(songsFavList?.find((s) => s?._id === id));
-  };
-
-
-  useEffect(() => {
-    if (goToNext) {
-      const indexOfSong = songsFavList?.findIndex(
-        (s) => s._id === selectedSong?._id
-      );
-      const nextSong =
-        indexOfSong === songsFavList?.length - 1
-          ? songsFavList?.[0]
-          : songsFavList?.[indexOfSong + 1];
-      setSelectedSong(nextSong);
-      setGoToNext(false);
-    }
-
-    if (goToPrevious) {
-      const indexOfSong = songsFavList?.findIndex(
-        (s) => s._id === selectedSong?._id
-      );
-      const previousSong =
-        indexOfSong === 0
-          ? songsFavList?.[songsFavList?.length - 1]
-          : songsFavList?.[indexOfSong - 1];
-      setSelectedSong(previousSong);
-      setGoToPrevious(false);
-    }
-  }, [goToNext, goToPrevious]);
+const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
 
   const tableRef = useRef();
 
@@ -121,7 +78,7 @@ const FavouriteList = ({loading}) => {
                   .map((s, index) => {
                     return (
                       <TableRow
-                        onDoubleClick={() => onSelectSong(s?._id)}
+                        onDoubleClick={() => onSelectSong(s?._id, "favouriteList")}
                         key={s?._id}
                         value={index}
                         className={`song-row-home ${

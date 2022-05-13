@@ -10,22 +10,19 @@ import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
-import MediaContext from "../../contexts/MediaContext";
 import "./index.scss";
+import AuthContext from "../../contexts/AuthContext";
 
 const MediaList = ({
   onSelectSong,
-  song,
   onClickFavourite,
+  filteredSongList,
+  favouriteList,
+  selectedSong,
+
 }) => {
 
-  const {
-    songList,
-    filteredSongList,
-    favouriteList,
-    selectedSong,
-    
-  } = useContext(MediaContext);
+  const { user } = useContext(AuthContext);
   const tableRef = useRef();
   
   const msg = (element) => (
@@ -89,11 +86,11 @@ const MediaList = ({
                   .map((s, index) => {
                     return (
                       <TableRow
-                        onDoubleClick={(e) => onSelectSong(index)}
+                        onDoubleClick={() => onSelectSong(index, "mediaList")}
                         key={s._id}
                         value={index}
                         className={`song-row-home ${
-                          song?._id === s?._id ? "song-row-playing" : ""
+                          selectedSong?._id === s?._id ? "song-row-playing" : ""
                         }`}
                       >
                         <TableCell
@@ -118,7 +115,7 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {favouriteList?.find((f) => f?.songId === s?._id) ? (
+                          {favouriteList?.find((f) => f?.songId === s?._id) && user?._id ? (
                             <i
                               onClick={() => onClickFavourite(s?._id, true)}
                               className="fa-solid fa-heart fav-icon-fav"
@@ -147,7 +144,7 @@ const MediaList = ({
         )}
       </div>
       <div className="col 12 songs-found">
-        <p>{songList.length ? `${songList.length} canciones encontradas` : ""}</p>
+        <p>{filteredSongList.length ? `${filteredSongList.length} canciones encontradas` : ""}</p>
       </div>
     </div>
   );

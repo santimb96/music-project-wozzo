@@ -1,17 +1,8 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import format from "format-duration";
 import "./index.scss";
-import MediaContext from "../../contexts/MediaContext";
 
-const MediaPlayer = () => {
-
-  const {
-    selectedSong,
-    setGoToNext,
-    setGoToPrevious,
-    focus
-  } = useContext(MediaContext);
-
+const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
 
   const [playing, setPlaying] = useState(false);
   const [trackProgress, setTrackProgress] = useState(0);
@@ -46,24 +37,24 @@ const MediaPlayer = () => {
     audioRef.current.play();
     setPlaying(true);
   };
-
+  
   const pause = () => {
     document.title = `Spoticlone`;
     audioRef.current.pause();
     setPlaying(false);
   };
-
+  
   /**
    * When the song changes, change the song and play at position 0
    */
-
+  
   useEffect(() => {
     play(0);
-    audioRef.current.volume = 0.3;
+    audioRef.current.volume =  volControl;
     document.title = `${selectedSong?.name}`; // Set the title
     // clear interval and add it for progress
     intervalRef.current = setInterval(() => {
-      setTrackProgress(audioRef.current.currentTime);
+      setTrackProgress(audioRef?.current?.currentTime);
     }, [100]);
     return () => clearInterval(intervalRef.current);
   }, [selectedSong]);
@@ -74,7 +65,7 @@ const MediaPlayer = () => {
 
   const onMute = () => {
     if (audioRef?.current?.volume === 0) {
-      audioRef.current.volume = 0.3;
+      audioRef.current.volume = volControl; //prevous value. 0.3
     } else {
       audioRef.current.volume = 0;
     }
@@ -96,7 +87,7 @@ const MediaPlayer = () => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
-  console.log(audioRef.current.volume);
+  console.log(audioRef.current.currentTime);
 
   return (
     <div className="mt-2 media-container">
@@ -129,14 +120,14 @@ const MediaPlayer = () => {
                   play(0);
                 } else {
                   pause();
-                  setGoToNext(true);
+                  goToNext(true);
                 }
               }}
             />
             <div className="col-4 pt-3 control-buttons">
               <div className="row d-flex justify-content-center">
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => setGoToPrevious(true)}  className="fa-solid fa-backward-step back-next-buttons"></i>
+                <i onClick={() => goToPrevious(true)}  className="fa-solid fa-backward-step back-next-buttons"></i>
                 </div>
                 <div className="col-4 d-flex justify-content-center align-items-center">
                   <i
@@ -152,7 +143,7 @@ const MediaPlayer = () => {
                   ></i>
                 </div>
                 <div className="col-1 d-flex justify-content-center align-items-center">
-                <i onClick={() => setGoToNext(true)} className="fa-solid fa-forward-step back-next-buttons"></i>
+                <i onClick={() => goToNext(true)} className="fa-solid fa-forward-step back-next-buttons"></i>
                 </div>
               </div>
             </div>
@@ -160,7 +151,7 @@ const MediaPlayer = () => {
               {volIconRender()}
               <input
                 type="range"
-                value={playing ? audioRef?.current?.volume * 100 : volControl * 100}
+                value={audioRef?.current?.volume * 100}
                 step="1"
                 min="0"
                 max="100"
@@ -168,7 +159,7 @@ const MediaPlayer = () => {
                 onChange={(e) => {
                   if (e.target.value / 100 !== audioRef.current.value) {
                     audioRef.current.volume = e.target.value / 100;
-                    setVolControl(e.target.value / 100);
+                    setVolControl(audioRef?.current?.volume);
                   }
                 }}
               />
@@ -192,8 +183,8 @@ const MediaPlayer = () => {
               />
             </div>
             <p className="current-time-player">
-              {audioRef && audioRef.current.currentTime > 0
-                ? format(audioRef.current.duration * 1000)
+              {audioRef && audioRef?.current?.currentTime > 0.5
+                ? format(audioRef?.current?.duration * 1000)
                 : "00:00"}
             </p>
           </div>

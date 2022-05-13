@@ -1,4 +1,4 @@
-@import '../../scss/colors';
+@import "../../scss/colors";
 
 @import "../../scss/colors";
 
@@ -8,19 +8,18 @@
     justify-content: center;
     width: 100vw;
   }
-.table-container{
-  margin-top: 1vh;
-  .css-1ex1afd-MuiTableCell-root {
-    border-bottom: 0; 
-  }
-  
-  height: 56vh;
+  .table-container {
+    margin-top: 1vh;
+    .css-1ex1afd-MuiTableCell-root {
+      border-bottom: 0;
+    }
+    height: 44vh;
     .table-content {
       margin-top: 0vh;
       width: 100vw;
       table {
         width: 100vw;
-        
+
         th,
         td {
           font-size: 0.8rem;
@@ -31,27 +30,27 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
-      
+
         .fav-icon,
-          .fav-icon-fav {
-            font-size: 1rem;
-          }
-          .fav-icon-fav {
-            color: $spotiLogoColor;
-          }
+        .fav-icon-fav {
+          font-size: 1rem;
+        }
+        .fav-icon-fav {
+          color: $spotiLogoColor;
+        }
       }
-  }
-  .sticky-header {
-    position: sticky;
-    background-color: $darkColor;
-    top: 0;
-  }
-  .song-row-home {
-    .play-row-button {
-      font-size: 1rem;
+    }
+    .sticky-header {
+      position: sticky;
+      background-color: $darkColor;
+      top: 0;
+    }
+    .song-row-home {
+      .play-row-button {
+        font-size: 1rem;
+      }
     }
   }
-}
 }
 .songs-found {
   top: 60vh;
@@ -66,17 +65,17 @@
   padding-top: 1%;
 }
 
-
 @media (min-width: 800px) {
   .spinner-table-loading {
     display: flex;
     justify-content: center;
   }
 
- .contaner-list {
+  .contaner-list {
     padding-right: 1rem;
     width: 100vw;
     .table-container {
+      height: 55vh;
       .table-content {
         color: $secondaryColor;
         background-color: $darkColor;
@@ -96,10 +95,9 @@
           .fav-icon-fav {
             font-size: 1.2rem;
           }
-          
         }
       }
-      
+
       .song-row-home {
         transition: 0.5ms;
         .play-row-button {
@@ -113,10 +111,10 @@
   }
 
   .song-row-home:hover {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .song-row-playing {
-    background: $rowBackground;
+    background: $hoverTableRow;
   }
   .songs-found {
     top: 60vh;
