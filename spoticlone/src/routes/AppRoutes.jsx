@@ -17,7 +17,6 @@ import NotFound from "../components/NotFound/NotFound";
 import SidebarHome from "../components/Sidebar/Sidebar";
 import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
-import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
 import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
 
 const AppRoutes = () => {
