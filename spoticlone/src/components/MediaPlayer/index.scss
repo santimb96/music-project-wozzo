@@ -56,19 +56,49 @@
     background: transparent;
     background-color: transparent;
     .slider {
+      background: transparent;
+      -webkit-appearance: none;
+    }
+    input[type=range] {
+      width: 100%;
+      margin: 6.5px 0;
       background-color: transparent;
-      //-webkit-appearance: none;
+      -webkit-appearance: none;
     }
+    input[type=range]:focus {
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
+    
     .slider::-moz-range-progress {
-      background-color: $spotiLogoColor;
+      background: $spotiLogoColor;  
+      -webkit-appearance: none;
     }
-    .slider::-moz-range-track,
-    .slider::-webkit-slider-runnable-track {
+    .slider::-moz-range-track {
       -webkit-appearance: none;
       background-color: $mediaBar;
     }
-    .slider::-moz-range-thumb,
-    .slider::-webkit-slider-thumb {
+    .slider::-moz-range-thumb {
       width: 15px;
       height: 15px;
       border: none;
@@ -114,7 +144,7 @@
       margin-left: 0vw;
     }
     .song-artist-name-player {
-      width: 20vwvw;
+      width: 20vw;
       font-size: 0.7rem;
     }
     .player-buttons {
@@ -125,9 +155,35 @@
       display: flex;
       width: 2rem;
     }
+    
+    input[type=range]:focus {
+      outline: none;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type=range]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
     .slider-vol {
       display: flex;
       background: transparent;
+      -webkit-appearance: none;
       width: 48%;
     }
     .slider-vol::-moz-range-progress {
