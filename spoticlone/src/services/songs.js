@@ -1,12 +1,7 @@
 import { BASE_URI_SONG } from "../urls/urls";
-import { BASE_URI_ARTIST } from "../urls/urls";
+import { deleteItem, get } from "../utils/apiWrapper";
 
-  const getSongs = () => new Promise((resolve, reject) => {
-    fetch(BASE_URI_SONG)
-    .then(res => resolve(res.json()))
-    .catch(err => reject(err));
-  });
-
+  const getSongs = () => get(BASE_URI_SONG);
 
   const createSong = (name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
@@ -29,36 +24,7 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     }
   });
 
-  const removeSong = (id, token) => new Promise((resolve, reject) => {
-    if(!id && !token){
-      reject("Error en parámetros");
-    } else {
-      fetch(`${BASE_URI_SONG}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => resolve(res.json()))
-      .catch(err => reject(err));
-    };
-  });
-
-  const getArtistBySongId = (id, token) => new Promise((resolve, reject) => {
-    if(!id || !token){
-      reject("Error en parámetros");
-    } else {
-      fetch(`${BASE_URI_ARTIST}/${id}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => resolve(res.json()))
-      .catch(err => reject(err));
-    }
-  });
+  const removeSong= (id, token) => deleteItem(`${BASE_URI_SONG}/${id}`, token);
 
   const updateSong = (id, name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
@@ -85,4 +51,4 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     .catch(err => reject(err));
   }); 
 
-export { getSongs, createSong, removeSong, updateSong, getArtistBySongId };
+export { getSongs, createSong, removeSong, updateSong };

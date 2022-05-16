@@ -114,7 +114,7 @@ const SongsBackoffice = () => {
         });
         setSongs(data);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch(() => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -222,6 +222,7 @@ const SongsBackoffice = () => {
     setArtistName("Selecciona");
     setAudioUrl("");
     setId("");
+    setFilterDropdown("");
   };
 
   useEffect(() => {

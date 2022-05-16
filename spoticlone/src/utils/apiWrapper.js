@@ -3,14 +3,7 @@ const get = (url, param) =>
     if (!url) {
       reject("wrong params");
     } else {
-      const token = localStorage.getItem("token");
-      fetch(`${url}/${param}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      fetch(`${url}`)
         .then((res) => resolve(res.json()))
         .catch((err) => reject(err));
     }
@@ -21,7 +14,13 @@ const getById = (url, param) =>
     if (!url) {
       reject("Parámetros incorrectos");
     } else {
-      fetch(`${url}/${param}`)
+      const token = localStorage.getItem("token");
+      fetch(`${url}/${param}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
         .then((res) => resolve(res.json()))
         .catch((err) => reject(err));
     }
@@ -47,13 +46,14 @@ const put = (url, body) =>
   });
 
 const post = (url, body) =>
-  new Promise((resolve, reject) => {
+new Promise((resolve, reject) => {
+
     if (!url) {
       reject("Parámetros incorrectos");
     } else {
       const token = localStorage.getItem("token");
 
-      fetch(`${url}`, {
+      fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -7,7 +7,7 @@ const getUserFavSongs = (userId) => getById(BASE_URI_FAVOURITE_SONGS, userId);
   
 const deleteFavSong = (id) => deleteItem(`${BASE_URI_FAVOURITE_SONGS}/${id}`);
 
-const postFavSong = (favouriteSong) => post(BASE_URI_FAVOURITE_SONGS, favouriteSong);
+const postFavSong = (favouriteSong) => post(`${BASE_URI_FAVOURITE_SONGS}`, favouriteSong);
 
 const updatefavSong = (id, favouriteSong) => put(`${BASE_URI_FAVOURITE_SONGS}/${id}`, favouriteSong);
 
