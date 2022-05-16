@@ -11,7 +11,7 @@ import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import "./index.scss";
 
-const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
+const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading, onClickFavourite}) => {
 
   const tableRef = useRef();
 
@@ -107,7 +107,7 @@ const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          <i className="fa-solid fa-heart fav-icon-fav"></i>
+                          <i onClick={() => onClickFavourite(s?._id, true)} className="fa-solid fa-heart fav-icon-fav"></i>
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
