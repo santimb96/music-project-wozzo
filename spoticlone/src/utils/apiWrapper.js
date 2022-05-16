@@ -1,7 +1,7 @@
-const get = (url, param) =>
+const get = (url) =>
   new Promise((resolve, reject) => {
     if (!url) {
-      reject("wrong params");
+      reject("Parámetros incorrectos");
     } else {
       fetch(`${url}`)
         .then((res) => resolve(res.json()))
@@ -29,7 +29,7 @@ const getById = (url, param) =>
 const put = (url, body) =>
   new Promise((resolve, reject) => {
     if (!url) {
-      reject("wrong params");
+      reject("Parámetros incorrectos");
     } else {
       const token = localStorage.getItem("token");
       fetch(`${url}`, {
