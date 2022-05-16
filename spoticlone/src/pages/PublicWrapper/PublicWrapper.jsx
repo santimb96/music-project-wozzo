@@ -9,6 +9,8 @@ import { getArtists } from "../../services/artists";
 import { getUserFavSongs } from "../../services/favouriteSongs";
 import { deleteFavSong, postFavSong } from "../../services/favouriteSongs";
 import Search from "../../components/Search/Search";
+import SnackBarInfo from "../../components/SnackBarInfo/SnackBarInfo";
+import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import "./index.scss";
 
 const TABS = {
@@ -17,6 +19,7 @@ const TABS = {
 };
 
 const PublicWrapper = () => {
+
   const { user, userRole } = useContext(AuthContext);
   const [songList, setSongList] = useState([]);
   const [tab, setTab] = useState(TABS.SONGS);
@@ -28,9 +31,15 @@ const PublicWrapper = () => {
   const [loading, setLoading] = useState(false);
   const [listType, setListType] = useState("");
 
+  const [showInfo, setShowInfo] = useState(false);
+  const [showError, setShowError] = useState(false);
+
   const { setAuthModalType, setShowAuthModal } = useContext(AuthContext);
 
   const token = localStorage.getItem("token");
+
+  const handleInfoClose = () => setShowInfo(false);
+  const handleErrorClose = () => setShowError(false);
 
   useEffect(()=> {
     if(!user?._id) setTab(TABS.SONGS);
@@ -58,7 +67,7 @@ const PublicWrapper = () => {
         });
         setSongsFavList(formatted);
       })
-      .catch((err) => console.warn(err))
+      .catch(() => songList?.length !== 0 && setShowError(true))
       .finally(() => setLoading(false));
   };
 
@@ -75,9 +84,8 @@ const PublicWrapper = () => {
         });
         setSongsFavList(formatted);
       })
-      .catch((err) => console.error(err) /*TODO custom error*/);
+      .catch(() => setShowError(true) /*TODO custom error*/);
   };
-  console.log(songList)
 
   const onSelectSong = (i, type) => {
     if (type === "mediaList") {
@@ -137,9 +145,10 @@ const PublicWrapper = () => {
   const deleteFav = (song) => {
     deleteFavSong(song, token)
       .then(() => {
+        setShowInfo(true);
         getFavourites();
       })
-      .catch((err) => console.error(err));
+      .catch(() => setShowError(true));
   };
 
   const addFav = (songId) => {
@@ -206,6 +215,7 @@ const PublicWrapper = () => {
             songsFavList={songsFavList}
             selectedSong={selectedSong}
             loading={loading}
+            onClickFavourite={onClickFavourite}
           />
         )}
       </div>
@@ -217,6 +227,8 @@ const PublicWrapper = () => {
           goToPrevious={goToPrevious}
         />
       )}
+      <SnackBarInfo open={showInfo} handleInfoClose={handleInfoClose} />
+      <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
     </>
   );
 };

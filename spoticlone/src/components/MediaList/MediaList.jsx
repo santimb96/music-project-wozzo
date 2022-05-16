@@ -1,11 +1,11 @@
 import {
-    Table,
-    TableCell,
-    TableRow,
-    TableBody,
-    TableHead,
-    TableContainer,
-  } from "@mui/material";
+  Table,
+  TableCell,
+  TableRow,
+  TableBody,
+  TableHead,
+  TableContainer,
+} from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import React, { useContext, useRef } from "react";
@@ -19,12 +19,10 @@ const MediaList = ({
   filteredSongList,
   favouriteList,
   selectedSong,
-
 }) => {
-
   const { user } = useContext(AuthContext);
   const tableRef = useRef();
-  
+
   const msg = (element) => (
     <div className="d-flex justify-content-center align-items-center">
       {element}
@@ -34,15 +32,14 @@ const MediaList = ({
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-        { !filteredSongList?.length || filteredSongList === null ? (
-            msg(
-              <div className="spinner-table-loading">
-                <SpinnerLoading />
-              </div>
-            )
-         
+        {!filteredSongList?.length || filteredSongList === null ? (
+          msg(
+            <div className="spinner-table-loading">
+              <SpinnerLoading />
+            </div>
+          )
         ) : (
-          <TableContainer className="table-content" >
+          <TableContainer className="table-content">
             <Table
               size="medium"
               className="table-content"
@@ -97,7 +94,11 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {index + 1}
+                          {selectedSong?._id === s?._id ? (
+                            <i className="fa-solid fa-play play-row-button"></i>
+                          ) : (
+                            index + 1
+                          )}
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
@@ -115,7 +116,8 @@ const MediaList = ({
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {favouriteList?.find((f) => f?.songId === s?._id) && user?._id ? (
+                          {favouriteList?.find((f) => f?.songId === s?._id) &&
+                          user?._id ? (
                             <i
                               onClick={() => onClickFavourite(s?._id, true)}
                               className="fa-solid fa-heart fav-icon-fav"
@@ -130,11 +132,7 @@ const MediaList = ({
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
-                        >
-                          {selectedSong?._id === s?._id && (
-                            <i className="fa-solid fa-play play-row-button"></i>
-                          )}
-                        </TableCell>
+                        ></TableCell>
                       </TableRow>
                     );
                   })}
@@ -144,7 +142,11 @@ const MediaList = ({
         )}
       </div>
       <div className="col 12 songs-found">
-        <p>{filteredSongList.length ? `${filteredSongList.length} canciones encontradas` : ""}</p>
+        <p>
+          {filteredSongList.length
+            ? `${filteredSongList.length} canciones encontradas`
+            : ""}
+        </p>
       </div>
     </div>
   );

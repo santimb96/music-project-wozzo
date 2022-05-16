@@ -11,8 +11,13 @@ import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
 import "./index.scss";
 
-const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
-
+const FavouriteList = ({
+  onSelectSong,
+  songsFavList,
+  selectedSong,
+  loading,
+  onClickFavourite,
+}) => {
   const tableRef = useRef();
 
   const msg = (element) => (
@@ -24,7 +29,6 @@ const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
   return (
     <div className="contaner-list">
       <div className="d-flex justify-content-center table-container">
-       
         {loading ? (
           <>
             {msg(
@@ -78,7 +82,9 @@ const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
                   .map((s, index) => {
                     return (
                       <TableRow
-                        onDoubleClick={() => onSelectSong(s?._id, "favouriteList")}
+                        onDoubleClick={() =>
+                          onSelectSong(s?._id, "favouriteList")
+                        }
                         key={s?._id}
                         value={index}
                         className={`song-row-home ${
@@ -89,7 +95,11 @@ const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          {index + 1}
+                          {selectedSong?._id === s?._id ? (
+                            <i className="fa-solid fa-play play-row-button"></i>
+                          ) : (
+                            index + 1
+                          )}
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
@@ -107,16 +117,15 @@ const FavouriteList = ({onSelectSong, songsFavList, selectedSong, loading}) => {
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
                         >
-                          <i className="fa-solid fa-heart fav-icon-fav"></i>
+                          <i
+                            onClick={() => onClickFavourite(s?._id, true)}
+                            className="fa-solid fa-heart fav-icon-fav"
+                          ></i>
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}
                           align="left"
-                        >
-                          {selectedSong?._id === s?._id && (
-                            <i className="fa-solid fa-play play-row-button"></i>
-                          )}
-                        </TableCell>
+                        ></TableCell>
                       </TableRow>
                     );
                   })}

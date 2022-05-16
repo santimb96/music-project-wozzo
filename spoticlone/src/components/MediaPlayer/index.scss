@@ -4,7 +4,7 @@
   position: absolute;
   width: 100vw;
   /* margin-left: 90vw; */
-  top: 75%;
+  bottom: 10vh;
   /* left: 0; */
   /* transform: translate(-50%, -50%); */
   /* display: flex; */
@@ -34,7 +34,7 @@
   .player-buttons {
     //padding-top: 0.5rem;
     color: white;
-    font-size: 2rem;
+    font-size: 2.2rem;
   }
   .vol-icon {
     display: none;
@@ -56,19 +56,74 @@
     background: transparent;
     background-color: transparent;
     .slider {
+      background: transparent;
+      -webkit-appearance: none;
+    }
+    /*CHROME STYLE */
+    input[type="range"] {
+      width: 100%;
+      margin: 6.5px 0;
       background-color: transparent;
-      //-webkit-appearance: none;
+      -webkit-appearance: none;
     }
+    input[type="range"]:focus {
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
+    /*EDGE STYLE */
+    input[type="range"]::-ms-track {
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+      background: transparent;
+      border-color: transparent;
+      color: transparent;
+    }
+    input[type="range"]::-ms-fill-lower {
+      background: #777;
+      border-radius: 10px;
+    }
+    input[type="range"]::-ms-fill-upper {
+      background: #ddd;
+      border-radius: 10px;
+    }
+    input[type="range"]::-ms-thumb {
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: goldenrod;
+    }
+    /*FIREFOX STYLE */
     .slider::-moz-range-progress {
-      background-color: $spotiLogoColor;
+      background: $spotiLogoColor;
+      -webkit-appearance: none;
     }
-    .slider::-moz-range-track,
-    .slider::-webkit-slider-runnable-track {
+    .slider::-moz-range-track {
       -webkit-appearance: none;
       background-color: $mediaBar;
     }
-    .slider::-moz-range-thumb,
-    .slider::-webkit-slider-thumb {
+    .slider::-moz-range-thumb {
       width: 15px;
       height: 15px;
       border: none;
@@ -92,7 +147,7 @@
     color: $spotiLogoColor;
   }
   .back-next-buttons {
-    color: white;
+    color: $tablePresentationColor;
     font-size: 1.1rem;
     transition: 0.1s;
     background-color: transparent;
@@ -103,7 +158,8 @@
   .media-container {
     position: absolute;
     width: 100vw;
-    top: 82.5vh;
+    //top: 82.5vh;
+    bottom: 0vh;
     .player-container {
       width: 100vw;
       border-radius: 0;
@@ -114,20 +170,50 @@
       margin-left: 0vw;
     }
     .song-artist-name-player {
-      width: 20vwvw;
+      width: 20vw;
       font-size: 0.7rem;
     }
     .player-buttons {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
+      transition: 0.1s;
+    }
+    .player-buttons:hover{
+      font-size: 2.35rem;
     }
 
     .vol-icon {
       display: flex;
       width: 2rem;
     }
+
+    input[type="range"]:focus {
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
     .slider-vol {
       display: flex;
       background: transparent;
+      -webkit-appearance: none;
       width: 48%;
     }
     .slider-vol::-moz-range-progress {
@@ -161,7 +247,7 @@
     }
 
     .back-next-buttons:hover {
-      color: $spotiLogoColor;
+      color: white;
     }
     .data-container {
       display: flex;
