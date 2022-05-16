@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-const GenreRoleSchema = new mongoose.Schema({
+const GenreSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
   }
 });
 
-const Genre = mongoose.model('GenreRole', GenreRoleSchema, 'genre');
+const Genre = mongoose.model('Genre', GenreSchema, 'genre');
 export default Genre;

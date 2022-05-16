@@ -4,7 +4,7 @@ import handleError from './errorController.js';
 
 const getAll = async (req, res) => {
   Genre.find({})
-    .then(Genres => res.status(200).send({Genres}))
+    .then(genres => res.status(200).send({genres}))
     .catch(() => handleError(404, 'No se ha podido obtener la lista de géneros', res));
 };
 
