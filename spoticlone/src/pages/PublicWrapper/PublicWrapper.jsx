@@ -143,7 +143,7 @@ const PublicWrapper = () => {
   };
 
   const deleteFav = (song) => {
-    deleteFavSong(song, token)
+    deleteFavSong(song)
       .then(() => {
         setShowInfo(true);
         getFavourites();
@@ -156,7 +156,7 @@ const PublicWrapper = () => {
       userId: user?._id,
       songId: songId,
     };
-    postFavSong(favSong, token)
+    postFavSong(favSong)
       .then(() => {
         getFavourites();
       })

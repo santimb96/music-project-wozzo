@@ -189,7 +189,7 @@ const SongsBackoffice = () => {
 
   const deleteItem = (id) => {
     setLoading(true);
-    removeSong(id, token)
+    removeSong(id)
       .then(() => {
         getData();
         setOpenDelete(false);

@@ -66,8 +66,8 @@ const register = (name, email, password, role) =>
     post(`${BASE_URI_USER}`, {name, email, password, userRoleId: found.id})
   }
 
-  const removeUser = (id, token) => deleteItem(`${BASE_URI_USER}/${id}`);
+  const removeUser = (id) => deleteItem(`${BASE_URI_USER}/${id}`);
 
-  const updateUser = (id, edited, token) => put(`${BASE_URI_USER}/${id}`, edited);
+  const updateUser = (id, edited) => put(`${BASE_URI_USER}/${id}`, edited);
 
 export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser };

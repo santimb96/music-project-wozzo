@@ -46,8 +46,7 @@ const put = (url, body) =>
   });
 
 const post = (url, body) =>
-new Promise((resolve, reject) => {
-
+  new Promise((resolve, reject) => {
     if (!url) {
       reject("Parámetros incorrectos");
     } else {

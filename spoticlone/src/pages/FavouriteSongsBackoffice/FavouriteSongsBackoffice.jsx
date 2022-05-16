@@ -188,7 +188,7 @@ const FavouritesSongBackoffice = () => {
       };
 
       setLoading(true);
-      postFavSong(createFavSong, token)
+      postFavSong(createFavSong, )
         .then(() => {
           setErrorMessage(null);
           setOpenForm(false);
@@ -205,7 +205,7 @@ const FavouritesSongBackoffice = () => {
 
   const deleteItem = (id) => {
     setLoading(true);
-    deleteFavSong(id, token)
+    deleteFavSong(id, )
       .then(() => {
         getData();
         setOpenDelete(false);
@@ -225,7 +225,7 @@ const FavouritesSongBackoffice = () => {
       };
 
       setLoading(true);
-      updatefavSong(favouriteSongId, updatedfavSong, token)
+      updatefavSong(favouriteSongId, updatedfavSong, )
         .then(() => {
           setErrorMessage(null);
           setOpenForm(false);

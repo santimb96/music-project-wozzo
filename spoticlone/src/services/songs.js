@@ -24,7 +24,7 @@ import { deleteItem, get } from "../utils/apiWrapper";
     }
   });
 
-  const removeSong= (id, token) => deleteItem(`${BASE_URI_SONG}/${id}`, token);
+  const removeSong= (id) => deleteItem(`${BASE_URI_SONG}/${id}`);
 
   const updateSong = (id, name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
