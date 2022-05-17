@@ -17,8 +17,8 @@ import NotFound from "../components/NotFound/NotFound";
 import SidebarHome from "../components/Sidebar/Sidebar";
 import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
-import MediaPlayer from "../components/MediaPlayer/MediaPlayer";
 import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
+import GenresBackoffice from "../pages/GenresBackoffice/GenresBackoffice";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
@@ -131,6 +131,14 @@ const AppRoutes = () => {
           element={
             <RequireAdmin>
               <FavouritesSongBackoffice />
+            </RequireAdmin>
+          }
+        />
+        <Route
+          path="/backoffice/genres"
+          element={
+            <RequireAdmin>
+              <GenresBackoffice/>
             </RequireAdmin>
           }
         />

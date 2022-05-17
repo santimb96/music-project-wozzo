@@ -76,6 +76,10 @@ const Sidebar = () => {
                   <i className="fa-solid fa-heart"></i>
                   <Link to="/backoffice/favouriteSongs">Favoritos</Link>
                 </li>
+                <li>
+                  <i class="fa-solid fa-record-vinyl"></i>
+                  <Link to="/backoffice/genres">Géneros</Link>
+                </li>
                 <hr></hr>
                 <li onClick={logOut}>
                   <i className="fa-solid fa-arrow-right-from-bracket"></i>

@@ -51,7 +51,11 @@ const routes = {
     {
       method: 'DELETE',
       route: '/favouriteSongs/:id',
-    }
+    },
+    {
+      method: 'GET',
+      route: '/genres',
+    },
 
 
   ], 
@@ -154,7 +158,23 @@ const routes = {
     {
       method: 'PUT',
       route: '/favouriteSongs/:id',
-    }
+    },
+    {
+      method: 'GET',
+      route: '/genres',
+    },
+    {
+      method: 'POST',
+      route: '/genres',
+    },
+    {
+      method: 'DELETE',
+      route: '/genres/:id',
+    },
+    {
+      method: 'PUT',
+      route: '/genres/:id',
+    },
   ]
 };
 

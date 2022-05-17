@@ -1,20 +1,16 @@
 import { BASE_URI_SONG } from "../urls/urls";
-import { BASE_URI_ARTIST } from "../urls/urls";
+import { deleteItem, get } from "../utils/apiWrapper";
 
-  const getSongs = () => new Promise((resolve, reject) => {
-    fetch(BASE_URI_SONG)
-    .then(res => resolve(res.json()))
-    .catch(err => reject(err));
-  });
+  const getSongs = () => get(BASE_URI_SONG);
 
-
-  const createSong = (name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+  const createSong = (name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('artistId', artistId);
+    formData.append('genreId', genreId);
     formData.append('audioUrl', audioUrl);
 
-    if (!name || !artistId || !audioUrl || !token) {
+    if (!name || !artistId || !genreId || !audioUrl || !token) {
       reject("Error de parámetros")
     } else {
       fetch(`${BASE_URI_SONG}`, {
@@ -29,44 +25,15 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     }
   });
 
-  const removeSong = (id, token) => new Promise((resolve, reject) => {
-    if(!id && !token){
-      reject("Error en parámetros");
-    } else {
-      fetch(`${BASE_URI_SONG}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => resolve(res.json()))
-      .catch(err => reject(err));
-    };
-  });
+  const removeSong= (id) => deleteItem(`${BASE_URI_SONG}/${id}`);
 
-  const getArtistBySongId = (id, token) => new Promise((resolve, reject) => {
-    if(!id || !token){
-      reject("Error en parámetros");
-    } else {
-      fetch(`${BASE_URI_ARTIST}/${id}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => resolve(res.json()))
-      .catch(err => reject(err));
-    }
-  });
-
-  const updateSong = (id, name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+  const updateSong = (id, name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     if(name){
       formData.append('name', name);
     }
     formData.append('artistId', artistId);
-
+    formData.append('genreId', genreId);
     if(audioUrl){
       formData.append('audioUrl', audioUrl);
     }
@@ -85,4 +52,4 @@ import { BASE_URI_ARTIST } from "../urls/urls";
     .catch(err => reject(err));
   }); 
 
-export { getSongs, createSong, removeSong, updateSong, getArtistBySongId };
+export { getSongs, createSong, removeSong, updateSong };

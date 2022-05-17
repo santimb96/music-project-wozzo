@@ -16,6 +16,9 @@ const routes = [
   },
   {
     route: "/backoffice/favouriteSongs",
+  },
+  {
+    route: "/backoffice/genres",
   }
 ];
 

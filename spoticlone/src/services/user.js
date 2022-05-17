@@ -1,4 +1,5 @@
 import { BASE_URI_USER } from "../urls/urls";
+import { deleteItem, post, put } from "../utils/apiWrapper";
 import ROLES from "../utils/roleId";
 
 
@@ -22,26 +23,8 @@ const login = (email, password) =>
     }
   });
 
-  const autoLogin = (id, token) =>
-  new Promise((resolve, reject) => {
-    if (!id || !token) {
-      reject("Error de parámetros");
-    } else {
-      fetch(`${BASE_URI_USER}/autologin`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          token,
-        }),
-      })
-        .then((response) => resolve(response.json()))
-        .catch((err) => reject(err));
-    }
-  });
-
+const autoLogin = (id) => post(`${BASE_URI_USER}/autologin`, {id} );
+  
 
 const register = (name, email, password, role) =>
   new Promise((resolve, reject) => {
@@ -78,62 +61,13 @@ const register = (name, email, password, role) =>
     .catch(err => console.warn(err))
   });
 
-  const createUser = (name, email, password, role, token) => new Promise((resolve, reject) => {
-    
+  const createUser = (name, email, password, role) => {
     const found = ROLES.find(r => r.role === role);
+    post(`${BASE_URI_USER}`, {name, email, password, userRoleId: found.id})
+  }
 
-    if(!name && !email && !password && !found && !token){
-      reject("Error de parámetros")
-    } else {
-      fetch(`${BASE_URI_USER}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          password,
-          userRoleId: found.id,
-        }),
-      })
-        .then((response) => resolve(response.json()))
-        .catch((err) => reject(err));
-    }
-  });
+  const removeUser = (id) => deleteItem(`${BASE_URI_USER}/${id}`);
 
-  const removeUser = (id, token) => new Promise((resolve, reject) => {
-    if(!id && !token){
-      reject("Error en parámetros");
-    } else {
-      fetch(`${BASE_URI_USER}/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      .then(res => resolve(res.json()))
-      .catch(err => reject(err));
-    };
-  });
-
-  const updateUser = (id, edited, token) => new Promise((resolve, reject) => {
-    console.log(JSON.stringify(edited));
-    if(!id && !token){
-      reject("Error en parámetros");
-    }
-    fetch(`${BASE_URI_USER}/${id}`,{
-      method: 'PUT',
-      headers:  {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(edited)
-    })
-    .then(res => resolve(res.json()))
-    .catch(err => reject(err));
-  }); 
+  const updateUser = (id, edited) => put(`${BASE_URI_USER}/${id}`, edited);
 
 export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser };

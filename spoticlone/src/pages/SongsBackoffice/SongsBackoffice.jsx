@@ -33,6 +33,7 @@ import SnackBarSuccess from "../../components/SnackBarSuccess/SnackBarSuccess";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import CloseIcon from "@mui/icons-material/Close";
 import sortItems from "../../utils/sortItems";
+import { getGenres } from "../../services/genres";
 
 const SongsBackoffice = () => {
   const token = localStorage.getItem("token");
@@ -41,14 +42,19 @@ const SongsBackoffice = () => {
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const [artistName, setArtistName] = useState("Selecciona");
+  const [genreName, setGenreName] = useState("Selecciona");
   const [artistId, setArtistId] = useState("");
+  const [genreId, setGenreId] = useState("");
   const [audioUrl, setAudioUrl] = useState([]);
   const [id, setId] = useState("");
   const [loading, setLoading] = useState(false);
   const [create, setCreate] = useState(false);
   const [artists, setArtists] = useState([]);
-  const [filterDropdown, setFilterDropdown] = useState("");
+  const [genres, setGenres] = useState([]);
+  const [filterDropdownArtists, setFilterDropdownArtists] = useState("");
+  const [filterDropdownGenres, setFilterDropdownGenres] = useState("");
   const [filteredArtists, setFilteredArtists] = useState([]);
+  const [filteredGenres, setFilteredGenres] = useState([]);
   const [errors, setErrors] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errorOpen, setErrorOpen] = useState(false);
@@ -100,21 +106,27 @@ const SongsBackoffice = () => {
   };
 
   const getData = () => {
-    Promise.all([getSongs(), getArtists()])
-      .then(([songsResponse, artistsResponse]) => {
+    Promise.all([getSongs(), getArtists(), getGenres()])
+      .then(([songsResponse, artistsResponse, genresResponse]) => {
+
         setArtists(artistsResponse.artists);
+        setGenres(genresResponse.genres);
+
         const data = songsResponse.songs.map((song) => {
           const artist = artistsResponse.artists.find(
             (artist) => artist._id === song.artistId
           );
+
+          const genre = genresResponse.genres.find(genre => genre?._id === song?.genreId);
           return {
             ...song,
             artistName: artist.name,
+            genreName: genre?.name || "no genre yet",
           };
         });
         setSongs(data);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch(() => setErrorOpen(true));
   };
 
   useEffect(() => {
@@ -146,13 +158,14 @@ const SongsBackoffice = () => {
   };
 
   const validateData = (method = false) => {
-    if (method && artistName !== "Selecciona") {
+    if (method && artistName !== "Selecciona" && genreName !== "Selecciona") {
       return true;
     } else {
       if (
         name?.length &&
         artistId?.length &&
-        artistName !== "Selecciona"
+        artistName !== "Selecciona" && 
+        genreName !== "Selecciona"
       ) {
         return true;
       }
@@ -164,7 +177,9 @@ const SongsBackoffice = () => {
     setId(song._id);
     setName(song.name);
     setArtistName(song.artistName);
+    setGenreName(song.genreName);
     setArtistId(song.artistId);
+    setGenreId(song.genreId);
     setAudioUrl(song.audioUrl);
     handleOpenForm();
   };
@@ -173,7 +188,7 @@ const SongsBackoffice = () => {
     if (validateData()) {
       setErrors(false);
       setLoading(true);
-      createSong(name, artistId, audioUrl, token)
+      createSong(name, artistId, genreId, audioUrl, token)
         .then(() => {
           setSuccessOpen(true);
           setLoading(false);
@@ -189,21 +204,21 @@ const SongsBackoffice = () => {
 
   const deleteItem = (id) => {
     setLoading(true);
-    removeSong(id, token)
+    removeSong(id)
       .then(() => {
         getData();
         setOpenDelete(false);
         setSuccessOpen(true);
         setLoading(false);
       })
-      .catch((err) => setErrorOpen(true));
+      .catch(() => setErrorOpen(true));
   };
 
   const editSong = (method) => {
     if (validateData(method)) {
       setLoading(true);
       
-      updateSong(id, name, artistId, audioUrl, token)
+      updateSong(id, name, artistId, genreId, audioUrl, token)
         .then(() => {
           setOpenForm(false);
           setLoading(false);
@@ -220,8 +235,10 @@ const SongsBackoffice = () => {
   const clearData = () => {
     setName("");
     setArtistName("Selecciona");
+    setGenreName("Selecciona");
     setAudioUrl("");
     setId("");
+    setFilterDropdownArtists("");
   };
 
   useEffect(() => {
@@ -229,17 +246,39 @@ const SongsBackoffice = () => {
       if (
         artist.name
           .toLocaleLowerCase()
-          .includes(filterDropdown.toLocaleLowerCase().trim())
+          .includes(filterDropdownArtists.toLocaleLowerCase().trim())
       ) {
         return true;
       }
       return false;
     });
     setFilteredArtists(filtered);
-  }, [filterDropdown]);
+  }, [filterDropdownArtists]);
+
+  
+  useEffect(() => {
+    const filtered = genres?.filter((genre) => {
+      if (
+        genre.name
+          .toLocaleLowerCase()
+          .includes(filterDropdownGenres.toLocaleLowerCase().trim())
+      ) {
+        return true;
+      }
+      return false;
+    });
+    setFilteredGenres(filtered);
+  }, [filterDropdownGenres]);
+
+  const genresToShow = () => {
+    if (filterDropdownGenres?.length) {
+      return filteredGenres ? filteredGenres : genres;
+    }
+    return genres;
+  };
 
   const artistsToShow = () => {
-    if (filterDropdown?.length) {
+    if (filterDropdownGenres?.length) {
       return sortItems(filteredArtists ? filteredArtists : artists);
     }
     return sortItems(artists ? artists : []);
@@ -336,6 +375,7 @@ const SongsBackoffice = () => {
                               : " "
                           }
                         />
+                        {/* ARTIST DROPDOWN */}
                         <label htmlFor="drop">Compositor*</label>
                         <div className="dropdown d-flex justify-content-center">
                           <button
@@ -359,7 +399,7 @@ const SongsBackoffice = () => {
                               placeholder="Filtrar..."
                               className="search-filter-dropdown"
                               onChange={(e) =>
-                                setFilterDropdown(e.target.value)
+                                setFilterDropdownArtists(e.target.value)
                               }
                             />
 
@@ -376,6 +416,53 @@ const SongsBackoffice = () => {
                                 type="button"
                               >
                                 {artist.name}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* GENRE DROPDOWN */}
+
+                        <label htmlFor="drop">Género*</label>
+                        <div className="dropdown d-flex justify-content-center">
+                          <button
+                            {...(loading ? { disabled: true } : {})}
+                            className="btn btn-dropdown dropdown-toggle"
+                            type="button"
+                            id="drop"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                          >
+                            {genreName}
+                          </button>
+                          <div
+                            className="dropdown-menu dropdown-menu-left  scrollable-menu"
+                            aria-labelledby="drop"
+                          >
+                            <input
+                              {...(loading ? { disabled: true } : {})}
+                              type="text"
+                              placeholder="Filtrar..."
+                              className="search-filter-dropdown"
+                              onChange={(e) =>
+                                setFilterDropdownGenres(e.target.value)
+                              }
+                            />
+
+                            {genresToShow()?.map((genre) => (
+                              <button
+                                {...(loading ? { disabled: true } : {})}
+                                key={genre.name}
+                                value={genre._id}
+                                onClick={(e) => {
+                                  setGenreId(e.target.value);
+                                  setGenreName(genre.name);
+                                }}
+                                className="dropdown-item"
+                                type="button"
+                              >
+                                {genre.name}
                               </button>
                             ))}
                           </div>
@@ -429,6 +516,12 @@ const SongsBackoffice = () => {
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
+                      Género
+                    </TableCell>
+                    <TableCell
+                      style={{ color: theme.palette.secondary.mainLight }}
+                      align="left"
+                    >
                       URL de la canción
                     </TableCell>
 
@@ -465,6 +558,12 @@ const SongsBackoffice = () => {
                         align="left"
                       >
                         {song.artistName}
+                      </TableCell>
+                      <TableCell
+                        style={{ color: theme.palette.secondary.mainLight }}
+                        align="left"
+                      >
+                        {song.genreName}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}

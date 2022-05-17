@@ -1,58 +1,15 @@
 import { BASE_URI_FAVOURITE_SONGS } from "../urls/urls";
+import { deleteItem, get, getById, post, put } from "../utils/apiWrapper";
 
-const getFavSongs = () =>
-  new Promise((resolve, reject) => {
-    fetch(`${BASE_URI_FAVOURITE_SONGS}`)
-      .then((res) => resolve(res.json()))
-      .catch((err) => reject(err));
-  });
+const getFavSongs = () => get(BASE_URI_FAVOURITE_SONGS);
 
-const getUserFavSongs = (userId) =>
-  new Promise((resolve, reject) => {
-    fetch(`${BASE_URI_FAVOURITE_SONGS}/${userId}`)
-      .then((res) => resolve(res.json()))
-      .catch((err) => reject(err));
-  });
+const getUserFavSongs = (userId) => getById(BASE_URI_FAVOURITE_SONGS, userId);
+  
+const deleteFavSong = (id) => deleteItem(`${BASE_URI_FAVOURITE_SONGS}/${id}`);
 
-const deleteFavSong = (id, token) =>
-  new Promise((resolve, reject) => {
-    fetch(`${BASE_URI_FAVOURITE_SONGS}/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => resolve(res.json()))
-      .catch((err) => reject(err));
-  });
+const postFavSong = (favouriteSong) => post(`${BASE_URI_FAVOURITE_SONGS}`, favouriteSong);
 
-const postFavSong = (favouriteSong, token) =>
-  new Promise((resolve, reject) => {
-    fetch(`${BASE_URI_FAVOURITE_SONGS}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(favouriteSong),
-    })
-      .then((res) => resolve(res.json()))
-      .catch((err) => reject(err));
-  });
-const updatefavSong = (id, favouriteSong, token) =>
-  new Promise((resolve, reject) => {
-    fetch(`${BASE_URI_FAVOURITE_SONGS}/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(favouriteSong),
-    })
-      .then((res) => resolve(res.json()))
-      .catch((err) => reject(err));
-  });
+const updatefavSong = (id, favouriteSong) => put(`${BASE_URI_FAVOURITE_SONGS}/${id}`, favouriteSong);
 
 export {
   getFavSongs,
