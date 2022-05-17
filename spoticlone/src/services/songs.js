@@ -3,13 +3,14 @@ import { deleteItem, get } from "../utils/apiWrapper";
 
   const getSongs = () => get(BASE_URI_SONG);
 
-  const createSong = (name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+  const createSong = (name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('artistId', artistId);
+    formData.append('genreId', genreId);
     formData.append('audioUrl', audioUrl);
 
-    if (!name || !artistId || !audioUrl || !token) {
+    if (!name || !artistId || !genreId || !audioUrl || !token) {
       reject("Error de parámetros")
     } else {
       fetch(`${BASE_URI_SONG}`, {
@@ -26,13 +27,13 @@ import { deleteItem, get } from "../utils/apiWrapper";
 
   const removeSong= (id) => deleteItem(`${BASE_URI_SONG}/${id}`);
 
-  const updateSong = (id, name, artistId, audioUrl, token) => new Promise((resolve, reject) => {
+  const updateSong = (id, name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     if(name){
       formData.append('name', name);
     }
     formData.append('artistId', artistId);
-
+    formData.append('genreId', genreId);
     if(audioUrl){
       formData.append('audioUrl', audioUrl);
     }

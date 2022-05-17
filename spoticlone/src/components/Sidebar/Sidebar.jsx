@@ -77,7 +77,7 @@ const Sidebar = () => {
                   <Link to="/backoffice/favouriteSongs">Favoritos</Link>
                 </li>
                 <li>
-                  <i class="fa-solid fa-filter"></i>
+                  <i class="fa-solid fa-record-vinyl"></i>
                   <Link to="/backoffice/genres">Géneros</Link>
                 </li>
                 <hr></hr>

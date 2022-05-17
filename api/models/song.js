@@ -8,6 +8,10 @@ const SongSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId, 
     ref: 'Artist'
   },
+  genreId: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Genre'
+  },
   audioUrl: {
     type: String,
     required: true,

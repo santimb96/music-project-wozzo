@@ -248,7 +248,7 @@ const GenresBackoffice = () => {
                         <div className="d-flex flex-column">
                         <div>
                           <h2 className="d-flex justify-content-center pb-4">
-                            {create ? "Crear genrea" : "Actualizar genrea"}
+                            {create ? "Crear género" : "Actualizar género"}
                           </h2>
                         </div>
                         <label htmlFor="name">Nombre*</label>
