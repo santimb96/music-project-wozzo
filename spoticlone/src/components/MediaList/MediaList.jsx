@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useContext, useRef } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 import AuthContext from "../../contexts/AuthContext";

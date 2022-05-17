@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import FavouriteList from "../../components/FavouriteList/FavouriteList";
@@ -20,13 +20,13 @@ const TABS = {
 };
 
 const PublicWrapper = () => {
-
-  const {user, userRole} = useContext(AuthContext);
+  const { user, userRole } = useContext(AuthContext);
   const [songList, setSongList] = useState([]);
   const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
   const [favouriteList, setFavouriteList] = useState([]);
   const [songsFavList, setSongsFavList] = useState([]);
+  const [genresList, setGenresList] = useState([]);
   const [filteredSongList, setFilteredSongList] = useState([]);
   const [focus, setFocus] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,41 +35,77 @@ const PublicWrapper = () => {
   const [showInfo, setShowInfo] = useState(false);
   const [showError, setShowError] = useState(false);
 
+  const [showListsOptions, setShowListsOptions] = useState(true);
+
+  const [showList, setShowList] = useState(false);
+  const [showFavourites, setShowFavourites] = useState(false);
+
   const { setAuthModalType, setShowAuthModal } = useContext(AuthContext);
 
   const handleInfoClose = () => setShowInfo(false);
   const handleErrorClose = () => setShowError(false);
 
-  useEffect(()=> {
-    if(!user?._id) setTab(TABS.SONGS);
+  const toDisplay = (listsOptions, lists, favourites) => {
+    setShowListsOptions(listsOptions);
+    setShowList(lists);
+    setShowFavourites(favourites);
+  };
+
+  const onDisplayMediaList = () => {
+    toDisplay(false, true, false);
+  };
+  const onDisplayFavourites = () => {
+    toDisplay(false, false, true);
+  };
+  const onDisplayLists = () => {
+    toDisplay(true, false, false);
+  };
+
+  useEffect(() => {
+    if (!user?._id) setTab(TABS.SONGS);
   }, [user]);
 
   //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
     setLoading(true);
-    Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id), getGenres()])
-      .then(([songsResponse, artistsResponse, favSongsResponse, genresResponse]) => {
-        const data = songsResponse.songs.map((song) => {
-          const artist = artistsResponse.artists.find(
-            (artist) => artist._id === song.artistId
-          );
+    Promise.all([
+      getSongs(),
+      getArtists(),
+      getUserFavSongs(user?._id),
+      getGenres(),
+    ])
+      .then(
+        ([
+          songsResponse,
+          artistsResponse,
+          favSongsResponse,
+          genresResponse,
+        ]) => {
+          setGenresList(genresResponse?.genres);
+          const data = songsResponse.songs.map((song) => {
+            const artist = artistsResponse.artists.find(
+              (artist) => artist._id === song.artistId
+            );
 
-          const genre = genresResponse.genres.find(genre => genre._id === song.genreId);
-          
-          return {
-            ...song,
-            artistName: artist.name,
-            genreName: genre.name
-          };
-        });
-        setSongList(data);
-        setFilteredSongList(data);
-        setFavouriteList(favSongsResponse?.favouriteSongs);
-        const formatted = favSongsResponse?.favouriteSongs.map((fav) => {
-          return data?.find((song) => song?._id === fav?.songId);
-        });
-        setSongsFavList(formatted);
-      })
+            const genre = genresResponse.genres.find(
+              (genre) => genre._id === song.genreId
+            );
+
+            return {
+              ...song,
+              artistName: artist.name,
+              genreName: genre.name,
+            };
+          });
+          setSongList(data);
+          setFilteredSongList(data);
+          setFavouriteList(favSongsResponse?.favouriteSongs);
+          const formatted = favSongsResponse?.favouriteSongs.map((fav) => {
+            return data?.find((song) => song?._id === fav?.songId);
+          });
+          setSongsFavList(formatted);
+        }
+      )
       .catch(() => songList?.length !== 0 && setShowError(true))
       .finally(() => setLoading(false));
   };
@@ -144,6 +180,7 @@ const PublicWrapper = () => {
         : listToValorate?.[indexOfSong - 1];
     setSelectedSong(previousSong);
   };
+  console.log(showList);
 
   const deleteFav = (song) => {
     deleteFavSong(song)
@@ -199,8 +236,71 @@ const PublicWrapper = () => {
             )}
           </button>
         )}
+        {showListsOptions && (
+          <>
+            <div className="genre-title">
+              <h1>Géneros</h1>
+            </div>
+            <div className="grid-container">
+              {genresList?.map((genre) => (
+                <div className="card genre-card" key={genre?.name}>
+                  <img
+                    src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
+                    className="card-img-top"
+                    alt={genre.name}
+                  />
+                  <div className="card-body">
+                    <h2 className="card-title text-center">{genre.name}</h2>
+                    {/* <small>Some quick example text to build on the card title and make up the bulk of the card's content.</small> */}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="grid-container-lists">
+              <div
+                className="card  flex-row list-cards"
+                onClick={() => onDisplayMediaList()}
+              >
+                <img
+                  src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
+                  className="card-img-left"
+                  alt="lista"
+                />
+                <div className="card-body row">
+                  <h2 className="card-title col-6">Ruta diaria</h2>
+                  <div className="play-icon-list col-6">
+                    <i class="fa-solid fa-circle-play"></i>
+                  </div>
+                </div>
+              </div>
 
-        {tab === TABS.SONGS && (
+              <div
+                className="card  flex-row list-cards"
+                onClick={() => {
+                  if (user?._id && userRole === "user") {
+                    onDisplayFavourites();
+                  } else {
+                    setAuthModalType(MODAL_STATES.LOGIN);
+                    setShowAuthModal(true);
+                  }
+                }}
+              >
+                <img
+                  src="https://misc.scdn.co/liked-songs/liked-songs-640.png"
+                  className="card-img-left"
+                  alt="favoritos"
+                />
+                <div className="card-body row">
+                  <h2 className="card-title col-6">Favoritos</h2>
+                  <div className="play-icon-list col-6">
+                    <i class="fa-solid fa-circle-play"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+        {showList && (
           <>
             <Search onChangeText={onChangeText} setFocus={setFocus} />
             <MediaList
@@ -212,7 +312,7 @@ const PublicWrapper = () => {
             />
           </>
         )}
-        {tab === TABS.FAVOURITES && user?._id && userRole === "user" && (
+        {showFavourites && (
           <FavouriteList
             onSelectSong={onSelectSong}
             songsFavList={songsFavList}
@@ -221,6 +321,28 @@ const PublicWrapper = () => {
             onClickFavourite={onClickFavourite}
           />
         )}
+
+        {/* {tab === TABS.SONGS && (
+          <>
+            <Search onChangeText={onChangeText} setFocus={setFocus} />
+            <MediaList
+              onSelectSong={onSelectSong}
+              onClickFavourite={onClickFavourite}
+              filteredSongList={filteredSongList}
+              favouriteList={favouriteList}
+              selectedSong={selectedSong}
+            />
+          </>
+        )} */}
+        {/* {tab === TABS.FAVOURITES && user?._id && userRole === "user" && (
+          <FavouriteList
+            onSelectSong={onSelectSong}
+            songsFavList={songsFavList}
+            selectedSong={selectedSong}
+            loading={loading}
+            onClickFavourite={onClickFavourite}
+          />
+        )} */}
       </div>
       {selectedSong?._id && (
         <MediaPlayer
