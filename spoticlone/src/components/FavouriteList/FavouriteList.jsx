@@ -64,6 +64,13 @@ const FavouriteList = ({
                   >
                     ARTISTA
                   </TableCell>
+                  
+                  <TableCell
+                    style={{ color: theme.palette.secondary.grey }}
+                    align="left"
+                  >
+                    GÉNERO
+                  </TableCell>
 
                   <TableCell
                     style={{ color: theme.palette.secondary.grey }}
@@ -112,6 +119,12 @@ const FavouriteList = ({
                           align="left"
                         >
                           {s.artistName}
+                        </TableCell>
+                        <TableCell
+                          style={{ color: theme.palette.secondary.light }}
+                          align="left"
+                        >
+                          {s.genreName}
                         </TableCell>
                         <TableCell
                           style={{ color: theme.palette.secondary.light }}

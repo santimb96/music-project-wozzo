@@ -6,6 +6,7 @@ import AuthContext from "../../contexts/AuthContext";
 import { MODAL_STATES } from "../../contexts/AuthContext";
 import { getSongs } from "../../services/songs";
 import { getArtists } from "../../services/artists";
+import { getGenres } from "../../services/genres";
 import { getUserFavSongs } from "../../services/favouriteSongs";
 import { deleteFavSong, postFavSong } from "../../services/favouriteSongs";
 import Search from "../../components/Search/Search";
@@ -20,7 +21,7 @@ const TABS = {
 
 const PublicWrapper = () => {
 
-  const { user, userRole } = useContext(AuthContext);
+  const {user, userRole} = useContext(AuthContext);
   const [songList, setSongList] = useState([]);
   const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
@@ -36,8 +37,6 @@ const PublicWrapper = () => {
 
   const { setAuthModalType, setShowAuthModal } = useContext(AuthContext);
 
-  const token = localStorage.getItem("token");
-
   const handleInfoClose = () => setShowInfo(false);
   const handleErrorClose = () => setShowError(false);
 
@@ -48,15 +47,19 @@ const PublicWrapper = () => {
   //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
     setLoading(true);
-    Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id)])
-      .then(([songsResponse, artistsResponse, favSongsResponse]) => {
+    Promise.all([getSongs(), getArtists(), getUserFavSongs(user?._id), getGenres()])
+      .then(([songsResponse, artistsResponse, favSongsResponse, genresResponse]) => {
         const data = songsResponse.songs.map((song) => {
           const artist = artistsResponse.artists.find(
             (artist) => artist._id === song.artistId
           );
+
+          const genre = genresResponse.genres.find(genre => genre._id === song.genreId);
+          
           return {
             ...song,
             artistName: artist.name,
+            genreName: genre.name
           };
         });
         setSongList(data);
