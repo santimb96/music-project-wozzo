@@ -90,7 +90,7 @@ const AppRoutes = () => {
       <HomeHeader />
       <AuthModal />
       <Routes>
-        <Route path="*" element={<NotFound />} />
+        <Route path={window.location.pathname.includes('/playlist') ? navigate('/') : '*'} element={<NotFound />} />
         {/* PUBLIC ROUTES */}
         <Route path="/" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}

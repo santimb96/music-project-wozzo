@@ -9,25 +9,53 @@
     width: 100vw;
     position: absolute;
     display: flex;
-    justify-content: center;
-    top: 2vh;
+    justify-content: left;
+    top: 5vh;
+    h2{
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 2vw;
+    }
+  }
+  .list-title {
+    position: absolute;
+    width: 100vw;
+    top: 32vh;
+    color: white;
+    display: flex;
+    justify-content: left;
+    h2{
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 2vw;
+    }
   }
   .grid-container{
     overflow: auto;
+    scrollbar-color: transparent transparent; //only on Firefox
     position: absolute;
-    top:10vh;
+    top: 11vh;
     width: 100vw;
-    height: 25vh;
-    display: grid;
-    grid-template-columns: auto auto auto auto auto auto;
+    height: 20vh;
+    display: block;
+    white-space: nowrap;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+    // display: grid;
+    // grid-template-columns: auto auto auto auto auto auto;
     //grid-template-rows: auto;
     place-items: center;
     gap: 10px 45px;
     .genre-card{
+      display: inline-block;
+      margin-right: 8vw;
       width: 100px;
       background: $darkColor;
       border: none;
       color: white;
+      height: 20vh;
       img{
         height: 99px;
         width: 99px;
@@ -37,19 +65,26 @@
       h2{
         font-size: 1rem;      
       }
+      .card-body{
+        padding-top: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
     }
+    }
+    
   }
   .grid-container-lists{
     overflow: auto;
     position: absolute;
-    top: 35vh;
+    top: 36vh;
     width: 100vw;
     height: 25vh;
     display: grid;
     grid-template-columns: auto;
     //grid-template-rows: auto;
     place-items: center;
-    gap: 10px 30px;
+    gap: 0 30px;
   }
   .list-cards{
     width: 90vw;
@@ -90,13 +125,21 @@
     }
   }
   .alternate-public-pages {
-    top: -5vh;
+    top: -7vh;
     position: relative;
     background: $spotiLogoColor;
     color: white;
-    padding: 0.2rem;
+    padding: 1rem;
     left: 3vw;
-    width: 20vw;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i{
+      font-size: 0.8rem;
+    }
     /* outline: none; */
   }
   .alternate-public-pages:hover {
@@ -132,7 +175,6 @@
       background: $spotiLogoColor;
       color: white;
       padding: 0.3rem;
-      width: 10vw;
       left: 3vw;
       /* outline: none; */
     }

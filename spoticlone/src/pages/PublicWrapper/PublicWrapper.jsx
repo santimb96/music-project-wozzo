@@ -1,4 +1,10 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useHistory,
+} from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import FavouriteList from "../../components/FavouriteList/FavouriteList";
@@ -14,15 +20,15 @@ import SnackBarInfo from "../../components/SnackBarInfo/SnackBarInfo";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import "./index.scss";
 
-const TABS = {
-  FAVOURITES: "favorites",
-  SONGS: "songs",
-};
+// const TABS = {
+//   FAVOURITES: "favorites",
+//   SONGS: "songs",
+// };
 
 const PublicWrapper = () => {
   const { user, userRole } = useContext(AuthContext);
   const [songList, setSongList] = useState([]);
-  const [tab, setTab] = useState(TABS.SONGS);
+  //const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
   const [favouriteList, setFavouriteList] = useState([]);
   const [songsFavList, setSongsFavList] = useState([]);
@@ -31,6 +37,7 @@ const PublicWrapper = () => {
   const [focus, setFocus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listType, setListType] = useState("");
+  const [genreTitle, setGenreTitle] = useState("");
 
   const [showInfo, setShowInfo] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -55,15 +62,14 @@ const PublicWrapper = () => {
     toDisplay(false, true, false);
   };
   const onDisplayFavourites = () => {
+    window.history.replaceState('', 'Favourites', '/favourites');
     toDisplay(false, false, true);
   };
   const onDisplayLists = () => {
+    window.history.replaceState('', 'Spoticlone', '/');
     toDisplay(true, false, false);
   };
 
-  useEffect(() => {
-    if (!user?._id) setTab(TABS.SONGS);
-  }, [user]);
 
   //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
@@ -219,31 +225,36 @@ const PublicWrapper = () => {
     }
   };
 
+
+  const filterByGenre = (genreName = 'Pop') => {
+    const filtered = window.location.pathname.includes('medialist') ? songList : songList?.filter((song) => song?.genreName === genreName);
+    setFilteredSongList(filtered);
+  };
+
   return (
     <>
       <div className="public-wrapper">
-        {user?._id && (
-          <button
-            className="btn alternate-public-pages"
-            onClick={() =>
-              tab === TABS.SONGS ? setTab(TABS.FAVOURITES) : setTab(TABS.SONGS)
-            }
-          >
-            {tab === TABS.SONGS ? (
-              <i className="fa-regular fa-heart"></i>
-            ) : (
-              <i className="fa-solid fa-house"></i>
-            )}
-          </button>
-        )}
         {showListsOptions && (
           <>
             <div className="genre-title">
-              <h1>Géneros</h1>
+              <h2>Por género</h2>
             </div>
             <div className="grid-container">
               {genresList?.map((genre) => (
-                <div className="card genre-card" key={genre?.name}>
+                <div
+                  className="card genre-card"
+                  key={genre?.name}
+                  onClick={() => {
+                    setGenreTitle(genre?.name);
+                    filterByGenre(genre?.name);
+                    window.history.replaceState(
+                      "",
+                      genre?.name,
+                      "/playlist/" + genre?.name.toLocaleLowerCase()
+                    );
+                    onDisplayMediaList();
+                  }}
+                >
                   <img
                     src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
                     className="card-img-top"
@@ -256,10 +267,18 @@ const PublicWrapper = () => {
                 </div>
               ))}
             </div>
+            
+            <div className="list-title">
+              <h2>Listas</h2>
+            </div>
             <div className="grid-container-lists">
               <div
                 className="card  flex-row list-cards"
-                onClick={() => onDisplayMediaList()}
+                onClick={() => {
+                  window.history.replaceState('', 'Media list', '/medialist');
+                  filterByGenre();
+                  onDisplayMediaList();
+                }}
               >
                 <img
                   src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
@@ -278,6 +297,7 @@ const PublicWrapper = () => {
                 className="card  flex-row list-cards"
                 onClick={() => {
                   if (user?._id && userRole === "user") {
+                    window.history.replaceState('', 'Favoritos', '/favourites');
                     onDisplayFavourites();
                   } else {
                     setAuthModalType(MODAL_STATES.LOGIN);
@@ -302,6 +322,12 @@ const PublicWrapper = () => {
         )}
         {showList && (
           <>
+            <button className="btn alternate-public-pages" onClick={() => {
+              window.history.replaceState('', '', '/');
+              onDisplayLists();
+            }}>
+              <i className="fa-solid fa-house"></i>
+            </button>
             <Search onChangeText={onChangeText} setFocus={setFocus} />
             <MediaList
               onSelectSong={onSelectSong}
@@ -313,13 +339,21 @@ const PublicWrapper = () => {
           </>
         )}
         {showFavourites && (
-          <FavouriteList
-            onSelectSong={onSelectSong}
-            songsFavList={songsFavList}
-            selectedSong={selectedSong}
-            loading={loading}
-            onClickFavourite={onClickFavourite}
-          />
+          <>
+            <button className="btn alternate-public-pages" onClick={() => {
+              window.history.replaceState('', '', '/');
+              onDisplayLists();
+            }}>
+              <i className="fa-solid fa-house"></i>
+            </button>
+            <FavouriteList
+              onSelectSong={onSelectSong}
+              songsFavList={songsFavList}
+              selectedSong={selectedSong}
+              loading={loading}
+              onClickFavourite={onClickFavourite}
+            />
+          </>
         )}
 
         {/* {tab === TABS.SONGS && (
