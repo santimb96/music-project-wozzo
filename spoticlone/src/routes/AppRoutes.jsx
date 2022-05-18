@@ -90,9 +90,9 @@ const AppRoutes = () => {
       <HomeHeader />
       <AuthModal />
       <Routes>
-        <Route path={window.location.pathname.includes('/playlist') ? navigate('/') : '*'} element={<NotFound />} />
+        <Route path='*' element={<NotFound />} />
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<PublicWrapper />} />
+        <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
         <Route
           path="/backoffice/roles"

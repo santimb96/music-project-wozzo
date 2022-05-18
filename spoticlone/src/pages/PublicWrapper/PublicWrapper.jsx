@@ -27,6 +27,7 @@ import "./index.scss";
 
 const PublicWrapper = () => {
   const { user, userRole } = useContext(AuthContext);
+  const [param, setUrl] = useState("");
   const [songList, setSongList] = useState([]);
   //const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
@@ -37,7 +38,6 @@ const PublicWrapper = () => {
   const [focus, setFocus] = useState(false);
   const [loading, setLoading] = useState(false);
   const [listType, setListType] = useState("");
-  const [genreTitle, setGenreTitle] = useState("");
 
   const [showInfo, setShowInfo] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -57,19 +57,6 @@ const PublicWrapper = () => {
     setShowList(lists);
     setShowFavourites(favourites);
   };
-
-  const onDisplayMediaList = () => {
-    toDisplay(false, true, false);
-  };
-  const onDisplayFavourites = () => {
-    window.history.replaceState('', 'Favourites', '/favourites');
-    toDisplay(false, false, true);
-  };
-  const onDisplayLists = () => {
-    window.history.replaceState('', 'Spoticlone', '/');
-    toDisplay(true, false, false);
-  };
-
 
   //we get songs, artists and fav songs and then sets each result in contexts state
   const getData = () => {
@@ -186,7 +173,6 @@ const PublicWrapper = () => {
         : listToValorate?.[indexOfSong - 1];
     setSelectedSong(previousSong);
   };
-  console.log(showList);
 
   const deleteFav = (song) => {
     deleteFavSong(song)
@@ -225,11 +211,38 @@ const PublicWrapper = () => {
     }
   };
 
+  useEffect(() => {
+    if (param === "favourites" || param === "medialist") {
+      window.history.pushState(
+        {},
+        null,
+        window.location.pathname + "?type=" + param
+      );
+    } else if (param === "") {
+      window.history.pushState({}, null, window.location.pathname);
+    } else {
+      window.history.pushState(
+        {},
+        null,
+        window.location.pathname + "?genre=" + param
+      );
+    }
 
-  const filterByGenre = (genreName = 'Pop') => {
-    const filtered = window.location.pathname.includes('medialist') ? songList : songList?.filter((song) => song?.genreName === genreName);
-    setFilteredSongList(filtered);
-  };
+    if (param === "favourites") {
+      toDisplay(false, false, true);
+    } else if (param === "medialist") {
+      setFilteredSongList(songList);
+      toDisplay(false, true, false);
+    } else if (param) {
+      const filtered = songList?.filter(
+        (song) => song?.genreName?.toLowerCase() === param.toLowerCase()
+      );
+      setFilteredSongList(filtered);
+      toDisplay(false, true, false);
+    } else {
+      toDisplay(true, false, false);
+    }
+  }, [param]);
 
   return (
     <>
@@ -245,29 +258,22 @@ const PublicWrapper = () => {
                   className="card genre-card"
                   key={genre?.name}
                   onClick={() => {
-                    setGenreTitle(genre?.name);
-                    filterByGenre(genre?.name);
-                    window.history.replaceState(
-                      "",
-                      genre?.name,
-                      "/playlist/" + genre?.name.toLocaleLowerCase()
-                    );
-                    onDisplayMediaList();
+                    setUrl(genre?.name.toLowerCase());
                   }}
                 >
                   <img
                     src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
                     className="card-img-top"
-                    alt={genre.name}
+                    alt={genre?.name}
                   />
                   <div className="card-body">
-                    <h2 className="card-title text-center">{genre.name}</h2>
+                    <h2 className="card-title text-center">{genre?.name}</h2>
                     {/* <small>Some quick example text to build on the card title and make up the bulk of the card's content.</small> */}
                   </div>
                 </div>
               ))}
             </div>
-            
+
             <div className="list-title">
               <h2>Listas</h2>
             </div>
@@ -275,9 +281,7 @@ const PublicWrapper = () => {
               <div
                 className="card  flex-row list-cards"
                 onClick={() => {
-                  window.history.replaceState('', 'Media list', '/medialist');
-                  filterByGenre();
-                  onDisplayMediaList();
+                  setUrl("medialist");
                 }}
               >
                 <img
@@ -297,8 +301,7 @@ const PublicWrapper = () => {
                 className="card  flex-row list-cards"
                 onClick={() => {
                   if (user?._id && userRole === "user") {
-                    window.history.replaceState('', 'Favoritos', '/favourites');
-                    onDisplayFavourites();
+                    setUrl("favourites");
                   } else {
                     setAuthModalType(MODAL_STATES.LOGIN);
                     setShowAuthModal(true);
@@ -322,10 +325,12 @@ const PublicWrapper = () => {
         )}
         {showList && (
           <>
-            <button className="btn alternate-public-pages" onClick={() => {
-              window.history.replaceState('', '', '/');
-              onDisplayLists();
-            }}>
+            <button
+              className="btn alternate-public-pages"
+              onClick={() => {
+                setUrl("");
+              }}
+            >
               <i className="fa-solid fa-house"></i>
             </button>
             <Search onChangeText={onChangeText} setFocus={setFocus} />
@@ -341,8 +346,7 @@ const PublicWrapper = () => {
         {showFavourites && (
           <>
             <button className="btn alternate-public-pages" onClick={() => {
-              window.history.replaceState('', '', '/');
-              onDisplayLists();
+              setUrl("");
             }}>
               <i className="fa-solid fa-house"></i>
             </button>
