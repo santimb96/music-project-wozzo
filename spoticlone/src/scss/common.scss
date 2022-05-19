@@ -1,6 +1,7 @@
 @import "../../node_modules/bootstrap/scss/bootstrap";
 
 @import "colors";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Nanum+Gothic&family=Roboto:wght@300&display=swap');
 
 %itemHorizontal {
   display: flex;
@@ -11,6 +12,12 @@ html {
   overflow-x: hidden;
   overflow-y: hidden;
   body {
+    font-family: 'Montserrat', sans-serif;
+
+    font-family: 'Nanum Gothic', sans-serif;
+
+    font-family: 'Roboto', sans-serif;
+    
     scrollbar-width: thin !important; /* "auto" or "thin" */
     scrollbar-color: $spotiLogoColor $darkColor; /* scroll thumb and track */
 

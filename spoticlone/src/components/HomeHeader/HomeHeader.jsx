@@ -35,15 +35,6 @@ const HomeHeader = () => {
             Bienvenido, {user.name}
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            {userRole === "user" && (
-              <>
-                <button className="dropdown-item">
-                  <Link to="/list">Inicio</Link>
-                </button>
-                <hr></hr>
-              </>
-            )}
-
             {userRole === "admin" && (
               <>
                 <button className="dropdown-item">

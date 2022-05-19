@@ -27,7 +27,7 @@ import "./index.scss";
 
 const PublicWrapper = () => {
   const { user, userRole } = useContext(AuthContext);
-  const [param, setUrl] = useState("");
+  const [param, setParam] = useState("");
   const [songList, setSongList] = useState([]);
   //const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
@@ -258,7 +258,7 @@ const PublicWrapper = () => {
                   className="card genre-card"
                   key={genre?.name}
                   onClick={() => {
-                    setUrl(genre?.name.toLowerCase());
+                    setParam(genre?.name.toLowerCase());
                   }}
                 >
                   <div class="img-container">
@@ -287,7 +287,7 @@ const PublicWrapper = () => {
               <div
                 className="card  flex-row list-cards"
                 onClick={() => {
-                  setUrl("medialist");
+                  setParam("medialist");
                 }}
               >
                 <img
@@ -307,7 +307,7 @@ const PublicWrapper = () => {
                 className="card  flex-row list-cards"
                 onClick={() => {
                   if (user?._id && userRole === "user") {
-                    setUrl("favourites");
+                    setParam("favourites");
                   } else {
                     setAuthModalType(MODAL_STATES.LOGIN);
                     setShowAuthModal(true);
@@ -334,7 +334,7 @@ const PublicWrapper = () => {
             <button
               className="btn alternate-public-pages"
               onClick={() => {
-                setUrl("");
+                setParam("");
               }}
             >
               <i className="fa-solid fa-house"></i>
@@ -354,7 +354,7 @@ const PublicWrapper = () => {
             <button
               className="btn alternate-public-pages"
               onClick={() => {
-                setUrl("");
+                setParam("");
               }}
             >
               <i className="fa-solid fa-house"></i>
@@ -368,28 +368,6 @@ const PublicWrapper = () => {
             />
           </>
         )}
-
-        {/* {tab === TABS.SONGS && (
-          <>
-            <Search onChangeText={onChangeText} setFocus={setFocus} />
-            <MediaList
-              onSelectSong={onSelectSong}
-              onClickFavourite={onClickFavourite}
-              filteredSongList={filteredSongList}
-              favouriteList={favouriteList}
-              selectedSong={selectedSong}
-            />
-          </>
-        )} */}
-        {/* {tab === TABS.FAVOURITES && user?._id && userRole === "user" && (
-          <FavouriteList
-            onSelectSong={onSelectSong}
-            songsFavList={songsFavList}
-            selectedSong={selectedSong}
-            loading={loading}
-            onClickFavourite={onClickFavourite}
-          />
-        )} */}
       </div>
       {selectedSong?._id && (
         <MediaPlayer
