@@ -263,7 +263,7 @@ const PublicWrapper = () => {
                 >
                   <div class="img-container">
                     <img
-                      src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
+                      src={genre?.genreImg || "https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"}
                       className="card-img-top"
                       alt={genre?.name}
                     />
