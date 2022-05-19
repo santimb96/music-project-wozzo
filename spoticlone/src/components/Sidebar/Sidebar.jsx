@@ -46,7 +46,7 @@ const Sidebar = () => {
             <>
               <li>
                 <i className="fa-solid fa-house"></i>
-                <Link to="/">Inicio</Link>
+                <Link to="/list">Inicio</Link>
               </li>
               <hr />
             </>
@@ -83,7 +83,7 @@ const Sidebar = () => {
                 <hr></hr>
                 <li onClick={logOut}>
                   <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                  <Link to="/">Cerrar sesión</Link>
+                  <Link to="/list">Cerrar sesión</Link>
                 </li>
               </>
             )}

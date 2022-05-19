@@ -52,15 +52,6 @@ const SidebarBackoffice = () => {
       >
         <nav aria-label="secondary mailbox folders">
           <List sx={{ color: theme.palette.secondary.light }}>
-            <Link to="/" className="sidebar-link">
-              <ListItem disablePadding>
-                <ListItemButton className="nav-link">
-                  <i className="fa fa-home"></i>
-                  <ListItemText className="ps-2" primary="Página de inicio" />
-                </ListItemButton>
-              </ListItem>
-            </Link>
-            <hr />
             <Link to="/backoffice/roles" className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link">
@@ -106,7 +97,7 @@ const SidebarBackoffice = () => {
               </ListItem>
             </Link>
             <hr />
-            <Link to="/" className="sidebar-link">
+            <Link to="/list" className="sidebar-link">
               <ListItem disablePadding>
                 <ListItemButton className="nav-link" onClick={logOut}>
                   <i class="fa-solid fa-arrow-right-from-bracket"></i>

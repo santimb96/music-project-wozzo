@@ -28,7 +28,6 @@ const AppRoutes = () => {
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const expiryDate = localStorage.getItem("expiryDate");
     const token = localStorage.getItem("token");
@@ -78,19 +77,19 @@ const AppRoutes = () => {
     if (isAdmin) {
       return children;
     } else {
-      return <Navigate to="/" replace></Navigate>;
+      return <Navigate to="/list" replace></Navigate>;
     }
   };
 
   if (loading) return <GlobalLoading />;
-  
+
   return (
     <>
       <SidebarHome />
       <HomeHeader />
       <AuthModal />
       <Routes>
-        <Route path='*' element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
         <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
@@ -138,10 +137,11 @@ const AppRoutes = () => {
           path="/backoffice/genres"
           element={
             <RequireAdmin>
-              <GenresBackoffice/>
+              <GenresBackoffice />
             </RequireAdmin>
           }
         />
+        <Route path="/" element={<Navigate to="/list" replace />} />
       </Routes>
     </>
   );
