@@ -1,5 +1,6 @@
 import Genre from '../models/genre.js';
 import handleError from './errorController.js';
+import getDataFromAws from './awsController.js';
 
 
 const getAll = async (req, res) => {
@@ -15,20 +16,44 @@ const findId = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-  Genre.findOneAndUpdate({_id: req.params.id}, req.body)
-    .then(genre => res
-      .status(201)
-      .send({status: 201, message: `${genre.name} ha sido actualizad@` }))
-    .catch(()=>  handleError(404, 'Género no encontrado', res));
+  const genreToUpdate = req.body;
+
+  if(req.file){
+    getDataFromAws(req, 'genreImg/')
+      .then(data => {
+        const locationUrl = data.Location;
+        let newGenreToUpdate = { ...genreToUpdate, genreImg: locationUrl };
+        Genre.findOneAndUpdate({ _id: req.params.id }, newGenreToUpdate)
+          .then(genre => res
+            .status(201)
+            .send({ status: 201, message: `${genre.name} se ha actualizado` }))
+          .catch(() => handleError(404, 'No se ha podido actualizar el género', res));
+      })
+      .catch(() => handleError(404, 'No se ha podido actualizar la imagen', res));
+  } else {
+    Genre.findOneAndUpdate({_id: req.params.id}, req.body)
+      .then(genre => res
+        .status(201)
+        .send({status: 201, message: `${genre.name} ha sido actualizad@` }))
+      .catch(()=>  handleError(404, 'Género no encontrado', res));
+  }
 };
 
 const create = async (req, res) => {
   const GenreToCreate = req.body;
-  Genre.create(GenreToCreate)
-    .then(genre => res
-      .status(201)
-      .send({ status: 201, message: `Se ha creado a ${genre.name}` }))
-    .catch(() =>  handleError(401, 'No se ha podido postear el género', res));
+  getDataFromAws(req, 'genreImg/')
+    .then(data => {
+      const locationUrl = data.Location;
+      let newGenreToCreate = { ...GenreToCreate, genreImg: locationUrl };
+      Genre.create(newGenreToCreate)
+        .then(genre => res
+          .status(201)
+          .send({ status: 201, message: `Se ha creado a ${genre.name}` }))
+        .catch(() =>  handleError(401, 'No se ha podido postear el género', res));
+    })
+    .catch(() => handleError(404, 'No se ha podido subir la imagen', res));
+
+  
 };
 
 const deleteById = async (req, res) => {

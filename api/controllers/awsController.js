@@ -7,7 +7,7 @@ import process from 'process';
 
 dotenv.config();
 
-const getDataFromAws = (req) => new Promise((resolve, reject) => {
+const getDataFromAws = (req, path) => new Promise((resolve, reject) => {
   
   aws.config.setPromisesDependency();
   aws.config.update({
@@ -20,7 +20,7 @@ const getDataFromAws = (req) => new Promise((resolve, reject) => {
   const params = {
     Bucket: process.env.BUCKET,
     Body: req.file.buffer,
-    Key: `song/${req.file.originalname}`,
+    Key: `${path}${req.file.originalname}`,
     ContentEncoding: req.file.encoding,
     ContentType: req.file.mimetype,
     CacheControl: 'public'
