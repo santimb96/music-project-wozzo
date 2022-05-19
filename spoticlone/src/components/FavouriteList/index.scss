@@ -30,6 +30,23 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
+        .css-1ex1afd-MuiTableCell-root {
+          font-family: "Roboto","Helvetica","Arial",sans-serif;
+          font-weight: 400;
+          /* font-size: 0.875rem; */
+          line-height: 1.43;
+          letter-spacing: 0.01071em;
+          display: table-cell;
+          vertical-align: inherit;
+          
+          text-align: left;
+          /* padding: 7px; */
+          color: rgba(0, 0, 0, 0.87);
+          /* font-size: 0px; */
+          padding-bottom: 15px;
+          padding-top: 15px;
+          padding-right: 8px;
+        }
 
         .fav-icon,
         .fav-icon-fav {
@@ -90,6 +107,24 @@
             -moz-user-select: none; /* Old versions of Firefox */
             -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+          }
+          .css-1ex1afd-MuiTableCell-root {
+            font-family: "Roboto","Helvetica","Arial",sans-serif;
+            font-weight: 400;
+            /* font-size: 0.875rem; */
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            display: table-cell;
+            vertical-align: inherit;
+            
+            text-align: left;
+            /* padding: 7px; */
+            color: rgba(0, 0, 0, 0.87);
+            /* font-size: 0px; */
+            padding-bottom: 15px;
+            padding-top: 15px;
+            padding-right: 8px;
+            //margin-left: 5vw;
           }
           .fav-icon,
           .fav-icon-fav {

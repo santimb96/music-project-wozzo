@@ -38,7 +38,7 @@ const HomeHeader = () => {
             {userRole === "user" && (
               <>
                 <button className="dropdown-item">
-                  <Link to="/">Inicio</Link>
+                  <Link to="/list">Inicio</Link>
                 </button>
                 <hr></hr>
               </>

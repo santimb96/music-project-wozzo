@@ -4,14 +4,127 @@
   position: absolute;
   width: 100vw;
   top: 10vh;
+  .genre-title {
+    color: white;
+    width: 100vw;
+    position: absolute;
+    display: flex;
+    justify-content: left;
+    top: 5vh;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 2vw;
+    }
+  }
+  .list-title {
+    position: absolute;
+    width: 100vw;
+    top: 32vh;
+    color: white;
+    display: flex;
+    justify-content: left;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 2vw;
+    }
+  }
+  .grid-container {
+    overflow: auto;
+    scrollbar-color: transparent transparent; //only on Firefox
+    position: absolute;
+    top: 11vh;
+    width: 100vw;
+    height: 20vh;
+    display: block;
+    white-space: nowrap;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: center;
+    // align-items: center;
+    // display: grid;
+    // grid-template-columns: auto auto auto auto auto auto;
+    //grid-template-rows: auto;
+    //place-items: center;
+    .genre-card {
+      display: inline-block;
+      margin-right: 8vw;
+      width: 100px;
+      background: $darkColor;
+      border: none;
+      color: white;
+      height: 20vh;
+      .img-container{
+
+        img {
+          height: 99px;
+          width: 99px;
+          padding: 5px;
+          border-radius: 10px;
+        }
+      }
+      h2 {
+        font-size: 1rem;
+      }
+      .card-body {
+        padding-top: 2px;
+        padding-left: 0px;
+        padding-right: 0px;
+        padding-bottom: 0px;
+      }
+      .play-icon-genre-card{
+        display: none;
+      }
+    }
+  }
+  .grid-container-lists {
+    overflow: auto;
+    position: absolute;
+    top: 36vh;
+    width: 100vw;
+    height: 25vh;
+    display: grid;
+    grid-template-columns: auto;
+    //grid-template-rows: auto;
+    place-items: center;
+    gap: 0 30px;
+  }
+  .list-cards {
+    width: 90vw;
+    height: 8vh;
+    background: $darkColor;
+    color: white;
+    border: none;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      transition: 0.2s;
+    }
+    h2 {
+      font-size: 1rem;
+    }
+    .play-icon-list {
+      display: none;
+    }
+  }
   .alternate-public-pages {
-    top: -5vh;
+    top: -7vh;
     position: relative;
     background: $spotiLogoColor;
     color: white;
-    padding: 0.2rem;
+    padding: 1rem;
     left: 3vw;
-    width: 20vw;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      font-size: 0.8rem;
+    }
     /* outline: none; */
   }
   .alternate-public-pages:hover {
@@ -32,16 +145,151 @@
     top: 10%;
     left: 10vw;
     width: 100vw;
+    .genre-title {
+      top: 0vh;
+      h2 {
+        font-size: 1.7rem;
+      }
+    }
+    .list-title {
+      top: 36vh;
+      h2 {
+        font-size: 1.8rem;
+      }
+    }
+    .grid-container {
+      overflow-y: auto;
+      position: absolute;
+      top: 7vh;
+      width: 100vw;
+      height: 30vh;
+      display: grid;
+      grid-template-columns: auto auto auto auto auto auto;
+      place-items: center;
+      gap: 10px;
+      .genre-card {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-right: 0vw;
+        width: 121px;
+        background: $darkColor;
+        border: none;
+        color: white;
+        height: 22vh;
+        transition: 0.2s;
+        .img-container{
+          position: relative;
+          img {
+            height: 19vh;
+            width: 130px;
+            padding: 5px;
+            border-radius: 10px;
+          }
+          .play-icon-genre-card{
+            top: 0;
+            position: absolute;
+            display: flex;
+            justify-content: end;
+            align-items: end;
+            height: 85%;
+            width: 85%;
+            transition: 0.2s;
+            i {
+              border-radius: 50%;
+              color: transparent;
+              font-size: 2.4rem;
+            }
+          }
+        }
+        
+        h2 {
+          font-size: 1.2rem;
+          padding-bottom: 2vh;
+        }
+        .card-body {
+          padding-top: 2px;
+          padding-left: 0px;
+          padding-right: 0px;
+          padding-bottom: 0px;
+        }
+      }
+      .genre-card:hover{
+        background: $hoverCard;
+        .play-icon-genre-card{
+          transform: scale(1.2);     
+          i{
+            font-size: 2.5rem;
+            color: $spotiLogoColor;
+            box-shadow: -1px 2px 10px #3b3b3b;
+          }
+        }
+      }
+    }
+    .grid-container-lists {
+      top: 42vh;
+      width: 100vw;
+      height: 30vh;
+    }
+    .list-cards {
+      width: 90vw;
+      height: 10vh;
+      background: $darkColor;
+      color: white;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.2s;
+      border-radius: 10px;
+      img {
+        width: 70px;
+        height: 70px;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
+
+      .play-icon-list {
+        width: 20vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $spotiLogoColor;
+        i {
+          display: block;
+          font-size: 1.9rem;
+          color: transparent;
+          transition: 0.2s;
+        }
+      }
+    }
+    .list-cards:hover{
+      background: $hoverCard;
+      .play-icon-list {
+        i {   
+          color: $spotiLogoColor;
+          transform: scale(1.2);         
+        }
+        i:hover{
+          font-size: 2rem;
+        }
+      }
+    }
+
     .alternate-public-pages {
-      top: -5vh;
+      top: -6vh;
       position: absolute;
       background: $spotiLogoColor;
       color: white;
       padding: 0.3rem;
-      width: 10vw;
       left: 3vw;
-      /* outline: none; */
+      width: 50px;
+      height: 50px;
+      i{
+        font-size: 1.5rem;
+      }
     }
   }
-
 }

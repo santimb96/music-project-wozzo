@@ -28,7 +28,6 @@ const AppRoutes = () => {
 
   const navigate = useNavigate();
 
-
   useEffect(() => {
     const expiryDate = localStorage.getItem("expiryDate");
     const token = localStorage.getItem("token");
@@ -48,42 +47,42 @@ const AppRoutes = () => {
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
             removeUserStorage();
-            navigate("/");
+            navigate("/list");
           })
           .finally(() => setLoading(false));
       } else {
         removeUserStorage();
         setLoading(false);
-        navigate("/");
+        navigate("/list");
       }
     } else {
       removeUserStorage();
       const found = routes.find((r) => r.route === window.location.pathname);
       setLoading(false);
       if (found) {
-        navigate("/");
+        navigate("/list");
       }
     }
   }, [window.location.pathname]);
 
-  const RequireUser = ({ children }) => {
-    if (isUser) {
-      return children;
-    } else {
-      return <Navigate to="/" replace></Navigate>;
-    }
-  };
+  // const RequireUser = ({ children }) => {
+  //   if (isUser) {
+  //     return children;
+  //   } else {
+  //     return <Navigate to="/" replace></Navigate>;
+  //   }
+  // };
 
   const RequireAdmin = ({ children }) => {
     if (isAdmin) {
       return children;
     } else {
-      return <Navigate to="/" replace></Navigate>;
+      return <Navigate to="/list" replace></Navigate>;
     }
   };
 
   if (loading) return <GlobalLoading />;
-  
+
   return (
     <>
       <SidebarHome />
@@ -92,7 +91,7 @@ const AppRoutes = () => {
       <Routes>
         <Route path="*" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
-        <Route path="/" element={<PublicWrapper />} />
+        <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
         <Route
           path="/backoffice/roles"
@@ -138,10 +137,11 @@ const AppRoutes = () => {
           path="/backoffice/genres"
           element={
             <RequireAdmin>
-              <GenresBackoffice/>
+              <GenresBackoffice />
             </RequireAdmin>
           }
         />
+        <Route path="/" element={<Navigate to="/list" replace />} />
       </Routes>
     </>
   );

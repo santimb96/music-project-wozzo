@@ -32,7 +32,7 @@ const updateById = async (req, res) => {
 
 
   if(req.file){
-    getDataFromAws(req)
+    getDataFromAws(req, 'song/')
       .then((data) => {
         const locationUrl = data.Location;
         let newSongToUpdate = { ...songToUpdate, audioUrl: locationUrl };
@@ -65,7 +65,7 @@ const updateById = async (req, res) => {
 
 const create = async (req, res) => {
   const songToCreate = req.body;
-  getDataFromAws(req)
+  getDataFromAws(req, 'song/')
     .then((data) => {
       const locationUrl = data.Location;
       let newSong = new Song({ ...songToCreate, audioUrl: locationUrl });

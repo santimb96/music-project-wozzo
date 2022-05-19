@@ -30,6 +30,7 @@ import sortItems from "../../utils/sortItems";
 const GenresBackoffice = () => {
   const token = localStorage.getItem("token");
   const [genres, setGenres] = useState(null);
+  const [genreImg, setGenreImg] = useState([]);
   const [filteredGenres, setfilteredGenres] = useState([]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -82,6 +83,7 @@ const GenresBackoffice = () => {
 
   const clearData = () => {
     setName("");
+    setGenreImg([]);
     setId("");
   };
 
@@ -119,7 +121,7 @@ const GenresBackoffice = () => {
   };
 
   const validateData = () => {
-    if (name?.length > 0) {
+    if (name?.length > 0 && genreImg?.name !== "") {
       return true;
     }
     return false;
@@ -135,7 +137,7 @@ const GenresBackoffice = () => {
     if (validateData()) {
       setErrors(false);
       setLoading(true);
-      postGenre(name)
+      postGenre(name, genreImg, token)
         .then(() => {
           setOpenForm(false);
           setLoading(false);
@@ -169,7 +171,7 @@ const GenresBackoffice = () => {
     if (validateData()) {
       setErrors(false);
       setLoading(true);
-      updateGenre(id, name)
+      updateGenre(id, name, genreImg, token)
         .then(() => {
           setOpenForm(false);
           setSuccessOpen(true);
@@ -267,6 +269,21 @@ const GenresBackoffice = () => {
                               : " "
                           }
                         />
+                        <TextField
+                        disabled={loading}
+                          className="input"
+                          type="file"
+                          id="audioUrl"
+                          variant="outlined"
+                          placeholder="URL del audio"
+                          onChange={(e) => setGenreImg(e.target.files[0])}
+                          error={errors && genreImg?.length === 0}
+                          helperText={
+                            errors && genreImg?.length === 0
+                              ? EMPTY_FIELD_MESSAGE
+                              : " "
+                          }
+                        />
                       </div>
                       
                       {!loading ? (
@@ -302,17 +319,17 @@ const GenresBackoffice = () => {
                   </Modal>
 
                   <TableRow>
-                    <TableCell
+                  <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      ID
+                      Nombre del género
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
                       align="left"
                     >
-                      Nombre del género
+                      URL de la imagen
                     </TableCell>
                     
                     <TableCell
@@ -337,18 +354,19 @@ const GenresBackoffice = () => {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                     >
-                      <TableCell
-                        style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
-                        {genre?._id}
-                      </TableCell>
 
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
                         align="left"
                       >
                         {genre.name}
+                      </TableCell>
+                      
+                      <TableCell
+                        style={{ color: theme.palette.secondary.mainLight }}
+                        align="left"
+                      >
+                        {genre?.genreImg}
                       </TableCell>
                       <EditButton
                         setData={setData}

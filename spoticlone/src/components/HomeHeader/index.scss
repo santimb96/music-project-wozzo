@@ -55,6 +55,8 @@
     }
   }
   .auth-fields {
+    position: absolute;
+    top: 4vh;
     display: flex;
     justify-content: space-around;
     width: 100vw;
@@ -133,6 +135,8 @@
     }
   }
   .auth-fields {
+    position: absolute;
+    top: 0vh;
     display: flex;
     justify-content: end;
     width: 100%;
