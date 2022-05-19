@@ -293,7 +293,7 @@ const PublicWrapper = () => {
                 <img
                   src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
                   className="card-img-left"
-                  alt="lista"
+                  alt="Lista de canciones sin filtros"
                 />
                 <div className="card-body row">
                   <h2 className="card-title col-6">Ruta diaria</h2>
@@ -317,7 +317,7 @@ const PublicWrapper = () => {
                 <img
                   src="https://misc.scdn.co/liked-songs/liked-songs-640.png"
                   className="card-img-left"
-                  alt="favoritos"
+                  alt="Lista de favoritos del usuario"
                 />
                 <div className="card-body row">
                   <h2 className="card-title col-6">Favoritos</h2>
