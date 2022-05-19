@@ -9,10 +9,23 @@
     display: flex;
     width: 10vw;
     height: 100vh;
+    .sidebar-page-title {
+      color: white;
+      h1 {
+        display: flex;
+        justify-content: center;
+        word-wrap: break-word;
+        position: absolute;
+        top: 25vh;
+        width: 10vw;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+    }
     .sidebar-list {
       width: 100vw;
-      margin-top: 25vh;
-
+      position: absolute;
+      top: 35vh;
       ul {
         padding-left: 1vw;
         li {
@@ -27,7 +40,7 @@
             color: white;
             padding-right: 3vh;
           }
-          i:is(:hover){
+          i:is(:hover) {
             color: white;
           }
           a {
@@ -40,7 +53,7 @@
             color: $spotiLogoLight;
           }
         }
-        hr{
+        hr {
           color: white;
         }
       }

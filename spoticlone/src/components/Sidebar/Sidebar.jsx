@@ -40,6 +40,9 @@ const Sidebar = () => {
           ></img>
         </header>
       </div>
+      <div className="sidebar-page-title">
+        <h1>Spoticlone</h1>
+      </div>
       <div className="sidebar-list">
         <ul>
           {userRole === "user" && (
