@@ -261,11 +261,17 @@ const PublicWrapper = () => {
                     setUrl(genre?.name.toLowerCase());
                   }}
                 >
-                  <img
-                    src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
-                    className="card-img-top"
-                    alt={genre?.name}
-                  />
+                  <div class="img-container">
+                    <img
+                      src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
+                      className="card-img-top"
+                      alt={genre?.name}
+                    />
+                    <div className="play-icon-genre-card">
+                      <i class="fa-solid fa-circle-play"></i>
+                    </div>
+                  </div>
+
                   <div className="card-body">
                     <h2 className="card-title text-center">{genre?.name}</h2>
                     {/* <small>Some quick example text to build on the card title and make up the bulk of the card's content.</small> */}
@@ -345,9 +351,12 @@ const PublicWrapper = () => {
         )}
         {showFavourites && (
           <>
-            <button className="btn alternate-public-pages" onClick={() => {
-              setUrl("");
-            }}>
+            <button
+              className="btn alternate-public-pages"
+              onClick={() => {
+                setUrl("");
+              }}
+            >
               <i className="fa-solid fa-house"></i>
             </button>
             <FavouriteList

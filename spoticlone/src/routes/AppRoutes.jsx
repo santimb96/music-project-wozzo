@@ -48,31 +48,31 @@ const AppRoutes = () => {
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
             removeUserStorage();
-            navigate("/");
+            navigate("/list");
           })
           .finally(() => setLoading(false));
       } else {
         removeUserStorage();
         setLoading(false);
-        navigate("/");
+        navigate("/list");
       }
     } else {
       removeUserStorage();
       const found = routes.find((r) => r.route === window.location.pathname);
       setLoading(false);
       if (found) {
-        navigate("/");
+        navigate("/list");
       }
     }
   }, [window.location.pathname]);
 
-  const RequireUser = ({ children }) => {
-    if (isUser) {
-      return children;
-    } else {
-      return <Navigate to="/" replace></Navigate>;
-    }
-  };
+  // const RequireUser = ({ children }) => {
+  //   if (isUser) {
+  //     return children;
+  //   } else {
+  //     return <Navigate to="/" replace></Navigate>;
+  //   }
+  // };
 
   const RequireAdmin = ({ children }) => {
     if (isAdmin) {

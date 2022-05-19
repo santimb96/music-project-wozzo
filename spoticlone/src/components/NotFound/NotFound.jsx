@@ -16,7 +16,7 @@ const NotFound = () => {
           <h1 className="text-center">404</h1>
           <h2 className="text-center">Página no encontrada</h2>
           <div className="d-flex justify-content-center">
-            <button onClick={() => navigate("/")} className="btn mt-5">
+            <button onClick={() => navigate("/list")} className="btn mt-5">
               Página principal
             </button>
           </div>
