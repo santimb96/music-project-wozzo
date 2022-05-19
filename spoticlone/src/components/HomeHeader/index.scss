@@ -154,10 +154,10 @@
       transition: 0.1s;
     }
     a:is(:hover) {
-      color: $spotiLogoColor;
+      color: $tablePresentationColor;
     }
     .btn-auth:is(:hover) {
-      color: $spotiLogoColor;
+      color: $tablePresentationColor;
     }
     .btn-auth:is(:focus, :focus-visible){
       outline: none;

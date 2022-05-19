@@ -8,10 +8,11 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useContext, useRef } from "react";
 import PropTypes from "prop-types";
 import "./index.scss";
 import AuthContext from "../../contexts/AuthContext";
+import NoResultsFound from "../NoResultsFound/NoResultsFound";
 
 const MediaList = ({
   onSelectSong,
@@ -35,7 +36,7 @@ const MediaList = ({
         {!filteredSongList?.length || filteredSongList === null ? (
           msg(
             <div className="spinner-table-loading">
-              <SpinnerLoading />
+              <NoResultsFound msg={'No se han encontrado resultados'} />
             </div>
           )
         ) : (
