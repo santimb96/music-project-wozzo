@@ -268,7 +268,7 @@ const PublicWrapper = () => {
                       alt={genre?.name}
                     />
                     <div className="play-icon-genre-card">
-                      <i class="fa-solid fa-circle-play"></i>
+                    <i class="fa-solid fa-play"></i>
                     </div>
                   </div>
 
