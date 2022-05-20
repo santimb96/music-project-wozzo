@@ -21,7 +21,6 @@ const PublicWrapper = () => {
   const { user, userRole } = useContext(AuthContext);
   const [param, setParam] = useState("");
   const [songList, setSongList] = useState([]);
-  //const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
   const [favouriteList, setFavouriteList] = useState([]);
   const [songsFavList, setSongsFavList] = useState([]);
@@ -204,6 +203,7 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
+    
     if (param === "medialist") {
       window.history.pushState(
         {},

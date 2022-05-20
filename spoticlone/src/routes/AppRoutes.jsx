@@ -27,7 +27,6 @@ const AppRoutes = () => {
   const isAdmin = user?._id && userRole === "admin";
 
   const navigate = useNavigate();
-
   useEffect(() => {
     const expiryDate = localStorage.getItem("expiryDate");
     const token = localStorage.getItem("token");
@@ -43,6 +42,7 @@ const AppRoutes = () => {
             //metemos user y userRole en authContext
             setUser(userLog?.user);
             setUserRole(userLog.user.userRoleId.name);
+
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
           .catch(() => {
@@ -57,13 +57,16 @@ const AppRoutes = () => {
       }
     } else {
       removeUserStorage();
-      const found = routes.find((r) => r.route === window.location.pathname);
+      //const found = routes.find((r) => r.route === window.location.pathname);
       setLoading(false);
-      if (found) {
-        navigate("/list");
-      }
+      navigate("/list");
+      // const uri = new URLSearchParams(window.location.search);
+      // const param = uri.get('type') || uri.get('genre');
+      // param === "medialist" ?  navigate("/list?type=" + param) : navigate("/list?genre=" + param);
+      
     }
   }, [window.location.pathname]);
+
 
   // const RequireUser = ({ children }) => {
   //   if (isUser) {

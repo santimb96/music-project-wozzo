@@ -19,6 +19,9 @@ const routes = [
   },
   {
     route: "/backoffice/genres",
+  },
+  {
+    route: "/list",
   }
 ];
 
