@@ -10,7 +10,7 @@
     position: absolute;
     display: flex;
     justify-content: left;
-    top: 5vh;
+    top: 8vh;
     h2 {
       font-size: 1.5rem;
       font-weight: bold;
@@ -20,7 +20,7 @@
   .list-title {
     position: absolute;
     width: 100vw;
-    top: 32vh;
+    top: 35vh;
     color: white;
     display: flex;
     justify-content: left;
@@ -34,7 +34,7 @@
     overflow: auto;
     scrollbar-color: transparent transparent; //only on Firefox
     position: absolute;
-    top: 11vh;
+    top: 14vh;
     width: 100vw;
     height: 20vh;
     display: block;
@@ -80,7 +80,7 @@
   .grid-container-lists {
     overflow: auto;
     position: absolute;
-    top: 36vh;
+    top: 39vh;
     width: 100vw;
     height: 25vh;
     display: grid;
@@ -234,7 +234,7 @@
     }
     .list-cards {
       width: 90vw;
-      height: 11vh;
+      height: 10vh;
       background: $darkColor;
       color: white;
       border: none;

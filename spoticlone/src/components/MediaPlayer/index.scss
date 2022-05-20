@@ -3,15 +3,7 @@
 .media-container {
   position: absolute;
   width: 100vw;
-  /* margin-left: 90vw; */
-  bottom: 10vh;
-  /* left: 0; */
-  /* transform: translate(-50%, -50%); */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* right: 0; */
-  /* margin-right: 41%; */
-
+  bottom: 8vh;
   .player-container {
     //position: sticky;
     background-color: $mediaBack;

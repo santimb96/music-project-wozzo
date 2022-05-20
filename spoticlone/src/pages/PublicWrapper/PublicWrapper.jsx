@@ -277,6 +277,7 @@ const PublicWrapper = () => {
             <div className="list-title">
               <h2>Listas</h2>
             </div>
+            
             <div className="grid-container-lists">
               <ListCard
                 img={
