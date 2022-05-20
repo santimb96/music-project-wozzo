@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.scss";
-import spotiLogo from "../../images/spoticlone-logo.png";
+// import spotiLogo from "../../images/spoticlone-logo.png";
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {
@@ -9,7 +9,7 @@ const NotFound = () => {
   return (
       <div className="not-found-container">
           <div className="img-container">
-            <img src={spotiLogo} alt="spoticloneLogo"></img>
+            <img src="https://spoticlone.s3.eu-west-3.amazonaws.com/publicImg/spoticlone-logo(1).png" alt="spoticloneLogo"></img>
           </div>
           <h1>404</h1>
           <h2>Página no encontrada</h2>
