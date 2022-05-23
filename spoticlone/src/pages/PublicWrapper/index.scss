@@ -50,10 +50,11 @@
       display: inline-block;
       margin-right: 8vw;
       width: 100px;
-      background: $darkColor;
+      background: #212529;
       border: none;
       color: white;
-      height: 20vh;
+      height: 130px;
+    
       .img-container{
 
         img {
@@ -172,15 +173,16 @@
         align-items: center;
         margin-right: 0vw;
         width: 121px;
-        background: $darkColor;
+        background: #212529;
         border: none;
         color: white;
-        height: 24vh;
+        height: 174px;
         transition: 0.2s;
+      
         .img-container{
           position: relative;
           img {
-            height: 19vh;
+            height: 130px;
             width: 130px;
             padding: 5px;
             border-radius: 10px;
@@ -234,7 +236,7 @@
     }
     .list-cards {
       width: 90vw;
-      height: 10vh;
+      height: 71px;
       background: $darkColor;
       color: white;
       border: none;
