@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-  useHistory,
-} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import MediaList from "../../components/MediaList/MediaList";
 import MediaPlayer from "../../components/MediaPlayer/MediaPlayer";
 import FavouriteList from "../../components/FavouriteList/FavouriteList";
@@ -18,18 +12,16 @@ import { deleteFavSong, postFavSong } from "../../services/favouriteSongs";
 import Search from "../../components/Search/Search";
 import SnackBarInfo from "../../components/SnackBarInfo/SnackBarInfo";
 import SnackBarError from "../../components/SnackBarError/SnackBarError";
+import SpinnerInLine from "../../components/SpinnerInLine/SpinnerInLine";
+import HomeCard from "../../components/HomeCard/HomeCard";
+import ListCard from "../../components/ListCard/ListCard";
+import listCardTypes from "../../utils/listCardTypes";
 import "./index.scss";
-
-// const TABS = {
-//   FAVOURITES: "favorites",
-//   SONGS: "songs",
-// };
 
 const PublicWrapper = () => {
   const { user, userRole } = useContext(AuthContext);
   const [param, setParam] = useState("");
   const [songList, setSongList] = useState([]);
-  //const [tab, setTab] = useState(TABS.SONGS);
   const [selectedSong, setSelectedSong] = useState(null);
   const [favouriteList, setFavouriteList] = useState([]);
   const [songsFavList, setSongsFavList] = useState([]);
@@ -75,8 +67,8 @@ const PublicWrapper = () => {
           genresResponse,
         ]) => {
           setGenresList(genresResponse?.genres);
-          const data = songsResponse.songs.map((song) => {
-            const artist = artistsResponse.artists.find(
+          const data = songsResponse?.songs.map((song) => {
+            const artist = artistsResponse?.artists.find(
               (artist) => artist._id === song.artistId
             );
 
@@ -86,8 +78,8 @@ const PublicWrapper = () => {
 
             return {
               ...song,
-              artistName: artist.name,
-              genreName: genre.name,
+              artistName: artist?.name,
+              genreName: genre?.name,
             };
           });
           setSongList(data);
@@ -212,22 +204,28 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    if (param === "favourites" || param === "medialist") {
-      window.history.pushState(
-        {},
-        null,
-        window.location.pathname + "?type=" + param
-      );
+    if (param === "medialist") {
+      window.history.pushState({}, null, "/list?type=" + param);
+      controlToDisplay();
+    } else if (param === "favourites") {
+      if (user?._id && userRole === "user") {
+        window.history.pushState({}, null, "/list?type=" + param);
+        controlToDisplay();
+      } else {
+        setParam("");
+        setAuthModalType(MODAL_STATES.LOGIN);
+        setShowAuthModal(true);
+      }
     } else if (param === "") {
       window.history.pushState({}, null, window.location.pathname);
+      controlToDisplay();
     } else {
-      window.history.pushState(
-        {},
-        null,
-        window.location.pathname + "?genre=" + param
-      );
+      window.history.pushState({}, null, "/list?genre=" + param);
+      controlToDisplay();
     }
+  }, [param]);
 
+  const controlToDisplay = () => {
     if (param === "favourites") {
       toDisplay(false, false, true);
     } else if (param === "medialist") {
@@ -242,7 +240,7 @@ const PublicWrapper = () => {
     } else {
       toDisplay(true, false, false);
     }
-  }, [param]);
+  };
 
   return (
     <>
@@ -253,79 +251,30 @@ const PublicWrapper = () => {
               <h2>Por género</h2>
             </div>
             <div className="grid-container">
-              {genresList?.map((genre) => (
-                <div
-                  className="card genre-card"
-                  key={genre?.name}
-                  onClick={() => {
-                    setParam(genre?.name.toLowerCase());
-                  }}
-                >
-                  <div class="img-container">
-                    <img
-                      src={genre?.genreImg || "https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"}
-                      className="card-img-top"
-                      alt={genre?.name}
-                    />
-                    <div className="play-icon-genre-card">
-                    <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-
-                  <div className="card-body">
-                    <h2 className="card-title text-center">{genre?.name}</h2>
-                    {/* <small>Some quick example text to build on the card title and make up the bulk of the card's content.</small> */}
-                  </div>
+              {!loading ? (
+                genresList?.map((genre) => (
+                  <HomeCard key={genre?._id} item={genre} setParam={setParam} />
+                ))
+              ) : (
+                <div className="spinner-in-line-cards">
+                  <SpinnerInLine />
                 </div>
-              ))}
+              )}
             </div>
 
             <div className="list-title">
               <h2>Listas</h2>
             </div>
             <div className="grid-container-lists">
-              <div
-                className="card  flex-row list-cards"
-                onClick={() => {
-                  setParam("medialist");
-                }}
-              >
-                <img
-                  src="https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
-                  className="card-img-left"
-                  alt="Lista de canciones sin filtros"
-                />
-                <div className="card-body row">
-                  <h2 className="card-title col-6">Ruta diaria</h2>
-                  <div className="play-icon-list col-6">
-                    <i class="fa-solid fa-circle-play"></i>
-                  </div>
-                </div>
-              </div>
-
-              <div
-                className="card  flex-row list-cards"
-                onClick={() => {
-                  if (user?._id && userRole === "user") {
-                    setParam("favourites");
-                  } else {
-                    setAuthModalType(MODAL_STATES.LOGIN);
-                    setShowAuthModal(true);
-                  }
-                }}
-              >
-                <img
-                  src="https://misc.scdn.co/liked-songs/liked-songs-640.png"
-                  className="card-img-left"
-                  alt="Lista de favoritos del usuario"
-                />
-                <div className="card-body row">
-                  <h2 className="card-title col-6">Favoritos</h2>
-                  <div className="play-icon-list col-6">
-                    <i class="fa-solid fa-circle-play"></i>
-                  </div>
-                </div>
-              </div>
+              {listCardTypes?.length > 0 &&
+                listCardTypes?.map((card) => (
+                  <ListCard
+                    img={card?.img}
+                    listType={card?.listType}
+                    title={card?.title}
+                    setParam={setParam}
+                  />
+                ))}
             </div>
           </>
         )}

@@ -50,11 +50,13 @@
             transition: 0.1s;
           }
           :hover {
-            color: $spotiLogoLight;
+            color: $tablePresentationColor;
           }
         }
         hr {
           color: white;
+          opacity: 0.1;
+          width: 9vw;
         }
       }
     }

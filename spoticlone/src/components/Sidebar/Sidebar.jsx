@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from "react";
-import spotiLogo from "../../images/spoticlone-logo.png";
+// import spotiLogo from "../../images/spoticlone-logo.png";
 import { Link } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
 import { removeUserStorage } from "../../utils/localStorage";
@@ -35,7 +35,7 @@ const Sidebar = () => {
         <header className="pt-3 spotilogo ">
           <img
             onClick={() => handleOpenSidebar()}
-            src={spotiLogo}
+            src="https://spoticlone.s3.eu-west-3.amazonaws.com/publicImg/spoticlone-logo(1).png"
             alt="spoticloneLogo"
           ></img>
         </header>
@@ -45,15 +45,6 @@ const Sidebar = () => {
       </div>
       <div className="sidebar-list">
         <ul>
-          {userRole === "user" && (
-            <>
-              <li>
-                <i className="fa-solid fa-house"></i>
-                <Link to="/list">Inicio</Link>
-              </li>
-              <hr />
-            </>
-          )}
 
           {user?._id &&
             userRole === "admin" &&
