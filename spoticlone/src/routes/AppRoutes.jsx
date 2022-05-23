@@ -3,7 +3,6 @@ import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext";
 import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
-import routes from "../utils/routes.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 
 import UsersBackoffice from "../pages/UsersBackoffice/UsersBackoffice";
@@ -23,7 +22,6 @@ import GenresBackoffice from "../pages/GenresBackoffice/GenresBackoffice";
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
-  const isUser = user?._id && (userRole === "user" || userRole === "admin");
   const isAdmin = user?._id && userRole === "admin";
 
   const navigate = useNavigate();
@@ -42,36 +40,37 @@ const AppRoutes = () => {
             //metemos user y userRole en authContext
             setUser(userLog?.user);
             setUserRole(userLog?.user.userRoleId.name);
+            userLog?.user.userRoleId.name !== "admin" && navigateWithParams();
           })
           // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a la página principal
           .catch(() => {
             removeUserStorage();
-            navigate("/list");
+            navigateWithParams();
           })
           .finally(() => setLoading(false));
       } else {
         removeUserStorage();
         setLoading(false);
-        navigate("/list");
+        navigateWithParams();
       }
     } else {
       removeUserStorage();
-      //const found = routes.find((r) => r.route === window.location.pathname);
-      setLoading(false);
-      navigate("/list");
-      // const uri = new URLSearchParams(window.location.search);
-      // const param = uri.get('type') || uri.get('genre');
-      // param === "medialist" ?  navigate("/list?type=" + param) : navigate("/list?genre=" + param);
+      navigateWithParams();
     }
   }, [window.location.pathname]);
 
-  // const RequireUser = ({ children }) => {
-  //   if (isUser) {
-  //     return children;
-  //   } else {
-  //     return <Navigate to="/" replace></Navigate>;
-  //   }
-  // };
+  const navigateWithParams = () => {
+    const uri = new URLSearchParams(window.location.search);
+    const param = uri.get('type') || uri.get('genre');
+    setLoading(false);
+    if(param === "medialist" || param === "favourites"){
+      navigate({ pathname: "/list", search: `?type=${param}` });
+    } else if (param === null){
+      navigate("/list");
+    } else {
+      navigate({ pathname: "/list", search: `?genre=${param}` });
+    }
+  }
 
   const RequireAdmin = ({ children }) => {
     if (isAdmin) {

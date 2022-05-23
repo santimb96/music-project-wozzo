@@ -19,6 +19,7 @@ import listCardTypes from "../../utils/listCardTypes";
 import "./index.scss";
 
 const PublicWrapper = () => {
+
   const { user, userRole } = useContext(AuthContext);
   const [param, setParam] = useState("");
   const [songList, setSongList] = useState([]);
@@ -51,7 +52,7 @@ const PublicWrapper = () => {
   };
 
   //we get songs, artists and fav songs and then sets each result in contexts state
-  const getData = () => {
+  const getData = () =>  new Promise((resolve, reject) => {
     setLoading(true);
     Promise.all([
       getSongs(),
@@ -66,38 +67,13 @@ const PublicWrapper = () => {
           favSongsResponse,
           genresResponse,
         ]) => {
-          setGenresList(genresResponse?.genres);
-          const data = songsResponse?.songs.map((song) => {
-            const artist = artistsResponse?.artists.find(
-              (artist) => artist._id === song.artistId
-            );
-
-            const genre = genresResponse.genres.find(
-              (genre) => genre._id === song.genreId
-            );
-
-            return {
-              ...song,
-              artistName: artist?.name,
-              genreName: genre?.name,
-            };
-          });
-          setSongList(data);
-          setFilteredSongList(data);
-          setFavouriteList(favSongsResponse?.favouriteSongs);
-          const formatted = favSongsResponse?.favouriteSongs.map((fav) => {
-            return data?.find((song) => song?._id === fav?.songId);
-          });
-          setSongsFavList(formatted);
+          resolve({genres: genresResponse?.genres, songs: songsResponse?.songs, artists: artistsResponse?.artists, favSongs: favSongsResponse?.favouriteSongs});
+          //return [genresResponse?.genres, songsResponse?.songs, artistsResponse?.artists, favSongsResponse?.favouriteSongs];
         }
       )
       .catch(() => songList?.length !== 0 && setShowError(true))
       .finally(() => setLoading(false));
-  };
-
-  useEffect(() => {
-    if (songList?.length === 0 || user?._id) getData();
-  }, [user]);
+  });
 
   const getFavourites = () => {
     getUserFavSongs(user?._id)
@@ -204,36 +180,71 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    if (param === "medialist") {
-      window.history.pushState({}, null, "/list?type=" + param);
-      controlToDisplay();
-    } else if (param === "favourites") {
+    getData().then(dataResponse => {
+      const { genres, songs, artists, favSongs } = dataResponse;
+      setGenresList(genres);
+          const data = songs?.map((song) => {
+            const artist = artists?.find(
+              (artist) => artist._id === song?.artistId
+            );
+
+            const genre = genres?.find(
+              (genre) => genre._id === song.genreId
+            );
+
+            return {
+              ...song,
+              artistName: artist?.name,
+              genreName: genre?.name,
+            };
+          });
+          setSongList(data);
+          setFilteredSongList(data);
+          setFavouriteList(favSongs);
+          const formatted = favSongs?.map((fav) => {
+            return data?.find((song) => song?._id === fav?.songId);
+          });
+          setSongsFavList(formatted);
+          urlControl(data);
+    });
+  }, [param]);
+  
+
+  const urlControl = (songs) => {
+    const uri = new URLSearchParams(window.location.search);
+    const paramUrl = uri.get('type') || uri.get('genre');
+    const option = param !== "" ? param : paramUrl;
+
+    if (option === "medialist") {
+      window.history.pushState({}, null, "/list?type=" + option); 
+      controlToDisplay(option, songs);
+    } else if (option === "favourites") {
       if (user?._id && userRole === "user") {
-        window.history.pushState({}, null, "/list?type=" + param);
-        controlToDisplay();
+        window.history.pushState({}, null, "/list?type=" + option);
+        controlToDisplay(option);
       } else {
         setParam("");
         setAuthModalType(MODAL_STATES.LOGIN);
         setShowAuthModal(true);
       }
-    } else if (param === "") {
+    } else if (option === "" || option === null) {
       window.history.pushState({}, null, window.location.pathname);
-      controlToDisplay();
+      controlToDisplay(option, songs);
     } else {
-      window.history.pushState({}, null, "/list?genre=" + param);
-      controlToDisplay();
+      window.history.pushState({}, null, "/list?genre=" + option);
+      controlToDisplay(option, songs);
     }
-  }, [param]);
+  }
 
-  const controlToDisplay = () => {
-    if (param === "favourites") {
+  const controlToDisplay = (option, songs) => {
+    if (option === "favourites") {
       toDisplay(false, false, true);
-    } else if (param === "medialist") {
-      setFilteredSongList(songList);
+    } else if (option === "medialist") {
+      setFilteredSongList(songs);
       toDisplay(false, true, false);
-    } else if (param) {
-      const filtered = songList?.filter(
-        (song) => song?.genreName?.toLowerCase() === param.toLowerCase()
+    } else if (option?.length > 0) {
+      const filtered = songs?.filter(
+        (song) => song?.genreName?.toLowerCase() === option?.toLowerCase()
       );
       setFilteredSongList(filtered);
       toDisplay(false, true, false);
@@ -283,7 +294,8 @@ const PublicWrapper = () => {
             <button
               className="btn alternate-public-pages"
               onClick={() => {
-                setParam("");
+                window.history.pushState({}, null, "/list");
+                setParam(null);
               }}
             >
               <i className="fa-solid fa-house"></i>
@@ -303,7 +315,8 @@ const PublicWrapper = () => {
             <button
               className="btn alternate-public-pages"
               onClick={() => {
-                setParam("");
+                window.history.pushState({}, null, "/list");
+                setParam(null);
               }}
             >
               <i className="fa-solid fa-house"></i>
