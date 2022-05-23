@@ -45,15 +45,6 @@ const Sidebar = () => {
       </div>
       <div className="sidebar-list">
         <ul>
-          {userRole === "user" && (
-            <>
-              <li>
-                <i className="fa-solid fa-house"></i>
-                <Link to="/list">Inicio</Link>
-              </li>
-              <hr />
-            </>
-          )}
 
           {user?._id &&
             userRole === "admin" &&

@@ -41,9 +41,9 @@ const AppRoutes = () => {
           .then((userLog) => {
             //metemos user y userRole en authContext
             setUser(userLog?.user);
-            setUserRole(userLog.user.userRoleId.name);
+            setUserRole(userLog?.user.userRoleId.name);
           })
-          // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a login
+          // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a la página principal
           .catch(() => {
             removeUserStorage();
             navigate("/list");
