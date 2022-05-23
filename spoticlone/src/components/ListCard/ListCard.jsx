@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import './index.scss';
+import "./index.scss";
 
 function ListCard({ img, listType, title, setParam }) {
   return (
