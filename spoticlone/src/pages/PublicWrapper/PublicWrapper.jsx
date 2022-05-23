@@ -163,7 +163,7 @@ const PublicWrapper = () => {
       .then(() => {
         getFavourites();
       })
-      .catch((err) => console.error(err));
+      .catch((err) => setShowError(true));
   };
 
   const onClickFavourite = (songId, onDelete) => {
@@ -271,7 +271,7 @@ const PublicWrapper = () => {
             <div className="grid-container">
               {!loading ? (
                 genresList?.map((genre) => (
-                  <HomeCard key={genre?._id} item={genre} setParam={setParam} />
+                  <HomeCard key={genre?.name} item={genre} setParam={setParam} />
                 ))
               ) : (
                 <div className="spinner-in-line-cards">
@@ -287,6 +287,7 @@ const PublicWrapper = () => {
               {listCardTypes?.length > 0 &&
                 listCardTypes?.map((card) => (
                   <ListCard
+                    key={card?.title}
                     img={card?.img}
                     listType={card?.listType}
                     title={card?.title}

@@ -14,7 +14,7 @@ function ListCard({ img, listType, title, setParam }) {
       <div className="card-body row">
         <h2 className="card-title col-6">{title}</h2>
         <div className="play-icon-list col-6">
-          <i class="fa-solid fa-circle-play"></i>
+          <i className="fa-solid fa-circle-play"></i>
         </div>
       </div>
     </div>

@@ -58,7 +58,7 @@ const register = (name, email, password, role) =>
       }
     })
     .then(res => resolve(res.json()))
-    .catch(err => console.warn(err))
+    .catch(err => reject(err))
   });
 
   const createUser = (name, email, password, role) => {
