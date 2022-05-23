@@ -15,7 +15,6 @@ const ModalDelete = ({
   id,
 }) => {
 
-  console.log(loading);
   return (
     <Modal
       open={openDelete}

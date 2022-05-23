@@ -87,8 +87,6 @@ const MediaPlayer = ({ focus, selectedSong, goToNext, goToPrevious }) => {
     return <i onClick={onMute} className={cls}></i>;
   };
 
-  console.log(audioRef.current.currentTime);
-
   return (
     <div className="mt-2 media-container">
         <div className="player-container">

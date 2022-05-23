@@ -11,7 +11,7 @@ function HomeCard({ item, setParam }) {
         setParam(item?.name.toLowerCase());
       }}
     >
-      <div class="img-container">
+      <div className="img-container">
         <img
           src={
             item?.genreImg ||
@@ -21,7 +21,7 @@ function HomeCard({ item, setParam }) {
           alt={item?.name}
         />
         <div className="play-icon-genre-card">
-          <i class="fa-solid fa-play"></i>
+          <i className="fa-solid fa-play"></i>
         </div>
       </div>
 
