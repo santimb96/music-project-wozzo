@@ -47,6 +47,7 @@
     }
 
     .genre-card {
+      cursor: pointer;
       display: inline-block;
       margin-right: 8vw;
       width: 100px;
@@ -92,6 +93,7 @@
     gap: 0 30px;
   }
   .list-cards {
+    cursor: pointer;
     width: 90vw;
     height: 8vh;
     background: $darkColor;
