@@ -15,6 +15,7 @@ import SnackBarError from "../../components/SnackBarError/SnackBarError";
 import SpinnerInLine from "../../components/SpinnerInLine/SpinnerInLine";
 import HomeCard from "../../components/HomeCard/HomeCard";
 import ListCard from "../../components/ListCard/ListCard";
+import listCardTypes from "../../utils/listCardTypes";
 import "./index.scss";
 
 const PublicWrapper = () => {
@@ -66,8 +67,8 @@ const PublicWrapper = () => {
           genresResponse,
         ]) => {
           setGenresList(genresResponse?.genres);
-          const data = songsResponse.songs.map((song) => {
-            const artist = artistsResponse.artists.find(
+          const data = songsResponse?.songs.map((song) => {
+            const artist = artistsResponse?.artists.find(
               (artist) => artist._id === song.artistId
             );
 
@@ -77,8 +78,8 @@ const PublicWrapper = () => {
 
             return {
               ...song,
-              artistName: artist.name,
-              genreName: genre.name,
+              artistName: artist?.name,
+              genreName: genre?.name,
             };
           });
           setSongList(data);
@@ -203,21 +204,12 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    
     if (param === "medialist") {
-      window.history.pushState(
-        {},
-        null,
-        window.location.pathname + "?type=" + param
-      );
+      window.history.pushState({}, null, "/list?type=" + param);
       controlToDisplay();
     } else if (param === "favourites") {
       if (user?._id && userRole === "user") {
-        window.history.pushState(
-          {},
-          null,
-          window.location.pathname + "?type=" + param
-        );
+        window.history.pushState({}, null, "/list?type=" + param);
         controlToDisplay();
       } else {
         setParam("");
@@ -228,11 +220,7 @@ const PublicWrapper = () => {
       window.history.pushState({}, null, window.location.pathname);
       controlToDisplay();
     } else {
-      window.history.pushState(
-        {},
-        null,
-        window.location.pathname + "?genre=" + param
-      );
+      window.history.pushState({}, null, "/list?genre=" + param);
       controlToDisplay();
     }
   }, [param]);
@@ -277,23 +265,16 @@ const PublicWrapper = () => {
             <div className="list-title">
               <h2>Listas</h2>
             </div>
-            
             <div className="grid-container-lists">
-              <ListCard
-                img={
-                  "https://mixed-media-images.spotifycdn.com/daily-drive/daily-drive-2.0-es-mx-default.jpg"
-                }
-                listType={"medialist"}
-                title={"Ruta diaria"}
-                setParam={setParam}
-              />
-              <ListCard
-                img={"https://misc.scdn.co/liked-songs/liked-songs-640.png"}
-                listType={"favourites"}
-                title={"Favoritos"}
-                setParam={setParam}
-              />
-              
+              {listCardTypes?.length > 0 &&
+                listCardTypes?.map((card) => (
+                  <ListCard
+                    img={card?.img}
+                    listType={card?.listType}
+                    title={card?.title}
+                    setParam={setParam}
+                  />
+                ))}
             </div>
           </>
         )}
