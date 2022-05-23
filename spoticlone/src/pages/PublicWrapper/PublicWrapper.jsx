@@ -71,7 +71,10 @@ const PublicWrapper = () => {
           //return [genresResponse?.genres, songsResponse?.songs, artistsResponse?.artists, favSongsResponse?.favouriteSongs];
         }
       )
-      .catch(() => songList?.length !== 0 && setShowError(true))
+      .catch(() => {
+        songList?.length !== 0 && setShowError(true);
+        reject(new Error("Error al obtener los datos"));
+      })
       .finally(() => setLoading(false));
   });
 
@@ -208,7 +211,7 @@ const PublicWrapper = () => {
           urlControl(data);
     });
   }, [param]);
-  
+
 
   const urlControl = (songs) => {
     const uri = new URLSearchParams(window.location.search);
