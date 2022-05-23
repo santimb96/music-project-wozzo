@@ -183,33 +183,37 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    getData().then(dataResponse => {
-      const { genres, songs, artists, favSongs } = dataResponse;
-      setGenresList(genres);
-          const data = songs?.map((song) => {
-            const artist = artists?.find(
-              (artist) => artist._id === song?.artistId
-            );
-
-            const genre = genres?.find(
-              (genre) => genre._id === song.genreId
-            );
-
-            return {
-              ...song,
-              artistName: artist?.name,
-              genreName: genre?.name,
-            };
-          });
-          setSongList(data);
-          setFilteredSongList(data);
-          setFavouriteList(favSongs);
-          const formatted = favSongs?.map((fav) => {
-            return data?.find((song) => song?._id === fav?.songId);
-          });
-          setSongsFavList(formatted);
-          urlControl(data);
-    });
+    if(songList?.length === 0){
+      getData().then(dataResponse => {
+        const { genres, songs, artists, favSongs } = dataResponse;
+        setGenresList(genres);
+            const data = songs?.map((song) => {
+              const artist = artists?.find(
+                (artist) => artist._id === song?.artistId
+              );
+  
+              const genre = genres?.find(
+                (genre) => genre._id === song.genreId
+              );
+  
+              return {
+                ...song,
+                artistName: artist?.name,
+                genreName: genre?.name,
+              };
+            });
+            setSongList(data);
+            setFilteredSongList(data);
+            setFavouriteList(favSongs);
+            const formatted = favSongs?.map((fav) => {
+              return data?.find((song) => song?._id === fav?.songId);
+            });
+            setSongsFavList(formatted);
+            urlControl(data);
+      });
+    } else {
+      urlControl(songList);
+    }
   }, [param]);
 
 
