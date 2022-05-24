@@ -9,7 +9,7 @@ function HomeCard({ item, setParam }) {
       
       onClick={() => setParam(item?.name.toLowerCase())}
     >
-      <div className="background-img" style={{ backgroundImage: `url(${item?.genreImg})` }}>
+      <div className="background-img" style={{ backgroundImage: `linear-gradient(155deg, rgba(255, 180, 30, 1), rgba(0, 0, 0, 0)), url("${item?.genreImg}")` }}>
 
       </div>
       <h2 className="card-title">{item?.name}</h2>
