@@ -259,7 +259,6 @@ const PublicWrapper = () => {
       toDisplay(true, false, false);
     }
   };
-
   return (
     <>
       <div className="public-wrapper">

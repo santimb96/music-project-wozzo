@@ -32,14 +32,18 @@
   }
   .grid-container {
     overflow: auto;
+    overflow-y: hidden;
     scrollbar-color: transparent transparent; //only on Firefox
     position: absolute;
-    top: 14vh;
+    top: 12vh;
     width: 100vw;
-    height: 20vh;
+    height: 22vh;
+    left: 1.5vw;
     display: block;
     white-space: nowrap;
-    .spinner-in-line-cards{
+    display: inline-block;
+    text-align: center;
+    .spinner-in-line-cards {
       width: 100vw;
       display: flex;
       justify-content: center;
@@ -47,37 +51,35 @@
     }
 
     .genre-card {
-      cursor: pointer;
-      display: inline-block;
-      margin-right: 8vw;
-      width: 100px;
-      background: #212529;
-      border: none;
-      color: white;
-      height: 130px;
-    
-      .img-container{
-
-        img {
-          height: 99px;
-          width: 99px;
-          padding: 5px;
-          border-radius: 10px;
-        }
-      }
+      margin-right: 3vw;
+      height: 150px;
+      width: 120px;
+      border-radius: 10px;
+      position: relative;
+      top: 1.5vh;
+      overflow: hidden;
       h2 {
         font-size: 1rem;
-        margin-bottom: 0;
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 0 0 $darkColor, -1px 0 0 $darkColor,
+          0 1px 0 $darkColor, 0 -1px 0 $darkColor, 1px 1px $darkColor,
+          -1px -1px 0 $darkColor, 1px -1px 0 $darkColor, -1px 1px 0 $darkColor;
+        position: absolute;
+        top: 80%;
+        display: flex;
+        justify-content: center;
+        width: 100%;
       }
-      .card-body {
-        padding-top: 2px;
-        padding-left: 0px;
-        padding-right: 0px;
-        padding-bottom: 0px;
+      .background-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
       }
-      .play-icon-genre-card{
-        display: none;
-      }
+    }
+    .genre-card:last-child{
+      margin-bottom: 0vh;
     }
   }
   .grid-container-lists {
@@ -95,18 +97,20 @@
   .list-cards {
     cursor: pointer;
     width: 90vw;
-    height: 8vh;
+    height: 80px;
     background: $darkColor;
     color: white;
     border: none;
     img {
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       border-radius: 5px 0px 0px 5px;
       transition: 0.2s;
     }
-    .card-body{
+    .card-body {
       h2 {
+        display: flex;
+        align-items: center;
         font-size: 1rem;
         margin-bottom: 0;
       }
@@ -166,74 +170,83 @@
     .grid-container {
       overflow-y: auto;
       position: absolute;
-      top: 7vh;
-      width: 100vw;
-      height: 30vh;
+      top: 5vh;
+      //left: -3.5vw;
+      width: 90vw;
+      height: 220px;
       display: grid;
-      grid-template-columns: auto auto auto auto auto auto;
+      grid-template-columns: auto auto auto auto;
       place-items: center;
-      gap: 10px;
+      //gap: 5px;
+      //margin-bottom: 10vh;
       .genre-card {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 0vw;
-        width: 120px;
-        background: #212529;
-        border: none;
-        color: white;
-        height: 158px;
-        transition: 0.2s;
-      
-        .img-container{
-          position: relative;
-          img {
-            height: 130px;
-            width: 130px;
-            padding: 5px;
-            border-radius: 10px;
-          }
-          .play-icon-genre-card{
-            top: 0;
-            position: absolute;
-            display: flex;
-            justify-content: end;
-            align-items: end;
-            height: 85%;
-            width: 85%;
-            transition: 0.2s;
-            i {
-              padding: 12px;
-              border-radius: 50%;
-              color: transparent;
-              font-size: 1.2rem;
-            }
-          }
-        }
-        
+        margin-bottom: 4vh;
+        height: 200px;
+        width: 180px;
+        left: 0%;
+        margin-right: 0;
+        border-radius: 10px;
+        transition: 0.4s;
+        position: relative;
+        overflow: hidden;
         h2 {
-          font-size: 1.2rem;
-          padding-bottom: 2vh;
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: white;
+          text-shadow: 1px 0 0 $darkColor, -1px 0 0 $darkColor,
+            0 1px 0 $darkColor, 0 -1px 0 $darkColor, 1px 1px $darkColor,
+            -1px -1px 0 $darkColor, 1px -1px 0 $darkColor, -1px 1px 0 $darkColor;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          top: -1vh;
+          width: 100%;
+          transform: translateY(150px);
+          transition: 0.5s all ease;
         }
-        .card-body {
-          padding-top: 2px;
-          padding-left: 0px;
-          padding-right: 0px;
-          padding-bottom: 0px;
-        }
-      }
-      .genre-card:hover{
-        background: $hoverCard;
-        .play-icon-genre-card{
-          transform: scale(1.2);     
-          i{
-            font-size: 1.2rem;
-            background: $spotiLogoColor;
-            color: $darkColor;
-            box-shadow: -1px 2px 10px #3b3b3b;
+        .card-content {
+          position: absolute;
+          transform: translateY(100px);
+          transition: 1s all ease;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: 0.5s;
+          background: rgba(0, 0, 0, 0.4);
+          i {
+            
+            font-size: 5rem;
+            color: white;
           }
         }
+        .background-img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          transition: all 0.5s ease;
+        }
       }
+      // .genre-card:last-child{
+      //   margin-bottom: 2vh;
+      // }
+      .genre-card:hover {
+        .background-img {
+          filter: blur(2px);
+        }
+        h2{
+          filter: blur(1.5px);
+        }
+        .card-content {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
     }
     .grid-container-lists {
       top: 42vh;
@@ -242,51 +255,56 @@
     }
     .list-cards {
       width: 90vw;
-      height: 70px;
+      height: 95px;
       background: $darkColor;
       color: white;
       border: none;
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: 0.2s;
+      transition: all 0.4s ease;
       img {
-        width: 70px;
-        height: 70px;
+        width: 95px;
+        height: 95px;
       }
 
       h2 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
       }
-      .card-body{
+      .card-body {
         height: 70px;
         display: flex;
         align-items: center;
-        
       }
 
       .play-icon-list {
-        width: 20vw;
+        width: 80vw;
+        height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: $spotiLogoColor;
+        color: white;
+        position: absolute;
+        transform: translateX(-30%);
+        opacity: 0;
+        transition: all 0.5s ease;
         i {
           display: block;
           font-size: 1.9rem;
           color: transparent;
-          transition: 0.2s;
         }
       }
     }
-    .list-cards:hover{
+    .list-cards:hover {
       background: $hoverCard;
       .play-icon-list {
-        i {   
-          color: $spotiLogoColor;
-          transform: scale(1.2);         
+        opacity: 1;
+        transform: translateX(0);
+        i {
+          color: white;
+          transform: scale(1.2);
         }
-        i:hover{
+        i:hover {
           font-size: 2rem;
         }
       }
@@ -301,9 +319,45 @@
       left: 3vw;
       width: 50px;
       height: 50px;
-      i{
+      i {
         font-size: 1.5rem;
       }
     }
   }
+}
+
+@media (min-width: 1576px){
+  .public-wrapper{
+    .grid-container{
+      height: 270px;
+      .genre-card{
+        height: 250px;
+        h2 {
+          top: 6.5vh;
+        }
+      }
+    }
+    .grid-container-lists {
+    .list-cards{
+      height: 120px;
+      width: 90vw;
+      display: flex;
+      justify-content: flex-start;
+      .play-icon-list{
+        width: 80vw;
+      }
+      img{
+        width: 120px;
+        height: 120px;
+        }
+      .card-body{
+        height: 100%;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
 }
