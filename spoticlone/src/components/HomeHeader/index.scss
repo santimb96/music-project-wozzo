@@ -7,18 +7,9 @@
   .auth-drop {
     background: transparent;
     color: white;
-    padding: 1.2%;
-
+    padding: 0;
     border: none;
-  }
-  .auth-drop:is(:hover) {
-    background: $spotiLogoColor;
-    color: white;
-  }
-  .auth-drop:is(:hover, :focus, :focus-visible, :active) {
-    background: $spotiLogoColor;
-    outline: none;
-    box-shadow: none;
+    transition: all 0.4s ease;
   }
   .dropdown-menu {
     background: $darkColor;
@@ -45,55 +36,65 @@
     background: transparent;
     color: $tablePresentationColor;
   }
+}
+.auth-user {
+  display: flex;
+  justify-content: center;
+
+  p {
+    color: white;
   }
-  .auth-user {
-    display: flex;
-    justify-content: center;
-    
-    p {
-      color: white;
-    }
+}
+.auth-fields {
+  position: absolute;
+  top: 4vh;
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  .btn-auth {
+    margin-top: 1%;
+    padding: 0;
+    margin-bottom: 1%;
+    color: white;
+    background: transparent;
   }
-  .auth-fields {
-    position: absolute;
-    top: 4vh;
-    display: flex;
-    justify-content: space-around;
-    width: 100vw;
-    .btn-auth {
-      margin-top: 1%;
-      padding: 0;
-      margin-bottom: 1%;
-      color: white;
-      background: transparent;
-    }
-    a {
-      color: white;
-      text-decoration: none;
-      transition: 0.1s;
-    }
-    .btn-auth:is(:hover, :focus, :focus-visible, :active) {
-      color: white;
-      outline: none;
-      box-shadow: none;
-    }
+  a {
+    color: white;
+    text-decoration: none;
+    transition: 0.1s;
   }
+  .btn-auth:is(:hover, :focus, :focus-visible, :active) {
+    color: white;
+    outline: none;
+    box-shadow: none;
+  }
+}
 
 @media (min-width: 800px) {
   .header-home {
-      top: 1.5vh;
-      position: absolute;
-      width: 90vw;
-      left: 10vw;
-      /* top: -100vh; */
-    
+    top: 1.5vh;
+    position: absolute;
+    width: 90vw;
+    left: 10vw;
+    /* top: -100vh; */
+
     .auth-drop {
       background: transparent;
       color: white;
-      padding: 1%;
+      padding: 0.7%;
       border: none;
       margin-top: 1%;
       margin-right: 2%;
+    }
+    .auth-drop:is(:hover) {
+      background: $spotiLogoColor;
+      color: white;
+    }
+    .auth-drop:is(:focus, :focus-visible){
+      background: white;
+      color: black;
+      outline: none;
+      box-shadow: none;
     }
     .dropdown-menu {
       background: $darkColor;
@@ -127,7 +128,7 @@
 
     p {
       color: white;
-  
+
       margin-right: 3%;
       margin-top: 1%;
       padding: 0;
@@ -159,10 +160,9 @@
     .btn-auth:is(:hover) {
       color: $tablePresentationColor;
     }
-    .btn-auth:is(:focus, :focus-visible){
+    .btn-auth:is(:focus, :focus-visible) {
       outline: none;
       box-shadow: none;
     }
   }
 }
-
