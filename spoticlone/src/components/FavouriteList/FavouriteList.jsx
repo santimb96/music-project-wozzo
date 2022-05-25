@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import SpinnerLoading from "../SpinnerLoading/SpinnerLoading";
 import theme from "../../palette/palette";
+import PropTypes from "prop-types";
 import "./index.scss";
 
 const FavouriteList = ({
@@ -157,5 +158,13 @@ const FavouriteList = ({
     </div>
   );
 };
+
+FavouriteList.propTypes = {
+  onSelectSong: PropTypes.func.isRequired,
+  songsFavList: PropTypes.array.isRequired,
+  selectedSong: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
+  onClickFavourite: PropTypes.func.isRequired,
+}
 
 export default FavouriteList;

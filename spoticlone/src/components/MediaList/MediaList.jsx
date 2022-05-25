@@ -168,12 +168,11 @@ const MediaList = ({
 };
 
 MediaList.propTypes = {
-  songs: PropTypes.array,
-  favouriteSongs: PropTypes.array,
-  filterText: PropTypes.string,
   onSelectSong: PropTypes.func.isRequired,
-  song: PropTypes.object,
   onClickFavourite: PropTypes.func.isRequired,
+  filteredSongList: PropTypes.array.isRequired,
+  favouriteList: PropTypes.array.isRequired,
+  selectedSong: PropTypes.object,
 };
 
 export default MediaList;
