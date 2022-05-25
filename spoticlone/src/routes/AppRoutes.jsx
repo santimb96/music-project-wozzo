@@ -30,19 +30,18 @@ const AppRoutes = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const dateNow = format(new Date(), "dd/MM/yyyy HH:mm");
-    // mirar si hay token, userId y expiryDate en localstorage
-    //si están los tres, seguimos
+    // we check if we have token, expiry date and user id. If we have all of them , we check if the token is expired. If not, we auto login
     if (expiryDate && token && userId) {
       if (expiryDate >= dateNow) {
         setLoading(true);
         autoLogin(userId, token)
           .then((userLog) => {
-            //metemos user y userRole en authContext
+            //we add user and userRole in context and check his role
             setUser(userLog?.user);
             setUserRole(userLog?.user.userRoleId.name);
             userLog?.user.userRoleId.name !== "admin" && navigateWithParams();
           })
-          // si no están alguno de los 3 o si ha expirado el token, borramos localstorage y redirigimos a la página principal
+          // if the promises return an error, we navigate to home page and remove user and userRole from localStorage
           .catch(() => {
             removeUserStorage();
             navigateWithParams();
@@ -61,21 +60,27 @@ const AppRoutes = () => {
 
   const navigateWithParams = () => {
     const uri = new URLSearchParams(window.location.search);
-    const param = uri.get('type') || uri.get('genre');
+    const param = uri.get("type") || uri.get("genre");
     setLoading(false);
-    if(param === "medialist" || param === "favourites"){
+    // if param is not null, navigate to the page with the param (type or genre)
+    if (param === "medialist" || param === "favourites") {
       navigate({ pathname: "/list", search: `?type=${param}` });
-    } else if (param === null){
-      if(window.location.pathname === "/list" || window.location.pathname.includes('/backoffice')){
+    } else if (param === null) {
+      // if pathname is list or backoffice, navigate to home page (/list), else navigate to not found page
+      if (
+        window.location.pathname === "/list" ||
+        window.location.pathname.includes("/backoffice")
+      ) {
         navigate("/list");
       } else {
-        navigate('/page-not-found') ;
+        navigate("/page-not-found");
       }
     } else {
       navigate({ pathname: "/list", search: `?genre=${param}` });
     }
-  }
+  };
 
+  // this function controls if user is admin or not; if his role is admin, only can navigate to backoffice pages
   const RequireAdmin = ({ children }) => {
     if (isAdmin) {
       return children;
@@ -92,8 +97,9 @@ const AppRoutes = () => {
       <HomeHeader />
       <AuthModal />
       <Routes>
-        <Route path="/page-not-found" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
+        {/* 404 NOT FOUND - not found page added to route */}
+        <Route path="/page-not-found" element={<NotFound />} />
         <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
         <Route
