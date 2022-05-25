@@ -66,7 +66,11 @@ const AppRoutes = () => {
     if(param === "medialist" || param === "favourites"){
       navigate({ pathname: "/list", search: `?type=${param}` });
     } else if (param === null){
-      navigate("/list");
+      if(window.location.pathname === "/list" || window.location.pathname.includes('/backoffice')){
+        navigate("/list");
+      } else {
+        navigate('/page-not-found') ;
+      }
     } else {
       navigate({ pathname: "/list", search: `?genre=${param}` });
     }
@@ -88,7 +92,7 @@ const AppRoutes = () => {
       <HomeHeader />
       <AuthModal />
       <Routes>
-        <Route path="*" element={<NotFound />} />
+        <Route path="/page-not-found" element={<NotFound />} />
         {/* PUBLIC ROUTES */}
         <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
