@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 
+// backoffice imports 
 import UsersBackoffice from "../pages/UsersBackoffice/UsersBackoffice";
 import UserRolesBackoffice from "../pages/UserRolesBackoffice/UserRolesBackoffice";
 import ArtistsBackoffice from "../pages/ArtistsBackoffice/ArtistsBackoffice";
