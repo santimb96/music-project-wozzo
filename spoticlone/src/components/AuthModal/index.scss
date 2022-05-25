@@ -6,7 +6,6 @@
     background: transparent;
     color: white;
     width: 40%;
-    
     padding: 1.5%;
     transition: 0.1s;
     border: none;
@@ -61,14 +60,13 @@
   background: transparent;
   color: white;
   width: 40%;
-  
   padding: 1.5%;
-  transition: 0.1s;
   border: none;
   border-radius: 5px;
+  transition: all 0.3s ease;
 }
 .btn-modal-auth:hover{
-  color: $tablePresentationColor;
+  color: $spotiLogoLight;
   background: transparent;
 }
 .btn-modal-form-active{
@@ -97,7 +95,7 @@
   transition: 0.1s;
   border: none;
   border-radius: 5px;
-  transition: 0.1s;
+  transition: all 0.3s ease;
 }
 
 .auth-buttons:hover{
