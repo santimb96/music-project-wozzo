@@ -11,6 +11,12 @@
     border: none;
     transition: all 0.4s ease;
   }
+  .auth-drop:focus, .auth-drop:focus-visible{
+    outline: none;
+    box-shadow: none;
+    color:white;
+  }
+
   .dropdown-menu {
     background: $darkColor;
     .dropdown-item {
@@ -18,6 +24,11 @@
       justify-content: start;
       color: white;
       transition: 0.1s;
+      i {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
       a {
         color: white;
         text-decoration: none;
@@ -90,7 +101,7 @@
       background: $spotiLogoColor;
       color: white;
     }
-    .auth-drop:is(:focus, :focus-visible){
+    .auth-drop:is(:focus, :focus-visible) {
       background: white;
       color: black;
       outline: none;

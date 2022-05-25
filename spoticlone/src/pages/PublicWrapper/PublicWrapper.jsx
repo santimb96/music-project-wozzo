@@ -57,7 +57,7 @@ const PublicWrapper = () => {
     Promise.all([
       getSongs(),
       getArtists(),
-      getUserFavSongs(user?._id),
+      user?._id && getUserFavSongs(user?._id),
       getGenres(),
     ])
       .then(
