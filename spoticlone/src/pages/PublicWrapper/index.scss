@@ -85,13 +85,14 @@
   .grid-container-lists {
     overflow: auto;
     position: absolute;
-    top: 39vh;
+    top: 40vh;
     width: 100vw;
     height: 25vh;
     display: grid;
     grid-template-columns: auto;
     //grid-template-rows: auto;
-    place-items: center;
+    left: 1.5vw;
+    place-items: start;
     gap: 0 30px;
   }
   .list-cards {
