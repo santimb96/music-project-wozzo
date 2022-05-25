@@ -1,10 +1,11 @@
 @import "../../scss/colors";
 
 .header-home {
-  top: 5vh;
-  position: relative;
+  top: 0;
+  position: absolute;
   width: 100vw;
   .auth-drop {
+    margin-top: 3vh;
     background: transparent;
     color: white;
     padding: 0;
@@ -83,9 +84,9 @@
 
 @media (min-width: 800px) {
   .header-home {
-    top: 1.5vh;
     position: absolute;
     width: 90vw;
+    height: 70px;
     left: 10vw;
     /* top: -100vh; */
 
