@@ -90,7 +90,9 @@
 
   .contaner-list {
     padding-right: 1rem;
-    width: 100vw;
+    position: absolute;
+    top: 7vh;
+    //width: 100vw;
     .table-container {
       height: 55vh;
       .table-content {

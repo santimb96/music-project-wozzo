@@ -1,6 +1,9 @@
 @import "../../scss/colors";
 
 .media-container {
+  animation-name: media-player;
+  animation-duration: 0.4s;
+  transform: translateY(0);
   position: absolute;
   width: 100vw;
   bottom: 8vh;
@@ -143,6 +146,14 @@
     font-size: 1.1rem;
     transition: 0.1s;
     background-color: transparent;
+  }
+}
+@keyframes media-player {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0);
   }
 }
 
