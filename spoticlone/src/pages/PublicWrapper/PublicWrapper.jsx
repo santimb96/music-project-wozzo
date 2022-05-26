@@ -17,6 +17,7 @@ import HomeCard from "../../components/HomeCard/HomeCard";
 import ListCard from "../../components/ListCard/ListCard";
 import listCardTypes from "../../utils/listCardTypes";
 import "./index.scss";
+import Footer from "../../components/Footer/Footer";
 
 const PublicWrapper = () => {
 
@@ -345,13 +346,15 @@ const PublicWrapper = () => {
           </>
         )}
       </div>
-      {selectedSong?._id && (
+      {selectedSong?._id ? (
         <MediaPlayer
           focus={focus}
           selectedSong={selectedSong}
           goToNext={goToNext}
           goToPrevious={goToPrevious}
         />
+      ) : (
+        <Footer />
       )}
       <SnackBarInfo open={showInfo} handleInfoClose={handleInfoClose} />
       <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
