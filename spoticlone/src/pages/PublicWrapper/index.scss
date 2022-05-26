@@ -20,6 +20,9 @@
     }
   }
   .grid-container {
+    animation-name: genre-container;
+    animation-duration: 0.4s;
+    transform: translateX(0);
     white-space: nowrap;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -32,6 +35,9 @@
     }
 
     .genre-card {
+      transform: translateX(0);
+      animation-name: genre-card;
+      animation-duration: 0.6s;
       margin-top: 10px;
       margin-bottom: 10px;
       margin-left: 1.4vw;
@@ -62,7 +68,23 @@
         background-size: cover;
       }
     }
+    @keyframes genre-card {
+      0% {
+        transform: translateX(-300vw);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
   }
+  // @keyframes genre-container {
+  //   0% {
+  //     transform: translateX(-100%);
+  //   }
+  //   100% {
+  //     transform: translateX(0);
+  //   }
+  // }
   .grid-container-lists {
     display: grid;
     grid-template-columns: auto;
@@ -141,6 +163,7 @@
       //gap: 0px;
       //margin-bottom: 10vh;
       .genre-card {
+        animation-duration: 0.4s;
         margin-bottom: 4vh;
         height: 180px;
         width: 160px;
@@ -178,7 +201,7 @@
           i {
             transition: all 0.4s ease;
             font-size: 5rem;
-            color: white;
+            color: $spotiLogoColor;
           }
           // i:hover {
           //   font-size: 5.5rem;
@@ -191,6 +214,14 @@
           background-size: cover;
           transition: all 0.5s ease;
           background-color: #7ee8fa;
+        }
+      }
+      @keyframes genre-card {
+        0% {
+          transform: translateY(-200vh);
+        }
+        100% {
+          transform: translateY(0);
         }
       }
       .genre-card:hover {
@@ -209,7 +240,7 @@
             animation-duration: 2s;
           }
           @keyframes play {
-            50% {
+            50%, 100% {
               transform: rotate(360deg);
               color: $spotiLogoColor;
             }
