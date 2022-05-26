@@ -27,6 +27,39 @@
           -ms-user-select: none; /* Internet Explorer/Edge */
           user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
         }
+        .fav-icon {
+          font-size: 1rem;
+          animation-name: fav-icon;
+          animation-duration: 0.5s;
+        }
+        @keyframes fav-icon {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        .fav-icon-fav {
+          font-size: 1rem;
+          color: $spotiLogoColor;
+          animation-name: fav-icon-fav;
+          animation-duration: 0.5s;
+        }
+        @keyframes fav-icon-fav {
+          0% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.5);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
       }
     }
     .sticky-header {
@@ -37,6 +70,17 @@
     .song-row-home {
       .play-row-button {
         font-size: 1rem;
+        animation: row-button;
+        animation-duration: 0.3s;
+        transform: translateX(0);
+      }
+      @keyframes row-button {
+        0% {
+          transform: translateX(-40px);
+        }
+        100% {
+          transform: translateX(0)
+        }
       }
     }
   }
@@ -80,13 +124,13 @@
             -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
           }
-          .fav-icon,
-          .fav-icon-fav {
+          .fav-icon {
             font-size: 1.2rem;
           }
           .fav-icon-fav {
-            color: $spotiLogoColor;
+            font-size: 1.2rem;
           }
+          
         }
       }
 

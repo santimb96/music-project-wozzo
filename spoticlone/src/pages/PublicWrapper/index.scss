@@ -180,9 +180,9 @@
             font-size: 5rem;
             color: white;
           }
-          i:hover {
-            font-size: 5.5rem;
-          }
+          // i:hover {
+          //   font-size: 5.5rem;
+          // }
         }
         .background-img {
           position: absolute;
@@ -193,9 +193,6 @@
           background-color: #7ee8fa;
         }
       }
-      // .genre-card:last-child{
-      //   margin-bottom: 2vh;
-      // }
       .genre-card:hover {
         .background-img {
           filter: blur(2px) brightness(0.6);
@@ -207,6 +204,16 @@
         .card-content {
           transform: translateY(0);
           opacity: 1;
+          i{
+            animation-name: play;
+            animation-duration: 2s;
+          }
+          @keyframes play {
+            50% {
+              transform: rotate(360deg);
+              color: $spotiLogoColor;
+            }
+          }
         }
       }
     }
