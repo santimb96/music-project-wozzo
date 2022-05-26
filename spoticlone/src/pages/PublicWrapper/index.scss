@@ -125,11 +125,11 @@
     margin-right: 2vw;
     left: 10vw;
     width: 90vw;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 220px);
     .genre-title,
     .list-title {
       h2 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         margin-left: 0;
       }
     }
@@ -138,12 +138,12 @@
       grid-template-columns: auto auto auto auto;
       place-items: start;
       overflow-x: hidden;
-      //gap: 5px;
+      //gap: 0px;
       //margin-bottom: 10vh;
       .genre-card {
         margin-bottom: 4vh;
-        height: 200px;
-        width: 180px;
+        height: 180px;
+        width: 160px;
         margin-right: 0;
         border-radius: 10px;
         transition: 0.4s;
@@ -274,13 +274,13 @@
     }
 
     .alternate-public-pages {
-      top: -6vh;
+      top: 0vh;
       position: absolute;
       background: $spotiLogoColor;
       color: white;
       padding: 0.3rem;
-      width: 50px;
-      height: 50px;
+      width: 45px;
+      height: 45px;
       i {
         font-size: 1.5rem;
       }
