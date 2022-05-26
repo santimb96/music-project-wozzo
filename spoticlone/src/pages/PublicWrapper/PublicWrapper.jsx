@@ -183,6 +183,7 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
+    //we detect the popstate event and when the user clicks to browser back button, set param is null and useEffect will be called again 
     window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
     window.addEventListener('popstate', () => {
       setParam(null);
