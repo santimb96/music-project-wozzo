@@ -183,6 +183,11 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
+    window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
+    window.addEventListener('popstate', () => {
+      setParam(null);
+     }, false);
+
     if(songList?.length === 0){
       getData().then(dataResponse => {
         const { genres, songs, artists, favSongs } = dataResponse;
@@ -259,6 +264,7 @@ const PublicWrapper = () => {
       toDisplay(true, false, false);
     }
   };
+
   return (
     <>
       <div className="public-wrapper">
