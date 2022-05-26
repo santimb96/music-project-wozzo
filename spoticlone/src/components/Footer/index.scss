@@ -1,0 +1,64 @@
+@import "../../scss/colors";
+
+.footer-container {
+  display: none;
+}
+
+@media (min-width: 800px) {
+  .footer-container {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 113px;
+    background: $darkColor;
+    color: white;
+    .footer-content {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 55vw 45vw;
+      place-items: center;
+
+        h5 {
+          display: flex;
+          justify-content: end;
+          width: 100%;
+          font-size: 16px;
+          margin: 0;
+        }
+
+      .social-links {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        div {
+          height: 50%;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          width: 100%;
+          a {
+            margin: 15px;
+            text-decoration: none;
+            color: white;
+            i{
+              font-size: 22px;
+              transition: all 0.4s ease;
+            }
+            i:hover{
+              font-size: 24px;
+              color: $spotiLogoColor;
+            }
+          }
+          a:is(:visited, :hover, :active) {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+} ;
