@@ -19,6 +19,7 @@ import AuthModal from "../components/AuthModal/AuthModal";
 import HomeHeader from "../components/HomeHeader/HomeHeader";
 import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
 import GenresBackoffice from "../pages/GenresBackoffice/GenresBackoffice";
+import routes from "../utils/routes";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
@@ -68,10 +69,7 @@ const AppRoutes = () => {
       navigate({ pathname: "/list", search: `?type=${param}` });
     } else if (param === null) {
       // if pathname is list or backoffice, navigate to home page (/list), else navigate to not found page
-      if (
-        window.location.pathname === "/list" ||
-        window.location.pathname.includes("/backoffice")
-      ) {
+      if (routes.find(route => route.route.includes(window.location.pathname))){
         navigate("/list");
       } else {
         navigate("/page-not-found");
