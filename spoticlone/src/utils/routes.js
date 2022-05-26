@@ -22,6 +22,9 @@ const routes = [
   },
   {
     route: "/list",
+  },
+  {
+    route: '/',
   }
 ];
 

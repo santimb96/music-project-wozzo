@@ -150,7 +150,7 @@
   .media-container {
     position: absolute;
     width: 100vw;
-    //top: 82.5vh;
+    height: 113px;
     bottom: 0vh;
     .player-container {
       width: 100vw;
@@ -248,3 +248,9 @@
     }
   }
 }
+@media screen and (orientation:landscape) {
+  .media-container{
+    bottom: 0;
+  }
+}
+
