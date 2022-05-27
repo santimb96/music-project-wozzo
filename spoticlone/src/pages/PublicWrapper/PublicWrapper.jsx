@@ -353,6 +353,7 @@ const PublicWrapper = () => {
           goToPrevious={goToPrevious}
           isFavourite={favouriteList?.find(fav => fav?.songId === selectedSong?._id)}
           onClickFavourite={onClickFavourite}
+          setSelectedSong={setSelectedSong}
         />
       ) : (
         <Footer />

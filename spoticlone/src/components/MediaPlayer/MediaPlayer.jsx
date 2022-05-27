@@ -10,6 +10,7 @@ const MediaPlayer = ({
   goToPrevious,
   isFavourite,
   onClickFavourite,
+  setSelectedSong
 }) => {
   const { user } = useContext(AuthContext);
   console.log(user);
@@ -213,6 +214,9 @@ const MediaPlayer = ({
               ? format(audioRef?.current?.duration * 1000)
               : "00:00"}
           </p>
+        </div>
+        <div className="close-button-container">
+          <i onClick={() => setSelectedSong(null)} className="fa-solid fa-xmark"></i>
         </div>
       </div>
     </div>

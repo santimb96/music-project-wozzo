@@ -11,6 +11,22 @@
     //position: sticky;
     background-color: $mediaBack;
     border-radius: 15px;
+    .close-button-container{
+      position: absolute;
+      top:2%;
+      left: 90%;
+      width: 5%;
+      height: 30%;
+      background: transparent;
+      display: flex;
+      justify-content: end;
+      align-items: flex-start;
+      i{
+        font-size: 12px;
+        padding: 5px;
+        color: white;
+      }
+    }
   }
   .control-buttons {
     display: flex;
@@ -220,6 +236,16 @@
     .player-container {
       width: 100vw;
       border-radius: 0;
+      .close-button-container{
+        left: 81%;
+        i{
+          font-size: 14px;
+          transition: all 0.3s ease;
+          &:hover{
+            color: $tablePresentationColor;
+          }
+        }
+      }
     }
     .fav-icon-container{
       position: absolute;
