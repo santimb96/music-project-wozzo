@@ -44,6 +44,8 @@
             color: white;
             i {
               font-size: 14px;
+            }
+            i:focus{
               animation-duration: 0.3s;
               animation-name: link-icon;
             }
