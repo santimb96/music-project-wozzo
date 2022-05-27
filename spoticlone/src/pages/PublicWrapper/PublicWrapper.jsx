@@ -69,7 +69,6 @@ const PublicWrapper = () => {
           genresResponse,
         ]) => {
           resolve({genres: genresResponse?.genres, songs: songsResponse?.songs, artists: artistsResponse?.artists, favSongs: favSongsResponse?.favouriteSongs});
-          //return [genresResponse?.genres, songsResponse?.songs, artistsResponse?.artists, favSongsResponse?.favouriteSongs];
         }
       )
       .catch(() => {
@@ -164,7 +163,7 @@ const PublicWrapper = () => {
       .then(() => {
         getFavourites();
       })
-      .catch((err) => setShowError(true));
+      .catch(() => setShowError(true));
   };
 
   const onClickFavourite = (songId, onDelete) => {
@@ -352,6 +351,8 @@ const PublicWrapper = () => {
           selectedSong={selectedSong}
           goToNext={goToNext}
           goToPrevious={goToPrevious}
+          isFavourite={favouriteList?.find(fav => fav?.songId === selectedSong?._id)}
+          onClickFavourite={onClickFavourite}
         />
       ) : (
         <Footer />
