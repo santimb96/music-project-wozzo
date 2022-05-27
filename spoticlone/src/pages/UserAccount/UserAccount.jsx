@@ -1,8 +1,10 @@
 import React, { useContext, useState } from "react";
 import AuthContext from "../../contexts/AuthContext";
-import PropTypes from "prop-types";
-import './index.scss';
-import { checkEmailOnRegister, checkPasswordLength } from "../../utils/validators";
+import "./index.scss";
+import {
+  checkEmailOnRegister,
+  checkPasswordLength,
+} from "../../utils/validators";
 import { updateProfile } from "../../services/user";
 
 function UserAccount() {
@@ -13,15 +15,21 @@ function UserAccount() {
   const [password, setPassword] = useState("");
 
   const validateData = () => {
-    if(checkEmailOnRegister(email) && checkPasswordLength(password) && name?.length > 6) {
-      return true;
+    if (checkEmailOnRegister(email) && name?.length > 6) {
+      if (password?.length === 0) {
+        return true;
+      } else if (checkPasswordLength(password)) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
       return false;
     }
-  }
+  };
 
   const updateData = () => {
-    if(validateData()){
+    if (validateData()) {
       const data = {
         name: name,
         email: email,
@@ -29,10 +37,10 @@ function UserAccount() {
       };
 
       updateProfile(user?._id, data)
-        .then(()=> {
-          console.log('done!');
+        .then(() => {
+          console.log("done!");
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }
@@ -79,7 +87,5 @@ function UserAccount() {
     </div>
   );
 }
-
-UserAccount.propTypes = {};
 
 export default UserAccount;

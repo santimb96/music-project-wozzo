@@ -56,16 +56,21 @@ const updateById = async (req, res) => {
 
 const create = async (req, res) => {
   const userToCreate = req.body;
-  bcrypt.genSalt(10).then((salt) => {
-    bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
-      userToCreate.password = hashedPaswd;
-      User.create(userToCreate).then((userCreated) => {
-        return res
-          .status(201)
-          .send({ status: 201, message: `${userCreated.name} ha sido cread@` });
+  bcrypt
+    .genSalt(10)
+    .then((salt) => {
+      bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
+        userToCreate.password = hashedPaswd;
+        User.create(userToCreate).then((userCreated) => {
+          return res
+            .status(201)
+            .send({
+              status: 201,
+              message: `${userCreated.name} ha sido cread@`,
+            });
+        });
       });
-    });
-  })
+    })
     .catch(() => handleError(500, 'No se ha podido crear al usuario', res));
 };
 
@@ -132,6 +137,32 @@ const autoLogin = (req, res) => {
     .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
+const updateProfile = (req, res) => {
+  const userToUpdate = req.body;
+  if (req.body.password) {
+    bcrypt.genSalt(10).then((salt) => {
+      bcrypt.hash(userToUpdate.password, salt).then((hashedPaswd) => {
+        userToUpdate.password = hashedPaswd;
+        User.findOneAndUpdate({ _id: req.params.id }, userToUpdate)
+          .then((user) =>
+            res
+              .status(201)
+              .send({ status: 201, message: `${user.name} actualizado` })
+          )
+          .catch(() => handleError(404, 'Usuario no encontrado', res));
+      });
+    });
+  } else {
+    User.findOneAndUpdate({ _id: req.params.id }, userToUpdate)
+      .then((user) =>
+        res
+          .status(201)
+          .send({ status: 201, message: `${user.name} actualizado` })
+      )
+      .catch(() => handleError(404, 'Usuario no encontrado', res));
+  }
+};
+
 export default {
   getAll,
   findId,
@@ -140,4 +171,5 @@ export default {
   deleteById,
   login,
   autoLogin,
+  updateProfile,
 };
