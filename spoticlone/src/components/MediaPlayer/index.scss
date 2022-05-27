@@ -195,6 +195,50 @@
       width: 100vw;
       border-radius: 0;
     }
+    .fav-icon-container{
+      position: absolute;
+      left: 13%;
+      top: 13%;
+      i{
+        display: flex;
+        align-items: flex-start;
+        height: 20px;
+        width: 20px;
+        font-size: 1.3rem;
+      }
+      .fav-icon-fav{
+        color: $spotiLogoColor;
+        animation-name: fav-icon-fav;
+        animation-duration: 0.4s;
+      }
+      .fav-icon{
+        color: white;
+        animation-name: fav-icon;
+        animation-duration: 0.4s;
+      }
+      @keyframes fav-icon{
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes fav-icon-fav{
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+    }
     .title-container{
       width: 10vw;
       .song-title-player {
