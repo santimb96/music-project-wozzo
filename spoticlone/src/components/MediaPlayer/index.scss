@@ -180,7 +180,7 @@
       font-size: 2.2rem;
       transition: 0.1s;
     }
-    .player-buttons:hover{
+    .player-buttons:hover {
       font-size: 2.35rem;
     }
 
@@ -259,9 +259,8 @@
     }
   }
 }
-@media screen and (orientation:landscape) {
-  .media-container{
+@media screen and (orientation: landscape) {
+  .media-container {
     bottom: 0;
   }
 }
-

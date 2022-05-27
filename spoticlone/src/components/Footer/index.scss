@@ -1,6 +1,6 @@
 @import "../../scss/colors";
 
-@media (max-width: 800px) {   
+@media (max-width: 800px) {
   .footer-container {
     position: absolute;
     bottom: 8vh;
@@ -16,14 +16,14 @@
       display: grid;
       grid-template-columns: auto;
       place-items: center;
-        h5 {
-          margin-top: 20px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          font-size: 12px;
-        }
+      h5 {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        font-size: 12px;
+      }
 
       .social-links {
         height: 100%;
@@ -42,12 +42,12 @@
             margin: 10px;
             text-decoration: none;
             color: white;
-            i{
+            i {
               font-size: 14px;
               animation-duration: 0.3s;
               animation-name: link-icon;
             }
-            @keyframes link-icon{
+            @keyframes link-icon {
               100% {
                 transform: scale(1.2);
                 color: $spotiLogoColor;
@@ -61,7 +61,7 @@
       }
     }
   }
-  }
+}
 
 @media (min-width: 800px) {
   .footer-container {
@@ -80,13 +80,13 @@
       grid-template-columns: 55vw 45vw;
       place-items: center;
 
-        h5 {
-          display: flex;
-          justify-content: end;
-          width: 100%;
-          font-size: 16px;
-          margin: 0;
-        }
+      h5 {
+        display: flex;
+        justify-content: end;
+        width: 100%;
+        font-size: 16px;
+        margin: 0;
+      }
 
       .social-links {
         height: 100%;
@@ -104,11 +104,11 @@
             margin: 15px;
             text-decoration: none;
             color: white;
-            i{
+            i {
               font-size: 22px;
               transition: all 0.4s ease;
             }
-            i:hover{
+            i:hover {
               font-size: 24px;
               color: $spotiLogoColor;
             }
