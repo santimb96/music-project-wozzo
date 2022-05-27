@@ -1,47 +1,69 @@
 import React, { useContext, useState } from "react";
-import AuthContext from "../../context/AuthContext";
+import AuthContext from "../../contexts/AuthContext";
 import PropTypes from "prop-types";
+import './index.scss';
+import { checkEmailOnRegister, checkPasswordLength } from "../../utils/validators";
+import { updateProfile } from "../../services/user";
 
 function UserAccount() {
   const { user } = useContext(AuthContext);
 
-  const [nameToUpdate, setNameToUpdate] = useState(user?.name);
-  const [emailToUpdate, setEmailToUpdate] = useState(user?.email);
-  const [passwordToUpdate, setPasswordToUpdate] = useState("");
+  const [name, setName] = useState(user?.name);
+  const [email, setEmail] = useState(user?.email);
+  const [password, setPassword] = useState("");
+
+  const validateData = () => {
+    if(checkEmailOnRegister(email) && checkPasswordLength(password) && name?.length > 6) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   const updateData = () => {
-    const data = {
-      name: nameToUpdate,
-      email: emailToUpdate,
-      password: passwordToUpdate,
-    };
-    console.log(data);
+    if(validateData()){
+      const data = {
+        name: name,
+        email: email,
+        password: password,
+      };
+
+      updateProfile(user?._id, data)
+        .then(()=> {
+          console.log('done!');
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   };
 
   return (
-    <div className="account-contaner">
+    <div className="account-container">
+      <div className="account-header">
+        <h1>Cuenta de {user?.name}</h1>
+      </div>
       <div className="user-content">
         <label htmlFor="name">Nombre</label>
         <input
           id="name"
-          value={nameToUpdate}
-          onChange={(e) => setNameToUpdate(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           type="text"
           placeholder="Nombre"
         />
         <label htmlFor="email">Email</label>
         <input
           id="email"
-          value={emailToUpdate}
-          onChange={(e) => setEmailToUpdate(e.target.value)}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           type="email"
           placeholder="Email"
         />
         <label htmlFor="password">Contraseña</label>
         <input
           id="password"
-          value={passwordToUpdate}
-          onChange={(e) => setPasswordToUpdate(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           type="password"
           placeholder="Contraseña"
         />
@@ -49,6 +71,9 @@ function UserAccount() {
           <button className="btn btn-submit-data" onClick={() => updateData()}>
             Actualizar
           </button>
+        </div>
+        <div className="advice-container">
+          <small>NO todos los campos son obligatorios</small>
         </div>
       </div>
     </div>

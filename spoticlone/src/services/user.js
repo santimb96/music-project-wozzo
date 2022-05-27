@@ -50,6 +50,8 @@ const register = (name, email, password, role) =>
     }
   });
 
+  const updateProfile = (id, edited) => put(`${BASE_URI_USER}/updateProfile/${id}`, edited);
+
   const getUsers = (token) => new Promise((resolve, reject) => {
     fetch(BASE_URI_USER, {
       method: 'GET',
@@ -70,4 +72,4 @@ const register = (name, email, password, role) =>
 
   const updateUser = (id, edited) => put(`${BASE_URI_USER}/${id}`, edited);
 
-export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser };
+export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser, updateProfile };

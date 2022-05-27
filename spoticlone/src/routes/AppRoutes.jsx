@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { autoLogin } from "../services/user.js";
 import { removeUserStorage } from "../utils/localStorage.js";
 
-// backoffice imports 
+// backoffice imports
 import UsersBackoffice from "../pages/UsersBackoffice/UsersBackoffice";
 import UserRolesBackoffice from "../pages/UserRolesBackoffice/UserRolesBackoffice";
 import ArtistsBackoffice from "../pages/ArtistsBackoffice/ArtistsBackoffice";
@@ -20,11 +20,13 @@ import HomeHeader from "../components/HomeHeader/HomeHeader";
 import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
 import GenresBackoffice from "../pages/GenresBackoffice/GenresBackoffice";
 import routes from "../utils/routes";
+import UserAccount from "../pages/UserAccount/UserAccount";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
     useContext(AuthContext);
   const isAdmin = user?._id && userRole === "admin";
+  const isUser = user?._id && userRole === "user";
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -69,8 +71,11 @@ const AppRoutes = () => {
       navigate({ pathname: "/list", search: `?type=${param}` });
     } else if (param === null) {
       // if pathname is list or backoffice, navigate to home page (/list), else navigate to not found page
-      if (routes.find(route => route.route.includes(window.location.pathname))){
-        navigate("/list");
+      if (
+        routes.find((route) => route.route.includes(window.location.pathname))
+      ) {
+        window.location.pathname === '/account' ? navigate("/account") : navigate("/list");
+        //navigate("/list");
       } else {
         navigate("/page-not-found");
       }
@@ -82,6 +87,14 @@ const AppRoutes = () => {
   // this function controls if user is admin or not; if his role is admin, only can navigate to backoffice pages
   const RequireAdmin = ({ children }) => {
     if (isAdmin) {
+      return children;
+    } else {
+      return <Navigate to="/list" replace></Navigate>;
+    }
+  };
+
+  const RequireUser = ({ children }) => {
+    if (isUser) {
       return children;
     } else {
       return <Navigate to="/list" replace></Navigate>;
@@ -101,6 +114,15 @@ const AppRoutes = () => {
         <Route path="/page-not-found" element={<NotFound />} />
         <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
+        <Route
+          path="/account"
+          element={
+            <RequireUser>
+              <UserAccount />
+            </RequireUser>
+          }
+        />
+
         <Route
           path="/backoffice/roles"
           element={
