@@ -1,8 +1,67 @@
 @import "../../scss/colors";
 
-.footer-container {
-  display: none;
-}
+@media (max-width: 800px) {   
+  .footer-container {
+    position: absolute;
+    bottom: 8vh;
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    height: 80px;
+    background: $darkColor;
+    color: white;
+    .footer-content {
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto;
+      place-items: center;
+        h5 {
+          margin-top: 20px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          font-size: 12px;
+        }
+
+      .social-links {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        div {
+          height: 50%;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          width: 100%;
+          a {
+            margin: 10px;
+            text-decoration: none;
+            color: white;
+            i{
+              font-size: 14px;
+              animation-duration: 0.3s;
+              animation-name: link-icon;
+            }
+            @keyframes link-icon{
+              100% {
+                transform: scale(1.2);
+                color: $spotiLogoColor;
+              }
+            }
+          }
+          a:is(:visited, :hover, :active) {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  }
 
 @media (min-width: 800px) {
   .footer-container {
