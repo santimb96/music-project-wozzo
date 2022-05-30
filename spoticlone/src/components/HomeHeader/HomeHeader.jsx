@@ -32,9 +32,18 @@ const HomeHeader = () => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Bienvenido, {user.name}
+            ¡Hola, {user.name}!
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            {user?._id && (
+              <>
+                <button className="dropdown-item" onClick={() => window.open("/account", "_blank").focus()}>
+                  {/* <Link to="/account">Cuenta</Link> */}
+                  Cuenta
+                </button>
+                <hr />
+              </>
+            )}
             {userRole === "admin" && (
               <>
                 <button className="dropdown-item">

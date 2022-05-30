@@ -46,9 +46,11 @@ const register = (name, email, password, role) =>
         }),
       })
         .then((response) => resolve(response.json()))
-        .catch((err) => reject(err));
+        .catch((err) => reject(err)); 
     }
   });
+
+  const updateProfile = (id, edited) => put(`${BASE_URI_USER}/updateProfile/${id}`, edited);
 
   const getUsers = (token) => new Promise((resolve, reject) => {
     fetch(BASE_URI_USER, {
@@ -70,4 +72,4 @@ const register = (name, email, password, role) =>
 
   const updateUser = (id, edited) => put(`${BASE_URI_USER}/${id}`, edited);
 
-export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser };
+export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser, updateProfile };

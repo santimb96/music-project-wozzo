@@ -56,6 +56,10 @@ const routes = {
       method: 'GET',
       route: '/genres',
     },
+    {
+      method: 'POST',
+      route: '/users/updateProfile/:id',
+    }
 
 
   ], 
@@ -175,6 +179,10 @@ const routes = {
       method: 'PUT',
       route: '/genres/:id',
     },
+    {
+      method: 'POST',
+      route: '/users/updateProfile/:id',
+    }
   ]
 };
 

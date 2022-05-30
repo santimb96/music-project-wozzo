@@ -24,8 +24,11 @@ const routes = [
     route: "/list",
   },
   {
+    route: '/account',
+  },
+  {
     route: '/',
-  }
+  },
 ];
 
 export default routes;

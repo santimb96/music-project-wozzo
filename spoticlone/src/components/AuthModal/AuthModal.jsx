@@ -15,6 +15,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
+import SnackBarError from "../SnackBarError/SnackBarError";
+import SnackBarInfo from "../SnackBarInfo/SnackBarInfo";
 import "./index.scss";
 
 const AuthModal = () => {
@@ -41,6 +43,13 @@ const AuthModal = () => {
 
   const [errors, setErrors] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showError, setShowError] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const [msg, setMsg] = useState("");
+
+  const handleErrorClose= () => setShowError(false);
+  const handleInfoClose= () => setShowInfo(false);
 
   //CLOSE FORM
 
@@ -62,8 +71,10 @@ const AuthModal = () => {
       setLoading(true);
       login(email, password)
         .then((user) => {
-          setUser(user.user);
-          setUserRole(user.role);
+          setMsg(`¡Bienvenido, ${user?.user.name}!`);
+          setShowInfo(true);
+          setUser(user?.user);
+          setUserRole(user?.role);
           localStorage.setItem("userId", user.user._id);
           localStorage.setItem("token", user.token);
           localStorage.setItem("expiryDate", user.expiryDate);
@@ -91,15 +102,24 @@ const AuthModal = () => {
       setErrorMessage(null);
       setLoading(true);
       register(name, email, password, role)
-        .then(() => {
-          clearData();
-          setAuthModalType(MODAL_STATES.REGISTER);
-          setLoading(false);
-          setShowAuthModal(false);
+        .then((res) => {
+          //FIXME: ERROR VAYA AL CATCH Y NO AL THEN
+          if(res?.error){
+            console.log('catched!')
+            setLoading(false);
+            setShowError(true);
+          } else {
+            setMsg(`¡Te has registrado correctamente!`);
+            setShowInfo(true);
+            clearData();
+            setAuthModalType(MODAL_STATES.REGISTER);
+            setLoading(false);
+            setShowAuthModal(false);  
+          }
         })
         .catch(() => {
           setLoading(false);
-          setErrorMessage("Algo ha ido mal. Vuelve a intentarlo!");
+          setShowError(true);
         });
     } else {
       setErrors(true);
@@ -146,6 +166,7 @@ const AuthModal = () => {
   };
 
   return (
+    <>
     <div>
       <Modal
         open={showAuthModal}
@@ -299,6 +320,9 @@ const AuthModal = () => {
         </Box>
       </Modal>
     </div>
+    <SnackBarInfo open={showInfo} msg={msg} handleInfoClose={handleInfoClose} />
+    <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
+    </>
   );
 };
 

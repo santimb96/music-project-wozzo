@@ -1,0 +1,105 @@
+@import '../../scss/colors';
+
+
+.account-container {
+  position: absolute;
+  top: 100px;
+  width: 100vw;
+  height: 100vh;
+  .account-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  .user-content{
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    label {
+      width: 70%;
+    }
+    input {
+      padding: 10px;
+      width: 70%;
+      height: 40px;
+      margin-bottom: 10%;
+      border-radius: 5px;
+      border: none;
+      &:focus, &:active, &:focus-within {
+        outline: 2px solid;
+        outline-color: $spotiLogoColor;
+      }
+    }
+
+    .submit-button {
+      width: 70%;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      button{
+        background: transparent;
+        color: white;
+        transition: all 0.4s ease;
+        &:hover{
+          background: $spotiLogoColor;
+        }
+        &:focus{
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+    .advice-container{
+      width: 70%;
+      small{
+        font-size: 10px;
+      }
+    }
+  }
+}
+
+@media (min-width: 800px){
+  .account-container {
+    width: 90vw;
+    left: 10vw;
+    .account-header{
+      width: 90vw;
+    }
+    .user-content{
+      label{
+        width: 50%;
+      }
+      input{
+        margin-bottom: 2%;
+        width: 50%;
+      }
+      .advice-container{
+        width: 50%;
+        height: 15vh;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        small{
+          padding: 0;
+          display: block;
+          text-align: left;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1537px){
+  .account-container{
+    .user-content{
+      .advice-container{
+        small{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
