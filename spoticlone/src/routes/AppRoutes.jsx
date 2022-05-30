@@ -21,6 +21,8 @@ import PublicWrapper from "../pages/PublicWrapper/PublicWrapper";
 import GenresBackoffice from "../pages/GenresBackoffice/GenresBackoffice";
 import routes from "../utils/routes";
 import UserAccount from "../pages/UserAccount/UserAccount";
+import VerifyUser from "../pages/VerifyUser/VerifyUser";
+import { nextWednesday } from "date-fns/esm";
 
 const AppRoutes = () => {
   const { setLoading, loading, setUser, setUserRole, user, userRole } =
@@ -71,10 +73,22 @@ const AppRoutes = () => {
       navigate({ pathname: "/list", search: `?type=${param}` });
     } else if (param === null) {
       // if pathname is list or backoffice, navigate to home page (/list), else navigate to not found page
+        const uriToString = window.location.href.toString();
+        const getToken = uriToString.slice(uriToString.lastIndexOf('/')+1, uriToString.length);
       if (
-        routes.find((route) => route.route.includes(window.location.pathname))
+        routes.find((route) => route?.route.includes(window.location.pathname)) || getToken?.length > 1
       ) {
-        window.location.pathname === '/account' ? navigate("/account") : navigate("/list");
+        //navigate(window.location.href);
+        //  ? navigate("/account") : navigate("/list");
+        if(window.location.pathname === '/account'){
+          navigate("/account")
+        } else if (window.location.pathname.includes('/verify')){
+          // const uriToString = window.location.href.toString();
+          // const getToken = uriToString.slice(uriToString.lastIndexOf('/')+1, uriToString.length);
+          navigate({ pathname: `/verify/${getToken}` })
+        } else {
+          navigate("/list");
+        }
         //navigate("/list");
       } else {
         navigate("/page-not-found");
@@ -112,6 +126,7 @@ const AppRoutes = () => {
         {/* PUBLIC ROUTES */}
         {/* 404 NOT FOUND - not found page added to route */}
         <Route path="/page-not-found" element={<NotFound />} />
+        <Route path="/verify/:token" element={<VerifyUser />} />
         <Route path="/list" element={<PublicWrapper />} />
         {/* PRIVATE ROUTES */}
         <Route

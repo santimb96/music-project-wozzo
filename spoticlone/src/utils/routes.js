@@ -27,6 +27,9 @@ const routes = [
     route: '/account',
   },
   {
+    route: '/verify',
+  },
+  {
     route: '/',
   },
 ];

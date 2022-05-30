@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer';
 
-const sendEmail = (user) => new Promise((resolve, reject) => {
+const sendEmail = (user, token) => new Promise((resolve, reject) => {
 
   const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -14,7 +14,7 @@ const sendEmail = (user) => new Promise((resolve, reject) => {
     from: 'pruebas.programacion.daw@gmail.com',
     to: user?.email,
     subject: `¡Bienvenido a Spoticlone, ${user?.name}!`,
-    text: '¡Bienvenido a Spoticlone, la plataforma de música preferida por todos!'
+    text: `¡Bienvenido a Spoticlone, la plataforma de música preferida por todos! Por favor, verifica tu correo en el siguiente enlace: http://localhost:3000/verify/${token}`
   };
   
   transporter.sendMail(mailOptions, function(error, info){
