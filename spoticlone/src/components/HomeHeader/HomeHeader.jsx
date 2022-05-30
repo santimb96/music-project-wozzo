@@ -32,7 +32,7 @@ const HomeHeader = () => {
             aria-haspopup="true"
             aria-expanded="false"
           >
-            Bienvenido, {user.name}
+            ¡Hola, {user.name}!
           </button>
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {user?._id && (

@@ -16,6 +16,7 @@ import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
 import SnackBarError from "../SnackBarError/SnackBarError";
+import SnackBarInfo from "../SnackBarInfo/SnackBarInfo";
 import "./index.scss";
 
 const AuthModal = () => {
@@ -43,8 +44,12 @@ const AuthModal = () => {
   const [errors, setErrors] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [showError, setShowError] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+
+  const [msg, setMsg] = useState("");
 
   const handleErrorClose= () => setShowError(false);
+  const handleInfoClose= () => setShowInfo(false);
 
   //CLOSE FORM
 
@@ -66,8 +71,10 @@ const AuthModal = () => {
       setLoading(true);
       login(email, password)
         .then((user) => {
-          setUser(user.user);
-          setUserRole(user.role);
+          setMsg(`¡Bienvenido, ${user?.user.name}!`);
+          setShowInfo(true);
+          setUser(user?.user);
+          setUserRole(user?.role);
           localStorage.setItem("userId", user.user._id);
           localStorage.setItem("token", user.token);
           localStorage.setItem("expiryDate", user.expiryDate);
@@ -102,7 +109,8 @@ const AuthModal = () => {
             setLoading(false);
             setShowError(true);
           } else {
-            console.log(res);
+            setMsg(`¡Te has registrado correctamente!`);
+            setShowInfo(true);
             clearData();
             setAuthModalType(MODAL_STATES.REGISTER);
             setLoading(false);
@@ -110,7 +118,6 @@ const AuthModal = () => {
           }
         })
         .catch(() => {
-          console.log('catched!')
           setLoading(false);
           setShowError(true);
         });
@@ -313,6 +320,7 @@ const AuthModal = () => {
         </Box>
       </Modal>
     </div>
+    <SnackBarInfo open={showInfo} msg={msg} handleInfoClose={handleInfoClose} />
     <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
     </>
   );
