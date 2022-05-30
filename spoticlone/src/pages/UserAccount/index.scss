@@ -76,16 +76,29 @@
         margin-bottom: 2%;
         width: 50%;
       }
-
+      .advice-container{
+        width: 50%;
+        height: 15vh;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        small{
+          padding: 0;
+          display: block;
+          text-align: left;
+        }
+      }
     }
-    .advice-container{
-      width: 50%;
-      display: flex;
-      justify-content: center;
-      small{
-        width: 71.5%;
-        display: block;
-        text-align: left;
+  }
+}
+
+@media (min-width: 1537px){
+  .account-container{
+    .user-content{
+      .advice-container{
+        small{
+          font-size: 12px;
+        }
       }
     }
   }

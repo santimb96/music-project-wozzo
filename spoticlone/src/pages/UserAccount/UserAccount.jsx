@@ -116,7 +116,7 @@ function UserAccount() {
             </button>
           </div>
           <div className="advice-container">
-            <small>NO todos los campos son obligatorios</small>
+            <small>NO es necesario rellenar NI actualizar todos los campos</small>
           </div>
         </div>
       </div>
