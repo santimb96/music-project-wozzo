@@ -29,9 +29,8 @@
       border-radius: 5px;
       border: none;
       &:focus, &:active, &:focus-within {
-        outline: $spotiLogoColor;
-        box-shadow: $spotiLogoColor;
-        border: 2px solid $spotiLogoColor;
+        outline: 2px solid;
+        outline-color: $spotiLogoColor;
       }
     }
 
