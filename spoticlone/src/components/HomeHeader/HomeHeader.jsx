@@ -37,8 +37,9 @@ const HomeHeader = () => {
           <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
             {user?._id && (
               <>
-                <button className="dropdown-item">
-                  <Link to="/account">Cuenta</Link>
+                <button className="dropdown-item" onClick={() => window.open("/account", "_blank").focus()}>
+                  {/* <Link to="/account">Cuenta</Link> */}
+                  Cuenta
                 </button>
                 <hr />
               </>

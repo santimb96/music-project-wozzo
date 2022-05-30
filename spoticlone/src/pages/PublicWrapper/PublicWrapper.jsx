@@ -184,6 +184,7 @@ const PublicWrapper = () => {
 
   useEffect(() => {
     //we detect the popstate event and when the user clicks to browser back button, set param is null and useEffect will be called again 
+    document.title = "Spoticlone";
     window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
     window.addEventListener('popstate', () => {
       setParam(null);
@@ -358,7 +359,7 @@ const PublicWrapper = () => {
       ) : (
         <Footer />
       )}
-      <SnackBarInfo open={showInfo} handleInfoClose={handleInfoClose} />
+      <SnackBarInfo open={showInfo} msg={"Se ha eliminado tu canción de favoritos"} handleInfoClose={handleInfoClose} />
       <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
     </>
   );
