@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import { masterToken } from '../config/masterToken.js';
 import { EXPIRE_DATE } from '../constants.js';
 import { format } from 'date-fns';
+import sendEmail from './mailController.js';
 
 const app = express();
 app.set('masterKey', masterToken);
@@ -54,24 +55,43 @@ const updateById = async (req, res) => {
   }
 };
 
+const findByEmail = async (userEmail) =>
+  new Promise((resolve, reject) => {
+    User.findOne({ email: userEmail }).then((user) => {
+      if(user){
+        reject(user);
+      } else {
+        resolve();
+      }
+    });
+  });
+
 const create = async (req, res) => {
   const userToCreate = req.body;
-  bcrypt
-    .genSalt(10)
-    .then((salt) => {
-      bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
-        userToCreate.password = hashedPaswd;
-        User.create(userToCreate).then((userCreated) => {
-          return res
-            .status(201)
-            .send({
-              status: 201,
-              message: `${userCreated.name} ha sido cread@`,
-            });
-        });
-      });
+  findByEmail(userToCreate?.email)
+    .then(() => {
+      bcrypt
+        .genSalt(10)
+        .then((salt) => {
+          bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
+            userToCreate.password = hashedPaswd;
+            sendEmail(userToCreate)
+              .then(() => {
+                User.create(userToCreate).then((userCreated) => {
+                  return res.status(201).send({
+                    status: 201,
+                    message: `${userCreated.name} ha sido cread@`,
+                  });
+                });
+              })
+              .catch(() =>
+                handleError(500, 'No se ha podido mandar mail', res)
+              );
+          });
+        })
+        .catch(() => handleError(400.3, 'No se ha podido crear al usuario', res));
     })
-    .catch(() => handleError(500, 'No se ha podido crear al usuario', res));
+    .catch(() => handleError(400.3, 'Email repetido', res));
 };
 
 const deleteById = async (req, res) => {

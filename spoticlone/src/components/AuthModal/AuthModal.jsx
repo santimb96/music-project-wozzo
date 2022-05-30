@@ -15,6 +15,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AuthContext, { MODAL_STATES } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { login, register } from "../../services/user";
+import SnackBarError from "../SnackBarError/SnackBarError";
 import "./index.scss";
 
 const AuthModal = () => {
@@ -41,6 +42,9 @@ const AuthModal = () => {
 
   const [errors, setErrors] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [showError, setShowError] = useState(false);
+
+  const handleErrorClose= () => setShowError(false);
 
   //CLOSE FORM
 
@@ -91,15 +95,24 @@ const AuthModal = () => {
       setErrorMessage(null);
       setLoading(true);
       register(name, email, password, role)
-        .then(() => {
-          clearData();
-          setAuthModalType(MODAL_STATES.REGISTER);
-          setLoading(false);
-          setShowAuthModal(false);
+        .then((res) => {
+          //FIXME: ERROR VAYA AL CATCH Y NO AL THEN
+          if(res?.error){
+            console.log('catched!')
+            setLoading(false);
+            setShowError(true);
+          } else {
+            console.log(res);
+            clearData();
+            setAuthModalType(MODAL_STATES.REGISTER);
+            setLoading(false);
+            setShowAuthModal(false);  
+          }
         })
         .catch(() => {
+          console.log('catched!')
           setLoading(false);
-          setErrorMessage("Algo ha ido mal. Vuelve a intentarlo!");
+          setShowError(true);
         });
     } else {
       setErrors(true);
@@ -146,6 +159,7 @@ const AuthModal = () => {
   };
 
   return (
+    <>
     <div>
       <Modal
         open={showAuthModal}
@@ -299,6 +313,8 @@ const AuthModal = () => {
         </Box>
       </Modal>
     </div>
+    <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
+    </>
   );
 };
 

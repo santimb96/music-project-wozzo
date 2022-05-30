@@ -46,7 +46,7 @@ const register = (name, email, password, role) =>
         }),
       })
         .then((response) => resolve(response.json()))
-        .catch((err) => reject(err));
+        .catch((err) => reject(err)); 
     }
   });
 
