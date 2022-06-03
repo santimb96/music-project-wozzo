@@ -59,7 +59,12 @@ const routes = {
     {
       method: 'POST',
       route: '/users/updateProfile/:id',
-    }
+    },
+    {
+      method: 'POST',
+      route: '/verify',
+    },
+
 
 
   ], 
@@ -182,7 +187,12 @@ const routes = {
     {
       method: 'POST',
       route: '/users/updateProfile/:id',
-    }
+    },
+    {
+      method: 'POST',
+      route: '/verify',
+    },
+
   ]
 };
 

@@ -11,6 +11,7 @@ router
   .delete('/:id', userController.deleteById)
   .post('/login', userController.login)
   .post('/register', userController.create)
-  .post('/autologin', userController.autoLogin);
+  .post('/autologin', userController.autoLogin)
+  .post('/verify', userController.verify);
 
 export default router;

@@ -58,7 +58,7 @@ const updateById = async (req, res) => {
 const findByEmail = async (userEmail) =>
   new Promise((resolve, reject) => {
     User.findOne({ email: userEmail }).then((user) => {
-      if(user){
+      if (user) {
         reject(user);
       } else {
         resolve();
@@ -75,21 +75,29 @@ const create = async (req, res) => {
         .then((salt) => {
           bcrypt.hash(userToCreate.password, salt).then((hashedPaswd) => {
             userToCreate.password = hashedPaswd;
-            sendEmail(userToCreate)
-              .then(() => {
-                User.create(userToCreate).then((userCreated) => {
-                  return res.status(201).send({
-                    status: 201,
-                    message: `${userCreated.name} ha sido cread@`,
-                  });
+            User.create(userToCreate)
+              .then((userCreated) => {
+                delete userCreated?._doc.password;
+                const token = jwt.sign({ userCreated }, app.get('masterKey'), {
+                  expiresIn: EXPIRE_DATE,
                 });
+                sendEmail(userCreated, token)
+                  .then(() => {
+                    return res.status(201).send({
+                      status: 201,
+                      message: `${userCreated?.name} ha sido cread@`,
+                    });
+                  })
+                  .catch(() => handleError(404, 'Usuario no encontrado', res));
               })
               .catch(() =>
                 handleError(500, 'No se ha podido mandar mail', res)
               );
           });
         })
-        .catch(() => handleError(400.3, 'No se ha podido crear al usuario', res));
+        .catch(() =>
+          handleError(400.3, 'No se ha podido crear al usuario', res)
+        );
     })
     .catch(() => handleError(400.3, 'Email repetido', res));
 };
@@ -183,6 +191,23 @@ const updateProfile = (req, res) => {
   }
 };
 
+const verify = (req, res) => {
+  const token = req.body.token;
+  jwt.verify(token, app.get('masterKey'), (err, decoded) => {
+    if (err) {
+      handleError(401, 'Token inválido', res);
+    } else {
+      User.findOneAndUpdate({ _id: decoded?.userCreated?._id }, { verified: true })
+        .then((user) =>
+          res
+            .status(200)
+            .send({ status: 200, message: `${user?.name} verificado` })
+        )
+        .catch(() => handleError(404, 'Usuario no encontrado', res));
+    }
+  });
+};
+
 export default {
   getAll,
   findId,
@@ -192,4 +217,5 @@ export default {
   login,
   autoLogin,
   updateProfile,
+  verify
 };
