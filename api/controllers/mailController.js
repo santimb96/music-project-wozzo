@@ -10,11 +10,11 @@ const sendEmail = (user, token) => new Promise((resolve, reject) => {
     }
   });
   
-  var mailOptions = {
+  const mailOptions = {
     from: 'pruebas.programacion.daw@gmail.com',
     to: user?.email,
     subject: `¡Bienvenido a Spoticlone, ${user?.name}!`,
-    text: `¡Bienvenido a Spoticlone, la plataforma de música preferida por todos! Por favor, verifica tu correo en el siguiente enlace: http://localhost:3000/verify/${token}`
+    text: `¡Bienvenido a Spoticlone, la plataforma de música preferida por todos! Por favor, verifica tu correo en el siguiente enlace: https://music-project-wozzo-santimb96.vercel.app/verify/${token}`
   };
   
   transporter.sendMail(mailOptions, function(error, info){
