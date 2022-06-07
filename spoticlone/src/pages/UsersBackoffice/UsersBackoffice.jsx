@@ -178,7 +178,7 @@ const UsersBackoffice = () => {
   const postUser = () => {
     if (validateData()) {
       setLoading(true);
-      createUser(name, email, password, role, token)
+      createUser(name, email, password, role)
         .then(() => {
           setOpenForm(false);
           setLoading(false);
@@ -187,7 +187,7 @@ const UsersBackoffice = () => {
           clearData();
           getData();
         })
-        .catch((err) => {
+        .catch(() => {
           setLoading(false);
           setErrorOpen(true);
         });
@@ -253,15 +253,17 @@ const UsersBackoffice = () => {
 
   return (
     <div className="row">
-      {!loading ? (
-        <Sidebar />
-      ) : (
-        <div className="col-12 col-md-2 bg-dark"></div>
-      )}
+      {!loading ? <Sidebar /> : <div className="col-12 col-md-2 bg-dark"></div>}
       <div className="backoffice-container">
         <Box sx={{ bgcolor: theme.palette.primary.main, height: "100vh" }}>
           <div className="table-head-item d-flex justify-content-around align-items-center">
-            <input type="search" class="input-search-home" placeholder="Usuario o correo" disabled={loading} onChange={(e) => setText(e.target.value)} ></input>
+            <input
+              type="search"
+              class="input-search-home"
+              placeholder="Usuario o correo"
+              disabled={loading}
+              onChange={(e) => setText(e.target.value)}
+            ></input>
             <CreateButton handleOpenForm={handleOpenForm} />
           </div>
 
@@ -269,7 +271,7 @@ const UsersBackoffice = () => {
             component={Paper}
             className="table-content"
             sx={{ height: "80%" }}
-            >
+          >
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />

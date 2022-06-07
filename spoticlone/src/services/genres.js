@@ -1,9 +1,9 @@
 import { get, put, deleteItem } from "../utils/apiWrapper";
 import { BASE_URI_GENRES } from "../urls/urls";
 
-const getGenres = () => get(`${BASE_URI_GENRES}`);
+const getGenres = async () => await get(`${BASE_URI_GENRES}`);
 
-const postGenre = (name, genreImg, token) => new Promise((resolve, reject) => {
+const postGenre = async (name, genreImg, token) => new Promise((resolve, reject) => {
   const formData = new FormData();
   formData.append('name', name);
   formData.append('genreImg', genreImg);
@@ -23,7 +23,7 @@ const postGenre = (name, genreImg, token) => new Promise((resolve, reject) => {
   }
 });
 
-const updateGenre = (id, name, genreImg, token) => new Promise((resolve, reject) => {
+const updateGenre = async (id, name, genreImg, token) => new Promise((resolve, reject) => {
   const formData = new FormData();
   if(name){
     formData.append('name', name);
@@ -46,7 +46,7 @@ const updateGenre = (id, name, genreImg, token) => new Promise((resolve, reject)
   .catch(err => reject(err));
 }); 
 
-const deleteGenre = (id) => deleteItem(`${BASE_URI_GENRES}/${id}`);
+const deleteGenre = async (id) => await deleteItem(`${BASE_URI_GENRES}/${id}`);
 
 export {
   getGenres,

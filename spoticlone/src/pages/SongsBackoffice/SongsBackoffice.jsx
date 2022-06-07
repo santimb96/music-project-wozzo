@@ -137,11 +137,11 @@ const SongsBackoffice = () => {
     const filtered = songs?.filter((song) => {
       if (
         song.name
-          .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim()) ||
+          .toLowerCase()
+          .includes(text.toLowerCase().trim()) ||
         song.artistName
-          .toLocaleLowerCase()
-          .includes(text.toLocaleLowerCase().trim())
+          .toLowerCase()
+          .includes(text.toLowerCase().trim())
       ) {
         return true;
       }
@@ -244,9 +244,9 @@ const SongsBackoffice = () => {
   useEffect(() => {
     const filtered = artists?.filter((artist) => {
       if (
-        artist.name
-          .toLocaleLowerCase()
-          .includes(filterDropdownArtists.toLocaleLowerCase().trim())
+        artist?.name
+          .toLowerCase()
+          .includes(filterDropdownArtists.toLowerCase().trim())
       ) {
         return true;
       }
@@ -259,9 +259,9 @@ const SongsBackoffice = () => {
   useEffect(() => {
     const filtered = genres?.filter((genre) => {
       if (
-        genre.name
-          .toLocaleLowerCase()
-          .includes(filterDropdownGenres.toLocaleLowerCase().trim())
+        genre?.name
+          .toLowerCase()
+          .includes(filterDropdownGenres.toLowerCase().trim())
       ) {
         return true;
       }
@@ -278,7 +278,7 @@ const SongsBackoffice = () => {
   };
 
   const artistsToShow = () => {
-    if (filterDropdownGenres?.length) {
+    if (filterDropdownArtists?.length) {
       return sortItems(filteredArtists ? filteredArtists : artists);
     }
     return sortItems(artists ? artists : []);

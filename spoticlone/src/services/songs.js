@@ -1,9 +1,9 @@
 import { BASE_URI_SONG } from "../urls/urls";
 import { deleteItem, get } from "../utils/apiWrapper";
 
-  const getSongs = () => get(BASE_URI_SONG);
+  const getSongs = async () => await get(BASE_URI_SONG);
 
-  const createSong = (name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
+  const createSong = async (name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     formData.append('name', name);
     formData.append('artistId', artistId);
@@ -25,9 +25,9 @@ import { deleteItem, get } from "../utils/apiWrapper";
     }
   });
 
-  const removeSong= (id) => deleteItem(`${BASE_URI_SONG}/${id}`);
+  const removeSong= async (id) => await deleteItem(`${BASE_URI_SONG}/${id}`);
 
-  const updateSong = (id, name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
+  const updateSong = async (id, name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
     const formData = new FormData();
     if(name){
       formData.append('name', name);

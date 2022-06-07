@@ -119,15 +119,18 @@ const FavouritesSongBackoffice = () => {
           const song = songsResponse.songs.find(
             (song) => song._id === favSong.songId
           );
+          //FIXME: when i delete a user, his favourite songs are not deleted
           return {
             ...favSong,
-            userName: user.name,
-            songName: song.name,
+            userName: user?.name,
+            songName: song?.name,
           };
         });
         setFavouriteSongs(data);
       })
-      .catch(() => setErrorOpen(true));
+      .catch((err) => {
+        setErrorOpen(true);
+      })
   };
 
   useEffect(() => {

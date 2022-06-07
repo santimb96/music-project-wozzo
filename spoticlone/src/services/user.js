@@ -52,7 +52,7 @@ const register = (name, email, password, role) =>
 
   const updateProfile = (id, edited) => put(`${BASE_URI_USER}/updateProfile/${id}`, edited);
 
-  const getUsers = (token) => new Promise((resolve, reject) => {
+  const getUsers = async (token) => new Promise((resolve, reject) => {
     fetch(BASE_URI_USER, {
       method: 'GET',
       headers: {
@@ -63,13 +63,13 @@ const register = (name, email, password, role) =>
     .catch(err => reject(err))
   });
 
-  const createUser = (name, email, password, role) => {
+  const createUser = async (name, email, password, role) => {
     const found = ROLES.find(r => r.role === role);
-    post(`${BASE_URI_USER}`, {name, email, password, userRoleId: found.id})
+    return await post(`${BASE_URI_USER}`, {name, email, password, userRoleId: found.id})
   }
 
-  const removeUser = (id) => deleteItem(`${BASE_URI_USER}/${id}`);
+  const removeUser = async (id) => await deleteItem(`${BASE_URI_USER}/${id}`);
 
-  const updateUser = (id, edited) => put(`${BASE_URI_USER}/${id}`, edited);
+  const updateUser = async (id, edited) => await put(`${BASE_URI_USER}/${id}`, edited);
 
 export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser, updateProfile };
