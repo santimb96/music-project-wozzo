@@ -1,4 +1,3 @@
-
 import aws from 'aws-sdk';
 //import fs from 'fs';
 
@@ -8,7 +7,7 @@ import process from 'process';
 dotenv.config();
 
 const getDataFromAws = (req, path) => new Promise((resolve, reject) => {
-  
+
   aws.config.setPromisesDependency();
   aws.config.update({
     accessKeyId: process.env.ACCESS_KEY,
@@ -28,10 +27,12 @@ const getDataFromAws = (req, path) => new Promise((resolve, reject) => {
 
   s3.upload(params, (err, data) => {
     if (err) {
+      console.info(err)
       reject(err);
+    } else {
+      console.info(data);
+      resolve(data);
     }
-
-    resolve(data);
   });
 });
 

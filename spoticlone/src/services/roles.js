@@ -1,6 +1,6 @@
 import { BASE_URI_ROLES } from "../urls/urls";
 
-const getRoles = (token) => new Promise((resolve, reject) => {
+const getRoles = async (token) => new Promise((resolve, reject) => {
   fetch(BASE_URI_ROLES, {
     method: 'GET',
     headers: {

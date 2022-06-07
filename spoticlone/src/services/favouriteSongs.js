@@ -1,15 +1,15 @@
 import { BASE_URI_FAVOURITE_SONGS } from "../urls/urls";
 import { deleteItem, get, getById, post, put } from "../utils/apiWrapper";
 
-const getFavSongs = () => get(BASE_URI_FAVOURITE_SONGS);
+const getFavSongs = async () => await get(BASE_URI_FAVOURITE_SONGS);
 
-const getUserFavSongs = (userId) => getById(BASE_URI_FAVOURITE_SONGS, userId);
+const getUserFavSongs = async(userId) => await getById(BASE_URI_FAVOURITE_SONGS, userId);
   
-const deleteFavSong = (id) => deleteItem(`${BASE_URI_FAVOURITE_SONGS}/${id}`);
+const deleteFavSong = async(id) => await deleteItem(`${BASE_URI_FAVOURITE_SONGS}/${id}`);
 
-const postFavSong = (favouriteSong) => post(`${BASE_URI_FAVOURITE_SONGS}`, favouriteSong);
+const postFavSong = async (favouriteSong) => await post(`${BASE_URI_FAVOURITE_SONGS}`, favouriteSong);
 
-const updatefavSong = (id, favouriteSong) => put(`${BASE_URI_FAVOURITE_SONGS}/${id}`, favouriteSong);
+const updatefavSong = async (id, favouriteSong) => await put(`${BASE_URI_FAVOURITE_SONGS}/${id}`, favouriteSong);
 
 export {
   getFavSongs,

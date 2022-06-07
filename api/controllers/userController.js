@@ -1,4 +1,5 @@
 import User from '../models/user.js';
+import FavouriteSong from '../models/favouriteSong.js';
 import handleError from './errorController.js';
 import express from 'express';
 import jwt from 'jsonwebtoken';
@@ -105,15 +106,14 @@ const create = async (req, res) => {
 const deleteById = async (req, res) => {
   User.findOneAndDelete({ _id: req.params.id })
     .then(() =>
-      res
-        .status(200)
-        .send({ status: 200, message: 'Registro borrado con éxito!' })
+      FavouriteSong.deleteMany({userId: req.params.id})
+        .then(() => res.status(200).send({ status: 200, message: 'Usuario y sus favoritos eliminados' }))
+        .catch(() => handleError(404, 'Favorito no encontrado', res))
     )
     .catch(() => handleError(404, 'Usuario no encontrado', res));
 };
 
 const login = (req, res) => {
-  //console.log(req.body.password);
   if (!req.body.email || !req.body.password) {
     handleError(400.1, 'Parámetros incorrectos', res);
   } else {
