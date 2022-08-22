@@ -21,11 +21,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.10",
     "nodemailer": "^6.7.5",
-    "nodemon": "^2.0.15"
-  },
-  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "multer": "^1.4.4",
     "aws-sdk": "^2.1121.0",
-    "fs": "^0.0.1-security",
-    "multer": "^1.4.4"
+    "fs": "^0.0.1-security"
   }
 }
