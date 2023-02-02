@@ -1,0 +1,169 @@
+@import "../../scss/colors";
+
+@import "../../scss/colors";
+
+.contaner-list {
+  .spinner-table-loading {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+  }
+  .table-container {
+    margin-top: 1vh;
+    .css-1ex1afd-MuiTableCell-root {
+      border-bottom: 0;
+    }
+    height: 44vh;
+    .table-content {
+      margin-top: 0vh;
+      width: 100vw;
+      table {
+        width: 100vw;
+
+        th,
+        td {
+          font-size: 0.8rem;
+          -webkit-touch-callout: none; /* iOS Safari */
+          -webkit-user-select: none; /* Safari */
+          -khtml-user-select: none; /* Konqueror HTML */
+          -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+        }
+        .css-1ex1afd-MuiTableCell-root {
+          font-family: "Roboto","Helvetica","Arial",sans-serif;
+          font-weight: 400;
+          /* font-size: 0.875rem; */
+          line-height: 1.43;
+          letter-spacing: 0.01071em;
+          display: table-cell;
+          vertical-align: inherit;
+          
+          text-align: left;
+          /* padding: 7px; */
+          color: rgba(0, 0, 0, 0.87);
+          /* font-size: 0px; */
+          padding-bottom: 15px;
+          padding-top: 15px;
+          padding-right: 8px;
+        }
+
+        .fav-icon,
+        .fav-icon-fav {
+          font-size: 1rem;
+        }
+        .fav-icon-fav {
+          color: $spotiLogoColor;
+        }
+      }
+    }
+    .sticky-header {
+      position: sticky;
+      background-color: $darkColor;
+      top: 0;
+    }
+    .song-row-home {
+      .play-row-button {
+        font-size: 1rem;
+      }
+    }
+  }
+}
+.songs-found {
+  top: 60vh;
+  /* transform: calc(50%, 50%); */
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  margin-left: 0vw;
+  /* margin-right: 49%; */
+  font-size: 0.8rem;
+  color: #aaaaaa;
+  padding-top: 1%;
+}
+
+@media (min-width: 800px) {
+  .spinner-table-loading {
+    display: flex;
+    justify-content: center;
+  }
+
+  .contaner-list {
+    padding-right: 1rem;
+    position: absolute;
+    top: 7vh;
+    //width: 100vw;
+    .table-container {
+      height: 55vh;
+      .table-content {
+        color: $secondaryColor;
+        background-color: $darkColor;
+        width: 100vw;
+        table {
+          width: 90vw;
+          th,
+          td {
+            -webkit-touch-callout: none; /* iOS Safari */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Old versions of Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Firefox */
+          }
+          .css-1ex1afd-MuiTableCell-root {
+            font-family: "Roboto","Helvetica","Arial",sans-serif;
+            font-weight: 400;
+            /* font-size: 0.875rem; */
+            line-height: 1.43;
+            letter-spacing: 0.01071em;
+            display: table-cell;
+            vertical-align: inherit;
+            
+            text-align: left;
+            /* padding: 7px; */
+            color: rgba(0, 0, 0, 0.87);
+            /* font-size: 0px; */
+            padding-bottom: 15px;
+            padding-top: 15px;
+            padding-right: 8px;
+            //margin-left: 5vw;
+          }
+          .fav-icon,
+          .fav-icon-fav {
+            font-size: 1.2rem;
+          }
+        }
+      }
+
+      .song-row-home {
+        transition: 0.5ms;
+        .play-row-button {
+          color: white;
+          font-size: 1.1rem;
+          transition: 0.1s;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  .song-row-home:hover {
+    background: $hoverTableRow;
+  }
+  .song-row-playing {
+    background: $hoverTableRow;
+  }
+  .songs-found {
+    top: 60vh;
+    /* transform: calc(50%, 50%); */
+    display: flex;
+    justify-content: end;
+    width: 90vw;
+    margin-left: 0vw;
+    /* margin-right: 49%; */
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    padding-right: 5%;
+    padding-top: 0.5%;
+  }
+}

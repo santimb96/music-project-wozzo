@@ -1,19 +1,37 @@
 const routes = [
-    {
-      route: '/backoffice/admin'
-    },
-    {
-      route: '/backoffice/user'
-    },
-    {
-      route: '/backoffice/artist'
-    },
-    {
-      route: '/backoffice/song'
-    },
-    {
-      route: '/backoffice/userRole'
-    }
-  ];
+  {
+    route: "/backoffice/roles",
+  },
+  {
+    route: "/backoffice/users",
+  },
+  {
+    route: "/backoffice/artists",
+  },
+  {
+    route: "/backoffice/songs",
+  },
+  {
+    route: "/backoffice/userRoles",
+  },
+  {
+    route: "/backoffice/favouriteSongs",
+  },
+  {
+    route: "/backoffice/genres",
+  },
+  {
+    route: "/list",
+  },
+  {
+    route: '/account',
+  },
+  {
+    route: '/verify',
+  },
+  {
+    route: '/',
+  },
+];
 
 export default routes;

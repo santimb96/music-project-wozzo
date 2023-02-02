@@ -40,6 +40,32 @@ const routes = {
       method: 'GET',
       route: '/songs/:id',
     },
+    {
+      method: 'GET',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'POST',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'DELETE',
+      route: '/favouriteSongs/:id',
+    },
+    {
+      method: 'GET',
+      route: '/genres',
+    },
+    {
+      method: 'POST',
+      route: '/users/updateProfile/:id',
+    },
+    {
+      method: 'POST',
+      route: '/verify',
+    },
+
+
 
   ], 
   'admin': [
@@ -125,7 +151,48 @@ const routes = {
     {
       method: 'GET',
       route: '/userRoles/:id'
-    }
+    },
+    {
+      method: 'GET',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'POST',
+      route: '/favouriteSongs',
+    },
+    {
+      method: 'DELETE',
+      route: '/favouriteSongs/:id',
+    },
+    {
+      method: 'PUT',
+      route: '/favouriteSongs/:id',
+    },
+    {
+      method: 'GET',
+      route: '/genres',
+    },
+    {
+      method: 'POST',
+      route: '/genres',
+    },
+    {
+      method: 'DELETE',
+      route: '/genres/:id',
+    },
+    {
+      method: 'PUT',
+      route: '/genres/:id',
+    },
+    {
+      method: 'POST',
+      route: '/users/updateProfile/:id',
+    },
+    {
+      method: 'POST',
+      route: '/verify',
+    },
+
   ]
 };
 

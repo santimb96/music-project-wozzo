@@ -1,0 +1,352 @@
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import "colors";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Nanum+Gothic&family=Roboto:wght@300&display=swap');
+
+%itemHorizontal {
+  display: flex;
+  justify-content: center;
+}
+
+html {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  body {
+    font-family: 'Montserrat', sans-serif;
+
+    font-family: 'Nanum Gothic', sans-serif;
+
+    font-family: 'Roboto', sans-serif;
+    
+    scrollbar-width: thin !important; /* "auto" or "thin" */
+    scrollbar-color: $spotiLogoColor $darkColor; /* scroll thumb and track */
+
+    body::-webkit-scrollbar {
+      width: 12px; /* width of the entire scrollbar */
+    }
+
+    body::-webkit-scrollbar-track {
+      background: $spotiLogoColor; /* color of the tracking area */
+    }
+
+    body::-webkit-scrollbar-thumb {
+      background-color: $darkColor; /* color of the scroll thumb */
+      border-radius: 20px; /* roundness of the scroll thumb */
+      border: 3px solid $spotiLogoColor; /* creates padding around scroll thumb */
+    }
+
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background: $darkColor;
+    width: 100vw;
+    .App {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+    }
+
+    .link-disabled {
+      pointer-events: none;
+    }
+    .msg-songs-not-found {
+      @extend %itemHorizontal;
+    }
+    span {
+      color: white;
+    }
+    .row {
+      overflow-y: hidden;
+    }
+
+    .is-disabled {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .table-head-item {
+      display: flex;
+      justify-content: space-around;
+
+      tr {
+        color: white;
+      }
+    }
+    .input {
+      font-size: 1rem;
+      padding-left: 1rem;
+      display: flex;
+      justify-content: center;
+      height: 7%;
+
+      input {
+        height: 10px;
+        border-radius: 5px;
+        background-color: white;
+      }
+
+      input:focus-visible {
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-root {
+        background-color: #fff;
+      }
+      .MuiOutlinedInput-root:hover {
+        box-shadow: 0 0 0 0.15rem $secondaryColor;
+      }
+      .MuiOutlinedInput-notchedOutline {
+        display: none;
+      }
+    }
+    #drop {
+      background: $secondaryColor;
+      color: white;
+      min-width: 50%;
+      transition: 0.2;
+      margin-top: 5%;
+      margin-bottom: 5%;
+      transition: 0.2;
+    }
+    #drop:hover {
+      color: black;
+      background-color: white;
+    }
+    #drop:focus,
+    #drop:active {
+      color: black;
+      background-color: white;
+      outline: none;
+      box-shadow: none;
+    }
+    .dropdown-menu {
+      width: 10%;
+      background-color: white;
+      color: $secondaryColor;
+      border-radius: 5px;
+      transition: 0.2;
+    }
+    .dropdown-item {
+      text-align: center;
+      padding: 0.5rem;
+    }
+    .dropdown-item:hover {
+      background-color: $secondaryColor;
+      color: white;
+      transition: 0.2;
+    }
+
+    .table-content {
+      color: $secondaryColor;
+      background: $darkColor;
+    }
+
+    .modal-delete {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      background-color: $darkColor;
+      padding: 2rem;
+      color: white;
+      border: 2px solid $secondaryColor;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    .close-modal-button {
+      background: transparent;
+      border: none;
+      color: white;
+      padding: 2%;
+      transition: 0.1s;
+    }
+
+    .close-modal-button:hover {
+      border-radius: 5px;
+      background-color: red;
+    }
+
+    .input-search-home {
+      border-radius: 20px;
+      /* min-width: 100vw; */
+      border: 1px solid #555;
+      display: block;
+      padding: 9px 4px 9px 40px;
+      background: white
+        url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2716%27 height=%2716%27 class=%27bi bi-search%27 viewBox=%270 0 16 16%27%3E%3Cpath d=%27M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z%27%3E%3C/path%3E%3C/svg%3E")
+        no-repeat 13px center;
+      width: 80vw;
+    }
+    .input-search-home:is(:focus, :active, :focus-visible) {
+      outline: none;
+      box-shadow: none;
+    }
+    .backoffice-container {
+      /* top: ; */
+      position: absolute;
+      top: 10vh;
+      width: 100vw;
+      left: 0vw;
+      height: 70vh;
+      .sticky-header {
+        position: sticky;
+        background-color: $darkColor;
+        top: 0;
+      }
+      .css-yks931-MuiPaper-root-MuiTableContainer-root {
+        height: 70vh;
+      }
+      .css-10aorn8 {
+        height: 70vh;
+      }
+      table {
+        thead {
+          background: $darkColor;
+          width: 100vw;
+        }
+        tr,
+        th,
+        td {
+          color: $spotiLogoColor;
+        }
+      }
+    }
+
+    @media (min-width: 800px) {
+      .backoffice-container {
+        position: absolute;
+        top: 11vh;
+        width: 90vw;
+        left: 10vw;
+        
+      }
+    }
+    .edit-button-table:hover,
+    .delete-button-table:hover {
+      background-color: $spotiLogoColor;
+    }
+
+    .search-filter-dropdown {
+      box-sizing: border-box;
+      max-width: 100%;
+      font-size: 16px;
+      padding: 14px 20px 12px 45px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      transition: 0.1s;
+    }
+
+    .search-filter-dropdown:focus,
+    .search-filter-dropdown:hover {
+      outline: 3px solid $secondaryColor;
+    }
+
+    .scrollable-menu {
+      height: auto;
+      max-height: 140px;
+      overflow-x: hidden;
+    }
+    .display-visible {
+      display: grid;
+    }
+    .show-sidebar-button {
+      display: none;
+    }
+
+    .nav-bg-color {
+      background-color: green;
+
+      button {
+        background-color: transparent;
+        border: none;
+        transition: 0.2s;
+      }
+      button:hover {
+        background-color: transparent;
+      }
+      .nav-link-auth {
+        color: black;
+        transition: 0.2s;
+      }
+      .nav-link-auth:hover {
+        color: white;
+      }
+    }
+    .typo-flex {
+      display: flex;
+      justify-content: space-around;
+
+      .btn-modal,
+      .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+        color: white;
+        padding: 1rem;
+        width: 90%;
+        margin: 1rem;
+        transition: 0.1s;
+      }
+
+      .btn-modal:hover,
+      .css-1e6y48t-MuiButtonBase-root-MuiButton-root:hover {
+        background-color: $secondaryColor;
+      }
+      .btn-delete:hover {
+        background-color: red;
+      }
+    }
+    .btn-modal-form {
+      color: white;
+      width: 50%;
+      transition: 0.1s;
+      padding: 0.5rem;
+    }
+    .btn-modal-form:hover {
+      background-color: $secondaryColor;
+    }
+
+    .spinner-table-loading {
+      display: flex;
+      justify-content: center;
+    }
+
+    label {
+      color: $labelGrey;
+      padding-bottom: 0.5rem;
+    }
+
+    small {
+      color: $labelGrey;
+      display: flex;
+      justify-content: start;
+      padding-top: 10%;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  html {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    body {
+      overflow-x: hidden;
+      overflow-y: hidden;
+      margin: 0;
+      padding: 0;
+
+      position: relative;
+      .sidebar-backoffice {
+        display: none;
+        padding-top: 0;
+      }
+      .show-sidebar-button {
+        display: grid;
+      }
+      .hamburguer-button {
+        display: grid;
+      }
+
+      .input {
+        min-width: 172px;
+      }
+    }
+  }
+}

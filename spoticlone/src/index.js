@@ -1,19 +1,22 @@
 import React from "react";
 import App from "./App";
-import "./styles/css/custom.css";
+import "./scss/common.scss";
 import reportWebVitals from "./reportWebVitals";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import { MediaProvider } from "./contexts/MediaContext";
+
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+
+
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
-    <MediaProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </MediaProvider>
   </AuthProvider>
 );
 

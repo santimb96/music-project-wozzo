@@ -1,11 +1,55 @@
 import { BASE_URI_SONG } from "../urls/urls";
+import { deleteItem, get } from "../utils/apiWrapper";
 
-const getSongs = () => new Promise((resolve, reject) => {
-  fetch(BASE_URI_SONG)
+  const getSongs = async () => await get(BASE_URI_SONG);
+
+  const createSong = async (name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('artistId', artistId);
+    formData.append('genreId', genreId);
+    formData.append('audioUrl', audioUrl);
+
+    if (!name || !artistId || !genreId || !audioUrl || !token) {
+      reject("Error de parámetros")
+    } else {
+      fetch(`${BASE_URI_SONG}`, {
+        method: "POST",
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData,
+      })
+        .then((response) => resolve(response.json()))
+        .catch((err) => reject(err));
+    }
+  });
+
+  const removeSong= async (id) => await deleteItem(`${BASE_URI_SONG}/${id}`);
+
+  const updateSong = async (id, name, artistId, genreId, audioUrl, token) => new Promise((resolve, reject) => {
+    const formData = new FormData();
+    if(name){
+      formData.append('name', name);
+    }
+    formData.append('artistId', artistId);
+    formData.append('genreId', genreId);
+    if(audioUrl){
+      formData.append('audioUrl', audioUrl);
+    }
+    
+    if(!id && !token){
+      reject("Error en parámetros");
+    }
+    fetch(`${BASE_URI_SONG}/${id}`,{
+      method: 'PUT',
+      headers:  {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData,
+    })
     .then(res => resolve(res.json()))
-    .catch(err => reject(err))
-});
+    .catch(err => reject(err));
+  }); 
 
-export {
-  getSongs
-}
+export { getSongs, createSong, removeSong, updateSong };

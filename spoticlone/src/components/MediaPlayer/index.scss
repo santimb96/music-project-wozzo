@@ -1,0 +1,360 @@
+@import "../../scss/colors";
+
+.media-container {
+  animation-name: media-player;
+  animation-duration: 0.4s;
+  transform: translateY(0);
+  position: absolute;
+  width: 100vw;
+  bottom: 8vh;
+  .player-container {
+    //position: sticky;
+    background-color: $mediaBack;
+    border-radius: 15px;
+    .close-button-container{
+      position: absolute;
+      top:2%;
+      left: 90%;
+      width: 5%;
+      height: 30%;
+      background: transparent;
+      display: flex;
+      justify-content: end;
+      align-items: flex-start;
+      i{
+        font-size: 12px;
+        padding: 5px;
+        color: white;
+      }
+    }
+  }
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .fav-icon-container{
+    position: absolute;
+    left: 65%;
+    top: 12%;
+    width: 30%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    i{
+      display: flex;
+      align-items: flex-start;
+      height: 20px;
+      width: 20px;
+      font-size: 1.2rem;
+    }
+    .fav-icon-fav{
+      color: $spotiLogoColor;
+      animation-name: fav-icon-fav;
+      animation-duration: 0.4s;
+    }
+    .fav-icon{
+      color: white;
+      animation-name: fav-icon;
+      animation-duration: 0.4s;
+    }
+    @keyframes fav-icon{
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    @keyframes fav-icon-fav{
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.5);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  }
+  .title-container{
+    display: flex;
+    flex-direction: column;
+    margin-right: 15px;
+    h5 {
+      font-size: 0.6rem;
+      color: white;
+      margin-left: 1vh;
+    }
+    h6 {
+      font-size: 0.5rem;
+      color: $tablePresentationColor;
+    }
+  }
+  .player-buttons {
+    //padding-top: 0.5rem;
+    color: white;
+    font-size: 2.2rem;
+  }
+  .vol-icon {
+    display: none;
+  }
+  .slider-vol {
+    display: none;
+  }
+  .player {
+    margin-top: -10px;
+  }
+
+  .current-time-player {
+    font-size: 0.7rem;
+    color: $tablePresentationColor;
+    padding: 1rem;
+  }
+  div.progress-bar {
+    width: 72%;
+    background: transparent;
+    background-color: transparent;
+    .slider {
+      background: transparent;
+      -webkit-appearance: none;
+    }
+    /*CHROME STYLE */
+    input[type="range"] {
+      width: 100%;
+      margin: 6.5px 0;
+      background-color: transparent;
+      -webkit-appearance: none;
+    }
+    input[type="range"]:focus {
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
+    /*EDGE STYLE */
+    input[type="range"]::-ms-track {
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+      background: transparent;
+      border-color: transparent;
+      color: transparent;
+    }
+    input[type="range"]::-ms-fill-lower {
+      background: #777;
+      border-radius: 10px;
+    }
+    input[type="range"]::-ms-fill-upper {
+      background: #ddd;
+      border-radius: 10px;
+    }
+    input[type="range"]::-ms-thumb {
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: goldenrod;
+    }
+    /*FIREFOX STYLE */
+    .slider::-moz-range-progress {
+      background: $spotiLogoColor;
+      -webkit-appearance: none;
+    }
+    .slider::-moz-range-track {
+      -webkit-appearance: none;
+      background-color: $mediaBar;
+    }
+    .slider::-moz-range-thumb {
+      width: 15px;
+      height: 15px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+  }
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+  .loop-button {
+    color: white;
+    font-size: 1.1rem;
+    transition: 0.1s;
+    background-color: transparent;
+  }
+
+  .loop-button-active {
+    color: $spotiLogoColor;
+  }
+  .back-next-buttons {
+    color: $tablePresentationColor;
+    font-size: 1.1rem;
+    transition: 0.1s;
+    background-color: transparent;
+  }
+}
+@keyframes media-player {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 800px) {
+  .media-container {
+    position: absolute;
+    width: 100vw;
+    height: 113px;
+    bottom: 0vh;
+    transform: translateY(0);
+    .player-container {
+      width: 100vw;
+      border-radius: 0;
+      .close-button-container{
+        left: 81%;
+        i{
+          font-size: 14px;
+          transition: all 0.3s ease;
+          &:hover{
+            color: $tablePresentationColor;
+          }
+        }
+      }
+    }
+    .fav-icon-container{
+      position: absolute;
+      left: 13%;
+      top: 13%;
+      i{
+        display: flex;
+        align-items: flex-start;
+        height: 20px;
+        width: 20px;
+        font-size: 1.3rem;
+      }
+    }
+    .title-container{
+      width: 10vw;
+      .song-title-player {
+        font-size: 0.8rem;
+        margin-left: 0vw;
+      }
+      .song-artist-name-player {
+        font-size: 0.7rem;
+      }
+    }
+    .player-buttons {
+      font-size: 2.2rem;
+      transition: 0.1s;
+    }
+    .player-buttons:hover {
+      font-size: 2.35rem;
+    }
+
+    .vol-icon {
+      display: flex;
+      width: 2rem;
+    }
+
+    input[type="range"]:focus {
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+      border: 0;
+      border-radius: 1.3px;
+      width: 100%;
+      height: 4px;
+      cursor: pointer;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      margin-top: -6.5px;
+      width: 19px;
+      height: 19px;
+      background: #ffffff;
+      border: 1px solid rgba(0, 0, 0, 0.9);
+      border-radius: 50px;
+      cursor: pointer;
+      -webkit-appearance: none;
+    }
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      background: $spotiLogoColor;
+    }
+    .slider-vol {
+      display: flex;
+      background: transparent;
+      -webkit-appearance: none;
+      width: 48%;
+    }
+    .slider-vol::-moz-range-progress {
+      background-color: $spotiLogoColor;
+    }
+    .slider-vol::-moz-range-track {
+      background-color: $mediaBar;
+    }
+    .slider-vol::-moz-range-thumb,
+    .slider::-webkit-slider-thumb {
+      width: 15px;
+      height: 15px;
+      border: none;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+    }
+
+    .current-time-player {
+      font-size: 0.6rem;
+      color: $tablePresentationColor;
+      padding: 1rem;
+    }
+    .loop-button {
+      font-size: 1.2rem;
+    }
+
+    .back-next-buttons {
+      font-size: 1.4rem;
+      transition: 0.1s;
+    }
+
+    .back-next-buttons:hover {
+      color: white;
+    }
+    .data-container {
+      display: flex;
+      justify-content: end;
+      margin-right: -10px;
+    }
+  }
+}
+@media screen and (orientation: landscape) {
+  .media-container {
+    bottom: 0;
+  }
+}

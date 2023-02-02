@@ -1,0 +1,97 @@
+@import '../../scss/colors';
+
+
+.genre-card {
+  display: inline-block;
+  margin-right: 8vw;
+  width: 100px;
+  background: $darkColor;
+  border: none;
+  color: white;
+  height: 20vh;
+  .img-container{
+
+    img {
+      height: 99px;
+      width: 99px;
+      padding: 5px;
+      border-radius: 10px;
+    }
+  }
+  h2 {
+    font-size: 1rem;
+  }
+  .card-body {
+    padding-top: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+  }
+  .play-icon-genre-card{
+    display: none;
+  }
+}
+
+@media (min-width: 800px){
+  .genre-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0vw;
+    width: 121px;
+    background: $darkColor;
+    border: none;
+    color: white;
+    height: 24vh;
+    transition: 0.2s;
+    .img-container{
+      position: relative;
+      img {
+        height: 19vh;
+        width: 130px;
+        padding: 5px;
+        border-radius: 10px;
+      }
+      .play-icon-genre-card{
+        top: 0;
+        position: absolute;
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        height: 85%;
+        width: 85%;
+        transition: 0.2s;
+        i {
+          padding: 12px;
+          border-radius: 50%;
+          color: transparent;
+          font-size: 1.2rem;
+        }
+      }
+    }
+    
+    h2 {
+      font-size: 1.2rem;
+      padding-bottom: 2vh;
+    }
+    .card-body {
+      padding-top: 2px;
+      padding-left: 0px;
+      padding-right: 0px;
+      padding-bottom: 0px;
+    }
+  }
+
+  .genre-card:hover{
+    background: $hoverCard;
+    .play-icon-genre-card{
+      transform: scale(1.2);     
+      i{
+        font-size: 1.2rem;
+        background: $spotiLogoColor;
+        color: $darkColor;
+        box-shadow: -1px 2px 10px #3b3b3b;
+      }
+    }
+  }
+}

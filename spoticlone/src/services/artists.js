@@ -1,11 +1,12 @@
-import { BASE_URI_ARTIST} from "../urls/urls";
+import { BASE_URI_ARTIST } from "../urls/urls";
+import { deleteItem, get, post, put } from "../utils/apiWrapper";
 
-const getArtists = () => new Promise((resolve, reject) => {
-  fetch(`${BASE_URI_ARTIST}`)
-    .then(res => resolve(res.json()))
-    .catch(err => reject(err))
-});
+const getArtists = async () => await get(BASE_URI_ARTIST);
 
-export {
-  getArtists
-}
+const deleteArtist = async (id) => await deleteItem(`${BASE_URI_ARTIST}/${id}`);
+
+const postArtist = async (artist) => await post(`${BASE_URI_ARTIST}`, artist);
+
+const updateArtist = async (id, artist) => await put(`${BASE_URI_ARTIST}/${id}`, artist);
+
+export { getArtists, deleteArtist, postArtist, updateArtist };

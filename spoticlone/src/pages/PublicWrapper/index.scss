@@ -1,0 +1,368 @@
+@import "../../scss/colors";
+
+.public-wrapper {
+  position: absolute;
+  top: 100px;
+  width: 100vw;
+  height: calc(100vh - 290px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  .genre-title,
+  .list-title {
+    color: white;
+    display: flex;
+    justify-content: left;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-left: 2vw;
+    }
+  }
+  .grid-container {
+    animation-name: genre-container;
+    animation-duration: 0.4s;
+    transform: translateX(0);
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    margin-bottom: 1.5vh;
+    .spinner-in-line-cards {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .genre-card {
+      transform: translateX(0);
+      animation-name: genre-card;
+      animation-duration: 0.6s;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-left: 1.4vw;
+      margin-right: 1.4vw;
+      height: 150px;
+      width: 120px;
+      border-radius: 10px;
+      position: relative;
+      top: 1.5vh;
+      overflow: hidden;
+      h2 {
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 0 0 $darkColor, -1px 0 0 $darkColor, 0 1px 0 $darkColor,
+          0 -1px 0 $darkColor, 1px 1px $darkColor, -1px -1px 0 $darkColor,
+          1px -1px 0 $darkColor, -1px 1px 0 $darkColor;
+        position: absolute;
+        top: 80%;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+      .background-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+      }
+    }
+    @keyframes genre-card {
+      0% {
+        transform: translateX(-300vw);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+  }
+  // @keyframes genre-container {
+  //   0% {
+  //     transform: translateX(-100%);
+  //   }
+  //   100% {
+  //     transform: translateX(0);
+  //   }
+  // }
+  .grid-container-lists {
+    display: grid;
+    grid-template-columns: auto;
+    place-items: start;
+    margin-left: 1.4vw;
+    margin-top: 1.5vh;
+    gap: 20px;
+  }
+  .list-cards {
+    cursor: pointer;
+    background: $darkColor;
+    color: white;
+    border: none;
+    height: 80px;
+    img {
+      width: 80px;
+      height: 80px;
+      border-radius: 5px 0px 0px 5px;
+      transition: 0.2s;
+    }
+    .card-body {
+      h2 {
+        display: flex;
+        align-items: center;
+        font-size: 1rem;
+        margin-bottom: 0;
+      }
+    }
+    .play-icon-list {
+      display: none;
+    }
+  }
+  .alternate-public-pages {
+    background: $spotiLogoColor;
+    color: white;
+    padding: 1rem;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    i {
+      font-size: 0.8rem;
+    }
+    /* outline: none; */
+  }
+  .alternate-public-pages:hover {
+    background: white;
+    color: black;
+  }
+  .alternate-public-pages:is(:hover, :active, :focus) {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+@media (min-width: 800px) {
+  .public-wrapper {
+    margin-right: 2vw;
+    left: 10vw;
+    width: 90vw;
+    height: calc(100vh - 220px);
+    .genre-title,
+    .list-title {
+      h2 {
+        font-size: 2rem;
+        margin-left: 0;
+      }
+    }
+    .grid-container {
+      display: grid;
+      grid-template-columns: auto auto auto auto;
+      place-items: start;
+      overflow-x: hidden;
+      //gap: 0px;
+      //margin-bottom: 10vh;
+      .genre-card {
+        cursor: pointer;
+        animation-duration: 0.4s;
+        margin-bottom: 4vh;
+        height: 180px;
+        width: 160px;
+        margin-right: 0;
+        border-radius: 10px;
+        transition: 0.4s;
+        position: relative;
+        h2 {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: white;
+          text-shadow: 1px 0 0 $darkColor, -1px 0 0 $darkColor,
+            0 1px 0 $darkColor, 0 -1px 0 $darkColor, 1px 1px $darkColor,
+            -1px -1px 0 $darkColor, 1px -1px 0 $darkColor, -1px 1px 0 $darkColor;
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          top: -1vh;
+          width: 100%;
+          transform: translateY(150px);
+          transition: 0.5s all ease;
+        }
+        .card-content {
+          transform: translateY(100px);
+          transition: 1s all ease;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: 0.5s;
+          i {
+            transition: all 0.4s ease;
+            font-size: 5rem;
+            color: $spotiLogoColor;
+          }
+        }
+        .background-img {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          background-size: cover;
+          transition: all 0.5s ease;
+          background-color: #7ee8fa;
+        }
+      }
+      @keyframes genre-card {
+        0% {
+          transform: translateY(-200vh);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+      .genre-card:hover {
+        .background-img {
+          filter: blur(2px) brightness(0.6);
+          opacity: 0.8;
+        }
+        h2 {
+          filter: blur(1.5px);
+        }
+        .card-content {
+          transform: translateY(0);
+          opacity: 1;
+          i{
+            animation-name: play;
+            animation-duration: 2s;
+          }
+          @keyframes play {
+            50%, 100% {
+              transform: rotate(360deg);
+              color: $spotiLogoColor;
+            }
+          }
+        }
+      }
+    }
+    .grid-container-lists {
+      display: grid;
+      grid-template-columns: auto auto;
+      margin-left: 1.3vw;
+      place-items: start;
+    }
+    .list-cards {
+      background: $darkColor;
+      color: white;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.4s ease;
+      width: 40vw;
+      height: 95px;
+      img {
+        width: 95px;
+        height: 95px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+      .card-body {
+        height: 70px;
+        display: flex;
+        align-items: center;
+      }
+
+      .play-icon-list {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        position: absolute;
+        transform: translateX(40px);
+        opacity: 0;
+        transition: all 0.5s ease;
+        i {
+          display: block;
+          font-size: 1.9rem;
+          color: transparent;
+        }
+      }
+    }
+    .list-cards:hover {
+      background: $hoverCard;
+      .play-icon-list {
+        opacity: 1;
+        transform: translateX(100px);
+        i {
+          color: white;
+          transition: all 0.4s ease;
+        }
+        i:hover {
+          font-size: 2.2rem;
+        }
+      }
+    }
+
+    .alternate-public-pages {
+      top: 0vh;
+      position: absolute;
+      background: $spotiLogoColor;
+      color: white;
+      padding: 0.3rem;
+      width: 45px;
+      height: 45px;
+      i {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (min-width: 1576px) {
+  .public-wrapper {
+    .genre-title,
+    .list-title {
+      h2 {
+        font-size: 3rem;
+        margin-left: 0;
+      }
+    }
+    .grid-container {
+      .genre-card {
+        width: 280px;
+        height: 280px;
+        .card-content{
+          i {
+            font-size: 7rem;
+          }
+        }
+        h2 {
+          top: 10vh;
+        }
+      }
+    }
+    .grid-container-lists {
+      .list-cards {
+        display: flex;
+        justify-content: flex-start;
+        height: 120px;
+        img {
+          width: 120px;
+          height: 120px;
+        }
+        .card-body {
+          height: 120px;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

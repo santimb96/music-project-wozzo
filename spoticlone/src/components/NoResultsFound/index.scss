@@ -1,0 +1,12 @@
+@import '../../scss/colors';
+
+.msg-container{
+  position: absolute;
+  top: 40vh;
+  color: white;
+  h2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

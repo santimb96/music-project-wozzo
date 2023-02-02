@@ -1,0 +1,138 @@
+@import "../../scss/colors";
+
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 800px) {
+  .sidebar {
+    display: flex;
+    width: 10vw;
+    height: 100vh;
+    .sidebar-page-title {
+      color: white;
+      h1 {
+        display: flex;
+        justify-content: center;
+        word-wrap: break-word;
+        position: absolute;
+        top: 25vh;
+        width: 10vw;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+    }
+    .sidebar-list {
+      width: 100vw;
+      position: absolute;
+      top: 35vh;
+      ul {
+        padding-left: 1vw;
+        li {
+          height: 5.5vh;
+          display: flex;
+          justify-content: start;
+          align-items: center;
+          list-style: none;
+          i {
+            font-size: 0.8rem;
+            height: 0.6rem;
+            color: white;
+            padding-right: 3vh;
+          }
+          i:is(:hover) {
+            color: white;
+          }
+          a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: 0.1s;
+          }
+          :hover {
+            color: $tablePresentationColor;
+          }
+        }
+        hr {
+          color: white;
+          opacity: 0.1;
+          width: 9vw;
+        }
+      }
+    }
+  }
+
+  .header-responsive {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10vw;
+    .spotilogo {
+      margin-top: 2.5vh;
+      display: flex;
+      justify-content: center;
+      img {
+        min-width: 50px;
+        width: 100px;
+      }
+    }
+  }
+
+  .hamburguer-button {
+    display: none;
+    color: white;
+    padding: 1rem;
+    width: 15%;
+    margin: 1rem;
+    transition: 0.1s;
+  }
+  .hamburguer-button:hover {
+    background-color: $secondaryColor;
+    color: white;
+    outline: none;
+    box-shadow: none;
+  }
+  .hamburguer-button:focus,
+  .hamburguer-button:active {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .sidebar-link {
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    height: 4rem;
+    margin-left: 4%;
+    margin-right: 4%;
+    transition: 0.3s;
+    color: white;
+    i {
+      color: white;
+    }
+
+    .nav-link {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      height: 4rem;
+      margin-left: 4%;
+      margin-right: 4%;
+      transition: 0.1s;
+      border-radius: 2px;
+      color: white;
+      i {
+        color: white;
+      }
+    }
+    .nav-link:hover {
+      background-color: $secondaryColor;
+      color: white;
+    }
+
+    .nav-link .fa {
+      transition: all 1s;
+    }
+  }
+}
