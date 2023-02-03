@@ -91,7 +91,7 @@ app.use(
   })
 );
 
-// app.use(verifyToken);
+app.use(verifyToken);
 
 app.listen(config.PORT, (err) => {
   if (err) return console.log(err);
