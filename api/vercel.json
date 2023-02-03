@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "music-project-wozzo",
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node"
+    }
+  ]
+}
