@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import User from "./routes/user.js";
 import Artist from "./routes/artist.js";
 import Song from "./routes/song.js";
+import Genre from "./routes/genre.js";
 import UserRole from "./routes/userRole.js";
 import { conn } from "./config/database.js";
 import { config } from "./config/config.js";
@@ -104,6 +105,7 @@ app
   .use("/users", User)
   .use("/artists", Artist)
   .use("/songs", Song)
+  .use("/genres", Genre)
   .use("/userRoles", UserRole);
 
 export { app };
