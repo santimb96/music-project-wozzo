@@ -8,6 +8,7 @@ import Artist from "./routes/artist.js";
 import Song from "./routes/song.js";
 import Genre from "./routes/genre.js";
 import UserRole from "./routes/userRole.js";
+import FavouriteSong from "./routes/favouriteSong.js";
 import { conn } from "./config/database.js";
 import { config } from "./config/config.js";
 import { masterToken } from "./config/masterToken.js";
@@ -106,6 +107,7 @@ app
   .use("/artists", Artist)
   .use("/songs", Song)
   .use("/genres", Genre)
+  .use("/favouriteSongs", FavouriteSong)
   .use("/userRoles", UserRole);
 
 export { app };
