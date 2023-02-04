@@ -2,7 +2,6 @@ import { BASE_URI_USER } from "../urls/urls";
 import { deleteItem, post, put } from "../utils/apiWrapper";
 import ROLES from "../utils/roleId";
 
-
 const login = (email, password) =>
   new Promise((resolve, reject) => {
     if (!email || !password) {
@@ -23,12 +22,11 @@ const login = (email, password) =>
     }
   });
 
-const autoLogin = (id) => post(`${BASE_URI_USER}/autologin`, {id} );
-  
+const autoLogin = (id) => post(`${BASE_URI_USER}/autologin`, { id });
 
 const register = (name, email, password, role) =>
   new Promise((resolve, reject) => {
-    let setRole = ROLES.find(r => r.role === role);
+    let setRole = ROLES.find((r) => r.role === role);
 
     if (!name || !email || !password) {
       reject("Error de parámetros");
@@ -42,34 +40,51 @@ const register = (name, email, password, role) =>
           name,
           email,
           password,
-          userRoleId: setRole ? setRole.id : "6246cedb97335a4a24ae3cb5" ,
+          userRoleId: setRole ? setRole.id : "63dc4124fea4ca25235c3819",
         }),
       })
         .then((response) => resolve(response.json()))
-        .catch((err) => reject(err)); 
+        .catch((err) => reject(err));
     }
   });
 
-  const updateProfile = (id, edited) => put(`${BASE_URI_USER}/updateProfile/${id}`, edited);
+const updateProfile = (id, edited) =>
+  put(`${BASE_URI_USER}/updateProfile/${id}`, edited);
 
-  const getUsers = async (token) => new Promise((resolve, reject) => {
+const getUsers = async (token) =>
+  new Promise((resolve, reject) => {
     fetch(BASE_URI_USER, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .then(res => resolve(res.json()))
-    .catch(err => reject(err))
+      .then((res) => resolve(res.json()))
+      .catch((err) => reject(err));
   });
 
-  const createUser = async (name, email, password, role) => {
-    const found = ROLES.find(r => r.role === role);
-    return await post(`${BASE_URI_USER}`, {name, email, password, userRoleId: found.id})
-  }
+const createUser = async (name, email, password, role) => {
+  const found = ROLES.find((r) => r.role === role);
+  return await post(`${BASE_URI_USER}`, {
+    name,
+    email,
+    password,
+    userRoleId: found.id,
+  });
+};
 
-  const removeUser = async (id) => await deleteItem(`${BASE_URI_USER}/${id}`);
+const removeUser = async (id) => await deleteItem(`${BASE_URI_USER}/${id}`);
 
-  const updateUser = async (id, edited) => await put(`${BASE_URI_USER}/${id}`, edited);
+const updateUser = async (id, edited) =>
+  await put(`${BASE_URI_USER}/${id}`, edited);
 
-export { login, register, autoLogin, getUsers, createUser, removeUser, updateUser, updateProfile };
+export {
+  login,
+  register,
+  autoLogin,
+  getUsers,
+  createUser,
+  removeUser,
+  updateUser,
+  updateProfile,
+};

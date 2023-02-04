@@ -1,4 +1,4 @@
-const BASE_URL = process.env.REACT_APP_REST_API_LOCATION;
+const BASE_URL = "https://wozzo-backend.vercel.app";
 
 const BASE_URI_USER = `${BASE_URL}/users`;
 const BASE_URI_ARTIST = `${BASE_URL}/artists`;

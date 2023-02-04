@@ -107,6 +107,7 @@ const UsersBackoffice = () => {
           const role = rolesResponse.userRoles.find(
             (role) => role._id === user.userRoleId
           );
+          console.warn(user);
           return {
             ...user,
             roleName: role.name,
@@ -262,16 +263,14 @@ const UsersBackoffice = () => {
               class="input-search-home"
               placeholder="Usuario o correo"
               disabled={loading}
-              onChange={(e) => setText(e.target.value)}
-            ></input>
+              onChange={(e) => setText(e.target.value)}></input>
             <CreateButton handleOpenForm={handleOpenForm} />
           </div>
 
           <TableContainer
             component={Paper}
             className="table-content"
-            sx={{ height: "80%" }}
-          >
+            sx={{ height: "80%" }}>
             {!itemsToShow() ? (
               <div className="spinner-table-loading">
                 <SpinnerLoading />
@@ -282,8 +281,7 @@ const UsersBackoffice = () => {
                 aria-label="sticky table"
                 className="table-content"
                 id="table"
-                sx={{ height: "max-content" }}
-              >
+                sx={{ height: "max-content" }}>
                 <TableHead className="sticky-header">
                   <ModalDelete
                     openDelete={openDelete}
@@ -298,17 +296,14 @@ const UsersBackoffice = () => {
                     onClose={handleCloseForm}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
-                    disableEnforceFocus
-                  >
+                    disableEnforceFocus>
                     <Box className="modal-delete">
                       <div
                         onClick={handleCloseForm}
-                        className="d-flex justify-content-end"
-                      >
+                        className="d-flex justify-content-end">
                         <button
                           {...(loading ? { disabled: true } : {})}
-                          className="close-modal-button"
-                        >
+                          className="close-modal-button">
                           <CloseIcon />
                         </button>
                       </div>
@@ -410,14 +405,12 @@ const UsersBackoffice = () => {
                             //id="role"
                             data-toggle="dropdown"
                             aria-haspopup="true"
-                            aria-expanded="false"
-                          >
+                            aria-expanded="false">
                             {role === "user" ? "Usuario" : "Administrador"}
                           </button>
                           <div
                             className="dropdown-menu dropdown-menu-left"
-                            aria-labelledby="role"
-                          >
+                            aria-labelledby="role">
                             {roles?.map((role) => (
                               <button
                                 {...(loading ? { disabled: true } : {})}
@@ -425,8 +418,7 @@ const UsersBackoffice = () => {
                                 value={role.name}
                                 onClick={(e) => setRole(role.name)}
                                 className="dropdown-item"
-                                type="button"
-                              >
+                                type="button">
                                 {role.name === "user"
                                   ? "Usuario"
                                   : "Administrador"}
@@ -442,16 +434,14 @@ const UsersBackoffice = () => {
                               <Button
                                 onClick={() => postUser()}
                                 className="btn-modal-form"
-                                disabled={loading}
-                              >
+                                disabled={loading}>
                                 Crear
                               </Button>
                             ) : (
                               <Button
                                 onClick={() => editUser(true)}
                                 className="btn-modal-form"
-                                disabled={loading}
-                              >
+                                disabled={loading}>
                                 Actualizar
                               </Button>
                             )}
@@ -469,33 +459,28 @@ const UsersBackoffice = () => {
                   <TableRow>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
+                      align="left">
                       Nombre
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
+                      align="left">
                       Email
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
+                      align="left">
                       Rol
                     </TableCell>
 
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
+                      align="left">
                       Editar
                     </TableCell>
                     <TableCell
                       style={{ color: theme.palette.secondary.mainLight }}
-                      align="left"
-                    >
+                      align="left">
                       Borrar
                     </TableCell>
                   </TableRow>
@@ -506,24 +491,20 @@ const UsersBackoffice = () => {
                       key={user.name}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                    >
+                      }}>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
+                        align="left">
                         {user.name}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
+                        align="left">
                         {user.email}
                       </TableCell>
                       <TableCell
                         style={{ color: theme.palette.secondary.mainLight }}
-                        align="left"
-                      >
+                        align="left">
                         {user.roleName}
                       </TableCell>
                       <EditButton

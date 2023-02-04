@@ -20,7 +20,6 @@ import "./index.scss";
 import Footer from "../../components/Footer/Footer";
 
 const PublicWrapper = () => {
-
   const { user, userRole } = useContext(AuthContext);
   const [param, setParam] = useState("");
   const [songList, setSongList] = useState([]);
@@ -53,30 +52,36 @@ const PublicWrapper = () => {
   };
 
   //we get songs, artists and fav songs and then sets each result in contexts state
-  const getData = () =>  new Promise((resolve, reject) => {
-    setLoading(true);
-    Promise.all([
-      getSongs(),
-      getArtists(),
-      user?._id && getUserFavSongs(user?._id),
-      getGenres(),
-    ])
-      .then(
-        ([
-          songsResponse,
-          artistsResponse,
-          favSongsResponse,
-          genresResponse,
-        ]) => {
-          resolve({genres: genresResponse?.genres, songs: songsResponse?.songs, artists: artistsResponse?.artists, favSongs: favSongsResponse?.favouriteSongs});
-        }
-      )
-      .catch(() => {
-        songList?.length !== 0 && setShowError(true);
-        reject(new Error("Error al obtener los datos"));
-      })
-      .finally(() => setLoading(false));
-  });
+  const getData = () =>
+    new Promise((resolve, reject) => {
+      setLoading(true);
+      Promise.all([
+        getSongs(),
+        getArtists(),
+        user?._id && getUserFavSongs(user?._id),
+        getGenres(),
+      ])
+        .then(
+          ([
+            songsResponse,
+            artistsResponse,
+            favSongsResponse,
+            genresResponse,
+          ]) => {
+            resolve({
+              genres: genresResponse?.genres,
+              songs: songsResponse?.songs,
+              artists: artistsResponse?.artists,
+              favSongs: favSongsResponse?.favouriteSongs,
+            });
+          }
+        )
+        .catch(() => {
+          songList?.length === 0 && setShowError(true);
+          reject(new Error("Error al obtener los datos"));
+        })
+        .finally(() => setLoading(false));
+    });
 
   const getFavourites = () => {
     getUserFavSongs(user?._id)
@@ -183,54 +188,59 @@ const PublicWrapper = () => {
   };
 
   useEffect(() => {
-    //we detect the popstate event and when the user clicks to browser back button, set param is null and useEffect will be called again 
+    //we detect the popstate event and when the user clicks to browser back button, set param is null and useEffect will be called again
     document.title = "Spoticlone";
-    window.history.pushState({name: "browserBack"}, "on browser back click", window.location.href);
-    window.addEventListener('popstate', () => {
-      setParam(null);
-     }, false);
+    window.history.pushState(
+      { name: "browserBack" },
+      "on browser back click",
+      window.location.href
+    );
+    window.addEventListener(
+      "popstate",
+      () => {
+        setParam(null);
+      },
+      false
+    );
 
-    if(songList?.length === 0){
-      getData().then(dataResponse => {
+    if (songList?.length === 0) {
+      getData().then((dataResponse) => {
         const { genres, songs, artists, favSongs } = dataResponse;
         setGenresList(genres);
-            const data = songs?.map((song) => {
-              const artist = artists?.find(
-                (artist) => artist._id === song?.artistId
-              );
-  
-              const genre = genres?.find(
-                (genre) => genre._id === song.genreId
-              );
-  
-              return {
-                ...song,
-                artistName: artist?.name,
-                genreName: genre?.name,
-              };
-            });
-            setSongList(data);
-            setFilteredSongList(data);
-            setFavouriteList(favSongs);
-            const formatted = favSongs?.map((fav) => {
-              return data?.find((song) => song?._id === fav?.songId);
-            });
-            setSongsFavList(formatted);
-            urlControl(data);
+        const data = songs?.map((song) => {
+          const artist = artists?.find(
+            (artist) => artist._id === song?.artistId
+          );
+
+          const genre = genres?.find((genre) => genre._id === song.genreId);
+
+          return {
+            ...song,
+            artistName: artist?.name,
+            genreName: genre?.name,
+          };
+        });
+        setSongList(data);
+        setFilteredSongList(data);
+        setFavouriteList(favSongs);
+        const formatted = favSongs?.map((fav) => {
+          return data?.find((song) => song?._id === fav?.songId);
+        });
+        setSongsFavList(formatted);
+        urlControl(data);
       });
     } else {
       urlControl(songList);
     }
   }, [param]);
 
-
   const urlControl = (songs) => {
     const uri = new URLSearchParams(window.location.search);
-    const paramUrl = uri.get('type') || uri.get('genre');
+    const paramUrl = uri.get("type") || uri.get("genre");
     const option = param !== "" ? param : paramUrl;
 
     if (option === "medialist") {
-      window.history.pushState({}, null, "/list?type=" + option); 
+      window.history.pushState({}, null, "/list?type=" + option);
       controlToDisplay(option, songs);
     } else if (option === "favourites") {
       if (user?._id && userRole === "user") {
@@ -248,7 +258,7 @@ const PublicWrapper = () => {
       window.history.pushState({}, null, "/list?genre=" + option);
       controlToDisplay(option, songs);
     }
-  }
+  };
 
   const controlToDisplay = (option, songs) => {
     if (option === "favourites") {
@@ -278,7 +288,11 @@ const PublicWrapper = () => {
             <div className="grid-container">
               {!loading ? (
                 genresList?.map((genre) => (
-                  <HomeCard key={genre?.name} item={genre} setParam={setParam} />
+                  <HomeCard
+                    key={genre?.name}
+                    item={genre}
+                    setParam={setParam}
+                  />
                 ))
               ) : (
                 <div className="spinner-in-line-cards">
@@ -311,8 +325,7 @@ const PublicWrapper = () => {
               onClick={() => {
                 window.history.pushState({}, null, "/list");
                 setParam(null);
-              }}
-            >
+              }}>
               <i className="fa-solid fa-house"></i>
             </button>
             <Search onChangeText={onChangeText} setFocus={setFocus} />
@@ -332,8 +345,7 @@ const PublicWrapper = () => {
               onClick={() => {
                 window.history.pushState({}, null, "/list");
                 setParam(null);
-              }}
-            >
+              }}>
               <i className="fa-solid fa-house"></i>
             </button>
             <FavouriteList
@@ -352,14 +364,20 @@ const PublicWrapper = () => {
           selectedSong={selectedSong}
           goToNext={goToNext}
           goToPrevious={goToPrevious}
-          isFavourite={favouriteList?.find(fav => fav?.songId === selectedSong?._id)}
+          isFavourite={favouriteList?.find(
+            (fav) => fav?.songId === selectedSong?._id
+          )}
           onClickFavourite={onClickFavourite}
           setSelectedSong={setSelectedSong}
         />
       ) : (
         <Footer />
       )}
-      <SnackBarInfo open={showInfo} msg={"Se ha eliminado tu canción de favoritos"} handleInfoClose={handleInfoClose} />
+      <SnackBarInfo
+        open={showInfo}
+        msg={"Se ha eliminado tu canción de favoritos"}
+        handleInfoClose={handleInfoClose}
+      />
       <SnackBarError open={showError} handleErrorClose={handleErrorClose} />
     </>
   );
